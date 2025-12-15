@@ -37,6 +37,8 @@ function findBreedMatch(aiName: string): { id: BreedId; name: string } | null {
   
   // Mapping des noms français courants vers les IDs
   const frenchMappings: Record<string, BreedId> = {
+    "chategeen": "aegean",
+    "egeen": "aegean",
     "chateuropeen": "european-shorthair",
     "europeen": "european-shorthair",
     "europeenshorthair": "european-shorthair",
@@ -237,7 +239,7 @@ Race: Persan | Confiance: Faible | Raison: Pelage long et épais visible.`;
         } else {
           console.log("No candidates parsed, using fallback");
           const fallback = {
-            id: "europeen",
+            id: "european-shorthair",
             name: "Chat Européen",
             confidenceLabel: "Moyenne",
             why: "Morphologie standard et couleur de pelage commune.",
@@ -280,10 +282,11 @@ Race: Persan | Confiance: Faible | Raison: Pelage long et épais visible.`;
         Haptics.NotificationFeedbackType.Success,
       );
     } catch {}
-    router.push({
-      pathname: "/(tabs)/(breeds)/[breedId]" as any,
-      params: { breedId: selectedId },
-    });
+    
+    console.log("Navigating to breed details:", selectedId);
+    
+    // Use direct path string for better reliability across tabs
+    router.push(`/(tabs)/(breeds)/${selectedId}`);
   }, [selectedId]);
 
   const selected = candidates.find((c) => c.id === selectedId) ?? null;
