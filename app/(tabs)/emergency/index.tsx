@@ -9,6 +9,8 @@ import {
   Text,
   View,
   Linking,
+  Platform,
+  Alert,
   type ListRenderItem,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -122,7 +124,17 @@ export default function EmergencyListScreen() {
   };
 
   const handleCallEmergency = (phone: string) => {
-    Linking.openURL(`tel:${phone}`);
+    if (Platform.OS === 'web') {
+      Alert.alert(
+        "Appeler",
+        `Composez ce numéro : ${phone}`,
+        [
+          { text: "OK" }
+        ]
+      );
+    } else {
+      Linking.openURL(`tel:${phone}`);
+    }
   };
 
   const EmergencyContactsHeader = () => (
