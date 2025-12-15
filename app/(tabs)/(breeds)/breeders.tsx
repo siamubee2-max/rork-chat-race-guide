@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useCallback } from "react";
 import { StyleSheet, View, Text, Platform, TouchableOpacity, ScrollView, Linking, Alert } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE, PROVIDER_DEFAULT } from "react-native-maps";
 import { useLocalSearchParams, Stack } from "expo-router";
@@ -6,53 +6,106 @@ import { Image } from "expo-image";
 import { MapPin, Phone, Star, Navigation } from "lucide-react-native";
 import { BlurView } from "expo-blur";
 import { SafeAreaView } from "react-native-safe-area-context";
-import * as Location from "expo-location";
 
 import { BREEDERS, type Breeder } from "@/constants/breeders";
 import { getBreedById } from "@/constants/breeds";
 import { Colors } from "@/constants/colors";
+import { useUserLocation } from "@/context/user-location";
+
+function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = 
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+function formatDistance(km: number): string {
+  if (km < 1) {
+    return `${Math.round(km * 1000)} m`;
+  }
+  if (km >= 1000) {
+    return `${Math.round(km)} km`;
+  }
+  return `${km.toFixed(1)} km`;
+}
 
 export default function BreedersScreen() {
   const params = useLocalSearchParams<{ breedId?: string }>();
+  const { coords, address, permission, error: locationError, locateOnce } = useUserLocation();
   
   const [selectedBreeder, setSelectedBreeder] = useState<Breeder | null>(null);
 
   useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status === "granted") {
-        await Location.getCurrentPositionAsync({});
-      }
-    })();
-  }, []);
+    console.log("[BreedersScreen] mount -> locateOnce");
+    void locateOnce();
+  }, [locateOnce]);
 
   const breedId = params.breedId;
   const breed = getBreedById(breedId);
   
-  const filteredBreeders = useMemo(() => {
-    if (!breedId) return BREEDERS;
-    return BREEDERS.filter(b => b.breedId === breedId);
-  }, [breedId]);
+  const sortedAndFilteredBreeders = useMemo(() => {
+    const filtered = breedId ? BREEDERS.filter(b => b.breedId === breedId) : BREEDERS;
+    
+    if (!coords) return filtered.map(b => ({ ...b, distance: undefined }));
+    
+    return filtered
+      .map(breeder => ({
+        ...breeder,
+        distance: calculateDistance(
+          coords.latitude,
+          coords.longitude,
+          breeder.latitude,
+          breeder.longitude
+        ),
+      }))
+      .sort((a, b) => (a.distance ?? Infinity) - (b.distance ?? Infinity));
+  }, [breedId, coords]);
 
   const initialRegion = useMemo(() => {
-    if (filteredBreeders.length > 0) {
-      // Center on the first breeder or calculate centroid
-      // For simplicity, let's just take the first one
+    if (coords) {
       return {
-        latitude: filteredBreeders[0].latitude,
-        longitude: filteredBreeders[0].longitude,
+        latitude: coords.latitude,
+        longitude: coords.longitude,
         latitudeDelta: 10,
         longitudeDelta: 10,
       };
     }
-    // Default to a view of Europe/Atlantic if no breeders or general view
+    if (sortedAndFilteredBreeders.length > 0) {
+      return {
+        latitude: sortedAndFilteredBreeders[0].latitude,
+        longitude: sortedAndFilteredBreeders[0].longitude,
+        latitudeDelta: 10,
+        longitudeDelta: 10,
+      };
+    }
     return {
       latitude: 40,
       longitude: -30,
       latitudeDelta: 60,
       longitudeDelta: 60,
     };
-  }, [filteredBreeders]);
+  }, [sortedAndFilteredBreeders, coords]);
+
+  const handleRelocate = useCallback(() => {
+    console.log("[BreedersScreen] handleRelocate");
+    void locateOnce();
+  }, [locateOnce]);
+
+  const webLocationLine = useMemo(() => {
+    if (permission === "denied") return "Localisation refusée.";
+    if (permission === "unavailable") return "Localisation indisponible.";
+    if (locationError?.message) return locationError.message;
+
+    const label = address?.label;
+    if (!label && !coords) return "Localisation en cours…";
+    if (label) return `Votre position: ${label}`;
+    return `Votre position: ${coords?.latitude.toFixed(6)}, ${coords?.longitude.toFixed(6)}`;
+  }, [address?.label, coords, locationError?.message, permission]);
 
   const handleCall = (phone: string) => {
     if (Platform.OS === 'web') {
@@ -107,9 +160,20 @@ export default function BreedersScreen() {
                ? "Découvrez les meilleurs élevages sélectionnés pour vous. Utilisez l'application mobile pour la carte interactive."
                : "Sur iPhone, la carte intégrée utilise Apple Plans. Utilisez plutôt les boutons Google Maps ci-dessous."}
           </Text>
+
+          <View style={styles.locationRow}>
+            <Text style={styles.locationText}>{webLocationLine}</Text>
+            <TouchableOpacity
+              testID="breeders-relocate"
+              onPress={handleRelocate}
+              style={styles.locationBtn}
+            >
+              <Text style={styles.locationBtnText}>Actualiser</Text>
+            </TouchableOpacity>
+          </View>
           
           <ScrollView contentContainerStyle={styles.listContainer}>
-            {filteredBreeders.map((breeder) => (
+            {sortedAndFilteredBreeders.map((breeder) => (
               <View key={breeder.id} style={styles.card}>
                 <Image source={{ uri: breeder.imageUri }} style={styles.webCardImage} contentFit="cover" />
                 <View style={styles.webCardContent}>
@@ -123,6 +187,12 @@ export default function BreedersScreen() {
                       <MapPin size={16} color="#666" />
                       <Text style={styles.cardText}>{breeder.city}, {breeder.country}</Text>
                     </View>
+                    {breeder.distance !== undefined && (
+                      <View style={styles.distanceBadge}>
+                        <Navigation size={14} color={Colors.primary} />
+                        <Text style={styles.distanceText}>{formatDistance(breeder.distance)}</Text>
+                      </View>
+                    )}
                     <View style={styles.cardInfo}>
                       <Phone size={16} color="#666" />
                       <Text style={styles.cardText}>{breeder.phone}</Text>
@@ -130,7 +200,7 @@ export default function BreedersScreen() {
                 </View>
               </View>
             ))}
-            {filteredBreeders.length === 0 && (
+            {sortedAndFilteredBreeders.length === 0 && (
                 <Text style={styles.emptyText}>Aucun élevage trouvé pour cette sélection.</Text>
             )}
           </ScrollView>
@@ -160,7 +230,7 @@ export default function BreedersScreen() {
         showsMyLocationButton={true}
         rotateEnabled={false}
       >
-        {filteredBreeders.map((breeder) => (
+        {sortedAndFilteredBreeders.map((breeder) => (
           <Marker
             key={breeder.id}
             coordinate={{
@@ -211,9 +281,9 @@ export default function BreedersScreen() {
                         </Text>
                     </View>
 
-                    <View style={styles.locationRow}>
+                    <View style={styles.breederLocationRow}>
                         <MapPin size={14} color="#666" />
-                        <Text style={styles.locationText}>{selectedBreeder.city}, {selectedBreeder.country}</Text>
+                        <Text style={styles.breederLocationText}>{selectedBreeder.city}, {selectedBreeder.country}</Text>
                     </View>
                 </View>
             </View>
@@ -303,6 +373,48 @@ const styles = StyleSheet.create({
     color: '#999',
     fontSize: 16,
     marginTop: 40,
+  },
+  locationRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    borderRadius: 14,
+    backgroundColor: "rgba(255,255,255,0.9)",
+    borderWidth: 1,
+    borderColor: "rgba(0,0,0,0.06)",
+    marginBottom: 14,
+  },
+  locationText: {
+    flex: 1,
+    fontSize: 13,
+    color: "#444",
+    lineHeight: 18,
+  },
+  locationBtn: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 999,
+    backgroundColor: Colors.primary,
+  },
+  locationBtnText: {
+    color: "white",
+    fontWeight: "700",
+    fontSize: 13,
+  },
+  distanceBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    marginTop: 4,
+    marginBottom: 4,
+  },
+  distanceText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: Colors.primary,
   },
   
   // Marker Styles
@@ -457,12 +569,12 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     marginLeft: 6,
   },
-  locationRow: {
+  breederLocationRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
   },
-  locationText: {
+  breederLocationText: {
     fontSize: 14,
     color: "#666",
   },

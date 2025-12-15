@@ -32,6 +32,25 @@ interface Place {
   website?: string;
 }
 
+function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = 
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+function formatDistance(km: number): string {
+  if (km < 1) {
+    return `${Math.round(km * 1000)} m`;
+  }
+  return `${km.toFixed(1)} km`;
+}
+
 const PLACES: Place[] = [
   {
     id: 1,
@@ -284,10 +303,23 @@ export default function VetsScreen() {
       }
     : initialRegion;
 
-  const filteredPlaces = useMemo(
-    () => PLACES.filter((place) => filter === "all" || place.type === filter),
-    [filter],
-  );
+  const sortedAndFilteredPlaces = useMemo(() => {
+    const filtered = PLACES.filter((place) => filter === "all" || place.type === filter);
+    
+    if (!coords) return filtered.map(p => ({ ...p, distance: undefined }));
+    
+    return filtered
+      .map(place => ({
+        ...place,
+        distance: calculateDistance(
+          coords.latitude,
+          coords.longitude,
+          place.latitude,
+          place.longitude
+        ),
+      }))
+      .sort((a, b) => (a.distance ?? Infinity) - (b.distance ?? Infinity));
+  }, [filter, coords]);
 
   const webLocationLine = useMemo(() => {
     if (permission === "denied") return "Localisation refusée.";
@@ -378,10 +410,18 @@ export default function VetsScreen() {
           </ScrollView>
           
           <View style={styles.listContainer}>
-            {filteredPlaces.map((place) => (
+            {sortedAndFilteredPlaces.map((place) => (
               <View key={place.id} style={styles.card}>
                 <View style={styles.cardHeader}>
-                  <Text style={styles.cardTitle}>{place.emoji} {place.name}</Text>
+                  <View style={styles.cardTitleRow}>
+                    <Text style={styles.cardTitle}>{place.emoji} {place.name}</Text>
+                    {place.distance !== undefined && (
+                      <View style={styles.distanceBadge}>
+                        <Navigation size={12} color={Colors.primary} />
+                        <Text style={styles.distanceText}>{formatDistance(place.distance)}</Text>
+                      </View>
+                    )}
+                  </View>
                   <View style={styles.ratingBadge}>
                     <Text style={styles.ratingText}>★ {place.rating}</Text>
                   </View>
@@ -441,7 +481,7 @@ export default function VetsScreen() {
         showsUserLocation={true}
         showsMyLocationButton={true}
       >
-        {filteredPlaces.map((place) => (
+        {sortedAndFilteredPlaces.map((place) => (
           <Marker
             key={place.id}
             coordinate={{
@@ -709,11 +749,26 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     marginBottom: 12,
   },
+  cardTitleRow: {
+    flex: 1,
+    marginRight: 8,
+  },
   cardTitle: {
     fontSize: 20,
     fontWeight: "700",
     color: "#1a1a1a",
     marginBottom: 4,
+  },
+  distanceBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    marginTop: 4,
+  },
+  distanceText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: Colors.primary,
   },
   ratingContainer: {
     flexDirection: 'row',
