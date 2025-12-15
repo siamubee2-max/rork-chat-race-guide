@@ -1,0 +1,17 @@
+export const catQuotes = [
+  "Un chat est un lion pour les souris.",
+  "Le temps passé avec un chat n'est jamais perdu. — Colette",
+  "Les chats sont les tigres des pauvres. — Carl Van Vechten",
+  "Dieu a inventé le chat pour que l'homme ait un tigre à caresser. — Victor Hugo",
+  "Un chat, c'est un lion dans un salon. — George Bernard Shaw",
+  "Les chats nous enseignent que toutes les choses dans la nature n'ont pas une utilité.",
+  "Dans l'Égypte ancienne, les chats étaient vénérés comme des dieux. Ils ne l'ont jamais oublié.",
+  "Le chat est d'une honnêteté absolue : les êtres humains cachent, pour une raison ou une autre, leurs sentiments. Les chats, non. — Ernest Hemingway",
+  "Les chats ont un pouvoir absolu sur leurs propriétaires.",
+  "Un foyer sans chat est juste un endroit où vivre.",
+  "Le chat est le seul animal qui ait réussi à domestiquer l'homme.",
+  "Temps passé avec les chats n'est jamais du temps perdu.",
+  "Les chats possèdent tous les mystères et toutes les grâces que l'on peut désirer. — Charles Baudelaire",
+  "Le chat a neuf vies, dont trois consacrées à jouer, trois à explorer et trois à aimer.",
+  "Un chat sait toujours de quel côté se trouve le soleil.",
+];
