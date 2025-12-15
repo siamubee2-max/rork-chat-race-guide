@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { StyleSheet, View, Text, Platform, TouchableOpacity, ScrollView } from "react-native";
+import { StyleSheet, View, Text, Platform, TouchableOpacity, ScrollView, Linking, Alert } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE, PROVIDER_DEFAULT } from "react-native-maps";
 import { useLocalSearchParams, Stack } from "expo-router";
 import { Image } from "expo-image";
@@ -53,6 +53,25 @@ export default function BreedersScreen() {
       longitudeDelta: 60,
     };
   }, [filteredBreeders]);
+
+  const handleCall = (phone: string) => {
+    if (Platform.OS === 'web') {
+      Alert.alert(
+        "Appeler",
+        `Composez ce numéro : ${phone}`,
+        [{ text: "OK" }]
+      );
+    } else {
+      Linking.openURL(`tel:${phone}`);
+    }
+  };
+
+  const handleNavigate = (latitude: number, longitude: number) => {
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
+    Linking.openURL(url).catch(() => {
+      Alert.alert("Erreur", "Impossible d'ouvrir Google Maps");
+    });
+  };
 
   // Web Fallback
   if (Platform.OS === "web") {
@@ -181,12 +200,18 @@ export default function BreedersScreen() {
             <View style={styles.divider} />
 
             <View style={styles.actionButtons}>
-              <TouchableOpacity style={[styles.actionButton, styles.callButton]}>
+              <TouchableOpacity 
+                style={[styles.actionButton, styles.callButton]}
+                onPress={() => handleCall(selectedBreeder.phone)}
+              >
                 <Phone size={18} color="white" />
                 <Text style={styles.actionButtonText}>Contacter</Text>
               </TouchableOpacity>
               
-              <TouchableOpacity style={[styles.actionButton, styles.routeButton]}>
+              <TouchableOpacity 
+                style={[styles.actionButton, styles.routeButton]}
+                onPress={() => handleNavigate(selectedBreeder.latitude, selectedBreeder.longitude)}
+              >
                 <Navigation size={18} color="white" />
                 <Text style={styles.actionButtonText}>Itinéraire</Text>
               </TouchableOpacity>

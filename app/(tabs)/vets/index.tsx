@@ -222,7 +222,7 @@ export default function VetsScreen() {
 
   const handleNavigate = (latitude: number, longitude: number, name: string) => {
     const url = Platform.select({
-      ios: `maps://maps.apple.com/?daddr=${latitude},${longitude}&q=${encodeURIComponent(name)}`,
+      ios: `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`,
       android: `geo:${latitude},${longitude}?q=${latitude},${longitude}(${encodeURIComponent(name)})`,
       default: `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`,
     });
