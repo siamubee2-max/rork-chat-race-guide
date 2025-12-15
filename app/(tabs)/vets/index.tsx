@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect, useCallback } from "react";
+import React, { useMemo, useState, useCallback } from "react";
 import {
   StyleSheet,
   View,
@@ -217,13 +217,16 @@ export default function VetsScreen() {
     permission,
     error: locationError,
     locateOnce,
+    isLocating,
   } = useUserLocation();
 
   const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
   const [filter, setFilter] = useState<PlaceType | "all">("all");
+  const [hasAskedPermission, setHasAskedPermission] = useState(false);
 
-  useEffect(() => {
-    console.log("[VetsScreen] mount -> locateOnce");
+  const handleRequestLocation = useCallback(() => {
+    console.log("[VetsScreen] user requested location");
+    setHasAskedPermission(true);
     void locateOnce();
   }, [locateOnce]);
 
@@ -347,125 +350,155 @@ export default function VetsScreen() {
   if (Platform.OS !== "android") {
     return (
       <View style={styles.container}>
-        <SafeAreaView edges={["top"]} style={styles.webContainer}>
-          <Text style={styles.webTitle}>Services pour chats à proximité</Text>
-          <Text style={styles.webSubtitle}>
-            {Platform.OS === "web"
-              ? "La carte n'est pas entièrement supportée sur la version web."
-              : "Sur iPhone, la carte intégrée utilise Apple Plans. Utilisez plutôt l'itinéraire Google Maps ci-dessous."}
-          </Text>
-
-          <View style={styles.locationRow}>
-            <Text style={styles.locationText}>{webLocationLine}</Text>
-            <TouchableOpacity
-              testID="vets-relocate"
-              onPress={handleRelocate}
-              style={styles.locationBtn}
-            >
-              <Text style={styles.locationBtnText}>Actualiser</Text>
-            </TouchableOpacity>
-          </View>
-          
+        <SafeAreaView edges={["top"]} style={styles.webSafeArea}>
           <ScrollView 
-            horizontal 
-            showsHorizontalScrollIndicator={false} 
-            style={styles.webFilterScroll}
-            contentContainerStyle={styles.webFilterContainer}
+            style={styles.webScrollView}
+            contentContainerStyle={styles.webScrollContent}
+            showsVerticalScrollIndicator={true}
           >
-            <TouchableOpacity
-              style={[styles.filterTab, filter === "all" && styles.filterTabActive]}
-              onPress={() => setFilter("all")}
+            <Text style={styles.webTitle}>Services pour chats à proximité</Text>
+            <Text style={styles.webSubtitle}>
+              {Platform.OS === "web"
+                ? "La carte n'est pas entièrement supportée sur la version web."
+                : "Sur iPhone, la carte intégrée utilise Apple Plans. Utilisez plutôt l'itinéraire Google Maps ci-dessous."}
+            </Text>
+
+            {!hasAskedPermission && permission === "unknown" ? (
+              <View style={styles.permissionCard}>
+                <View style={styles.permissionIcon}>
+                  <MapPin size={32} color={Colors.primary} />
+                </View>
+                <Text style={styles.permissionTitle}>Autoriser la localisation</Text>
+                <Text style={styles.permissionText}>
+                  Pour trier les services du plus proche au plus éloigné, autorisez l&apos;accès à votre position.
+                </Text>
+                <TouchableOpacity
+                  testID="vets-request-location"
+                  onPress={handleRequestLocation}
+                  style={styles.permissionBtn}
+                >
+                  <Navigation size={18} color="white" />
+                  <Text style={styles.permissionBtnText}>
+                    {isLocating ? "Localisation..." : "Me localiser"}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View style={styles.locationRow}>
+                <Text style={styles.locationText}>{webLocationLine}</Text>
+                <TouchableOpacity
+                  testID="vets-relocate"
+                  onPress={handleRelocate}
+                  style={styles.locationBtn}
+                >
+                  <Text style={styles.locationBtnText}>
+                    {isLocating ? "..." : "Actualiser"}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
+            
+            <ScrollView 
+              horizontal 
+              showsHorizontalScrollIndicator={false} 
+              style={styles.webFilterScroll}
+              contentContainerStyle={styles.webFilterContainer}
             >
-              <MapPin size={18} color={filter === "all" ? "white" : Colors.primary} />
-              <Text style={[styles.filterText, filter === "all" && styles.filterTextActive]}>Tout</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.filterTab, filter === "vet" && styles.filterTabActive]}
-              onPress={() => setFilter("vet")}
-            >
-              <Stethoscope size={18} color={filter === "vet" ? "white" : Colors.primary} />
-              <Text style={[styles.filterText, filter === "vet" && styles.filterTextActive]}>Vétérinaires</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.filterTab, filter === "shelter" && styles.filterTabActive]}
-              onPress={() => setFilter("shelter")}
-            >
-              <Home size={18} color={filter === "shelter" ? "white" : Colors.primary} />
-              <Text style={[styles.filterText, filter === "shelter" && styles.filterTextActive]}>Refuges</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.filterTab, filter === "shop" && styles.filterTabActive]}
-              onPress={() => setFilter("shop")}
-            >
-              <ShoppingBag size={18} color={filter === "shop" ? "white" : Colors.primary} />
-              <Text style={[styles.filterText, filter === "shop" && styles.filterTextActive]}>Litière</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.filterTab, filter === "boarding" && styles.filterTabActive]}
-              onPress={() => setFilter("boarding")}
-            >
-              <Hotel size={18} color={filter === "boarding" ? "white" : Colors.primary} />
-              <Text style={[styles.filterText, filter === "boarding" && styles.filterTextActive]}>Pensions</Text>
-            </TouchableOpacity>
-          </ScrollView>
-          
-          <View style={styles.listContainer}>
-            {sortedAndFilteredPlaces.map((place) => (
-              <View key={place.id} style={styles.card}>
-                <View style={styles.cardHeader}>
-                  <View style={styles.cardTitleRow}>
-                    <Text style={styles.cardTitle}>{place.emoji} {place.name}</Text>
-                    {place.distance !== undefined && (
-                      <View style={styles.distanceBadge}>
-                        <Navigation size={12} color={Colors.primary} />
-                        <Text style={styles.distanceText}>{formatDistance(place.distance)}</Text>
-                      </View>
+              <TouchableOpacity
+                style={[styles.filterTab, filter === "all" && styles.filterTabActive]}
+                onPress={() => setFilter("all")}
+              >
+                <MapPin size={18} color={filter === "all" ? "white" : Colors.primary} />
+                <Text style={[styles.filterText, filter === "all" && styles.filterTextActive]}>Tout</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.filterTab, filter === "vet" && styles.filterTabActive]}
+                onPress={() => setFilter("vet")}
+              >
+                <Stethoscope size={18} color={filter === "vet" ? "white" : Colors.primary} />
+                <Text style={[styles.filterText, filter === "vet" && styles.filterTextActive]}>Vétérinaires</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.filterTab, filter === "shelter" && styles.filterTabActive]}
+                onPress={() => setFilter("shelter")}
+              >
+                <Home size={18} color={filter === "shelter" ? "white" : Colors.primary} />
+                <Text style={[styles.filterText, filter === "shelter" && styles.filterTextActive]}>Refuges</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.filterTab, filter === "shop" && styles.filterTabActive]}
+                onPress={() => setFilter("shop")}
+              >
+                <ShoppingBag size={18} color={filter === "shop" ? "white" : Colors.primary} />
+                <Text style={[styles.filterText, filter === "shop" && styles.filterTextActive]}>Litière</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.filterTab, filter === "boarding" && styles.filterTabActive]}
+                onPress={() => setFilter("boarding")}
+              >
+                <Hotel size={18} color={filter === "boarding" ? "white" : Colors.primary} />
+                <Text style={[styles.filterText, filter === "boarding" && styles.filterTextActive]}>Pensions</Text>
+              </TouchableOpacity>
+            </ScrollView>
+            
+            <View style={styles.listContainer}>
+              {sortedAndFilteredPlaces.map((place) => (
+                <View key={place.id} style={styles.card}>
+                  <View style={styles.cardHeader}>
+                    <View style={styles.cardTitleRow}>
+                      <Text style={styles.cardTitle}>{place.emoji} {place.name}</Text>
+                      {place.distance !== undefined && (
+                        <View style={styles.distanceBadge}>
+                          <Navigation size={12} color={Colors.primary} />
+                          <Text style={styles.distanceText}>{formatDistance(place.distance)}</Text>
+                        </View>
+                      )}
+                    </View>
+                    <View style={styles.ratingBadge}>
+                      <Text style={styles.ratingText}>★ {place.rating}</Text>
+                    </View>
+                  </View>
+                  <View style={styles.cardInfo}>
+                    <MapPin size={16} color="#666" />
+                    <Text style={styles.cardText}>{place.address}</Text>
+                  </View>
+                  <View style={styles.cardInfo}>
+                    <Phone size={16} color="#666" />
+                    <Text style={styles.cardText}>{place.phone}</Text>
+                  </View>
+                  <View style={styles.cardInfo}>
+                    <Clock size={16} color="#666" />
+                    <Text style={styles.cardText}>{place.hours}</Text>
+                  </View>
+                  <View style={styles.webActionButtons}>
+                    <TouchableOpacity 
+                      style={[styles.webActionButton, styles.callButton]}
+                      onPress={() => handleCall(place.phone)}
+                    >
+                      <Phone size={18} color="white" />
+                      <Text style={styles.actionButtonText}>Appeler</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                      style={[styles.webActionButton, styles.routeButton]}
+                      onPress={() => handleNavigate(place.latitude, place.longitude, place.name)}
+                    >
+                      <Navigation size={18} color="white" />
+                      <Text style={styles.actionButtonText}>Google Maps</Text>
+                    </TouchableOpacity>
+                    {place.website && (
+                      <TouchableOpacity 
+                        style={[styles.webActionButton, styles.websiteButton]}
+                        onPress={() => handleOpenWebsite(place.website!)}
+                      >
+                        <Globe size={18} color="white" />
+                        <Text style={styles.actionButtonText}>Site web</Text>
+                      </TouchableOpacity>
                     )}
                   </View>
-                  <View style={styles.ratingBadge}>
-                    <Text style={styles.ratingText}>★ {place.rating}</Text>
-                  </View>
                 </View>
-                <View style={styles.cardInfo}>
-                  <MapPin size={16} color="#666" />
-                  <Text style={styles.cardText}>{place.address}</Text>
-                </View>
-                <View style={styles.cardInfo}>
-                  <Phone size={16} color="#666" />
-                  <Text style={styles.cardText}>{place.phone}</Text>
-                </View>
-                <View style={styles.cardInfo}>
-                  <Clock size={16} color="#666" />
-                  <Text style={styles.cardText}>{place.hours}</Text>
-                </View>
-                <View style={styles.webActionButtons}>
-                  <TouchableOpacity 
-                    style={[styles.webActionButton, styles.callButton]}
-                    onPress={() => handleCall(place.phone)}
-                  >
-                    <Phone size={18} color="white" />
-                    <Text style={styles.actionButtonText}>Appeler</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity 
-                    style={[styles.webActionButton, styles.routeButton]}
-                    onPress={() => handleNavigate(place.latitude, place.longitude, place.name)}
-                  >
-                    <Navigation size={18} color="white" />
-                    <Text style={styles.actionButtonText}>Google Maps</Text>
-                  </TouchableOpacity>
-                  {place.website && (
-                    <TouchableOpacity 
-                      style={[styles.webActionButton, styles.websiteButton]}
-                      onPress={() => handleOpenWebsite(place.website!)}
-                    >
-                      <Globe size={18} color="white" />
-                      <Text style={styles.actionButtonText}>Site web</Text>
-                    </TouchableOpacity>
-                  )}
-                </View>
-              </View>
-            ))}
-          </View>
+              ))}
+            </View>
+          </ScrollView>
         </SafeAreaView>
       </View>
     );
@@ -635,12 +668,68 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-  webContainer: {
+  webSafeArea: {
     flex: 1,
+  },
+  webScrollView: {
+    flex: 1,
+  },
+  webScrollContent: {
     padding: 20,
     maxWidth: 800,
     width: '100%',
     alignSelf: 'center',
+    paddingBottom: 40,
+  },
+  permissionCard: {
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 24,
+    alignItems: 'center',
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.06)',
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  permissionIcon: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: `${Colors.primary}15`,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16,
+  },
+  permissionTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#1a1a1a',
+    marginBottom: 8,
+  },
+  permissionText: {
+    fontSize: 14,
+    color: '#666',
+    textAlign: 'center',
+    lineHeight: 20,
+    marginBottom: 20,
+  },
+  permissionBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: Colors.primary,
+    paddingHorizontal: 24,
+    paddingVertical: 14,
+    borderRadius: 999,
+  },
+  permissionBtnText: {
+    color: 'white',
+    fontWeight: '700',
+    fontSize: 15,
   },
   locationRow: {
     flexDirection: "row",

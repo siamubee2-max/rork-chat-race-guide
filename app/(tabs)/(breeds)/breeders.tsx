@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useCallback } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import { StyleSheet, View, Text, Platform, TouchableOpacity, ScrollView, Linking, Alert } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE, PROVIDER_DEFAULT } from "react-native-maps";
 import { useLocalSearchParams, Stack } from "expo-router";
@@ -36,12 +36,14 @@ function formatDistance(km: number): string {
 
 export default function BreedersScreen() {
   const params = useLocalSearchParams<{ breedId?: string }>();
-  const { coords, address, permission, error: locationError, locateOnce } = useUserLocation();
+  const { coords, address, permission, error: locationError, locateOnce, isLocating } = useUserLocation();
   
   const [selectedBreeder, setSelectedBreeder] = useState<Breeder | null>(null);
+  const [hasAskedPermission, setHasAskedPermission] = useState(false);
 
-  useEffect(() => {
-    console.log("[BreedersScreen] mount -> locateOnce");
+  const handleRequestLocation = useCallback(() => {
+    console.log("[BreedersScreen] user requested location");
+    setHasAskedPermission(true);
     void locateOnce();
   }, [locateOnce]);
 
@@ -161,16 +163,38 @@ export default function BreedersScreen() {
                : "Sur iPhone, la carte intégrée utilise Apple Plans. Utilisez plutôt les boutons Google Maps ci-dessous."}
           </Text>
 
-          <View style={styles.locationRow}>
-            <Text style={styles.locationText}>{webLocationLine}</Text>
-            <TouchableOpacity
-              testID="breeders-relocate"
-              onPress={handleRelocate}
-              style={styles.locationBtn}
-            >
-              <Text style={styles.locationBtnText}>Actualiser</Text>
-            </TouchableOpacity>
-          </View>
+          {!hasAskedPermission && permission === "unknown" ? (
+            <View style={styles.permissionCard}>
+              <View style={styles.permissionIcon}>
+                <MapPin size={28} color={Colors.primary} />
+              </View>
+              <Text style={styles.permissionTitle}>Autoriser la localisation</Text>
+              <Text style={styles.permissionText}>
+                Pour trier les élevages du plus proche au plus éloigné.
+              </Text>
+              <TouchableOpacity
+                testID="breeders-request-location"
+                onPress={handleRequestLocation}
+                style={styles.permissionBtn}
+              >
+                <Navigation size={16} color="white" />
+                <Text style={styles.permissionBtnText}>
+                  {isLocating ? "Localisation..." : "Me localiser"}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={styles.locationRow}>
+              <Text style={styles.locationText}>{webLocationLine}</Text>
+              <TouchableOpacity
+                testID="breeders-relocate"
+                onPress={handleRelocate}
+                style={styles.locationBtn}
+              >
+                <Text style={styles.locationBtnText}>{isLocating ? "..." : "Actualiser"}</Text>
+              </TouchableOpacity>
+            </View>
+          )}
           
           <ScrollView contentContainerStyle={styles.listContainer}>
             {sortedAndFilteredBreeders.map((breeder) => (
@@ -403,6 +427,56 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "700",
     fontSize: 13,
+  },
+  permissionCard: {
+    backgroundColor: 'white',
+    borderRadius: 16,
+    padding: 20,
+    alignItems: 'center',
+    marginBottom: 14,
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.06)',
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  permissionIcon: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: `${Colors.primary}15`,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 12,
+  },
+  permissionTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#1a1a1a',
+    marginBottom: 6,
+  },
+  permissionText: {
+    fontSize: 13,
+    color: '#666',
+    textAlign: 'center',
+    lineHeight: 18,
+    marginBottom: 16,
+  },
+  permissionBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: Colors.primary,
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 999,
+  },
+  permissionBtnText: {
+    color: 'white',
+    fontWeight: '700',
+    fontSize: 14,
   },
   distanceBadge: {
     flexDirection: 'row',
