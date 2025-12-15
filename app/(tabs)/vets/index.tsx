@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect, useCallback } from "react";
 import {
   StyleSheet,
   View,
@@ -10,7 +10,7 @@ import {
   Alert,
 } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE, PROVIDER_DEFAULT } from "react-native-maps";
-import * as Location from "expo-location";
+import { useUserLocation } from "@/context/user-location";
 import { Navigation, MapPin, Phone, Clock, Stethoscope, Home, ShoppingBag, Hotel, Globe } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { BlurView } from "expo-blur";
@@ -192,21 +192,21 @@ const PLACES: Place[] = [
 ];
 
 export default function VetsScreen() {
-  const [location, setLocation] = useState<Location.LocationObject | null>(null);
+  const {
+    coords,
+    address,
+    permission,
+    error: locationError,
+    locateOnce,
+  } = useUserLocation();
+
   const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
   const [filter, setFilter] = useState<PlaceType | "all">("all");
 
   useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        return;
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
-    })();
-  }, []);
+    console.log("[VetsScreen] mount -> locateOnce");
+    void locateOnce();
+  }, [locateOnce]);
 
   const handleCall = (phone: string) => {
     if (Platform.OS === 'web') {
@@ -275,18 +275,44 @@ export default function VetsScreen() {
     longitudeDelta: 0.0421,
   };
 
-  const currentRegion = location
+  const currentRegion = coords
     ? {
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
+        latitude: coords.latitude,
+        longitude: coords.longitude,
         latitudeDelta: 0.05,
         longitudeDelta: 0.05,
       }
     : initialRegion;
 
+  const filteredPlaces = useMemo(
+    () => PLACES.filter((place) => filter === "all" || place.type === filter),
+    [filter],
+  );
+
+  const webLocationLine = useMemo(() => {
+    if (permission === "denied") return "Localisation refusée.";
+    if (permission === "unavailable") return "Localisation indisponible.";
+    if (locationError?.message) return locationError.message;
+
+    const label = address?.label;
+    const acc = coords?.accuracyMeters;
+
+    if (!label && !coords) return "Localisation en cours…";
+
+    const accText =
+      typeof acc === "number" ? ` (±${Math.round(acc)} m)` : "";
+
+    if (label) return `Votre position: ${label}${accText}`;
+
+    return `Votre position: ${coords?.latitude.toFixed(6)}, ${coords?.longitude.toFixed(6)}${accText}`;
+  }, [address?.label, coords, locationError?.message, permission]);
+
+  const handleRelocate = useCallback(() => {
+    console.log("[VetsScreen] handleRelocate");
+    void locateOnce();
+  }, [locateOnce]);
+
   if (Platform.OS !== "android") {
-    const filteredPlaces = PLACES.filter((place) => filter === "all" || place.type === filter);
-    
     return (
       <View style={styles.container}>
         <SafeAreaView edges={["top"]} style={styles.webContainer}>
@@ -296,6 +322,17 @@ export default function VetsScreen() {
               ? "La carte n'est pas entièrement supportée sur la version web."
               : "Sur iPhone, la carte intégrée utilise Apple Plans. Utilisez plutôt l'itinéraire Google Maps ci-dessous."}
           </Text>
+
+          <View style={styles.locationRow}>
+            <Text style={styles.locationText}>{webLocationLine}</Text>
+            <TouchableOpacity
+              testID="vets-relocate"
+              onPress={handleRelocate}
+              style={styles.locationBtn}
+            >
+              <Text style={styles.locationBtnText}>Actualiser</Text>
+            </TouchableOpacity>
+          </View>
           
           <ScrollView 
             horizontal 
@@ -404,7 +441,7 @@ export default function VetsScreen() {
         showsUserLocation={true}
         showsMyLocationButton={true}
       >
-        {PLACES.filter((place) => filter === "all" || place.type === filter).map((place) => (
+        {filteredPlaces.map((place) => (
           <Marker
             key={place.id}
             coordinate={{
@@ -564,6 +601,36 @@ const styles = StyleSheet.create({
     maxWidth: 800,
     width: '100%',
     alignSelf: 'center',
+  },
+  locationRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    borderRadius: 14,
+    backgroundColor: "rgba(255,255,255,0.9)",
+    borderWidth: 1,
+    borderColor: "rgba(0,0,0,0.06)",
+    marginBottom: 14,
+  },
+  locationText: {
+    flex: 1,
+    fontSize: 13,
+    color: "#444",
+    lineHeight: 18,
+  },
+  locationBtn: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 999,
+    backgroundColor: Colors.primary,
+  },
+  locationBtnText: {
+    color: "white",
+    fontWeight: "700",
+    fontSize: 13,
   },
   webTitle: {
     fontSize: 28,

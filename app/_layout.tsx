@@ -20,6 +20,7 @@ import { StripeProvider } from "@/context/stripe";
 import { GamificationContext } from "@/context/gamification";
 import { AIContext } from "@/context/ai";
 import { ScanImageProvider } from "@/context/scan-image";
+import { UserLocationProvider } from "@/context/user-location";
 import '@/i18n/config';
 
 SplashScreen.preventAutoHideAsync();
@@ -85,9 +86,11 @@ export default function RootLayout() {
                             <SocialProvider>
                               <GamificationContext>
                                 <AIContext>
-                                  <ScanImageProvider>
-                                    <RootLayoutNav />
-                                  </ScanImageProvider>
+                                  <UserLocationProvider>
+                                    <ScanImageProvider>
+                                      <RootLayoutNav />
+                                    </ScanImageProvider>
+                                  </UserLocationProvider>
                                 </AIContext>
                               </GamificationContext>
                             </SocialProvider>
