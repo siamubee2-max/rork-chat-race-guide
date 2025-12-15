@@ -1,7 +1,7 @@
 import React from "react";
 import { router } from "expo-router";
 import { Image } from "expo-image";
-import { Plus, AlertTriangle, MapPin, Phone, CheckCircle, PhoneCall } from "lucide-react-native";
+import { Plus, AlertTriangle, MapPin, Phone, CheckCircle, PhoneCall, Globe } from "lucide-react-native";
 import {
   FlatList,
   Pressable,
@@ -31,6 +31,7 @@ const EMERGENCY_CONTACTS = [
     description: "CNITV Alfort - Disponible 24h/24",
     color: "#DC2626",
     icon: "☠️",
+    website: "https://www.centre-antipoison-animal.com",
   },
   {
     id: "vet",
@@ -39,6 +40,25 @@ const EMERGENCY_CONTACTS = [
     description: "Service national 24h/24",
     color: "#059669",
     icon: "🏥",
+    website: "https://www.veterinaire-garde.fr",
+  },
+  {
+    id: "icad",
+    name: "I-CAD Chat Perdu",
+    phone: "0 810 778 778",
+    description: "Déclaration de perte/vol",
+    color: "#2563EB",
+    icon: "🔍",
+    website: "https://www.i-cad.fr",
+  },
+  {
+    id: "spa",
+    name: "SPA Urgences",
+    phone: "01 43 80 40 66",
+    description: "Protection animale",
+    color: "#7C3AED",
+    icon: "🐾",
+    website: "https://www.la-spa.fr",
   },
 ];
 
@@ -124,6 +144,7 @@ export default function EmergencyListScreen() {
   };
 
   const handleCallEmergency = (phone: string) => {
+    const cleanPhone = phone.replace(/\s/g, '');
     if (Platform.OS === 'web') {
       Alert.alert(
         "Appeler",
@@ -133,35 +154,65 @@ export default function EmergencyListScreen() {
         ]
       );
     } else {
-      Linking.openURL(`tel:${phone}`);
+      Linking.openURL(`tel:${cleanPhone}`).catch(() => {
+        Alert.alert("Erreur", "Impossible d'ouvrir l'application téléphone");
+      });
     }
+  };
+
+  const handleOpenWebsite = (website: string) => {
+    Linking.openURL(website).catch(() => {
+      Alert.alert("Erreur", "Impossible d'ouvrir le site web");
+    });
   };
 
   const EmergencyContactsHeader = () => (
     <View style={styles.emergencySection}>
       <Text style={styles.emergencyTitle}>📞 Numéros d&apos;Urgence</Text>
       {EMERGENCY_CONTACTS.map((contact) => (
-        <Pressable
-          key={contact.id}
-          style={({ pressed }) => [
-            styles.emergencyCard,
-            { backgroundColor: contact.color },
-            pressed ? { opacity: 0.8 } : null,
-          ]}
-          onPress={() => handleCallEmergency(contact.phone)}
-        >
-          <View style={styles.emergencyCardLeft}>
-            <Text style={styles.emergencyIcon}>{contact.icon}</Text>
-            <View style={styles.emergencyCardInfo}>
-              <Text style={styles.emergencyCardName}>{contact.name}</Text>
-              <Text style={styles.emergencyCardDesc}>{contact.description}</Text>
+        <View key={contact.id} style={styles.emergencyCardWrapper}>
+          <View
+            style={[
+              styles.emergencyCard,
+              { backgroundColor: contact.color },
+            ]}
+          >
+            <View style={styles.emergencyCardLeft}>
+              <Text style={styles.emergencyIcon}>{contact.icon}</Text>
+              <View style={styles.emergencyCardInfo}>
+                <Text style={styles.emergencyCardName}>{contact.name}</Text>
+                <Text style={styles.emergencyCardDesc}>{contact.description}</Text>
+              </View>
+            </View>
+            <View style={styles.emergencyCardRight}>
+              <Text style={styles.emergencyPhone}>{contact.phone}</Text>
             </View>
           </View>
-          <View style={styles.emergencyCardRight}>
-            <Text style={styles.emergencyPhone}>{contact.phone}</Text>
-            <PhoneCall color="#fff" size={20} />
+          <View style={styles.emergencyActions}>
+            <Pressable
+              style={({ pressed }) => [
+                styles.emergencyActionBtn,
+                styles.callBtn,
+                pressed ? { opacity: 0.8 } : null,
+              ]}
+              onPress={() => handleCallEmergency(contact.phone)}
+            >
+              <PhoneCall color="#fff" size={18} />
+              <Text style={styles.emergencyActionText}>Appeler</Text>
+            </Pressable>
+            <Pressable
+              style={({ pressed }) => [
+                styles.emergencyActionBtn,
+                styles.webBtn,
+                pressed ? { opacity: 0.8 } : null,
+              ]}
+              onPress={() => handleOpenWebsite(contact.website)}
+            >
+              <Globe color="#fff" size={18} />
+              <Text style={styles.emergencyActionText}>Site web</Text>
+            </Pressable>
           </View>
-        </Pressable>
+        </View>
       ))}
     </View>
   );
@@ -396,12 +447,9 @@ const styles = StyleSheet.create({
     color: "#111",
     marginBottom: 4,
   },
-  emergencyCard: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: 16,
+  emergencyCardWrapper: {
     borderRadius: 16,
+    overflow: 'hidden',
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -410,6 +458,37 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 4,
     elevation: 3,
+    backgroundColor: '#fff',
+  },
+  emergencyCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 16,
+  },
+  emergencyActions: {
+    flexDirection: 'row',
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(0,0,0,0.1)',
+  },
+  emergencyActionBtn: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    paddingVertical: 12,
+  },
+  callBtn: {
+    backgroundColor: '#1a1a1a',
+  },
+  webBtn: {
+    backgroundColor: '#6366F1',
+  },
+  emergencyActionText: {
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: 14,
   },
   emergencyCardLeft: {
     flexDirection: "row",

@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE, PROVIDER_DEFAULT } from "react-native-maps";
 import * as Location from "expo-location";
-import { Navigation, MapPin, Phone, Clock, Stethoscope, Home, ShoppingBag, Hotel } from "lucide-react-native";
+import { Navigation, MapPin, Phone, Clock, Stethoscope, Home, ShoppingBag, Hotel, Globe } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { BlurView } from "expo-blur";
 import { Colors } from "@/constants/colors";
@@ -29,6 +29,7 @@ interface Place {
   hours: string;
   rating: number;
   emoji: string;
+  website?: string;
 }
 
 const PLACES: Place[] = [
@@ -43,6 +44,7 @@ const PLACES: Place[] = [
     hours: "09:00 - 19:00",
     rating: 4.8,
     emoji: "🏥",
+    website: "https://www.veterinaire.fr",
   },
   {
     id: 2,
@@ -55,6 +57,7 @@ const PLACES: Place[] = [
     hours: "24h/24",
     rating: 4.5,
     emoji: "🏥",
+    website: "https://www.urgences-veterinaires-paris.fr",
   },
   {
     id: 3,
@@ -67,6 +70,7 @@ const PLACES: Place[] = [
     hours: "08:30 - 18:30",
     rating: 4.9,
     emoji: "🏥",
+    website: "https://www.doctolib.fr",
   },
   {
     id: 11,
@@ -79,6 +83,7 @@ const PLACES: Place[] = [
     hours: "14:00 - 18:00",
     rating: 4.6,
     emoji: "🏠",
+    website: "https://www.la-spa.fr",
   },
   {
     id: 12,
@@ -91,6 +96,7 @@ const PLACES: Place[] = [
     hours: "10:00 - 17:00",
     rating: 4.8,
     emoji: "🏠",
+    website: "https://www.secondechance.org",
   },
   {
     id: 13,
@@ -103,6 +109,7 @@ const PLACES: Place[] = [
     hours: "13:00 - 19:00",
     rating: 4.7,
     emoji: "🏠",
+    website: "https://www.adopte-un-chat.fr",
   },
   {
     id: 21,
@@ -115,6 +122,7 @@ const PLACES: Place[] = [
     hours: "09:30 - 19:30",
     rating: 4.5,
     emoji: "🛍️",
+    website: "https://www.zooplus.fr",
   },
   {
     id: 22,
@@ -127,6 +135,7 @@ const PLACES: Place[] = [
     hours: "10:00 - 20:00",
     rating: 4.4,
     emoji: "🛍️",
+    website: "https://www.wanimo.com",
   },
   {
     id: 23,
@@ -139,6 +148,7 @@ const PLACES: Place[] = [
     hours: "09:00 - 19:00",
     rating: 4.6,
     emoji: "🛍️",
+    website: "https://www.animalis.com",
   },
   {
     id: 31,
@@ -151,6 +161,7 @@ const PLACES: Place[] = [
     hours: "08:00 - 20:00",
     rating: 4.9,
     emoji: "🏨",
+    website: "https://www.emprunte-mon-toutou.com",
   },
   {
     id: 32,
@@ -163,6 +174,7 @@ const PLACES: Place[] = [
     hours: "24h/24",
     rating: 4.8,
     emoji: "🏨",
+    website: "https://www.garde-animaux.fr",
   },
   {
     id: 33,
@@ -175,6 +187,7 @@ const PLACES: Place[] = [
     hours: "07:00 - 21:00",
     rating: 4.7,
     emoji: "🏨",
+    website: "https://www.rover.com/fr",
   },
 ];
 
@@ -208,26 +221,32 @@ export default function VetsScreen() {
   };
 
   const handleNavigate = (latitude: number, longitude: number, name: string) => {
-    const scheme = Platform.select({
-      ios: 'maps:',
-      android: 'geo:',
-      default: 'https://www.google.com/maps/dir/',
-    });
-    
     const url = Platform.select({
-      ios: `${scheme}?daddr=${latitude},${longitude}&q=${encodeURIComponent(name)}`,
-      android: `${scheme}${latitude},${longitude}?q=${latitude},${longitude}(${encodeURIComponent(name)})`,
-      default: `${scheme}?api=1&destination=${latitude},${longitude}`,
+      ios: `maps://maps.apple.com/?daddr=${latitude},${longitude}&q=${encodeURIComponent(name)}`,
+      android: `geo:${latitude},${longitude}?q=${latitude},${longitude}(${encodeURIComponent(name)})`,
+      default: `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`,
     });
     
     if (url) {
       Linking.openURL(url).catch(() => {
-        Alert.alert(
-          "Erreur",
-          "Impossible d'ouvrir l'application de navigation"
-        );
+        const fallbackUrl = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
+        Linking.openURL(fallbackUrl).catch(() => {
+          Alert.alert(
+            "Erreur",
+            "Impossible d'ouvrir l'application de navigation"
+          );
+        });
       });
     }
+  };
+
+  const handleOpenWebsite = (website: string) => {
+    Linking.openURL(website).catch(() => {
+      Alert.alert(
+        "Erreur",
+        "Impossible d'ouvrir le site web"
+      );
+    });
   };
 
   const initialRegion = {
@@ -336,6 +355,15 @@ export default function VetsScreen() {
                     <Navigation size={18} color="white" />
                     <Text style={styles.actionButtonText}>Itinéraire</Text>
                   </TouchableOpacity>
+                  {place.website && (
+                    <TouchableOpacity 
+                      style={[styles.webActionButton, styles.websiteButton]}
+                      onPress={() => handleOpenWebsite(place.website!)}
+                    >
+                      <Globe size={18} color="white" />
+                      <Text style={styles.actionButtonText}>Site web</Text>
+                    </TouchableOpacity>
+                  )}
                 </View>
               </View>
             ))}
@@ -483,6 +511,16 @@ export default function VetsScreen() {
                 <Text style={styles.actionButtonText}>Y aller</Text>
               </TouchableOpacity>
             </View>
+            
+            {selectedPlace.website && (
+              <TouchableOpacity 
+                style={[styles.websiteButtonFull]}
+                onPress={() => handleOpenWebsite(selectedPlace.website!)}
+              >
+                <Globe size={20} color="white" />
+                <Text style={styles.actionButtonText}>Visiter le site web</Text>
+              </TouchableOpacity>
+            )}
           </BlurView>
         </View>
       )}
@@ -649,6 +687,19 @@ const styles = StyleSheet.create({
   },
   routeButton: {
     backgroundColor: Colors.primary,
+  },
+  websiteButton: {
+    backgroundColor: '#6366F1',
+  },
+  websiteButtonFull: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 14,
+    borderRadius: 16,
+    gap: 8,
+    backgroundColor: '#6366F1',
+    marginTop: 12,
   },
   actionButtonText: {
     color: 'white',
