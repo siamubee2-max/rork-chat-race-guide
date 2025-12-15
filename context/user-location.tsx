@@ -179,7 +179,53 @@ export const [UserLocationProvider, useUserLocation] = createContextHook(() => {
 
   const reverseGeocodeIfPossible = useCallback(async (c: UserCoords) => {
     if (Platform.OS === "web") {
-      setAddress({ label: `${c.latitude.toFixed(6)}, ${c.longitude.toFixed(6)}` });
+      try {
+        console.log("[UserLocation] web reverseGeocode start", c);
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${c.latitude}&lon=${c.longitude}&zoom=18&addressdetails=1`,
+          {
+            headers: {
+              'Accept-Language': 'fr',
+              'User-Agent': 'CatApp/1.0'
+            }
+          }
+        );
+        
+        if (!response.ok) {
+          throw new Error('Nominatim request failed');
+        }
+        
+        const data = await response.json();
+        console.log("[UserLocation] web reverseGeocode response", data);
+        
+        if (data && data.address) {
+          const addr = data.address;
+          const parts = [
+            addr.house_number,
+            addr.road,
+            addr.postcode,
+            addr.city || addr.town || addr.village || addr.municipality,
+            addr.state || addr.region,
+            addr.country,
+          ].filter(Boolean);
+          
+          const label = parts.join(", ") || "Position actuelle";
+          
+          setAddress({
+            label,
+            city: addr.city || addr.town || addr.village || addr.municipality,
+            region: addr.state || addr.region,
+            postalCode: addr.postcode,
+            country: addr.country,
+          });
+          console.log("[UserLocation] web reverseGeocode success", { country: addr.country });
+        } else {
+          setAddress({ label: `${c.latitude.toFixed(6)}, ${c.longitude.toFixed(6)}` });
+        }
+      } catch (e) {
+        console.log("[UserLocation] web reverseGeocode error", e);
+        setAddress({ label: `${c.latitude.toFixed(6)}, ${c.longitude.toFixed(6)}` });
+      }
       return;
     }
 
