@@ -67,9 +67,6 @@ export default function BreedersScreen() {
   };
 
   const handleNavigate = async (latitude: number, longitude: number) => {
-    const googleMapsAppUrl = Platform.OS === 'ios' 
-      ? `comgooglemaps://?daddr=${latitude},${longitude}&directionsmode=driving`
-      : `google.navigation:q=${latitude},${longitude}`;
     const googleMapsWebUrl = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
     
     if (Platform.OS === 'web') {
@@ -79,18 +76,21 @@ export default function BreedersScreen() {
       return;
     }
     
-    try {
-      const canOpen = await Linking.canOpenURL(googleMapsAppUrl);
-      if (canOpen) {
-        await Linking.openURL(googleMapsAppUrl);
-      } else {
-        await Linking.openURL(googleMapsWebUrl);
-      }
-    } catch {
-      Linking.openURL(googleMapsWebUrl).catch(() => {
-        Alert.alert("Erreur", "Impossible d'ouvrir Google Maps");
-      });
+    if (Platform.OS === 'android') {
+      const googleMapsAppUrl = `google.navigation:q=${latitude},${longitude}`;
+      try {
+        const canOpen = await Linking.canOpenURL(googleMapsAppUrl);
+        if (canOpen) {
+          await Linking.openURL(googleMapsAppUrl);
+          return;
+        }
+      } catch {}
     }
+    
+    // Toujours ouvrir Google Maps web (évite Apple Maps sur iOS)
+    Linking.openURL(googleMapsWebUrl).catch(() => {
+      Alert.alert("Erreur", "Impossible d'ouvrir Google Maps");
+    });
   };
 
   // Web Fallback
