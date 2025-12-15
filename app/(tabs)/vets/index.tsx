@@ -221,23 +221,14 @@ export default function VetsScreen() {
   };
 
   const handleNavigate = (latitude: number, longitude: number, name: string) => {
-    const url = Platform.select({
-      ios: `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`,
-      android: `geo:${latitude},${longitude}?q=${latitude},${longitude}(${encodeURIComponent(name)})`,
-      default: `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`,
-    });
+    const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}&destination_place_id=${encodeURIComponent(name)}`;
     
-    if (url) {
-      Linking.openURL(url).catch(() => {
-        const fallbackUrl = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
-        Linking.openURL(fallbackUrl).catch(() => {
-          Alert.alert(
-            "Erreur",
-            "Impossible d'ouvrir l'application de navigation"
-          );
-        });
-      });
-    }
+    Linking.openURL(googleMapsUrl).catch(() => {
+      Alert.alert(
+        "Erreur",
+        "Impossible d'ouvrir Google Maps"
+      );
+    });
   };
 
   const handleOpenWebsite = (website: string) => {
