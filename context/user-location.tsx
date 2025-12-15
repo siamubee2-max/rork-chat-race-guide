@@ -143,8 +143,11 @@ export const [UserLocationProvider, useUserLocation] = createContextHook(() => {
         console.log("[UserLocation] web geolocation unavailable");
         return "unavailable";
       }
-      setPermission("granted");
-      return "granted";
+
+      setError(null);
+      setPermission((prev) => (prev === "denied" ? "denied" : "unknown"));
+      console.log("[UserLocation] web permission handled by browser prompt");
+      return "unknown";
     }
 
     try {
@@ -204,19 +207,20 @@ export const [UserLocationProvider, useUserLocation] = createContextHook(() => {
     setIsLocating(true);
     setError(null);
 
-    const perm = await requestPermission();
-    if (perm !== "granted") {
-      setIsLocating(false);
-      return;
-    }
+    if (Platform.OS === "web") {
+      const perm = await requestPermission();
+      if (perm === "unavailable") {
+        setIsLocating(false);
+        return;
+      }
 
-    try {
-      if (Platform.OS === "web") {
+      try {
         await new Promise<void>((resolve) => {
           navigator.geolocation.getCurrentPosition(
             (p) => {
               const c = toUserCoords(p as unknown as WebGeolocationPosition);
               console.log("[UserLocation] web locateOnce success", c);
+              setPermission("granted");
               setCoords(c);
               void reverseGeocodeIfPossible(c);
               resolve();
@@ -225,35 +229,54 @@ export const [UserLocationProvider, useUserLocation] = createContextHook(() => {
               const mapped = mapWebError(e as unknown as WebGeolocationError);
               console.log("[UserLocation] web locateOnce error", mapped);
               setError(mapped);
+              setPermission(mapped.code === "permission_denied" ? "denied" : "unknown");
               resolve();
             },
             {
               enableHighAccuracy: true,
-              timeout: 15000,
+              timeout: 20000,
               maximumAge: 0,
             },
           );
         });
-      } else {
-        const loc = await Location.getCurrentPositionAsync({
-          accuracy: Location.Accuracy.Highest,
-          mayShowUserSettingsDialog: true,
+      } catch (e) {
+        console.log("[UserLocation] web locateOnce exception", e);
+        setError({
+          code: "unknown",
+          message: "Impossible d'obtenir votre position.",
         });
-
-        const c: UserCoords = {
-          latitude: loc.coords.latitude,
-          longitude: loc.coords.longitude,
-          accuracyMeters: loc.coords.accuracy ?? undefined,
-          altitudeMeters: loc.coords.altitude ?? undefined,
-          headingDegrees: loc.coords.heading ?? undefined,
-          speedMps: loc.coords.speed ?? undefined,
-          timestampMs: loc.timestamp,
-        };
-
-        console.log("[UserLocation] native locateOnce success", c);
-        setCoords(c);
-        void reverseGeocodeIfPossible(c);
+      } finally {
+        setIsLocating(false);
       }
+
+      return;
+    }
+
+    const perm = await requestPermission();
+    if (perm !== "granted") {
+      setIsLocating(false);
+      return;
+    }
+
+    try {
+      const loc = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Highest,
+        mayShowUserSettingsDialog: true,
+      });
+
+      const c: UserCoords = {
+        latitude: loc.coords.latitude,
+        longitude: loc.coords.longitude,
+        accuracyMeters: loc.coords.accuracy ?? undefined,
+        altitudeMeters: loc.coords.altitude ?? undefined,
+        headingDegrees: loc.coords.heading ?? undefined,
+        speedMps: loc.coords.speed ?? undefined,
+        timestampMs: loc.timestamp,
+      };
+
+      console.log("[UserLocation] native locateOnce success", c);
+      setCoords(c);
+      void reverseGeocodeIfPossible(c);
     } catch (e) {
       console.log("[UserLocation] locateOnce error", e);
       setError({
@@ -267,25 +290,18 @@ export const [UserLocationProvider, useUserLocation] = createContextHook(() => {
 
   const startWatching = useCallback(async () => {
     console.log("[UserLocation] startWatching start");
-    const perm = await requestPermission();
-    if (perm !== "granted") return;
-
-    stopWatching();
 
     if (Platform.OS === "web") {
-      if (typeof navigator === "undefined" || !navigator.geolocation) {
-        setPermission("unavailable");
-        setError({
-          code: "unavailable",
-          message: "La géolocalisation n'est pas disponible sur cet appareil.",
-        });
-        return;
-      }
+      const perm = await requestPermission();
+      if (perm === "unavailable") return;
+
+      stopWatching();
 
       const watchId = navigator.geolocation.watchPosition(
         (p) => {
           const c = toUserCoords(p as unknown as WebGeolocationPosition);
           console.log("[UserLocation] web watch update", c);
+          setPermission("granted");
           setCoords(c);
           void reverseGeocodeIfPossible(c);
         },
@@ -293,6 +309,7 @@ export const [UserLocationProvider, useUserLocation] = createContextHook(() => {
           const mapped = mapWebError(e as unknown as WebGeolocationError);
           console.log("[UserLocation] web watch error", mapped);
           setError(mapped);
+          setPermission(mapped.code === "permission_denied" ? "denied" : "unknown");
         },
         {
           enableHighAccuracy: true,
@@ -311,6 +328,11 @@ export const [UserLocationProvider, useUserLocation] = createContextHook(() => {
 
       return;
     }
+
+    const perm = await requestPermission();
+    if (perm !== "granted") return;
+
+    stopWatching();
 
     try {
       const sub = await Location.watchPositionAsync(
