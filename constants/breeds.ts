@@ -2143,35 +2143,6 @@ export const BREEDS: BreedProfile[] = [
       "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/0si84lkgtj2tjr3wsvps2",
   },
   {
-    id: "ojos-azules",
-    name: "Ojos Azules",
-    origin: "États-Unis",
-    temperament: ["affectueux", "actif", "intelligent"],
-    coat: {
-      length: "court",
-      shedding: "faible",
-      notes: ["Yeux bleus intenses", "Toutes couleurs de robe", "Très rare"],
-    },
-    care: {
-      grooming: ["Brossage hebdomadaire", "Nettoyage yeux"],
-      habits: ["Actif", "Joueur", "Affectueux"],
-      watchouts: ["Race extrêmement rare", "Problèmes génétiques possibles"],
-    },
-    health: {
-      common: ["Anomalies crâniennes (si homozygote)"],
-      specific: ["Létalité si deux gènes yeux bleus"],
-      prevention: ["Élevage très contrôlé", "Tests génétiques"],
-      vetWhen: ["Tout symptôme neurologique"],
-    },
-    diet: {
-      recommended: ["Équilibrée", "Protéines de qualité"],
-      avoid: ["Aliments de basse qualité"],
-      notes: ["Besoins standards"],
-    },
-    imageUri:
-      "https://r2-pub.rork.com/generated-images/cb221475-aece-41c3-8505-ddd76e76682a.png",
-  },
-  {
     id: "german-rex",
     name: "German Rex",
     origin: "Allemagne",
