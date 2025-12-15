@@ -284,7 +284,7 @@ export default function VetsScreen() {
       }
     : initialRegion;
 
-  if (Platform.OS === "web") {
+  if (Platform.OS !== "android") {
     const filteredPlaces = PLACES.filter((place) => filter === "all" || place.type === filter);
     
     return (
@@ -292,7 +292,9 @@ export default function VetsScreen() {
         <SafeAreaView edges={["top"]} style={styles.webContainer}>
           <Text style={styles.webTitle}>Services pour chats à proximité</Text>
           <Text style={styles.webSubtitle}>
-            La carte n&apos;est pas entièrement supportée sur la version web. Veuillez utiliser l&apos;application mobile pour une meilleure expérience.
+            {Platform.OS === "web"
+              ? "La carte n'est pas entièrement supportée sur la version web."
+              : "Sur iPhone, la carte intégrée utilise Apple Plans. Utilisez plutôt l'itinéraire Google Maps ci-dessous."}
           </Text>
           
           <ScrollView 
@@ -372,7 +374,7 @@ export default function VetsScreen() {
                     onPress={() => handleNavigate(place.latitude, place.longitude, place.name)}
                   >
                     <Navigation size={18} color="white" />
-                    <Text style={styles.actionButtonText}>Itinéraire</Text>
+                    <Text style={styles.actionButtonText}>Google Maps</Text>
                   </TouchableOpacity>
                   {place.website && (
                     <TouchableOpacity 

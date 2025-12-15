@@ -93,8 +93,8 @@ export default function BreedersScreen() {
     });
   };
 
-  // Web Fallback
-  if (Platform.OS === "web") {
+  // Web + iOS Fallback
+  if (Platform.OS !== "android") {
     return (
       <View style={styles.container}>
         <Stack.Screen options={{ title: "Élevages" }} />
@@ -103,8 +103,9 @@ export default function BreedersScreen() {
             Élevages {breed ? `de ${breed.name}` : "dans le monde"}
           </Text>
           <Text style={styles.webSubtitle}>
-             Découvrez les meilleurs élevages sélectionnés pour vous.
-             Utilisez l&apos;application mobile pour la carte interactive.
+             {Platform.OS === "web"
+               ? "Découvrez les meilleurs élevages sélectionnés pour vous. Utilisez l'application mobile pour la carte interactive."
+               : "Sur iPhone, la carte intégrée utilise Apple Plans. Utilisez plutôt les boutons Google Maps ci-dessous."}
           </Text>
           
           <ScrollView contentContainerStyle={styles.listContainer}>
