@@ -321,6 +321,22 @@ export default function VetsScreen() {
                   <Clock size={16} color="#666" />
                   <Text style={styles.cardText}>{place.hours}</Text>
                 </View>
+                <View style={styles.webActionButtons}>
+                  <TouchableOpacity 
+                    style={[styles.webActionButton, styles.callButton]}
+                    onPress={() => handleCall(place.phone)}
+                  >
+                    <Phone size={18} color="white" />
+                    <Text style={styles.actionButtonText}>Appeler</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity 
+                    style={[styles.webActionButton, styles.routeButton]}
+                    onPress={() => handleNavigate(place.latitude, place.longitude, place.name)}
+                  >
+                    <Navigation size={18} color="white" />
+                    <Text style={styles.actionButtonText}>Itinéraire</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             ))}
           </View>
@@ -718,5 +734,19 @@ const styles = StyleSheet.create({
   cardText: {
     fontSize: 14,
     color: '#666',
+  },
+  webActionButtons: {
+    flexDirection: 'row',
+    gap: 12,
+    marginTop: 16,
+  },
+  webActionButton: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    borderRadius: 12,
+    gap: 8,
   },
 });
