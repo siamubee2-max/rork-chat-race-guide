@@ -220,15 +220,31 @@ export default function VetsScreen() {
     }
   };
 
-  const handleNavigate = (latitude: number, longitude: number, name: string) => {
-    const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}&destination_place_id=${encodeURIComponent(name)}`;
+  const handleNavigate = async (latitude: number, longitude: number, name: string) => {
+    const googleMapsAppUrl = Platform.OS === 'ios' 
+      ? `comgooglemaps://?daddr=${latitude},${longitude}&directionsmode=driving`
+      : `google.navigation:q=${latitude},${longitude}`;
+    const googleMapsWebUrl = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
     
-    Linking.openURL(googleMapsUrl).catch(() => {
-      Alert.alert(
-        "Erreur",
-        "Impossible d'ouvrir Google Maps"
-      );
-    });
+    if (Platform.OS === 'web') {
+      Linking.openURL(googleMapsWebUrl).catch(() => {
+        Alert.alert("Erreur", "Impossible d'ouvrir Google Maps");
+      });
+      return;
+    }
+    
+    try {
+      const canOpen = await Linking.canOpenURL(googleMapsAppUrl);
+      if (canOpen) {
+        await Linking.openURL(googleMapsAppUrl);
+      } else {
+        await Linking.openURL(googleMapsWebUrl);
+      }
+    } catch {
+      Linking.openURL(googleMapsWebUrl).catch(() => {
+        Alert.alert("Erreur", "Impossible d'ouvrir Google Maps");
+      });
+    }
   };
 
   const handleOpenWebsite = (website: string) => {
