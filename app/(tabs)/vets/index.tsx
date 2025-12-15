@@ -6,6 +6,8 @@ import {
   Platform,
   TouchableOpacity,
   ScrollView,
+  Linking,
+  Alert,
 } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE, PROVIDER_DEFAULT } from "react-native-maps";
 import * as Location from "expo-location";
@@ -192,6 +194,41 @@ export default function VetsScreen() {
       setLocation(location);
     })();
   }, []);
+
+  const handleCall = (phone: string) => {
+    if (Platform.OS === 'web') {
+      Alert.alert(
+        "Appeler",
+        `Composez ce numéro : ${phone}`,
+        [{ text: "OK" }]
+      );
+    } else {
+      Linking.openURL(`tel:${phone}`);
+    }
+  };
+
+  const handleNavigate = (latitude: number, longitude: number, name: string) => {
+    const scheme = Platform.select({
+      ios: 'maps:',
+      android: 'geo:',
+      default: 'https://www.google.com/maps/dir/',
+    });
+    
+    const url = Platform.select({
+      ios: `${scheme}?daddr=${latitude},${longitude}&q=${encodeURIComponent(name)}`,
+      android: `${scheme}${latitude},${longitude}?q=${latitude},${longitude}(${encodeURIComponent(name)})`,
+      default: `${scheme}?api=1&destination=${latitude},${longitude}`,
+    });
+    
+    if (url) {
+      Linking.openURL(url).catch(() => {
+        Alert.alert(
+          "Erreur",
+          "Impossible d'ouvrir l'application de navigation"
+        );
+      });
+    }
+  };
 
   const initialRegion = {
     latitude: 48.8566,
@@ -414,12 +451,18 @@ export default function VetsScreen() {
             </View>
             
             <View style={styles.actionButtons}>
-              <TouchableOpacity style={[styles.actionButton, styles.callButton]}>
+              <TouchableOpacity 
+                style={[styles.actionButton, styles.callButton]}
+                onPress={() => handleCall(selectedPlace.phone)}
+              >
                 <Phone size={20} color="white" />
                 <Text style={styles.actionButtonText}>Appeler</Text>
               </TouchableOpacity>
               
-              <TouchableOpacity style={[styles.actionButton, styles.routeButton]}>
+              <TouchableOpacity 
+                style={[styles.actionButton, styles.routeButton]}
+                onPress={() => handleNavigate(selectedPlace.latitude, selectedPlace.longitude, selectedPlace.name)}
+              >
                 <Navigation size={20} color="white" />
                 <Text style={styles.actionButtonText}>Y aller</Text>
               </TouchableOpacity>
