@@ -241,7 +241,19 @@ export default function VetsScreen() {
       } catch {}
     }
     
-    // Toujours ouvrir Google Maps web (évite Apple Maps sur iOS)
+    // iOS: essayer d'ouvrir l'app Google Maps d'abord
+    if (Platform.OS === 'ios') {
+      const googleMapsAppUrl = `comgooglemaps://?daddr=${latitude},${longitude}&directionsmode=driving`;
+      try {
+        const canOpen = await Linking.canOpenURL(googleMapsAppUrl);
+        if (canOpen) {
+          await Linking.openURL(googleMapsAppUrl);
+          return;
+        }
+      } catch {}
+    }
+    
+    // Fallback: ouvrir Google Maps dans le navigateur
     Linking.openURL(googleMapsWebUrl).catch(() => {
       Alert.alert("Erreur", "Impossible d'ouvrir Google Maps");
     });
