@@ -373,6 +373,10 @@ Question: ${messageText}`
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="interactive"
         showsVerticalScrollIndicator={false}
+        onContentSizeChange={() => {
+          scrollViewRef.current?.scrollToEnd({ animated: true });
+        }}
+        testID="assistant-messages-scroll"
       >
         {messages.length === 0 && (
           <View style={styles.emptyState}>
@@ -607,9 +611,8 @@ const styles = StyleSheet.create({
   },
   messagesContent: {
     padding: 16,
-    paddingBottom: 24,
+    paddingBottom: 18,
     gap: 12,
-    flexGrow: 1,
   },
   emptyState: {
     alignItems: "center" as const,
