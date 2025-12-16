@@ -324,7 +324,9 @@ Question: ${messageText}`
                   <View style={styles.quickPromptIcon}>
                     <item.icon color={Colors.primary} size={20} />
                   </View>
-                  <Text style={styles.quickPromptLabel}>{item.label}</Text>
+                  <Text style={styles.quickPromptLabel} numberOfLines={2} adjustsFontSizeToFit>
+                    {item.label}
+                  </Text>
                 </TouchableOpacity>
               ))}
             </View>
@@ -535,15 +537,18 @@ const styles = StyleSheet.create({
   quickPromptsGrid: {
     flexDirection: "row" as const,
     flexWrap: "wrap" as const,
-    gap: 10,
+    justifyContent: "space-between" as const,
+    rowGap: 12,
     width: "100%",
   },
   quickPromptCard: {
-    width: "47%",
+    width: "48%",
+    height: 120,
     backgroundColor: Colors.backgroundCard,
     borderRadius: 16,
-    padding: 16,
+    padding: 12,
     alignItems: "center" as const,
+    justifyContent: "center" as const,
     borderWidth: 1,
     borderColor: Colors.border,
   },
@@ -560,6 +565,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600" as const,
     color: Colors.text,
+    textAlign: "center" as const,
   },
   messageBubble: {
     maxWidth: "85%",
