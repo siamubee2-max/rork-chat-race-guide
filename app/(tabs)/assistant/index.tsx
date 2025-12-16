@@ -76,6 +76,8 @@ export default function AssistantScreen() {
   const [recording, setRecording] = useState<Audio.Recording | null>(null);
   const [isTranscribing, setIsTranscribing] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
+  const isAtBottomRef = useRef(true);
+  const lastContentHeightRef = useRef(0);
   const pulseAnim = useRef(new Animated.Value(1)).current;
   const headerHeight = useHeaderHeight();
 
@@ -146,29 +148,39 @@ export default function AssistantScreen() {
   const [isFirstMessage, setIsFirstMessage] = useState(true);
   const prevMessagesLength = useRef(messages.length);
 
+  const scrollToBottom = useCallback((animated: boolean) => {
+    requestAnimationFrame(() => {
+      scrollViewRef.current?.scrollToEnd({ animated });
+    });
+  }, []);
+
   useEffect(() => {
     if (messages.length > prevMessagesLength.current) {
-      setTimeout(() => {
-        scrollViewRef.current?.scrollToEnd({ animated: true });
-      }, 100);
+      if (isAtBottomRef.current) {
+        setTimeout(() => {
+          scrollToBottom(true);
+        }, 80);
+      }
     }
     prevMessagesLength.current = messages.length;
-  }, [messages.length]);
+  }, [messages.length, scrollToBottom]);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
-      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
+      Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow",
       () => {
-        setTimeout(() => {
-          scrollViewRef.current?.scrollToEnd({ animated: true });
-        }, 100);
+        if (isAtBottomRef.current) {
+          setTimeout(() => {
+            scrollToBottom(true);
+          }, 80);
+        }
       }
     );
 
     return () => {
       keyboardDidShowListener.remove();
     };
-  }, []);
+  }, [scrollToBottom]);
 
   useEffect(() => {
     if (isRecording) {
@@ -213,7 +225,11 @@ Question: ${messageText}`
 
     setIsFirstMessage(false);
     await sendMessage(systemPrompt);
-  }, [input, isFirstMessage, catsContext, sendMessage]);
+
+    setTimeout(() => {
+      scrollToBottom(true);
+    }, 50);
+  }, [input, isFirstMessage, catsContext, sendMessage, scrollToBottom]);
 
   const startRecording = useCallback(async () => {
     if (Platform.OS === "web") {
@@ -373,8 +389,21 @@ Question: ${messageText}`
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="interactive"
         showsVerticalScrollIndicator={false}
-        onContentSizeChange={() => {
-          scrollViewRef.current?.scrollToEnd({ animated: true });
+        scrollEventThrottle={16}
+        onScroll={(e) => {
+          const { contentOffset, contentSize, layoutMeasurement } = e.nativeEvent;
+          const paddingToBottom = 28;
+          const isAtBottom =
+            layoutMeasurement.height + contentOffset.y >=
+            Math.max(0, contentSize.height - paddingToBottom);
+          isAtBottomRef.current = isAtBottom;
+        }}
+        onContentSizeChange={(_w, h) => {
+          const grew = h > lastContentHeightRef.current + 2;
+          lastContentHeightRef.current = h;
+          if (grew && isAtBottomRef.current) {
+            scrollToBottom(false);
+          }
         }}
         testID="assistant-messages-scroll"
       >
