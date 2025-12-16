@@ -264,14 +264,9 @@ export default function EmergencyListScreen() {
   const userCountry = address?.country;
 
   const filteredContacts = useMemo(() => {
-    if (!userCountry) {
-      return EMERGENCY_CONTACTS.filter(c => c.country === "France");
-    }
+    if (!userCountry) return [];
     const countryContacts = EMERGENCY_CONTACTS.filter(c => c.country === userCountry);
-    if (countryContacts.length > 0) {
-      return countryContacts;
-    }
-    return EMERGENCY_CONTACTS.filter(c => c.country === "France");
+    return countryContacts;
   }, [userCountry]);
 
   const onCreateAlert = () => {
@@ -402,10 +397,25 @@ export default function EmergencyListScreen() {
         <View style={styles.countryBadge}>
           <MapPin size={14} color={Colors.primary} />
           <Text style={styles.countryText}>
-            {userCountry ? `Pays détecté : ${userCountry}` : "France (par défaut)"}
+            {userCountry ? `Pays détecté : ${userCountry}` : "Localisation en cours..."}
           </Text>
           <TouchableOpacity onPress={() => { setHasAskedPermission(true); void locateOnce(); }}>
             <Text style={styles.refreshText}>Actualiser</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+      
+      {hasAskedPermission && userCountry && filteredContacts.length === 0 && (
+        <View style={styles.noDataCard}>
+          <Globe size={24} color={Colors.primary} />
+          <Text style={styles.noDataText}>
+            Nous n&apos;avons pas encore de numéros d&apos;urgence pour {userCountry}. Recherchez &quot;urgence vétérinaire&quot; sur Google.
+          </Text>
+          <TouchableOpacity
+            onPress={() => Linking.openURL(`https://www.google.com/search?q=urgence+v%C3%A9t%C3%A9rinaire+${encodeURIComponent(userCountry)}`)}
+            style={styles.googleSearchBtn}
+          >
+            <Text style={styles.googleSearchBtnText}>Rechercher sur Google</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -832,5 +842,32 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: Colors.primary,
     fontWeight: '600',
+  },
+  noDataCard: {
+    backgroundColor: 'white',
+    borderRadius: 16,
+    padding: 20,
+    alignItems: 'center',
+    gap: 12,
+    marginBottom: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.06)',
+  },
+  noDataText: {
+    fontSize: 14,
+    color: '#666',
+    textAlign: 'center',
+    lineHeight: 20,
+  },
+  googleSearchBtn: {
+    backgroundColor: Colors.primary,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 999,
+  },
+  googleSearchBtnText: {
+    color: 'white',
+    fontWeight: '600',
+    fontSize: 14,
   },
 });

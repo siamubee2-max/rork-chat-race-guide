@@ -223,12 +223,14 @@ export default function VetsScreen() {
     });
   };
 
-  const initialRegion = {
-    latitude: 48.8566,
-    longitude: 2.3522,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
-  };
+  const initialRegion = coords
+    ? {
+        latitude: coords.latitude,
+        longitude: coords.longitude,
+        latitudeDelta: 0.05,
+        longitudeDelta: 0.05,
+      }
+    : undefined;
 
   const currentRegion = coords
     ? {
@@ -237,16 +239,15 @@ export default function VetsScreen() {
         latitudeDelta: 0.05,
         longitudeDelta: 0.05,
       }
-    : initialRegion;
+    : undefined;
 
   const sortedAndFilteredPlaces = useMemo(() => {
-    const countryToUse = userCountry || "France";
-    const countryPlaces = PLACES.filter((place) => place.country === countryToUse);
-    const placesToUse = countryPlaces.length > 0 ? countryPlaces : PLACES.filter((place) => place.country === "France");
+    if (!coords || !userCountry) return [];
     
-    const filtered = placesToUse.filter((place) => filter === "all" || place.type === filter);
+    const countryPlaces = PLACES.filter((place) => place.country === userCountry);
+    if (countryPlaces.length === 0) return [];
     
-    if (!coords) return filtered.map(p => ({ ...p, distance: undefined }));
+    const filtered = countryPlaces.filter((place) => filter === "all" || place.type === filter);
     
     return filtered
       .map(place => ({
@@ -307,14 +308,14 @@ export default function VetsScreen() {
               </View>
             )}
 
-            {!hasAskedPermission && permission === "unknown" ? (
+            {!hasAskedPermission || (!coords && permission !== "denied") ? (
               <View style={styles.permissionCard}>
                 <View style={styles.permissionIcon}>
                   <MapPin size={32} color={Colors.primary} />
                 </View>
-                <Text style={styles.permissionTitle}>Autoriser la localisation</Text>
+                <Text style={styles.permissionTitle}>Localisation requise</Text>
                 <Text style={styles.permissionText}>
-                  Pour trier les services du plus proche au plus éloigné, autorisez l&apos;accès à votre position.
+                  Pour afficher les services à proximité de votre position, autorisez l&apos;accès à votre localisation.
                 </Text>
                 <TouchableOpacity
                   testID="vets-request-location"
@@ -325,6 +326,31 @@ export default function VetsScreen() {
                   <Text style={styles.permissionBtnText}>
                     {isLocating ? "Localisation..." : "Me localiser"}
                   </Text>
+                </TouchableOpacity>
+              </View>
+            ) : coords && userCountry && sortedAndFilteredPlaces.length === 0 ? (
+              <View style={styles.noDataCard}>
+                <View style={styles.permissionIcon}>
+                  <Globe size={32} color={Colors.primary} />
+                </View>
+                <Text style={styles.permissionTitle}>Pas de données locales</Text>
+                <Text style={styles.permissionText}>
+                  Nous n&apos;avons pas encore de données pour {userCountry}. Utilisez Google Maps pour trouver des services près de vous.
+                </Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    const query = filter === "all" ? "veterinaire chat" : 
+                      filter === "vet" ? "veterinaire" :
+                      filter === "clinic" ? "clinique veterinaire" :
+                      filter === "pharmacy" ? "pharmacie veterinaire" :
+                      filter === "shelter" ? "refuge animaux" :
+                      filter === "shop" ? "animalerie" : "pension chat";
+                    Linking.openURL(`https://www.google.com/maps/search/${encodeURIComponent(query)}/@${coords.latitude},${coords.longitude},14z`);
+                  }}
+                  style={styles.permissionBtn}
+                >
+                  <Navigation size={18} color="white" />
+                  <Text style={styles.permissionBtnText}>Rechercher sur Google Maps</Text>
                 </TouchableOpacity>
               </View>
             ) : (
@@ -694,6 +720,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 20,
     marginBottom: 20,
+  },
+  noDataCard: {
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 24,
+    alignItems: 'center',
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.06)',
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 3,
   },
   permissionBtn: {
     flexDirection: 'row',
