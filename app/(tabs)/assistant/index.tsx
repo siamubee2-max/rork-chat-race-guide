@@ -10,7 +10,9 @@ import {
   Platform,
   ActivityIndicator,
   Animated,
+  Keyboard,
 } from "react-native";
+import { useHeaderHeight } from "@react-navigation/elements";
 import { Send, Mic, MicOff, Sparkles, Cat, Heart, Stethoscope, Utensils, HelpCircle } from "lucide-react-native";
 import { useRorkAgent, createRorkTool } from "@rork-ai/toolkit-sdk";
 import { Audio } from "expo-av";
@@ -34,6 +36,7 @@ export default function AssistantScreen() {
   const [isTranscribing, setIsTranscribing] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
   const pulseAnim = useRef(new Animated.Value(1)).current;
+  const headerHeight = useHeaderHeight();
 
   const { cats } = useCats();
   const { addReminder } = useReminders();
@@ -110,6 +113,21 @@ export default function AssistantScreen() {
     }
     prevMessagesLength.current = messages.length;
   }, [messages.length]);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
+      () => {
+        setTimeout(() => {
+          scrollViewRef.current?.scrollToEnd({ animated: true });
+        }, 100);
+      }
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+    };
+  }, []);
 
   useEffect(() => {
     if (isRecording) {
@@ -264,8 +282,8 @@ Question: ${messageText}`
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      keyboardVerticalOffset={Platform.OS === "ios" ? headerHeight : 0}
     >
       <ScrollView
         ref={scrollViewRef}

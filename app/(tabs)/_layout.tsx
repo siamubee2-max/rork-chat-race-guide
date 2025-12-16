@@ -19,6 +19,7 @@ export default function TabLayout() {
           paddingBottom: 8,
           height: 80,
         },
+        tabBarHideOnKeyboard: true,
         tabBarLabelStyle: {
           fontSize: 11,
           fontWeight: "600",
