@@ -100,10 +100,16 @@ export default function AssistantScreen() {
   });
 
   const [isFirstMessage, setIsFirstMessage] = useState(true);
+  const prevMessagesLength = useRef(messages.length);
 
   useEffect(() => {
-    scrollViewRef.current?.scrollToEnd({ animated: true });
-  }, [messages]);
+    if (messages.length > prevMessagesLength.current) {
+      setTimeout(() => {
+        scrollViewRef.current?.scrollToEnd({ animated: true });
+      }, 100);
+    }
+    prevMessagesLength.current = messages.length;
+  }, [messages.length]);
 
   useEffect(() => {
     if (isRecording) {
@@ -265,9 +271,7 @@ Question: ${messageText}`
         ref={scrollViewRef}
         style={styles.messagesContainer}
         contentContainerStyle={styles.messagesContent}
-        onContentSizeChange={() =>
-          scrollViewRef.current?.scrollToEnd({ animated: true })
-        }
+        keyboardShouldPersistTaps="handled"
       >
         {messages.length === 0 && (
           <View style={styles.emptyState}>
