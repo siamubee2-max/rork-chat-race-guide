@@ -399,6 +399,10 @@ Question: ${messageText}`
           isAtBottomRef.current = isAtBottom;
         }}
         onContentSizeChange={(_w, h) => {
+          if (messages.length === 0) {
+            lastContentHeightRef.current = h;
+            return;
+          }
           const grew = h > lastContentHeightRef.current + 2;
           lastContentHeightRef.current = h;
           if (grew && isAtBottomRef.current) {
