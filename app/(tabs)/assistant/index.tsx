@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import {
   View,
   Text,
@@ -11,6 +11,9 @@ import {
   ActivityIndicator,
   Animated,
   Keyboard,
+  Modal,
+  Pressable,
+  useWindowDimensions,
 } from "react-native";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { Send, Mic, MicOff, Sparkles, Cat, Heart, Stethoscope, Utensils, HelpCircle } from "lucide-react-native";
@@ -22,15 +25,53 @@ import { Colors } from "@/constants/colors";
 import { useCats } from "@/context/cats";
 import { useReminders } from "@/context/reminders";
 
-const QUICK_PROMPTS = [
+type QuickPromptCategory = "Comportement" | "Santé" | "Alimentation" | "Conseil";
+
+type QuickPrompt = {
+  icon: React.ComponentType<{ color: string; size: number }>;
+  label: QuickPromptCategory;
+  prompt: string;
+};
+
+const QUICK_PROMPTS: QuickPrompt[] = [
   { icon: Heart, label: "Comportement", prompt: "Pourquoi mon chat ronronne-t-il ?" },
   { icon: Stethoscope, label: "Santé", prompt: "Quels sont les signes d'un chat malade ?" },
   { icon: Utensils, label: "Alimentation", prompt: "Quelle quantité de nourriture pour mon chat ?" },
   { icon: HelpCircle, label: "Conseil", prompt: "Comment jouer avec mon chat ?" },
 ];
 
+const CATEGORY_EXPLANATIONS: Record<QuickPromptCategory, { title: string; description: string }> = {
+  "Comportement": {
+    title: "Comportement",
+    description:
+      "Questions sur les habitudes, le stress, les miaulements, l'agressivité, la litière, et la compréhension des signaux de votre chat.",
+  },
+  "Santé": {
+    title: "Santé",
+    description:
+      "Symptômes à surveiller, prévention, premiers réflexes, quand consulter un vétérinaire, et conseils de suivi (sans remplacer un avis médical).",
+  },
+  "Alimentation": {
+    title: "Alimentation",
+    description:
+      "Rations, transitions alimentaires, hydratation, friandises, alimentation humide/sèche, et ajustements selon l'âge et le mode de vie.",
+  },
+  "Conseil": {
+    title: "Conseil",
+    description:
+      "Astuces pratiques au quotidien: enrichissement, jeux, éducation, routine, et bien-être général.",
+  },
+};
+
 export default function AssistantScreen() {
   const [input, setInput] = useState("");
+  const { height: windowHeight } = useWindowDimensions();
+  const maxInfoSheetHeight = useMemo(() => Math.max(260, Math.min(520, windowHeight * 0.65)), [windowHeight]);
+
+  const [infoCategory, setInfoCategory] = useState<QuickPromptCategory | null>(null);
+  const [infoVisible, setInfoVisible] = useState(false);
+  const infoFade = useRef(new Animated.Value(0)).current;
+  const infoScale = useRef(new Animated.Value(0.98)).current;
   const [isRecording, setIsRecording] = useState(false);
   const [recording, setRecording] = useState<Audio.Recording | null>(null);
   const [isTranscribing, setIsTranscribing] = useState(false);
@@ -273,6 +314,46 @@ Question: ${messageText}`
     handleSend(prompt);
   }, [handleSend]);
 
+  const openInfo = useCallback((category: QuickPromptCategory) => {
+    console.log("[Assistant] openInfo", category);
+    setInfoCategory(category);
+    setInfoVisible(true);
+    infoFade.setValue(0);
+    infoScale.setValue(0.98);
+    Animated.parallel([
+      Animated.timing(infoFade, {
+        toValue: 1,
+        duration: 180,
+        useNativeDriver: true,
+      }),
+      Animated.spring(infoScale, {
+        toValue: 1,
+        useNativeDriver: true,
+        speed: 28,
+        bounciness: 6,
+      }),
+    ]).start();
+  }, [infoFade, infoScale]);
+
+  const closeInfo = useCallback(() => {
+    console.log("[Assistant] closeInfo");
+    Animated.parallel([
+      Animated.timing(infoFade, {
+        toValue: 0,
+        duration: 140,
+        useNativeDriver: true,
+      }),
+      Animated.timing(infoScale, {
+        toValue: 0.98,
+        duration: 140,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      setInfoVisible(false);
+      setInfoCategory(null);
+    });
+  }, [infoFade, infoScale]);
+
   const clearChat = useCallback(() => {
     setMessages([]);
     setIsFirstMessage(true);
@@ -319,13 +400,19 @@ Question: ${messageText}`
                   key={index}
                   style={styles.quickPromptCard}
                   onPress={() => handleQuickPrompt(item.prompt)}
+                  onLongPress={() => openInfo(item.label)}
+                  delayLongPress={180}
                   activeOpacity={0.7}
+                  testID={`assistant-quickprompt-${index}`}
                 >
                   <View style={styles.quickPromptIcon}>
                     <item.icon color={Colors.primary} size={20} />
                   </View>
-                  <Text style={styles.quickPromptLabel} numberOfLines={2} adjustsFontSizeToFit>
+                  <Text style={styles.quickPromptLabel} numberOfLines={2}>
                     {item.label}
+                  </Text>
+                  <Text style={styles.quickPromptHint} numberOfLines={1}>
+                    Appui long pour détails
                   </Text>
                 </TouchableOpacity>
               ))}
@@ -404,6 +491,45 @@ Question: ${messageText}`
           <Text style={styles.clearButtonText}>Nouvelle conversation</Text>
         </TouchableOpacity>
       )}
+
+      <Modal
+        transparent
+        visible={infoVisible}
+        onRequestClose={closeInfo}
+        animationType="none"
+      >
+        <Pressable style={styles.infoOverlay} onPress={closeInfo} testID="assistant-info-overlay">
+          <Animated.View
+            style={[
+              styles.infoSheet,
+              {
+                maxHeight: maxInfoSheetHeight,
+                opacity: infoFade,
+                transform: [{ scale: infoScale }],
+              },
+            ]}
+            testID="assistant-info-sheet"
+          >
+            <View style={styles.infoSheetHeader}>
+              <Text style={styles.infoSheetTitle}>
+                {infoCategory ? CATEGORY_EXPLANATIONS[infoCategory].title : ""}
+              </Text>
+              <TouchableOpacity onPress={closeInfo} hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }} testID="assistant-info-close">
+                <Text style={styles.infoSheetClose}>Fermer</Text>
+              </TouchableOpacity>
+            </View>
+            <ScrollView
+              style={styles.infoSheetBody}
+              contentContainerStyle={styles.infoSheetBodyContent}
+              showsVerticalScrollIndicator={false}
+            >
+              <Text style={styles.infoSheetDescription}>
+                {infoCategory ? CATEGORY_EXPLANATIONS[infoCategory].description : ""}
+              </Text>
+            </ScrollView>
+          </Animated.View>
+        </Pressable>
+      </Modal>
 
       <View style={styles.inputContainer}>
         {Platform.OS !== "web" && (
@@ -563,9 +689,59 @@ const styles = StyleSheet.create({
   },
   quickPromptLabel: {
     fontSize: 14,
-    fontWeight: "600" as const,
+    fontWeight: "700" as const,
     color: Colors.text,
     textAlign: "center" as const,
+  },
+  quickPromptHint: {
+    marginTop: 6,
+    fontSize: 11,
+    color: Colors.textMuted,
+    textAlign: "center" as const,
+  },
+  infoOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.35)",
+    justifyContent: "center" as const,
+    padding: 18,
+  },
+  infoSheet: {
+    backgroundColor: Colors.backgroundCard,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    overflow: "hidden" as const,
+  },
+  infoSheetHeader: {
+    flexDirection: "row" as const,
+    alignItems: "center" as const,
+    justifyContent: "space-between" as const,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.border,
+  },
+  infoSheetTitle: {
+    fontSize: 16,
+    fontWeight: "800" as const,
+    color: Colors.text,
+  },
+  infoSheetClose: {
+    fontSize: 13,
+    fontWeight: "700" as const,
+    color: Colors.primary,
+  },
+  infoSheetBody: {
+    flexGrow: 0,
+  },
+  infoSheetBodyContent: {
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+  },
+  infoSheetDescription: {
+    fontSize: 14,
+    lineHeight: 20,
+    color: Colors.textSecondary,
   },
   messageBubble: {
     maxWidth: "85%",
