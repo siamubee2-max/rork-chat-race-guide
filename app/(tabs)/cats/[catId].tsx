@@ -1,18 +1,25 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView, Pressable, Platform } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Pressable, Platform, Alert } from "react-native";
 import { useLocalSearchParams, router, Stack } from "expo-router";
 import { Image } from "expo-image";
-import { Cat, Plus, Calendar, Syringe, Stethoscope, Pill, HeartPulse, ChevronRight, Heart, Bug, Activity } from "lucide-react-native";
+import { Cat, Plus, Calendar, Syringe, Stethoscope, Pill, HeartPulse, ChevronRight, Heart, Bug, Activity, Lock } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { useCats, MedicalRecordType } from "@/context/cats";
 import { getBreedById } from "@/constants/breeds";
+import { useAuth } from "@/context/auth";
 
 export default function CatDetailsScreen() {
   const { t } = useTranslation();
   const { catId } = useLocalSearchParams<{ catId: string }>();
   const { cats } = useCats();
+  const { currentUser } = useAuth();
   
   const cat = cats.find((c) => c.id === catId);
+
+  const hasHealthTracking = React.useMemo(() => {
+    if (!currentUser) return false;
+    return currentUser.subscriptionTier === 'premium_plus' || currentUser.addOns?.includes('health_tracking');
+  }, [currentUser]);
 
   if (!cat) {
     return (
@@ -25,6 +32,24 @@ export default function CatDetailsScreen() {
   const breed = cat.breedId ? getBreedById(cat.breedId) : null;
   const breedDisplay = breed?.name ?? t("cats.mixedBreed");
 
+  const checkAccess = () => {
+    if (!hasHealthTracking) {
+      Alert.alert(
+        t('subscription.features.healthTracking'),
+        t('subscription.addOns.healthTrackingDesc'),
+        [
+          { text: t('common.cancel'), style: 'cancel' },
+          {
+            text: t('subscription.subscribe'),
+            onPress: () => router.push('/(tabs)/subscription' as any),
+          }
+        ]
+      );
+      return false;
+    }
+    return true;
+  };
+
   const onEditCat = () => {
     router.push({
       pathname: "/(tabs)/cats/form" as any,
@@ -33,6 +58,8 @@ export default function CatDetailsScreen() {
   };
 
   const onAddRecord = () => {
+    if (!checkAccess()) return;
+    
     router.push({
       pathname: "/(tabs)/cats/record-form" as any,
       params: { catId: cat.id },
@@ -40,6 +67,8 @@ export default function CatDetailsScreen() {
   };
 
   const onEditRecord = (recordId: string) => {
+    if (!checkAccess()) return;
+
     router.push({
       pathname: "/(tabs)/cats/record-form" as any,
       params: { catId: cat.id, recordId },
@@ -47,6 +76,8 @@ export default function CatDetailsScreen() {
   };
 
   const onOpenHealthDashboard = () => {
+    if (!checkAccess()) return;
+
     router.push({
       pathname: "/cats/health-dashboard" as any,
       params: { catId: cat.id },
@@ -119,24 +150,46 @@ export default function CatDetailsScreen() {
           onPress={onOpenHealthDashboard}
           style={({ pressed }) => [styles.healthDashboardCard, pressed && styles.pressed]}
         >
-          <View style={styles.dashboardIcon}>
-            <Activity size={24} color="#007AFF" />
+          <View style={[styles.dashboardIcon, !hasHealthTracking && styles.dashboardIconLocked]}>
+            {hasHealthTracking ? (
+              <Activity size={24} color="#007AFF" />
+            ) : (
+              <Lock size={24} color="#999" />
+            )}
           </View>
           <View style={styles.dashboardContent}>
-            <Text style={styles.dashboardTitle}>Tableau de bord santé</Text>
+            <View style={styles.dashboardTitleRow}>
+              <Text style={[styles.dashboardTitle, !hasHealthTracking && styles.dashboardTitleLocked]}>
+                Tableau de bord santé
+              </Text>
+              {!hasHealthTracking && (
+                <View style={styles.premiumBadge}>
+                  <Text style={styles.premiumBadgeText}>Premium+</Text>
+                </View>
+              )}
+            </View>
             <Text style={styles.dashboardSubtitle}>
               Suivi du poids, logs quotidiens et alertes
             </Text>
           </View>
-          <ChevronRight size={20} color="#007AFF" />
+          <ChevronRight size={20} color={hasHealthTracking ? "#007AFF" : "#ccc"} />
         </Pressable>
 
         {/* Medical Records Section */}
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>{t("cats.healthRecord")}</Text>
-          <Pressable onPress={onAddRecord} style={styles.addBtn}>
-            <Plus size={16} color="#fff" />
-            <Text style={styles.addBtnText}>{t("cats.addMedicalRecord")}</Text>
+          <Pressable 
+            onPress={onAddRecord} 
+            style={[styles.addBtn, !hasHealthTracking && styles.addBtnLocked]}
+          >
+            {hasHealthTracking ? (
+              <Plus size={16} color="#fff" />
+            ) : (
+              <Lock size={14} color="#666" />
+            )}
+            <Text style={[styles.addBtnText, !hasHealthTracking && styles.addBtnTextLocked]}>
+              {t("cats.addMedicalRecord")}
+            </Text>
           </Pressable>
         </View>
 
@@ -289,10 +342,18 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderRadius: 14,
   },
+  addBtnLocked: {
+    backgroundColor: "#F2F2F7",
+    borderWidth: 1,
+    borderColor: "#E5E5EA",
+  },
   addBtnText: {
     color: "#fff",
     fontSize: 13,
     fontWeight: "600",
+  },
+  addBtnTextLocked: {
+    color: "#666",
   },
   emptyState: {
     alignItems: "center",
@@ -403,14 +464,36 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  dashboardIconLocked: {
+    backgroundColor: "#F5F5F5",
+  },
   dashboardContent: {
     flex: 1,
+  },
+  dashboardTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 2,
   },
   dashboardTitle: {
     fontSize: 17,
     fontWeight: "700",
     color: "#111",
-    marginBottom: 2,
+  },
+  dashboardTitleLocked: {
+    color: "#666",
+  },
+  premiumBadge: {
+    backgroundColor: "#8b5cf6",
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+  },
+  premiumBadgeText: {
+    color: "#fff",
+    fontSize: 10,
+    fontWeight: "700",
   },
   dashboardSubtitle: {
     fontSize: 13,

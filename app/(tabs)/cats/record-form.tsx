@@ -15,11 +15,39 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Save, Trash2, Calendar as CalendarIcon, Syringe, Stethoscope, Pill, HeartPulse, Bug } from "lucide-react-native";
 import { useCats, MedicalRecordType, MedicalRecord } from "@/context/cats";
 import { generateUUID } from "@/utils/polyfills";
+import { useTranslation } from "react-i18next";
+import { useAuth } from "@/context/auth";
 
 export default function RecordFormScreen() {
   const { catId, recordId } = useLocalSearchParams<{ catId: string; recordId: string }>();
   const { cats, updateCat } = useCats();
+  const { t } = useTranslation();
+  const { currentUser } = useAuth();
   const insets = useSafeAreaInsets();
+
+  const hasHealthTracking = React.useMemo(() => {
+    if (!currentUser) return false;
+    return currentUser.subscriptionTier === 'premium_plus' || currentUser.addOns?.includes('health_tracking');
+  }, [currentUser]);
+
+  React.useEffect(() => {
+    if (!hasHealthTracking) {
+      Alert.alert(
+        t('subscription.features.healthTracking'),
+        t('subscription.addOns.healthTrackingDesc'),
+        [
+          { text: t('common.cancel'), style: 'cancel', onPress: () => router.back() },
+          {
+            text: t('subscription.subscribe'),
+            onPress: () => {
+              router.back();
+              setTimeout(() => router.push('/(tabs)/subscription' as any), 100);
+            },
+          }
+        ]
+      );
+    }
+  }, [hasHealthTracking, t]);
 
   const cat = cats.find((c) => c.id === catId);
   const existingRecord = cat?.medicalRecords?.find((r) => r.id === recordId);

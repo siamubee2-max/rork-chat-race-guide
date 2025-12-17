@@ -1,14 +1,44 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView, Pressable } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Pressable, Alert } from "react-native";
 import { useLocalSearchParams, router, Stack } from "expo-router";
 import { Plus, Calendar, UtensilsCrossed, Droplets, Activity, Trash, AlertTriangle } from "lucide-react-native";
 import { useCats } from "@/context/cats";
+import { useTranslation } from "react-i18next";
+import { useAuth } from "@/context/auth";
 
 export default function DailyLogsScreen() {
   const { catId } = useLocalSearchParams<{ catId: string }>();
   const { cats } = useCats();
+  const { t } = useTranslation();
+  const { currentUser } = useAuth();
   
   const cat = cats.find((c) => c.id === catId);
+
+  const hasHealthTracking = React.useMemo(() => {
+    if (!currentUser) return false;
+    return currentUser.subscriptionTier === 'premium_plus' || currentUser.addOns?.includes('health_tracking');
+  }, [currentUser]);
+
+  // Protect the route
+  React.useEffect(() => {
+    if (!hasHealthTracking && cat) {
+      Alert.alert(
+        t('subscription.features.healthTracking'),
+        t('subscription.addOns.healthTrackingDesc'),
+        [
+          { text: t('common.cancel'), style: 'cancel', onPress: () => router.back() },
+          {
+            text: t('subscription.subscribe'),
+            onPress: () => {
+              router.back();
+              setTimeout(() => router.push('/(tabs)/subscription' as any), 100);
+            },
+          }
+        ]
+      );
+    }
+  }, [hasHealthTracking, cat, t]);
+
   const dailyLogs = cat?.dailyLogs ?? [];
 
   const onAddLog = () => {

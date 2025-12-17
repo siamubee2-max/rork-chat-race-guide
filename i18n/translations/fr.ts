@@ -211,6 +211,7 @@ export default {
     select: "Choisir",
     subscribe: "S'abonner",
     purchase: "Acheter",
+    included: "Inclus",
     startTrial: "Commencer l'essai",
     confirmTitle: "Confirmer l'abonnement",
     confirmDesc: "Voulez-vous vous abonner à {{plan}} pour €{{price}}/mois ?",

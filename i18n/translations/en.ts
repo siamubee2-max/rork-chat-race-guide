@@ -117,6 +117,7 @@ export default {
     select: "Select",
     subscribe: "Subscribe",
     purchase: "Purchase",
+    included: "Included",
     confirmTitle: "Confirm Subscription",
     confirmDesc: "Do you want to subscribe to {{plan}} for €{{price}}/month?",
     confirmAddOnDesc: "Do you want to purchase {{addOn}} for €{{price}}/month?",

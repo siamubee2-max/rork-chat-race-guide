@@ -15,6 +15,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Save, Calendar as CalendarIcon, UtensilsCrossed, Droplets, Activity, Trash } from "lucide-react-native";
 import { useCats, type DailyLog } from "@/context/cats";
 import { generateUUID } from "@/utils/polyfills";
+import { useTranslation } from "react-i18next";
+import { useAuth } from "@/context/auth";
 
 type AppetiteLevel = "normal" | "increased" | "decreased" | "none";
 type WaterLevel = "normal" | "increased" | "decreased" | "none";
@@ -24,7 +26,33 @@ type LitterStatus = "normal" | "diarrhea" | "constipation" | "blood" | "none";
 export default function DailyLogFormScreen() {
   const { catId } = useLocalSearchParams<{ catId: string }>();
   const { cats, updateCat } = useCats();
+  const { t } = useTranslation();
+  const { currentUser } = useAuth();
   const insets = useSafeAreaInsets();
+
+  const hasHealthTracking = React.useMemo(() => {
+    if (!currentUser) return false;
+    return currentUser.subscriptionTier === 'premium_plus' || currentUser.addOns?.includes('health_tracking');
+  }, [currentUser]);
+
+  React.useEffect(() => {
+    if (!hasHealthTracking) {
+      Alert.alert(
+        t('subscription.features.healthTracking'),
+        t('subscription.addOns.healthTrackingDesc'),
+        [
+          { text: t('common.cancel'), style: 'cancel', onPress: () => router.back() },
+          {
+            text: t('subscription.subscribe'),
+            onPress: () => {
+              router.back();
+              setTimeout(() => router.push('/(tabs)/subscription' as any), 100);
+            },
+          }
+        ]
+      );
+    }
+  }, [hasHealthTracking, t]);
 
   const cat = cats.find((c) => c.id === catId);
 

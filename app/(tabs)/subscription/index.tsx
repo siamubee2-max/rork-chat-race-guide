@@ -363,13 +363,20 @@ export default function SubscriptionScreen() {
         </Text>
 
         {ADD_ONS.map((addOn) => {
-          const hasAddOn = currentUser?.addOns?.includes(addOn.id);
+          const isPremiumPlus = currentUser?.subscriptionTier === 'premium_plus';
+          const isIncludedInPlan = addOn.id === 'health_tracking' && isPremiumPlus;
+          const hasAddOn = currentUser?.addOns?.includes(addOn.id) || isIncludedInPlan;
 
           return (
             <Pressable
               key={addOn.id}
-              style={[styles.addOnCard, hasAddOn && styles.addOnCardActive]}
-              onPress={() => handleAddOn(addOn.id)}
+              style={[
+                styles.addOnCard, 
+                hasAddOn && styles.addOnCardActive,
+                isIncludedInPlan && styles.addOnCardIncluded
+              ]}
+              onPress={() => !isIncludedInPlan && handleAddOn(addOn.id)}
+              disabled={isIncludedInPlan}
             >
               <View style={styles.addOnContent}>
                 <Text style={styles.addOnName}>{t(addOn.name)}</Text>
@@ -377,12 +384,18 @@ export default function SubscriptionScreen() {
                   {t(addOn.description)}
                 </Text>
                 <Text style={styles.addOnPrice}>
-                  €{(billingCycle === 'yearly' ? addOn.yearlyPrice : addOn.price).toFixed(2)}{' '}
-                  <Text style={styles.addOnPriceUnit}>
-                    {billingCycle === 'yearly' ? t('subscription.perYear') : t('subscription.perMonth')}
-                  </Text>
+                  {isIncludedInPlan ? (
+                    t('subscription.included')
+                  ) : (
+                    <>
+                      €{(billingCycle === 'yearly' ? addOn.yearlyPrice : addOn.price).toFixed(2)}{' '}
+                      <Text style={styles.addOnPriceUnit}>
+                        {billingCycle === 'yearly' ? t('subscription.perYear') : t('subscription.perMonth')}
+                      </Text>
+                    </>
+                  )}
                 </Text>
-                {billingCycle === 'yearly' && (
+                {billingCycle === 'yearly' && !isIncludedInPlan && (
                   <Text style={styles.addOnSavings}>
                     {t('subscription.saveAmount', {
                       amount: (addOn.price * 12 - addOn.yearlyPrice).toFixed(0),
@@ -391,8 +404,8 @@ export default function SubscriptionScreen() {
                 )}
               </View>
               {hasAddOn && (
-                <View style={styles.addOnCheck}>
-                  <Check size={20} color="#10b981" />
+                <View style={[styles.addOnCheck, isIncludedInPlan && styles.addOnCheckIncluded]}>
+                  <Check size={20} color={isIncludedInPlan ? "#fff" : "#10b981"} />
                 </View>
               )}
             </Pressable>
@@ -594,6 +607,13 @@ const styles = StyleSheet.create({
   addOnCardActive: {
     borderColor: '#10b981',
     backgroundColor: '#f0fdf4',
+  },
+  addOnCardIncluded: {
+    backgroundColor: '#eff6ff',
+    borderColor: '#3b82f6',
+  },
+  addOnCheckIncluded: {
+    backgroundColor: '#3b82f6',
   },
   addOnContent: {
     flex: 1,
