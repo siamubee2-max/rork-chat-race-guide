@@ -40,6 +40,41 @@ export default function CatsLayout() {
           title: "Enregistrement",
         }}
       />
+      <Stack.Screen
+        name="health-dashboard"
+        options={{
+          title: "Santé",
+          headerBackTitle: "Retour",
+        }}
+      />
+      <Stack.Screen
+        name="weight-form"
+        options={{
+          presentation: "modal",
+          title: "Poids",
+        }}
+      />
+      <Stack.Screen
+        name="weight-chart"
+        options={{
+          title: "Évolution du poids",
+          headerBackTitle: "Retour",
+        }}
+      />
+      <Stack.Screen
+        name="daily-log-form"
+        options={{
+          presentation: "modal",
+          title: "Journal quotidien",
+        }}
+      />
+      <Stack.Screen
+        name="daily-logs"
+        options={{
+          title: "Journal quotidien",
+          headerBackTitle: "Retour",
+        }}
+      />
     </Stack>
   );
 }
