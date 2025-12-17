@@ -622,6 +622,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.border,
     flexDirection: "row" as const,
+    alignItems: "flex-start" as const,
     gap: 10,
   },
   assistantAvatar: {
@@ -636,7 +637,7 @@ const styles = StyleSheet.create({
   messageText: {
     fontSize: 15,
     lineHeight: 22,
-    flex: 1,
+    flexShrink: 1,
   },
   userText: {
     color: "#fff",
