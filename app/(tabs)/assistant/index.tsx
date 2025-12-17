@@ -149,21 +149,24 @@ export default function AssistantScreen() {
   const prevMessagesLength = useRef(messages.length);
 
   const scrollToBottom = useCallback((animated: boolean) => {
-    requestAnimationFrame(() => {
+    setTimeout(() => {
       scrollViewRef.current?.scrollToEnd({ animated });
-    });
+    }, 50);
   }, []);
 
   useEffect(() => {
     if (messages.length > prevMessagesLength.current) {
-      if (isAtBottomRef.current) {
+      const newMessages = messages.slice(prevMessagesLength.current);
+      const hasUserMessage = newMessages.some(m => m.role === 'user');
+      
+      if (hasUserMessage) {
         setTimeout(() => {
           scrollToBottom(true);
-        }, 80);
+        }, 100);
       }
     }
     prevMessagesLength.current = messages.length;
-  }, [messages.length, scrollToBottom]);
+  }, [messages.length, messages, scrollToBottom]);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -225,11 +228,7 @@ Question: ${messageText}`
 
     setIsFirstMessage(false);
     await sendMessage(systemPrompt);
-
-    setTimeout(() => {
-      scrollToBottom(true);
-    }, 50);
-  }, [input, isFirstMessage, catsContext, sendMessage, scrollToBottom]);
+  }, [input, isFirstMessage, catsContext, sendMessage]);
 
   const startRecording = useCallback(async () => {
     if (Platform.OS === "web") {
@@ -399,15 +398,7 @@ Question: ${messageText}`
           isAtBottomRef.current = isAtBottom;
         }}
         onContentSizeChange={(_w, h) => {
-          if (messages.length === 0) {
-            lastContentHeightRef.current = h;
-            return;
-          }
-          const grew = h > lastContentHeightRef.current + 2;
           lastContentHeightRef.current = h;
-          if (grew && isAtBottomRef.current) {
-            scrollToBottom(false);
-          }
         }}
         testID="assistant-messages-scroll"
       >
