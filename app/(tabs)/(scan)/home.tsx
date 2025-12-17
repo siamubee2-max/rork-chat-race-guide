@@ -4,7 +4,7 @@ import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Haptics from "expo-haptics";
 import * as ImagePicker from "expo-image-picker";
-import { Camera, Sparkles, Upload, Info, ScanLine, ChevronLeft } from "lucide-react-native";
+import { Camera, Sparkles, Upload, Info, ScanLine } from "lucide-react-native";
 import {
   Alert,
   Platform,
@@ -104,10 +104,6 @@ export default function ScanHomeScreen() {
     }
   }, [t, setImage]);
 
-  const onBack = useCallback(() => {
-    router.back();
-  }, []);
-
   return (
     <View style={styles.screen} testID="scanScreen">
       <StatusBar barStyle="light-content" />
@@ -124,16 +120,12 @@ export default function ScanHomeScreen() {
         />
       </View>
 
-      <View style={[styles.content, { paddingTop: insets.top }]}>
+      <View style={[styles.content, { paddingTop: insets.top + 20 }]}>
         <View style={styles.header}>
-           <Pressable onPress={onBack} style={styles.backButton}>
-              <ChevronLeft color="#fff" size={24} />
-           </Pressable>
            <View style={styles.headerBrand}>
              <ScanLine color="#fff" size={18} />
              <Text style={styles.headerTitle}>SCANNER IA</Text>
            </View>
-           <View style={{ width: 40 }} />
         </View>
 
         <View style={styles.centerContent}>
@@ -216,17 +208,9 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "center",
     paddingHorizontal: 20,
     paddingVertical: 10,
-  },
-  backButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "rgba(255,255,255,0.1)",
-    justifyContent: "center",
-    alignItems: "center",
   },
   headerBrand: {
     flexDirection: "row",
