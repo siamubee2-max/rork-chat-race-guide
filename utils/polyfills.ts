@@ -4,18 +4,23 @@ if (Platform.OS === 'web') {
   const needsCryptoPolyfill = () => {
     try {
       if (typeof globalThis !== 'undefined' && globalThis.crypto && typeof globalThis.crypto.getRandomValues === 'function') {
+        globalThis.crypto.getRandomValues(new Uint8Array(1));
         return false;
       }
       if (typeof window !== 'undefined' && window.crypto && typeof window.crypto.getRandomValues === 'function') {
+        window.crypto.getRandomValues(new Uint8Array(1));
         return false;
       }
       return true;
-    } catch {
+    } catch (error) {
+      console.log('[Polyfill] crypto test failed:', error);
       return true;
     }
   };
 
   if (needsCryptoPolyfill()) {
+    console.log('[Polyfill] Installing crypto polyfill');
+    
     const cryptoPolyfill = {
       getRandomValues: (array: Uint8Array) => {
         for (let i = 0; i < array.length; i++) {
@@ -33,25 +38,46 @@ if (Platform.OS === 'web') {
       subtle: undefined,
     } as any;
 
-    const targets = [
-      typeof global !== 'undefined' ? global : null,
-      typeof window !== 'undefined' ? window : null,
-      typeof globalThis !== 'undefined' ? globalThis : null,
-    ].filter(Boolean);
-
-    for (const target of targets) {
-      if (target && !(target as any).crypto) {
-        try {
-          Object.defineProperty(target, 'crypto', {
-            value: cryptoPolyfill,
-            writable: false,
-            configurable: false,
-            enumerable: true,
-          });
-        } catch {
-          // Property already exists or is not configurable
+    const installOnTarget = (target: any, name: string) => {
+      if (!target) return false;
+      
+      try {
+        const descriptor = Object.getOwnPropertyDescriptor(target, 'crypto');
+        
+        if (descriptor && !descriptor.configurable) {
+          console.log(`[Polyfill] ${name}.crypto is not configurable, skipping`);
+          return false;
         }
+        
+        if (descriptor && descriptor.get && !descriptor.set) {
+          console.log(`[Polyfill] ${name}.crypto is getter-only, trying to delete`);
+          try {
+            delete target.crypto;
+          } catch {
+            console.log(`[Polyfill] Cannot delete ${name}.crypto`);
+            return false;
+          }
+        }
+        
+        Object.defineProperty(target, 'crypto', {
+          value: cryptoPolyfill,
+          writable: true,
+          configurable: true,
+          enumerable: true,
+        });
+        
+        console.log(`[Polyfill] Successfully installed crypto on ${name}`);
+        return true;
+      } catch (error) {
+        console.log(`[Polyfill] Failed to install on ${name}:`, error);
+        return false;
       }
-    }
+    };
+
+    installOnTarget(globalThis, 'globalThis') ||
+    installOnTarget(window, 'window') ||
+    installOnTarget(global, 'global');
+  } else {
+    console.log('[Polyfill] crypto already available');
   }
 }
