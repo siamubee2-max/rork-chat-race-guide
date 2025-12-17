@@ -4,7 +4,7 @@ import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Haptics from "expo-haptics";
 import * as ImagePicker from "expo-image-picker";
-import { Camera, Sparkles, Upload, Info } from "lucide-react-native";
+import { Camera, Sparkles, Upload, Info, ScanLine, ChevronLeft } from "lucide-react-native";
 import {
   Alert,
   Platform,
@@ -12,21 +12,18 @@ import {
   StyleSheet,
   Text,
   View,
-  useWindowDimensions,
+  StatusBar
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import { Colors } from "@/constants/colors";
 import { useScanImage } from "@/context/scan-image";
 
-const heroImageUri =
-  "https://images.unsplash.com/photo-1495360010541-f48722b34f7d?auto=format&fit=crop&w=1200&q=80";
+const heroImageUri = "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=2043&auto=format&fit=crop";
 
 export default function ScanHomeScreen() {
   const { t } = useTranslation();
-  const { width } = useWindowDimensions();
   const insets = useSafeAreaInsets();
-  const heroH = Math.max(260, Math.min(360, Math.round(width * 0.75))) + insets.top;
   const { setImage } = useScanImage();
 
   const pickImage = useCallback(async () => {
@@ -57,7 +54,6 @@ export default function ScanHomeScreen() {
     if (!result.canceled && result.assets[0]) {
       const asset = result.assets[0];
       if (asset.base64) {
-        console.log('Setting image from gallery, base64 length:', asset.base64.length);
         setImage(asset.uri, asset.base64);
         router.push("/(tabs)/(scan)/result" as any);
       } else {
@@ -100,7 +96,6 @@ export default function ScanHomeScreen() {
     if (!result.canceled && result.assets[0]) {
       const asset = result.assets[0];
       if (asset.base64) {
-        console.log('Setting image from camera, base64 length:', asset.base64.length);
         setImage(asset.uri, asset.base64);
         router.push("/(tabs)/(scan)/result" as any);
       } else {
@@ -109,96 +104,90 @@ export default function ScanHomeScreen() {
     }
   }, [t, setImage]);
 
-  const onAbout = useCallback(() => {
-    router.push("/modal");
+  const onBack = useCallback(() => {
+    router.back();
   }, []);
 
   return (
     <View style={styles.screen} testID="scanScreen">
-      <View style={[styles.hero, { height: heroH }]} testID="scanHero">
-        <Image
+      <StatusBar barStyle="light-content" />
+      <View style={styles.bgContainer}>
+         <Image
           source={{ uri: heroImageUri }}
-          style={styles.heroImage}
+          style={styles.bgImage}
           contentFit="cover"
-          transition={120}
+          transition={1000}
         />
         <LinearGradient
-          colors={["rgba(61, 46, 36, 0.05)", "rgba(61, 46, 36, 0.8)"]}
-          start={{ x: 0.5, y: 0 }}
-          end={{ x: 0.5, y: 1 }}
-          style={styles.heroGradient}
+          colors={["rgba(0,0,0,0.3)", "rgba(0,0,0,0.7)"]}
+          style={styles.bgOverlay}
         />
-
-        <View style={[styles.heroTopRow, { top: insets.top + 12 }]}>
-          <View style={styles.brandPill}>
-            <Sparkles color="#fff" size={14} />
-            <Text style={styles.brandText}>CatID</Text>
-          </View>
-          <Pressable
-            onPress={onAbout}
-            style={({ pressed }) => [
-              styles.aboutBtn,
-              pressed ? { opacity: 0.8 } : null,
-            ]}
-            testID="scanAbout"
-          >
-            <Info color="#fff" size={16} />
-            <Text style={styles.aboutBtnText}>{t('scan.about')}</Text>
-          </Pressable>
-        </View>
-
-        <View style={styles.heroCopy}>
-          <Text style={styles.heroTitle}>{t('scan.title')}</Text>
-          <Text style={styles.heroSubtitle}>
-            {t('scan.subtitle')}
-          </Text>
-        </View>
       </View>
 
-      <View style={styles.content}>
-        <View style={styles.card}>
-          <View style={styles.cardIcon}>
-            <Sparkles color={Colors.primary} size={18} />
-          </View>
-          <View style={styles.cardBody}>
-            <Text style={styles.cardTitle}>{t('scan.recognitionTitle')}</Text>
-            <Text style={styles.cardText}>
-              {t('scan.recognitionText')}
-            </Text>
-          </View>
+      <View style={[styles.content, { paddingTop: insets.top }]}>
+        <View style={styles.header}>
+           <Pressable onPress={onBack} style={styles.backButton}>
+              <ChevronLeft color="#fff" size={24} />
+           </Pressable>
+           <View style={styles.headerBrand}>
+             <ScanLine color="#fff" size={18} />
+             <Text style={styles.headerTitle}>SCANNER IA</Text>
+           </View>
+           <View style={{ width: 40 }} />
         </View>
 
-        <Pressable
-          onPress={takePhoto}
-          style={({ pressed }) => [
-            styles.primaryBtn,
-            pressed ? { transform: [{ scale: 0.98 }], opacity: 0.9 } : null,
-          ]}
-          testID="scanTakePhoto"
-        >
-          <Camera color="#fff" size={20} />
-          <Text style={styles.primaryBtnText}>{t('scan.takePhoto')}</Text>
-        </Pressable>
-
-        <Pressable
-          onPress={pickImage}
-          style={({ pressed }) => [
-            styles.secondaryBtn,
-            pressed ? { transform: [{ scale: 0.98 }] } : null,
-          ]}
-          testID="scanPickImage"
-        >
-          <Upload color={Colors.primary} size={20} />
-          <Text style={styles.secondaryBtnText}>{t('scan.choosePhoto')}</Text>
-        </Pressable>
-
-        <View style={styles.tipRow}>
-          <View style={styles.tipBadge}>
-            <Text style={styles.tipLabel}>{t('scan.tip')}</Text>
+        <View style={styles.centerContent}>
+          <View style={styles.scannerFrame}>
+            <View style={styles.cornerTL} />
+            <View style={styles.cornerTR} />
+            <View style={styles.cornerBL} />
+            <View style={styles.cornerBR} />
+            
+            <View style={styles.scannerIconContainer}>
+              <Sparkles color="#fff" size={40} strokeWidth={1.5} />
+            </View>
           </View>
-          <Text style={styles.tipText}>
-            {t('scan.tipText')}
-          </Text>
+          
+          <Text style={styles.mainTitle}>{t('scan.title')}</Text>
+          <Text style={styles.subTitle}>{t('scan.subtitle')}</Text>
+        </View>
+
+        <View style={[styles.bottomActions, { paddingBottom: insets.bottom + 20 }]}>
+           <View style={styles.glassCard}>
+              <View style={styles.tipRow}>
+                <Info color="rgba(255,255,255,0.8)" size={16} />
+                <Text style={styles.tipText}>{t('scan.tipText')}</Text>
+              </View>
+           </View>
+
+           <Pressable
+              onPress={takePhoto}
+              style={({ pressed }) => [
+                styles.primaryButton,
+                pressed && styles.buttonPressed
+              ]}
+           >
+             <LinearGradient
+                colors={[Colors.primary, "#D06040"]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={styles.primaryGradient}
+             >
+                <Camera color="#fff" size={24} />
+                <Text style={styles.primaryButtonText}>{t('scan.takePhoto')}</Text>
+             </LinearGradient>
+           </Pressable>
+
+           <Pressable
+              onPress={pickImage}
+              style={({ pressed }) => [
+                styles.secondaryButton,
+                pressed && styles.buttonPressed
+              ]}
+           >
+              <Upload color="#fff" size={20} />
+              <Text style={styles.secondaryButtonText}>{t('scan.choosePhoto')}</Text>
+           </Pressable>
         </View>
       </View>
     </View>
@@ -208,187 +197,158 @@ export default function ScanHomeScreen() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.background,
+    backgroundColor: "#000",
   },
-  hero: {
-    position: "relative",
-    overflow: "hidden",
-    borderBottomLeftRadius: 28,
-    borderBottomRightRadius: 28,
+  bgContainer: {
+    ...StyleSheet.absoluteFillObject,
   },
-  heroImage: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
+  bgImage: {
+    flex: 1,
+    opacity: 0.8,
   },
-  heroGradient: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-  },
-  heroTopRow: {
-    position: "absolute",
-    left: 16,
-    right: 16,
-    top: 16, // overridden by inline style
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  brandPill: {
-    flexDirection: "row",
-    gap: 6,
-    alignItems: "center",
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 999,
-    backgroundColor: "rgba(212, 119, 92, 0.9)",
-  },
-  brandText: {
-    color: "#fff",
-    fontWeight: "800",
-    fontSize: 13,
-    letterSpacing: 0.3,
-  },
-  aboutBtn: {
-    flexDirection: "row",
-    gap: 6,
-    alignItems: "center",
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 999,
-    backgroundColor: "rgba(255,255,255,0.2)",
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.3)",
-  },
-  aboutBtnText: {
-    color: "#fff",
-    fontWeight: "700",
-    fontSize: 13,
-  },
-  heroCopy: {
-    position: "absolute",
-    left: 18,
-    right: 18,
-    bottom: 20,
-  },
-  heroTitle: {
-    color: "#fff",
-    fontSize: 28,
-    fontWeight: "900",
-    letterSpacing: -0.4,
-  },
-  heroSubtitle: {
-    marginTop: 8,
-    color: "rgba(255,255,255,0.9)",
-    fontSize: 15,
-    lineHeight: 21,
-    maxWidth: 520,
+  bgOverlay: {
+    ...StyleSheet.absoluteFillObject,
   },
   content: {
     flex: 1,
-    padding: 18,
-    gap: 14,
+    justifyContent: "space-between",
   },
-  card: {
+  header: {
     flexDirection: "row",
-    gap: 14,
-    borderRadius: 18,
-    padding: 16,
-    backgroundColor: Colors.backgroundCard,
-    borderWidth: 1,
-    borderColor: Colors.border,
-    shadowColor: Colors.text,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 6,
-    elevation: 2,
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
   },
-  cardIcon: {
+  backButton: {
     width: 40,
     height: 40,
-    borderRadius: 12,
-    backgroundColor: Colors.primaryMuted,
-    alignItems: "center",
+    borderRadius: 20,
+    backgroundColor: "rgba(255,255,255,0.1)",
     justifyContent: "center",
+    alignItems: "center",
   },
-  cardBody: {
-    flex: 1,
-  },
-  cardTitle: {
-    fontWeight: "800",
-    fontSize: 15,
-    color: Colors.text,
-  },
-  cardText: {
-    marginTop: 4,
-    color: Colors.textSecondary,
-    lineHeight: 19,
-    fontSize: 14,
-  },
-  primaryBtn: {
+  headerBrand: {
     flexDirection: "row",
-    gap: 10,
     alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 16,
-    borderRadius: 18,
-    backgroundColor: Colors.primary,
-    shadowColor: Colors.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 4,
+    gap: 8,
+    backgroundColor: "rgba(0,0,0,0.3)",
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.1)",
   },
-  primaryBtnText: {
+  headerTitle: {
     color: "#fff",
-    fontWeight: "800",
-    fontSize: 16,
+    fontSize: 12,
+    fontWeight: "700",
+    letterSpacing: 2,
   },
-  secondaryBtn: {
-    flexDirection: "row",
-    gap: 10,
+  centerContent: {
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 16,
-    borderRadius: 18,
-    backgroundColor: Colors.backgroundCard,
-    borderWidth: 1.5,
-    borderColor: Colors.primaryMuted,
+    paddingHorizontal: 30,
   },
-  secondaryBtnText: {
-    color: Colors.primary,
-    fontWeight: "800",
+  scannerFrame: {
+    width: 200,
+    height: 200,
+    marginBottom: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    position: "relative",
+  },
+  cornerTL: { position: "absolute", top: 0, left: 0, width: 40, height: 40, borderTopWidth: 4, borderLeftWidth: 4, borderColor: "#fff", borderTopLeftRadius: 20 },
+  cornerTR: { position: "absolute", top: 0, right: 0, width: 40, height: 40, borderTopWidth: 4, borderRightWidth: 4, borderColor: "#fff", borderTopRightRadius: 20 },
+  cornerBL: { position: "absolute", bottom: 0, left: 0, width: 40, height: 40, borderBottomWidth: 4, borderLeftWidth: 4, borderColor: "#fff", borderBottomLeftRadius: 20 },
+  cornerBR: { position: "absolute", bottom: 0, right: 0, width: 40, height: 40, borderBottomWidth: 4, borderRightWidth: 4, borderColor: "#fff", borderBottomRightRadius: 20 },
+  scannerIconContainer: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: "rgba(255,255,255,0.1)",
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.2)",
+  },
+  mainTitle: {
+    fontSize: 32,
+    fontWeight: "300",
+    color: "#fff",
+    textAlign: "center",
+    marginBottom: 12,
+    fontFamily: Platform.select({ ios: "Georgia", android: "serif" }),
+  },
+  subTitle: {
     fontSize: 16,
+    color: "rgba(255,255,255,0.8)",
+    textAlign: "center",
+    lineHeight: 24,
+  },
+  bottomActions: {
+    paddingHorizontal: 24,
+    gap: 16,
+  },
+  glassCard: {
+    backgroundColor: "rgba(255,255,255,0.1)",
+    borderRadius: 16,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.1)",
+    marginBottom: 10,
   },
   tipRow: {
     flexDirection: "row",
+    alignItems: "center",
     gap: 12,
-    alignItems: "flex-start",
-    marginTop: 4,
-    padding: 14,
-    backgroundColor: Colors.accentMuted,
-    borderRadius: 14,
-  },
-  tipBadge: {
-    backgroundColor: Colors.accent,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 8,
-  },
-  tipLabel: {
-    fontSize: 12,
-    fontWeight: "800",
-    color: "#fff",
   },
   tipText: {
     flex: 1,
+    color: "rgba(255,255,255,0.9)",
     fontSize: 13,
-    color: Colors.textSecondary,
     lineHeight: 18,
+  },
+  primaryButton: {
+    borderRadius: 20,
+    shadowColor: Colors.primary,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.4,
+    shadowRadius: 16,
+    elevation: 8,
+  },
+  primaryGradient: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 18,
+    borderRadius: 20,
+    gap: 12,
+  },
+  primaryButtonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "700",
+    letterSpacing: 0.5,
+  },
+  secondaryButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 18,
+    borderRadius: 20,
+    backgroundColor: "rgba(255,255,255,0.1)",
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.2)",
+    gap: 12,
+  },
+  secondaryButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  buttonPressed: {
+    transform: [{ scale: 0.98 }],
+    opacity: 0.9,
   },
 });
