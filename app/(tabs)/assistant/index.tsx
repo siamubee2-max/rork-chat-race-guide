@@ -448,8 +448,8 @@ Question: ${messageText}`
           </View>
         )}
 
-        {messages.map((message) => (
-          <View key={message.id}>
+        {messages.map((message, messageIndex) => (
+          <View key={`${message.id || 'msg'}-${messageIndex}`}>
             {message.parts.map((part, index) => {
               if (part.type === "text") {
                 return (
