@@ -14,6 +14,7 @@ import { router, useLocalSearchParams, Stack } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Save, Trash2, Calendar as CalendarIcon } from "lucide-react-native";
 import { useCats, type WeightEntry } from "@/context/cats";
+import { generateUUID } from "@/utils/polyfills";
 
 export default function WeightFormScreen() {
   const { catId, weightId } = useLocalSearchParams<{ catId: string; weightId?: string }>();
@@ -56,7 +57,7 @@ export default function WeightFormScreen() {
     }
 
     const weightPayload: WeightEntry = {
-      id: isEditing && weightId ? weightId : crypto.randomUUID(),
+      id: isEditing && weightId ? weightId : generateUUID(),
       weight: weightValue,
       unit,
       date: date.trim(),

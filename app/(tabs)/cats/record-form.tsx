@@ -14,6 +14,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Save, Trash2, Calendar as CalendarIcon, Syringe, Stethoscope, Pill, HeartPulse, Bug } from "lucide-react-native";
 import { useCats, MedicalRecordType, MedicalRecord } from "@/context/cats";
+import { generateUUID } from "@/utils/polyfills";
 
 export default function RecordFormScreen() {
   const { catId, recordId } = useLocalSearchParams<{ catId: string; recordId: string }>();
@@ -54,7 +55,7 @@ export default function RecordFormScreen() {
     }
 
     const recordPayload: MedicalRecord = {
-      id: isEditing && recordId ? recordId : crypto.randomUUID(),
+      id: isEditing && recordId ? recordId : generateUUID(),
       type,
       title: title.trim(),
       date: date.trim(),

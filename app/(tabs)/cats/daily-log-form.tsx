@@ -14,6 +14,7 @@ import { router, useLocalSearchParams, Stack } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Save, Calendar as CalendarIcon, UtensilsCrossed, Droplets, Activity, Trash } from "lucide-react-native";
 import { useCats, type DailyLog } from "@/context/cats";
+import { generateUUID } from "@/utils/polyfills";
 
 type AppetiteLevel = "normal" | "increased" | "decreased" | "none";
 type WaterLevel = "normal" | "increased" | "decreased" | "none";
@@ -46,7 +47,7 @@ export default function DailyLogFormScreen() {
     }
 
     const logPayload: DailyLog = {
-      id: crypto.randomUUID(),
+      id: generateUUID(),
       date: date.trim(),
       appetite,
       water,
