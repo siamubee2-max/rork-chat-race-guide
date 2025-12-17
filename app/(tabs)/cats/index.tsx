@@ -110,6 +110,7 @@ export default function CatsListScreen() {
           cats.length === 0 && styles.listContentEmpty,
         ]}
         ListEmptyComponent={EmptyState}
+        contentInsetAdjustmentBehavior="automatic"
       />
 
       {cats.length > 0 && (

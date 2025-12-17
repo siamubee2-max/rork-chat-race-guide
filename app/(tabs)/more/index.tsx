@@ -184,6 +184,7 @@ export default function MoreScreen() {
         style={styles.scroll}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
+        contentInsetAdjustmentBehavior="automatic"
       >
         <View style={styles.header}>
           <View style={styles.profileCard}>
