@@ -1,62 +1,57 @@
 import { Platform } from 'react-native';
 
 if (Platform.OS === 'web') {
-  const cryptoPolyfill = {
-    getRandomValues: (array: Uint8Array) => {
-      if (typeof window !== 'undefined' && window.crypto && window.crypto.getRandomValues) {
-        return window.crypto.getRandomValues(array);
+  const needsCryptoPolyfill = () => {
+    try {
+      if (typeof globalThis !== 'undefined' && globalThis.crypto && typeof globalThis.crypto.getRandomValues === 'function') {
+        return false;
       }
-      for (let i = 0; i < array.length; i++) {
-        array[i] = Math.floor(Math.random() * 256);
+      if (typeof window !== 'undefined' && window.crypto && typeof window.crypto.getRandomValues === 'function') {
+        return false;
       }
-      return array;
-    },
-    randomUUID: () => {
-      if (typeof window !== 'undefined' && window.crypto && window.crypto.randomUUID) {
-        return window.crypto.randomUUID();
+      return true;
+    } catch {
+      return true;
+    }
+  };
+
+  if (needsCryptoPolyfill()) {
+    const cryptoPolyfill = {
+      getRandomValues: (array: Uint8Array) => {
+        for (let i = 0; i < array.length; i++) {
+          array[i] = Math.floor(Math.random() * 256);
+        }
+        return array;
+      },
+      randomUUID: () => {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+          const r = (Math.random() * 16) | 0;
+          const v = c === 'x' ? r : (r & 0x3) | 0x8;
+          return v.toString(16);
+        });
+      },
+      subtle: undefined,
+    } as any;
+
+    const targets = [
+      typeof global !== 'undefined' ? global : null,
+      typeof window !== 'undefined' ? window : null,
+      typeof globalThis !== 'undefined' ? globalThis : null,
+    ].filter(Boolean);
+
+    for (const target of targets) {
+      if (target && !(target as any).crypto) {
+        try {
+          Object.defineProperty(target, 'crypto', {
+            value: cryptoPolyfill,
+            writable: false,
+            configurable: false,
+            enumerable: true,
+          });
+        } catch {
+          // Property already exists or is not configurable
+        }
       }
-      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-        const r = (Math.random() * 16) | 0;
-        const v = c === 'x' ? r : (r & 0x3) | 0x8;
-        return v.toString(16);
-      });
-    },
-    subtle: typeof window !== 'undefined' && window.crypto ? window.crypto.subtle : undefined,
-  } as any;
-
-  try {
-    if (typeof global !== 'undefined' && !(global as any).crypto) {
-      Object.defineProperty(global, 'crypto', {
-        value: cryptoPolyfill,
-        writable: false,
-        configurable: true,
-      });
     }
-  } catch {
-    // crypto is already defined and read-only
-  }
-
-  try {
-    if (typeof window !== 'undefined' && !window.crypto) {
-      Object.defineProperty(window, 'crypto', {
-        value: cryptoPolyfill,
-        writable: false,
-        configurable: true,
-      });
-    }
-  } catch {
-    // crypto is already defined and read-only
-  }
-
-  try {
-    if (typeof globalThis !== 'undefined' && !(globalThis as any).crypto) {
-      Object.defineProperty(globalThis, 'crypto', {
-        value: cryptoPolyfill,
-        writable: false,
-        configurable: true,
-      });
-    }
-  } catch {
-    // crypto is already defined and read-only
   }
 }
