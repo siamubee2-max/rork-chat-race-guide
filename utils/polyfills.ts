@@ -24,19 +24,39 @@ if (Platform.OS === 'web') {
     subtle: typeof window !== 'undefined' && window.crypto ? window.crypto.subtle : undefined,
   } as any;
 
-  if (typeof global !== 'undefined') {
-    (global as any).crypto = cryptoPolyfill;
+  try {
+    if (typeof global !== 'undefined' && !(global as any).crypto) {
+      Object.defineProperty(global, 'crypto', {
+        value: cryptoPolyfill,
+        writable: false,
+        configurable: true,
+      });
+    }
+  } catch {
+    // crypto is already defined and read-only
   }
 
-  if (typeof window !== 'undefined') {
-    if (!window.crypto) {
-      (window as any).crypto = cryptoPolyfill;
+  try {
+    if (typeof window !== 'undefined' && !window.crypto) {
+      Object.defineProperty(window, 'crypto', {
+        value: cryptoPolyfill,
+        writable: false,
+        configurable: true,
+      });
     }
+  } catch {
+    // crypto is already defined and read-only
   }
 
-  if (typeof globalThis !== 'undefined') {
-    if (!(globalThis as any).crypto) {
-      (globalThis as any).crypto = cryptoPolyfill;
+  try {
+    if (typeof globalThis !== 'undefined' && !(globalThis as any).crypto) {
+      Object.defineProperty(globalThis, 'crypto', {
+        value: cryptoPolyfill,
+        writable: false,
+        configurable: true,
+      });
     }
+  } catch {
+    // crypto is already defined and read-only
   }
 }
