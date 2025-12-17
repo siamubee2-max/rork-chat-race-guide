@@ -263,4 +263,54 @@ export default {
     restorePurchases: "Restaurer mes achats",
     processing: "Traitement en cours...",
   },
+  nav: {
+    aboutTitle: "À propos",
+    notFoundTitle: "Introuvable",
+    tabs: {
+      home: "Accueil",
+      cats: "Mes Chats",
+      community: "Social",
+      assistant: "Assistant",
+      more: "Plus",
+    },
+    scanStack: {
+      title: "Scanner",
+      resultTitle: "Résultat",
+    },
+    breedsStack: {
+      title: "Races",
+      homeTitle: "Races de chats",
+      detailsTitle: "Détails",
+      breedersTitle: "Élevages",
+    },
+    catsStack: {
+      addCatTitle: "Ajouter un chat",
+      recordTitle: "Enregistrement",
+      healthTitle: "Santé",
+      weightTitle: "Poids",
+      weightChartTitle: "Évolution du poids",
+      dailyLogTitle: "Journal quotidien",
+    },
+    discussionsStack: {
+      forumTitle: "Forum",
+      discussionTitle: "Discussion",
+      newDiscussionTitle: "Nouvelle discussion",
+    },
+    assistantStack: {
+      assistantAiTitle: "Assistant IA",
+      insightsTitle: "Analyses IA",
+      photoAnalyzerTitle: "Analyseur Photo",
+      behaviorTitle: "Comportement",
+    },
+  },
+  notFound: {
+    heading: "Page introuvable",
+    subtitle: "Le lien que vous avez ouvert ne correspond à aucune page.",
+    cta: "Retour à l’accueil",
+  },
+  languageSelect: {
+    title: "Choisissez votre langue",
+    subtitle: "Sélectionnez la langue de l’application",
+    confirm: "Continuer",
+  },
 };

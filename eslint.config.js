@@ -14,12 +14,17 @@ const ignores = [
 ];
 
 module.exports = defineConfig([
+  {
+    ignores,
+  },
   ...expoConfig.map((c) => ({
     ...c,
     ignores: [...(c.ignores ?? []), ...ignores],
+  })),
+  {
+    files: ["**/*"],
     linterOptions: {
-      ...(c.linterOptions ?? {}),
       reportUnusedDisableDirectives: "off",
     },
-  })),
+  },
 ]);

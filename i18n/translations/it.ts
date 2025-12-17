@@ -141,4 +141,54 @@ export default {
     },
     footerText: "Tutti gli abbonamenti si rinnovano automaticamente. Puoi annullare in qualsiasi momento.",
   },
+  nav: {
+    aboutTitle: "Informazioni",
+    notFoundTitle: "Non trovato",
+    tabs: {
+      home: "Home",
+      cats: "I miei gatti",
+      community: "Social",
+      assistant: "Assistente",
+      more: "Altro",
+    },
+    scanStack: {
+      title: "Scansiona",
+      resultTitle: "Risultato",
+    },
+    breedsStack: {
+      title: "Razze",
+      homeTitle: "Razze di gatti",
+      detailsTitle: "Dettagli",
+      breedersTitle: "Allevatori",
+    },
+    catsStack: {
+      addCatTitle: "Aggiungi un gatto",
+      recordTitle: "Registrazione",
+      healthTitle: "Salute",
+      weightTitle: "Peso",
+      weightChartTitle: "Andamento del peso",
+      dailyLogTitle: "Registro giornaliero",
+    },
+    discussionsStack: {
+      forumTitle: "Forum",
+      discussionTitle: "Discussione",
+      newDiscussionTitle: "Nuova discussione",
+    },
+    assistantStack: {
+      assistantAiTitle: "Assistente IA",
+      insightsTitle: "Analisi IA",
+      photoAnalyzerTitle: "Analizzatore foto",
+      behaviorTitle: "Comportamento",
+    },
+  },
+  notFound: {
+    heading: "Pagina non trovata",
+    subtitle: "Il link che hai aperto non corrisponde a nessuna pagina.",
+    cta: "Torna alla home",
+  },
+  languageSelect: {
+    title: "Scegli la tua lingua",
+    subtitle: "Seleziona la lingua dell’app",
+    confirm: "Continua",
+  },
 };

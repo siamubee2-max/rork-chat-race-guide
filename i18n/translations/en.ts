@@ -175,4 +175,54 @@ export default {
     restorePurchases: "Restore purchases",
     processing: "Processing...",
   },
+  nav: {
+    aboutTitle: "About",
+    notFoundTitle: "Not found",
+    tabs: {
+      home: "Home",
+      cats: "My cats",
+      community: "Social",
+      assistant: "Assistant",
+      more: "More",
+    },
+    scanStack: {
+      title: "Scan",
+      resultTitle: "Result",
+    },
+    breedsStack: {
+      title: "Breeds",
+      homeTitle: "Cat breeds",
+      detailsTitle: "Details",
+      breedersTitle: "Breeders",
+    },
+    catsStack: {
+      addCatTitle: "Add a cat",
+      recordTitle: "Record",
+      healthTitle: "Health",
+      weightTitle: "Weight",
+      weightChartTitle: "Weight history",
+      dailyLogTitle: "Daily log",
+    },
+    discussionsStack: {
+      forumTitle: "Forum",
+      discussionTitle: "Discussion",
+      newDiscussionTitle: "New discussion",
+    },
+    assistantStack: {
+      assistantAiTitle: "AI Assistant",
+      insightsTitle: "AI Insights",
+      photoAnalyzerTitle: "Photo Analyzer",
+      behaviorTitle: "Behavior",
+    },
+  },
+  notFound: {
+    heading: "Page not found",
+    subtitle: "The link you opened doesn't match any page.",
+    cta: "Back to home",
+  },
+  languageSelect: {
+    title: "Choose your language",
+    subtitle: "Select the language for the app",
+    confirm: "Continue",
+  },
 };

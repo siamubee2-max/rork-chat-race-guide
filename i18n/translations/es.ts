@@ -94,4 +94,54 @@ export default {
     noAccount: "¿No tienes cuenta?",
     hasAccount: "¿Ya tienes una cuenta?",
   },
+  nav: {
+    aboutTitle: "Acerca de",
+    notFoundTitle: "No encontrado",
+    tabs: {
+      home: "Inicio",
+      cats: "Mis gatos",
+      community: "Social",
+      assistant: "Asistente",
+      more: "Más",
+    },
+    scanStack: {
+      title: "Escanear",
+      resultTitle: "Resultado",
+    },
+    breedsStack: {
+      title: "Razas",
+      homeTitle: "Razas de gatos",
+      detailsTitle: "Detalles",
+      breedersTitle: "Criadores",
+    },
+    catsStack: {
+      addCatTitle: "Añadir un gato",
+      recordTitle: "Registro",
+      healthTitle: "Salud",
+      weightTitle: "Peso",
+      weightChartTitle: "Evolución del peso",
+      dailyLogTitle: "Registro diario",
+    },
+    discussionsStack: {
+      forumTitle: "Foro",
+      discussionTitle: "Discusión",
+      newDiscussionTitle: "Nueva discusión",
+    },
+    assistantStack: {
+      assistantAiTitle: "Asistente IA",
+      insightsTitle: "Análisis IA",
+      photoAnalyzerTitle: "Analizador de fotos",
+      behaviorTitle: "Comportamiento",
+    },
+  },
+  notFound: {
+    heading: "Página no encontrada",
+    subtitle: "El enlace que abriste no coincide con ninguna página.",
+    cta: "Volver al inicio",
+  },
+  languageSelect: {
+    title: "Elige tu idioma",
+    subtitle: "Selecciona el idioma de la aplicación",
+    confirm: "Continuar",
+  },
 };
