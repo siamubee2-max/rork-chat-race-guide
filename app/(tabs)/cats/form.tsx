@@ -19,6 +19,7 @@ import { useTranslation } from "react-i18next";
 
 import { useCats } from "@/context/cats";
 import { BREEDS } from "@/constants/breeds";
+import { generateUUID } from "@/utils/polyfills";
 
 export default function CatFormScreen() {
   const { t } = useTranslation();
@@ -76,7 +77,7 @@ export default function CatFormScreen() {
     }
 
     const payload = {
-      id: isEditing && catId ? catId : crypto.randomUUID(),
+      id: isEditing && catId ? catId : generateUUID(),
       name: name.trim(),
       breedId: breedId || null,
       microchip: microchip.trim(),
