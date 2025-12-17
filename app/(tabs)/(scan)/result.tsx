@@ -286,7 +286,7 @@ Race: Persan | Confiance: Faible | Raison: Pelage long et épais visible.`;
     console.log("Navigating to breed details:", selectedId);
     
     // Use direct path string for better reliability across tabs
-    router.push(`/(tabs)/(breeds)/${selectedId}`);
+    router.push(`/(tabs)/(breeds)/${selectedId}` as any);
   }, [selectedId]);
 
   const selected = candidates.find((c) => c.id === selectedId) ?? null;
