@@ -307,7 +307,19 @@ Question: ${messageText}`
             body: formData,
           });
 
-          const data = await response.json();
+          if (!response.ok) {
+            throw new Error(`Transcription request failed: ${response.status}`);
+          }
+
+          const text = await response.text();
+          let data;
+          try {
+            data = JSON.parse(text);
+          } catch {
+            console.error("Failed to parse transcription response:", text.substring(0, 100));
+            throw new Error("Invalid response from transcription service");
+          }
+
           if (data.text) {
             setInput(data.text);
           }
