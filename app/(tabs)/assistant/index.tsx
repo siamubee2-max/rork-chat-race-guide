@@ -672,7 +672,7 @@ const styles = StyleSheet.create({
     flexShrink: 1,
   },
   userText: {
-    color: "#fff",
+    color: "#0B0A09",
   },
   assistantText: {
     color: Colors.text,
