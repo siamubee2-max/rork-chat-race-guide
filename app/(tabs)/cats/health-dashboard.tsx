@@ -1,6 +1,6 @@
-import React, { useMemo } from "react";
-import { View, Text, StyleSheet, ScrollView, Pressable, Alert } from "react-native";
-import { useLocalSearchParams, router, Stack } from "expo-router";
+import React, { useMemo, useLayoutEffect } from "react";
+import { View, Text, StyleSheet, ScrollView, Pressable } from "react-native";
+import { useLocalSearchParams, router, useNavigation } from "expo-router";
 import { 
   TrendingUp, 
   TrendingDown, 
@@ -13,42 +13,22 @@ import {
   Plus,
   Heart
 } from "lucide-react-native";
-import { useTranslation } from "react-i18next";
 import { useCats } from "@/context/cats";
-import { useAuth } from "@/context/auth";
 
 export default function HealthDashboardScreen() {
   const { catId } = useLocalSearchParams<{ catId: string }>();
   const { cats } = useCats();
-  const { t } = useTranslation();
-  const { currentUser } = useAuth();
+  const navigation = useNavigation();
   
   const cat = cats.find((c) => c.id === catId);
 
-  const hasHealthTracking = useMemo(() => {
-    if (!currentUser) return false;
-    return currentUser.subscriptionTier === 'premium_plus' || currentUser.addOns?.includes('health_tracking');
-  }, [currentUser]);
-
-  // Protect the route
-  React.useEffect(() => {
-    if (!hasHealthTracking && cat) {
-      Alert.alert(
-        t('subscription.features.healthTracking'),
-        t('subscription.addOns.healthTrackingDesc'),
-        [
-          { text: t('common.cancel'), style: 'cancel', onPress: () => router.back() },
-          {
-            text: t('subscription.subscribe'),
-            onPress: () => {
-              router.back();
-              setTimeout(() => router.push('/(tabs)/subscription' as any), 100);
-            },
-          }
-        ]
-      );
+  useLayoutEffect(() => {
+    if (cat) {
+      navigation.setOptions({
+        title: `Santé - ${cat.name}`,
+      });
     }
-  }, [hasHealthTracking, cat, t]);
+  }, [cat, navigation]);
 
   const weightHistory = useMemo(() => cat?.weightHistory ?? [], [cat]);
   const dailyLogs = useMemo(() => cat?.dailyLogs ?? [], [cat]);
@@ -165,10 +145,7 @@ export default function HealthDashboardScreen() {
   };
 
   return (
-    <>
-      <Stack.Screen options={{ title: `Santé - ${cat.name}` }} />
-      
-      <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
+    <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
         
         {healthAlerts.length > 0 && (
           <View style={styles.alertsSection}>
@@ -294,8 +271,7 @@ export default function HealthDashboardScreen() {
           </Pressable>
         </View>
 
-      </ScrollView>
-    </>
+    </ScrollView>
   );
 }
 

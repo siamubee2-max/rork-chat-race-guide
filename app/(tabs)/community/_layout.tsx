@@ -1,7 +1,10 @@
 import { Stack } from "expo-router";
+import { useTranslation } from "react-i18next";
 import { Colors } from "@/constants/colors";
 
 export default function CommunityLayout() {
+  const { t } = useTranslation();
+
   return (
     <Stack
       screenOptions={{
@@ -18,57 +21,57 @@ export default function CommunityLayout() {
       <Stack.Screen
         name="index"
         options={{
-          title: "Communauté",
+          title: t("community.title"),
         }}
       />
       <Stack.Screen
         name="new-post"
         options={{
-          title: "Nouvelle publication",
+          title: t("community.newPost"),
           presentation: "modal",
         }}
       />
       <Stack.Screen
         name="post/[postId]"
         options={{
-          title: "Publication",
+          title: t("community.post"),
         }}
       />
       <Stack.Screen
         name="events"
         options={{
-          title: "Événements",
+          title: t("community.events"),
         }}
       />
       <Stack.Screen
         name="new-event"
         options={{
-          title: "Nouvel événement",
+          title: t("community.newEvent"),
           presentation: "modal",
         }}
       />
       <Stack.Screen
         name="event/[eventId]"
         options={{
-          title: "Événement",
+          title: t("community.event"),
         }}
       />
       <Stack.Screen
         name="messages"
         options={{
-          title: "Messages",
+          title: t("community.messages"),
         }}
       />
       <Stack.Screen
         name="chat/[conversationId]"
         options={{
-          title: "Conversation",
+          title: t("community.conversation"),
         }}
       />
       <Stack.Screen
         name="profile/[userId]"
         options={{
-          title: "Profil",
+          title: t("community.profile"),
         }}
       />
     </Stack>

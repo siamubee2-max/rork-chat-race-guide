@@ -1,7 +1,10 @@
 import { Stack } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 export default function DiscussionsLayout() {
+  const { t } = useTranslation();
+
   return (
     <Stack
       screenOptions={{
@@ -14,19 +17,19 @@ export default function DiscussionsLayout() {
       <Stack.Screen
         name="index"
         options={{
-          title: "Forum",
+          title: t("discussions.forum"),
         }}
       />
       <Stack.Screen
         name="[discussionId]"
         options={{
-          title: "Discussion",
+          title: t("discussions.discussion"),
         }}
       />
       <Stack.Screen
         name="new"
         options={{
-          title: "Nouvelle discussion",
+          title: t("discussions.newDiscussion"),
           presentation: "modal",
         }}
       />

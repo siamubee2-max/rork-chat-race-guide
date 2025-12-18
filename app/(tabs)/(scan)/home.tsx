@@ -4,7 +4,7 @@ import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Haptics from "expo-haptics";
 import * as ImagePicker from "expo-image-picker";
-import { Camera, Sparkles, Upload, Info, ScanLine } from "lucide-react-native";
+import { Camera, Sparkles, Upload, Info } from "lucide-react-native";
 import {
   Alert,
   Platform,
@@ -12,18 +12,21 @@ import {
   StyleSheet,
   Text,
   View,
-  StatusBar
+  useWindowDimensions,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import { Colors } from "@/constants/colors";
 import { useScanImage } from "@/context/scan-image";
 
-const heroImageUri = "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=2043&auto=format&fit=crop";
+const heroImageUri =
+  "https://images.unsplash.com/photo-1495360010541-f48722b34f7d?auto=format&fit=crop&w=1200&q=80";
 
 export default function ScanHomeScreen() {
   const { t } = useTranslation();
+  const { width } = useWindowDimensions();
   const insets = useSafeAreaInsets();
+  const heroH = Math.max(260, Math.min(360, Math.round(width * 0.75))) + insets.top;
   const { setImage } = useScanImage();
 
   const pickImage = useCallback(async () => {
@@ -54,6 +57,7 @@ export default function ScanHomeScreen() {
     if (!result.canceled && result.assets[0]) {
       const asset = result.assets[0];
       if (asset.base64) {
+        console.log('Setting image from gallery, base64 length:', asset.base64.length);
         setImage(asset.uri, asset.base64);
         router.push("/(tabs)/(scan)/result" as any);
       } else {
@@ -96,6 +100,7 @@ export default function ScanHomeScreen() {
     if (!result.canceled && result.assets[0]) {
       const asset = result.assets[0];
       if (asset.base64) {
+        console.log('Setting image from camera, base64 length:', asset.base64.length);
         setImage(asset.uri, asset.base64);
         router.push("/(tabs)/(scan)/result" as any);
       } else {
@@ -104,82 +109,91 @@ export default function ScanHomeScreen() {
     }
   }, [t, setImage]);
 
+  const onAbout = useCallback(() => {
+    router.push("/modal");
+  }, []);
+
   return (
     <View style={styles.screen} testID="scanScreen">
-      <StatusBar barStyle="light-content" />
-      <View style={styles.bgContainer}>
-         <Image
+      <View style={[styles.hero, { height: heroH }]} testID="scanHero">
+        <Image
           source={{ uri: heroImageUri }}
-          style={styles.bgImage}
+          style={styles.heroImage}
           contentFit="cover"
-          transition={1000}
         />
         <LinearGradient
-          colors={["rgba(0,0,0,0.3)", "rgba(0,0,0,0.7)"]}
-          style={styles.bgOverlay}
+          colors={["transparent", "rgba(12,10,9,0.3)", "#0C0A09"]}
+          style={styles.heroGradient}
         />
+
+        <View style={[styles.heroTopRow, { top: insets.top + 16 }]}>
+          <View style={styles.brandPill}>
+            <Crown color={Colors.primary} size={16} />
+            <Text style={styles.brandText}>LUXE EDITION</Text>
+          </View>
+          <Pressable
+            onPress={onAbout}
+            style={({ pressed }) => [
+              styles.aboutBtn,
+              pressed && { opacity: 0.7 },
+            ]}
+          >
+            <Info color={Colors.ivory} size={20} />
+          </Pressable>
+        </View>
+
+        <View style={styles.heroCopy}>
+          <Text style={styles.preTitle}>INTELLIGENCE ARTIFICIELLE</Text>
+          <Text style={styles.heroTitle}>Décodez le mystère de son regard</Text>
+        </View>
       </View>
 
-      <View style={[styles.content, { paddingTop: insets.top + 20 }]}>
-        <View style={styles.header}>
-           <View style={styles.headerBrand}>
-             <ScanLine color="#fff" size={18} />
-             <Text style={styles.headerTitle}>SCANNER IA</Text>
-           </View>
-        </View>
-
-        <View style={styles.centerContent}>
-          <View style={styles.scannerFrame}>
-            <View style={styles.cornerTL} />
-            <View style={styles.cornerTR} />
-            <View style={styles.cornerBL} />
-            <View style={styles.cornerBR} />
-            
-            <View style={styles.scannerIconContainer}>
-              <Sparkles color="#fff" size={40} strokeWidth={1.5} />
+      <View style={styles.content}>
+        <View style={styles.mainActions}>
+          <Pressable
+            onPress={takePhoto}
+            style={({ pressed }) => [
+              styles.actionCard,
+              styles.primaryAction,
+              pressed && { transform: [{ scale: 0.98 }] },
+            ]}
+          >
+            <View style={styles.actionIconCircle}>
+              <Camera color="#0C0A09" size={28} />
             </View>
-          </View>
-          
-          <Text style={styles.mainTitle}>{t('scan.title')}</Text>
-          <Text style={styles.subTitle}>{t('scan.subtitle')}</Text>
+            <Text style={styles.actionTitleLight}>{t("scan.takePhoto")}</Text>
+            <Text style={styles.actionSubtitleLight}>Instantané</Text>
+          </Pressable>
+
+          <Pressable
+            onPress={pickImage}
+            style={({ pressed }) => [
+              styles.actionCard,
+              styles.secondaryAction,
+              pressed && { transform: [{ scale: 0.98 }] },
+            ]}
+          >
+            <View style={styles.actionIconCircleSecondary}>
+              <Upload color={Colors.primary} size={24} />
+            </View>
+            <Text style={styles.actionTitle}>{t("scan.choosePhoto")}</Text>
+            <Text style={styles.actionSubtitle}>Galerie</Text>
+          </Pressable>
         </View>
 
-        <View style={[styles.bottomActions, { paddingBottom: insets.bottom + 20 }]}>
-           <View style={styles.glassCard}>
-              <View style={styles.tipRow}>
-                <Info color="rgba(255,255,255,0.8)" size={16} />
-                <Text style={styles.tipText}>{t('scan.tipText')}</Text>
-              </View>
-           </View>
+        <View style={styles.bentoSection}>
+          <View style={styles.bentoLarge}>
+            <View style={styles.bentoHeader}>
+              <Sparkles color={Colors.primary} size={20} />
+              <Text style={styles.bentoTitle}>{t("scan.recognitionTitle")}</Text>
+            </View>
+            <Text style={styles.bentoText}>{t("scan.recognitionText")}</Text>
+          </View>
 
-           <Pressable
-              onPress={takePhoto}
-              style={({ pressed }) => [
-                styles.primaryButton,
-                pressed && styles.buttonPressed
-              ]}
-           >
-             <LinearGradient
-                colors={[Colors.primary, "#D06040"]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-                style={styles.primaryGradient}
-             >
-                <Camera color="#fff" size={24} />
-                <Text style={styles.primaryButtonText}>{t('scan.takePhoto')}</Text>
-             </LinearGradient>
-           </Pressable>
-
-           <Pressable
-              onPress={pickImage}
-              style={({ pressed }) => [
-                styles.secondaryButton,
-                pressed && styles.buttonPressed
-              ]}
-           >
-              <Upload color="#fff" size={20} />
-              <Text style={styles.secondaryButtonText}>{t('scan.choosePhoto')}</Text>
-           </Pressable>
+          <View style={styles.tipCard}>
+            <Text style={styles.tipLabel}>{t("scan.tip")}</Text>
+            <Text style={styles.tipContent}>{t("scan.tipText")}</Text>
+          </View>
         </View>
       </View>
     </View>
@@ -189,150 +203,197 @@ export default function ScanHomeScreen() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: "#000",
+    backgroundColor: Colors.background,
   },
-  bgContainer: {
+  hero: {
+    position: "relative",
+    width: "100%",
+  },
+  heroImage: {
     ...StyleSheet.absoluteFillObject,
   },
-  bgImage: {
-    flex: 1,
-    opacity: 0.8,
-  },
-  bgOverlay: {
+  heroGradient: {
     ...StyleSheet.absoluteFillObject,
   },
-  content: {
-    flex: 1,
-    justifyContent: "space-between",
-  },
-  header: {
+  heroTopRow: {
+    position: "absolute",
+    left: 24,
+    right: 24,
     flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 20,
-    paddingVertical: 10,
   },
-  headerBrand: {
+  brandPill: {
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
-    backgroundColor: "rgba(0,0,0,0.3)",
-    paddingHorizontal: 16,
+    backgroundColor: "rgba(12, 10, 9, 0.5)",
+    paddingHorizontal: 14,
     paddingVertical: 8,
-    borderRadius: 20,
+    borderRadius: 100,
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.1)",
+    borderColor: "rgba(212, 160, 92, 0.3)",
   },
-  headerTitle: {
-    color: "#fff",
-    fontSize: 12,
-    fontWeight: "700",
+  brandText: {
+    color: Colors.ivory,
+    fontSize: 11,
+    fontWeight: "800",
+    letterSpacing: 1.5,
+  },
+  aboutBtn: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: "rgba(253, 249, 239, 0.1)",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "rgba(253, 249, 239, 0.2)",
+  },
+  heroCopy: {
+    position: "absolute",
+    bottom: 30,
+    left: 24,
+    right: 24,
+  },
+  preTitle: {
+    color: Colors.primary,
+    fontSize: 11,
+    fontWeight: "800",
     letterSpacing: 2,
+    marginBottom: 6,
   },
-  centerContent: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 30,
-  },
-  scannerFrame: {
-    width: 200,
-    height: 200,
-    marginBottom: 40,
-    justifyContent: "center",
-    alignItems: "center",
-    position: "relative",
-  },
-  cornerTL: { position: "absolute", top: 0, left: 0, width: 40, height: 40, borderTopWidth: 4, borderLeftWidth: 4, borderColor: "#fff", borderTopLeftRadius: 20 },
-  cornerTR: { position: "absolute", top: 0, right: 0, width: 40, height: 40, borderTopWidth: 4, borderRightWidth: 4, borderColor: "#fff", borderTopRightRadius: 20 },
-  cornerBL: { position: "absolute", bottom: 0, left: 0, width: 40, height: 40, borderBottomWidth: 4, borderLeftWidth: 4, borderColor: "#fff", borderBottomLeftRadius: 20 },
-  cornerBR: { position: "absolute", bottom: 0, right: 0, width: 40, height: 40, borderBottomWidth: 4, borderRightWidth: 4, borderColor: "#fff", borderBottomRightRadius: 20 },
-  scannerIconContainer: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    backgroundColor: "rgba(255,255,255,0.1)",
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.2)",
-  },
-  mainTitle: {
+  heroTitle: {
+    color: Colors.ivory,
     fontSize: 32,
-    fontWeight: "300",
-    color: "#fff",
-    textAlign: "center",
-    marginBottom: 12,
-    fontFamily: Platform.select({ ios: "Georgia", android: "serif" }),
+    fontWeight: "900",
+    lineHeight: 38,
+    letterSpacing: -0.5,
   },
-  subTitle: {
-    fontSize: 16,
-    color: "rgba(255,255,255,0.8)",
-    textAlign: "center",
-    lineHeight: 24,
-  },
-  bottomActions: {
-    paddingHorizontal: 24,
-    gap: 16,
-  },
-  glassCard: {
-    backgroundColor: "rgba(255,255,255,0.1)",
-    borderRadius: 16,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.1)",
-    marginBottom: 10,
-  },
-  tipRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-  },
-  tipText: {
+  content: {
     flex: 1,
-    color: "rgba(255,255,255,0.9)",
-    fontSize: 13,
-    lineHeight: 18,
+    paddingHorizontal: 24,
+    paddingTop: 10,
+    gap: 20,
   },
-  primaryButton: {
-    borderRadius: 20,
+  mainActions: {
+    flexDirection: "row",
+    gap: 16,
+    height: 180,
+  },
+  actionCard: {
+    flex: 1,
+    borderRadius: 30,
+    padding: 20,
+    justifyContent: "flex-end",
+    gap: 4,
+  },
+  primaryAction: {
+    backgroundColor: Colors.primary,
     shadowColor: Colors.primary,
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.4,
-    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.3,
+    shadowRadius: 20,
     elevation: 8,
   },
-  primaryGradient: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 18,
-    borderRadius: 20,
-    gap: 12,
-  },
-  primaryButtonText: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "700",
-    letterSpacing: 0.5,
-  },
-  secondaryButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 18,
-    borderRadius: 20,
-    backgroundColor: "rgba(255,255,255,0.1)",
+  secondaryAction: {
+    backgroundColor: Colors.backgroundSecondary,
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.2)",
-    gap: 12,
+    borderColor: Colors.border,
   },
-  secondaryButtonText: {
-    color: "#fff",
-    fontSize: 16,
+  actionIconCircle: {
+    position: "absolute",
+    top: 20,
+    right: 20,
+    width: 54,
+    height: 54,
+    borderRadius: 27,
+    backgroundColor: "rgba(253, 249, 239, 0.25)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  actionIconCircleSecondary: {
+    position: "absolute",
+    top: 20,
+    right: 20,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: "rgba(212, 160, 92, 0.1)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  actionTitleLight: {
+    color: "#0C0A09",
+    fontSize: 18,
+    fontWeight: "800",
+  },
+  actionSubtitleLight: {
+    color: "rgba(12, 10, 9, 0.6)",
+    fontSize: 13,
     fontWeight: "600",
   },
-  buttonPressed: {
-    transform: [{ scale: 0.98 }],
-    opacity: 0.9,
+  actionTitle: {
+    color: Colors.ivory,
+    fontSize: 18,
+    fontWeight: "800",
+  },
+  actionSubtitle: {
+    color: Colors.textMuted,
+    fontSize: 13,
+    fontWeight: "600",
+  },
+  bentoSection: {
+    gap: 16,
+  },
+  bentoLarge: {
+    backgroundColor: Colors.backgroundSecondary,
+    borderRadius: 28,
+    padding: 24,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    gap: 12,
+  },
+  bentoHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  bentoTitle: {
+    color: Colors.ivory,
+    fontSize: 18,
+    fontWeight: "800",
+  },
+  bentoText: {
+    color: Colors.textSecondary,
+    fontSize: 14,
+    lineHeight: 22,
+  },
+  tipCard: {
+    backgroundColor: "rgba(212, 160, 92, 0.08)",
+    borderRadius: 24,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: "rgba(212, 160, 92, 0.2)",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 16,
+  },
+  tipLabel: {
+    backgroundColor: Colors.primary,
+    color: "#0C0A09",
+    fontSize: 10,
+    fontWeight: "900",
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 6,
+    letterSpacing: 1,
+  },
+  tipContent: {
+    flex: 1,
+    color: Colors.primaryLight,
+    fontSize: 13,
+    fontWeight: "600",
+    lineHeight: 18,
   },
 });

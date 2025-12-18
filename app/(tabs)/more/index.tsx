@@ -1,6 +1,7 @@
 import React from "react";
 import { router } from "expo-router";
 import * as Haptics from "expo-haptics";
+import { useTranslation } from "react-i18next";
 import {
   Cat,
   Stethoscope,
@@ -36,6 +37,7 @@ interface MenuItem {
 
 export default function MoreScreen() {
   const { currentUser } = useAuth();
+  const { t } = useTranslation();
 
   const handleNavigation = async (route: string) => {
     try {
@@ -46,104 +48,104 @@ export default function MoreScreen() {
 
   const menuSections: { title: string; items: MenuItem[] }[] = [
     {
-      title: "Découvrir",
+      title: t("more.discover"),
       items: [
         {
           id: "breeds",
           icon: <Cat color={Colors.primary} size={22} />,
-          title: "Races de Chats",
-          subtitle: "Explorez 200+ races",
+          title: t("more.catBreeds"),
+          subtitle: t("more.exploreBreeds"),
           route: "/(tabs)/(breeds)/home",
           color: Colors.primaryMuted,
         },
         {
           id: "breeders",
           icon: <Users color="#8B7355" size={22} />,
-          title: "Éleveurs",
-          subtitle: "Trouvez des éleveurs certifiés",
+          title: t("more.breeders"),
+          subtitle: t("more.findBreeders"),
           route: "/(tabs)/(breeds)/breeders",
           color: "rgba(139, 115, 85, 0.15)",
         },
       ],
     },
     {
-      title: "Santé & Urgence",
+      title: t("more.healthEmergency"),
       items: [
         {
           id: "emergency",
           icon: <Stethoscope color="#D45B5B" size={22} />,
-          title: "Urgence Vétérinaire",
-          subtitle: "Contacts et conseils d'urgence",
-          route: "/(tabs)/emergency",
+          title: t("more.vetEmergency"),
+          subtitle: t("more.emergencyContacts"),
+          route: "/(tabs)/emergency/index",
           color: "rgba(212, 91, 91, 0.15)",
           badge: "SOS",
         },
         {
           id: "vets",
           icon: <BookOpen color="#5B8FD4" size={22} />,
-          title: "Vétérinaires",
-          subtitle: "Trouvez un vétérinaire près de vous",
-          route: "/(tabs)/vets",
+          title: t("more.veterinarians"),
+          subtitle: t("more.findVet"),
+          route: "/(tabs)/vets/index",
           color: "rgba(91, 143, 212, 0.15)",
         },
       ],
     },
     {
-      title: "Outils Pratiques",
+      title: t("more.practicalTools"),
       items: [
         {
           id: "practical",
           icon: <Wrench color="#8E7CC3" size={22} />,
-          title: "Outils Pratiques",
-          subtitle: "Rappels, budget, courses...",
-          route: "/(tabs)/practical",
+          title: t("more.practicalTools"),
+          subtitle: t("more.toolsSubtitle"),
+          route: "/(tabs)/practical/index",
           color: "rgba(142, 124, 195, 0.15)",
         },
         {
           id: "discussions",
           icon: <MessageCircle color="#E89C3F" size={22} />,
-          title: "Forum",
-          subtitle: "Posez vos questions",
-          route: "/(tabs)/discussions",
+          title: t("more.forum"),
+          subtitle: t("more.askQuestions"),
+          route: "/(tabs)/discussions/index",
           color: "rgba(232, 156, 63, 0.15)",
         },
       ],
     },
     {
-      title: "Gamification",
+      title: t("more.gamification"),
       items: [
         {
           id: "gamification",
           icon: <Trophy color="#D4A65D" size={22} />,
-          title: "Profil & Réalisations",
-          subtitle: "Défis, badges et classement",
-          route: "/(tabs)/gamification",
+          title: t("more.profileAchievements"),
+          subtitle: t("more.challengesBadges"),
+          route: "/(tabs)/gamification/index",
           color: "rgba(212, 166, 93, 0.15)",
         },
       ],
     },
     {
-      title: "Premium",
+      title: t("more.premium"),
       items: [
         {
           id: "subscription",
           icon: <Crown color="#D4775C" size={22} />,
-          title: "Purrly Premium",
-          subtitle: "Accès illimité aux fonctionnalités",
-          route: "/(tabs)/subscription",
+          title: t("more.purrlyPremium"),
+          subtitle: t("more.unlimitedAccess"),
+          route: "/(tabs)/subscription/index",
           color: "rgba(212, 119, 92, 0.15)",
           badge: "PRO",
         },
       ],
     },
     {
-      title: "Paramètres",
+      title: t("more.settings"),
       items: [
         {
           id: "language",
           icon: <Languages color={Colors.textSecondary} size={22} />,
-          title: "Langue",
-          subtitle: "Changer la langue de l'app",
+          title: t("more.language"),
+          subtitle: t("more.changeLanguage"),
           route: "/modal",
           color: Colors.backgroundSecondary,
         },
@@ -184,7 +186,6 @@ export default function MoreScreen() {
         style={styles.scroll}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
-        contentInsetAdjustmentBehavior="automatic"
       >
         <View style={styles.header}>
           <View style={styles.profileCard}>
@@ -193,7 +194,7 @@ export default function MoreScreen() {
             </View>
             <View style={styles.profileInfo}>
               <Text style={styles.profileName}>
-                {currentUser?.name || "Utilisateur"}
+                {currentUser?.name || t("more.user")}
               </Text>
               <Text style={styles.profileEmail}>{currentUser?.email}</Text>
             </View>
@@ -212,7 +213,7 @@ export default function MoreScreen() {
         <View style={styles.footer}>
           <Text style={styles.footerText}>Purrly v1.0.0</Text>
           <Text style={styles.footerSubtext}>
-            Fait avec ❤️ pour les amoureux des chats
+            {t("more.madeWithLove")}
           </Text>
         </View>
       </ScrollView>
@@ -232,61 +233,66 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
   header: {
-    padding: 20,
-    paddingTop: 24,
+    padding: 24,
+    paddingTop: 32,
   },
   profileCard: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 14,
-    backgroundColor: Colors.backgroundCard,
-    padding: 16,
-    borderRadius: 20,
+    gap: 18,
+    backgroundColor: Colors.backgroundSecondary,
+    padding: 20,
+    borderRadius: 30,
     borderWidth: 1,
     borderColor: Colors.border,
-    shadowColor: Colors.text,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 8,
-    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.1,
+    shadowRadius: 20,
+    elevation: 5,
   },
   profileIcon: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
+    width: 64,
+    height: 64,
+    borderRadius: 32,
     backgroundColor: Colors.primary,
     alignItems: "center",
     justifyContent: "center",
+    shadowColor: Colors.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
   },
   profileInfo: {
     flex: 1,
   },
   profileName: {
-    fontSize: 17,
-    fontWeight: "800",
-    color: Colors.text,
+    fontSize: 20,
+    fontWeight: "900",
+    color: Colors.ivory,
+    letterSpacing: -0.5,
   },
   profileEmail: {
     fontSize: 14,
-    color: Colors.textSecondary,
+    color: Colors.textMuted,
     marginTop: 2,
   },
   section: {
-    marginBottom: 28,
+    marginBottom: 32,
   },
   sectionTitle: {
-    fontSize: 13,
-    fontWeight: "800",
-    color: Colors.textMuted,
+    fontSize: 11,
+    fontWeight: "900",
+    color: Colors.primary,
     textTransform: "uppercase",
-    letterSpacing: 0.5,
-    marginLeft: 24,
-    marginBottom: 12,
+    letterSpacing: 2,
+    marginLeft: 32,
+    marginBottom: 16,
   },
   sectionContent: {
-    backgroundColor: Colors.backgroundCard,
-    marginHorizontal: 20,
-    borderRadius: 20,
+    backgroundColor: Colors.backgroundSecondary,
+    marginHorizontal: 24,
+    borderRadius: 30,
     borderWidth: 1,
     borderColor: Colors.border,
     overflow: "hidden",
@@ -294,17 +300,20 @@ const styles = StyleSheet.create({
   menuItem: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 16,
-    gap: 14,
+    padding: 18,
+    gap: 16,
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
   },
   menuIcon: {
     width: 48,
     height: 48,
-    borderRadius: 14,
+    borderRadius: 16,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "rgba(253, 249, 239, 0.03)",
+    borderWidth: 1,
+    borderColor: "rgba(253, 249, 239, 0.08)",
   },
   menuContent: {
     flex: 1,
@@ -312,16 +321,16 @@ const styles = StyleSheet.create({
   menuTitleRow: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
+    gap: 10,
   },
   menuTitle: {
     fontSize: 16,
-    fontWeight: "700",
-    color: Colors.text,
+    fontWeight: "800",
+    color: Colors.ivory,
   },
   menuSubtitle: {
     fontSize: 13,
-    color: Colors.textSecondary,
+    color: Colors.textMuted,
     marginTop: 2,
   },
   badge: {
@@ -332,21 +341,23 @@ const styles = StyleSheet.create({
   },
   badgeText: {
     fontSize: 10,
-    fontWeight: "800",
-    color: "#fff",
+    fontWeight: "900",
+    color: "#0C0A09",
   },
   footer: {
     alignItems: "center",
-    paddingVertical: 24,
+    paddingVertical: 40,
   },
   footerText: {
-    fontSize: 13,
-    fontWeight: "600",
+    fontSize: 12,
+    fontWeight: "900",
     color: Colors.textMuted,
+    letterSpacing: 2,
   },
   footerSubtext: {
     fontSize: 12,
     color: Colors.textMuted,
-    marginTop: 4,
+    marginTop: 6,
+    opacity: 0.6,
   },
 });

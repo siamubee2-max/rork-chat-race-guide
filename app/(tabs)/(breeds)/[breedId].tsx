@@ -1,5 +1,5 @@
-import React, { useMemo } from "react";
-import { Stack, useLocalSearchParams, router } from "expo-router";
+import React, { useMemo, useLayoutEffect } from "react";
+import { useLocalSearchParams, router, useNavigation } from "expo-router";
 import { Image } from "expo-image";
 import { HeartPulse, PawPrint, Salad, ShieldAlert, Globe } from "lucide-react-native";
 import {
@@ -68,11 +68,18 @@ function BulletList({ items, testID }: { items: string[]; testID?: string }) {
 
 export default function BreedDetailsScreen() {
   const params = useLocalSearchParams<Params>();
+  const navigation = useNavigation();
 
   const breed = useMemo((): BreedProfile | null => {
     const id = toId(params.breedId);
     return getBreedById(id);
   }, [params.breedId]);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: breed?.name ?? "Détails",
+    });
+  }, [breed, navigation]);
 
   return (
     <ScrollView
@@ -81,11 +88,6 @@ export default function BreedDetailsScreen() {
       showsVerticalScrollIndicator={false}
       testID="breedDetailsScreen"
     >
-      <Stack.Screen
-        options={{
-          title: breed?.name ?? "Détails",
-        }}
-      />
 
       {breed ? (
         <>

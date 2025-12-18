@@ -1,22 +1,19 @@
-import { Link, Stack } from "expo-router";
+import { Link } from "expo-router";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 export default function NotFoundScreen() {
   return (
-    <>
-      <Stack.Screen options={{ title: "Introuvable" }} />
-      <View style={styles.container} testID="notFoundScreen">
-        <Text style={styles.title}>Page introuvable</Text>
-        <Text style={styles.subtitle}>
-          Le lien que vous avez ouvert ne correspond à aucune page.
-        </Text>
+    <View style={styles.container} testID="notFoundScreen">
+      <Text style={styles.title}>Page introuvable</Text>
+      <Text style={styles.subtitle}>
+        Le lien que vous avez ouvert ne correspond à aucune page.
+      </Text>
 
-        <Link href="/" style={styles.link} testID="notFoundGoHome">
-          <Text style={styles.linkText}>Retour à l’accueil</Text>
-        </Link>
-      </View>
-    </>
+      <Link href="/" style={styles.link} testID="notFoundGoHome">
+        <Text style={styles.linkText}>Retour à l'accueil</Text>
+      </Link>
+    </View>
   );
 }
 

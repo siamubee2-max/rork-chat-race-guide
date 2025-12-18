@@ -1,203 +1,81 @@
-import React, { useState, useMemo, useCallback } from "react";
-import { StyleSheet, View, Text, Platform, TouchableOpacity, ScrollView, Linking, Alert } from "react-native";
+import React, { useState, useMemo, useEffect, useLayoutEffect } from "react";
+import { StyleSheet, View, Text, Platform, TouchableOpacity, ScrollView } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE, PROVIDER_DEFAULT } from "react-native-maps";
-import { useLocalSearchParams, Stack } from "expo-router";
+import { useLocalSearchParams, useNavigation } from "expo-router";
 import { Image } from "expo-image";
 import { MapPin, Phone, Star, Navigation } from "lucide-react-native";
 import { BlurView } from "expo-blur";
 import { SafeAreaView } from "react-native-safe-area-context";
+import * as Location from "expo-location";
 
 import { BREEDERS, type Breeder } from "@/constants/breeders";
 import { getBreedById } from "@/constants/breeds";
 import { Colors } from "@/constants/colors";
-import { useUserLocation } from "@/context/user-location";
-
-function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
-  const R = 6371;
-  const dLat = (lat2 - lat1) * Math.PI / 180;
-  const dLon = (lon2 - lon1) * Math.PI / 180;
-  const a = 
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-    Math.sin(dLon / 2) * Math.sin(dLon / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c;
-}
-
-function formatDistance(km: number): string {
-  if (km < 1) {
-    return `${Math.round(km * 1000)} m`;
-  }
-  if (km >= 1000) {
-    return `${Math.round(km)} km`;
-  }
-  return `${km.toFixed(1)} km`;
-}
 
 export default function BreedersScreen() {
   const params = useLocalSearchParams<{ breedId?: string }>();
-  const { coords, address, permission, error: locationError, locateOnce, isLocating } = useUserLocation();
+  const navigation = useNavigation();
   
   const [selectedBreeder, setSelectedBreeder] = useState<Breeder | null>(null);
-  const [hasAskedPermission, setHasAskedPermission] = useState(false);
 
-  const handleRequestLocation = useCallback(() => {
-    console.log("[BreedersScreen] user requested location");
-    setHasAskedPermission(true);
-    void locateOnce();
-  }, [locateOnce]);
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: "Élevages",
+    });
+  }, [navigation]);
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status === "granted") {
+        await Location.getCurrentPositionAsync({});
+      }
+    })();
+  }, []);
 
   const breedId = params.breedId;
   const breed = getBreedById(breedId);
   
-  const sortedAndFilteredBreeders = useMemo(() => {
-    const filtered = breedId ? BREEDERS.filter(b => b.breedId === breedId) : BREEDERS;
-    
-    if (!coords) return filtered.map(b => ({ ...b, distance: undefined }));
-    
-    return filtered
-      .map(breeder => ({
-        ...breeder,
-        distance: calculateDistance(
-          coords.latitude,
-          coords.longitude,
-          breeder.latitude,
-          breeder.longitude
-        ),
-      }))
-      .sort((a, b) => (a.distance ?? Infinity) - (b.distance ?? Infinity));
-  }, [breedId, coords]);
+  const filteredBreeders = useMemo(() => {
+    if (!breedId) return BREEDERS;
+    return BREEDERS.filter(b => b.breedId === breedId);
+  }, [breedId]);
 
   const initialRegion = useMemo(() => {
-    if (coords) {
+    if (filteredBreeders.length > 0) {
+      // Center on the first breeder or calculate centroid
+      // For simplicity, let's just take the first one
       return {
-        latitude: coords.latitude,
-        longitude: coords.longitude,
+        latitude: filteredBreeders[0].latitude,
+        longitude: filteredBreeders[0].longitude,
         latitudeDelta: 10,
         longitudeDelta: 10,
       };
     }
-    if (sortedAndFilteredBreeders.length > 0) {
-      return {
-        latitude: sortedAndFilteredBreeders[0].latitude,
-        longitude: sortedAndFilteredBreeders[0].longitude,
-        latitudeDelta: 10,
-        longitudeDelta: 10,
-      };
-    }
+    // Default to a view of Europe/Atlantic if no breeders or general view
     return {
       latitude: 40,
       longitude: -30,
       latitudeDelta: 60,
       longitudeDelta: 60,
     };
-  }, [sortedAndFilteredBreeders, coords]);
+  }, [filteredBreeders]);
 
-  const handleRelocate = useCallback(() => {
-    console.log("[BreedersScreen] handleRelocate");
-    void locateOnce();
-  }, [locateOnce]);
-
-  const webLocationLine = useMemo(() => {
-    if (permission === "denied") return "Localisation refusée.";
-    if (permission === "unavailable") return "Localisation indisponible.";
-    if (locationError?.message) return locationError.message;
-
-    const label = address?.label;
-    if (!label && !coords) return "Localisation en cours…";
-    if (label) return `Votre position: ${label}`;
-    return `Votre position: ${coords?.latitude.toFixed(6)}, ${coords?.longitude.toFixed(6)}`;
-  }, [address?.label, coords, locationError?.message, permission]);
-
-  const handleCall = (phone: string) => {
-    if (Platform.OS === 'web') {
-      Alert.alert(
-        "Appeler",
-        `Composez ce numéro : ${phone}`,
-        [{ text: "OK" }]
-      );
-    } else {
-      Linking.openURL(`tel:${phone}`);
-    }
-  };
-
-  const handleNavigate = async (latitude: number, longitude: number) => {
-    const googleMapsWebUrl = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
-    
-    if (Platform.OS === 'web') {
-      Linking.openURL(googleMapsWebUrl).catch(() => {
-        Alert.alert("Erreur", "Impossible d'ouvrir Google Maps");
-      });
-      return;
-    }
-    
-    if (Platform.OS === 'android') {
-      const googleMapsAppUrl = `google.navigation:q=${latitude},${longitude}`;
-      try {
-        const canOpen = await Linking.canOpenURL(googleMapsAppUrl);
-        if (canOpen) {
-          await Linking.openURL(googleMapsAppUrl);
-          return;
-        }
-      } catch {}
-    }
-    
-    // Toujours ouvrir Google Maps web (évite Apple Maps sur iOS)
-    Linking.openURL(googleMapsWebUrl).catch(() => {
-      Alert.alert("Erreur", "Impossible d'ouvrir Google Maps");
-    });
-  };
-
-  // Web + iOS Fallback
-  if (Platform.OS !== "android") {
+  // Web Fallback
+  if (Platform.OS === "web") {
     return (
       <View style={styles.container}>
-        <Stack.Screen options={{ title: "Élevages" }} />
         <SafeAreaView edges={["top"]} style={styles.webContainer}>
           <Text style={styles.webTitle}>
             Élevages {breed ? `de ${breed.name}` : "dans le monde"}
           </Text>
           <Text style={styles.webSubtitle}>
-             {Platform.OS === "web"
-               ? "Découvrez les meilleurs élevages sélectionnés pour vous. Utilisez l'application mobile pour la carte interactive."
-               : "Sur iPhone, la carte intégrée utilise Apple Plans. Utilisez plutôt les boutons Google Maps ci-dessous."}
+             Découvrez les meilleurs élevages sélectionnés pour vous.
+             Utilisez l&apos;application mobile pour la carte interactive.
           </Text>
-
-          {!hasAskedPermission && permission === "unknown" ? (
-            <View style={styles.permissionCard}>
-              <View style={styles.permissionIcon}>
-                <MapPin size={28} color={Colors.primary} />
-              </View>
-              <Text style={styles.permissionTitle}>Autoriser la localisation</Text>
-              <Text style={styles.permissionText}>
-                Pour trier les élevages du plus proche au plus éloigné.
-              </Text>
-              <TouchableOpacity
-                testID="breeders-request-location"
-                onPress={handleRequestLocation}
-                style={styles.permissionBtn}
-              >
-                <Navigation size={16} color="white" />
-                <Text style={styles.permissionBtnText}>
-                  {isLocating ? "Localisation..." : "Me localiser"}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          ) : (
-            <View style={styles.locationRow}>
-              <Text style={styles.locationText}>{webLocationLine}</Text>
-              <TouchableOpacity
-                testID="breeders-relocate"
-                onPress={handleRelocate}
-                style={styles.locationBtn}
-              >
-                <Text style={styles.locationBtnText}>{isLocating ? "..." : "Actualiser"}</Text>
-              </TouchableOpacity>
-            </View>
-          )}
           
           <ScrollView contentContainerStyle={styles.listContainer}>
-            {sortedAndFilteredBreeders.map((breeder) => (
+            {filteredBreeders.map((breeder) => (
               <View key={breeder.id} style={styles.card}>
                 <Image source={{ uri: breeder.imageUri }} style={styles.webCardImage} contentFit="cover" />
                 <View style={styles.webCardContent}>
@@ -211,12 +89,6 @@ export default function BreedersScreen() {
                       <MapPin size={16} color="#666" />
                       <Text style={styles.cardText}>{breeder.city}, {breeder.country}</Text>
                     </View>
-                    {breeder.distance !== undefined && (
-                      <View style={styles.distanceBadge}>
-                        <Navigation size={14} color={Colors.primary} />
-                        <Text style={styles.distanceText}>{formatDistance(breeder.distance)}</Text>
-                      </View>
-                    )}
                     <View style={styles.cardInfo}>
                       <Phone size={16} color="#666" />
                       <Text style={styles.cardText}>{breeder.phone}</Text>
@@ -224,7 +96,7 @@ export default function BreedersScreen() {
                 </View>
               </View>
             ))}
-            {sortedAndFilteredBreeders.length === 0 && (
+            {filteredBreeders.length === 0 && (
                 <Text style={styles.emptyText}>Aucun élevage trouvé pour cette sélection.</Text>
             )}
           </ScrollView>
@@ -235,16 +107,6 @@ export default function BreedersScreen() {
 
   return (
     <View style={styles.container}>
-      <Stack.Screen 
-        options={{ 
-            headerTitle: breed ? `Élevages ${breed.name}` : "Élevages Monde",
-            headerTransparent: true,
-            headerBlurEffect: "regular",
-            headerStyle: {
-                backgroundColor: Platform.OS === 'android' ? 'rgba(255,255,255,0.9)' : undefined
-            }
-        }} 
-      />
       
       <MapView
         style={styles.map}
@@ -254,7 +116,7 @@ export default function BreedersScreen() {
         showsMyLocationButton={true}
         rotateEnabled={false}
       >
-        {sortedAndFilteredBreeders.map((breeder) => (
+        {filteredBreeders.map((breeder) => (
           <Marker
             key={breeder.id}
             coordinate={{
@@ -305,9 +167,9 @@ export default function BreedersScreen() {
                         </Text>
                     </View>
 
-                    <View style={styles.breederLocationRow}>
+                    <View style={styles.locationRow}>
                         <MapPin size={14} color="#666" />
-                        <Text style={styles.breederLocationText}>{selectedBreeder.city}, {selectedBreeder.country}</Text>
+                        <Text style={styles.locationText}>{selectedBreeder.city}, {selectedBreeder.country}</Text>
                     </View>
                 </View>
             </View>
@@ -315,18 +177,12 @@ export default function BreedersScreen() {
             <View style={styles.divider} />
 
             <View style={styles.actionButtons}>
-              <TouchableOpacity 
-                style={[styles.actionButton, styles.callButton]}
-                onPress={() => handleCall(selectedBreeder.phone)}
-              >
+              <TouchableOpacity style={[styles.actionButton, styles.callButton]}>
                 <Phone size={18} color="white" />
                 <Text style={styles.actionButtonText}>Contacter</Text>
               </TouchableOpacity>
               
-              <TouchableOpacity 
-                style={[styles.actionButton, styles.routeButton]}
-                onPress={() => handleNavigate(selectedBreeder.latitude, selectedBreeder.longitude)}
-              >
+              <TouchableOpacity style={[styles.actionButton, styles.routeButton]}>
                 <Navigation size={18} color="white" />
                 <Text style={styles.actionButtonText}>Itinéraire</Text>
               </TouchableOpacity>
@@ -397,98 +253,6 @@ const styles = StyleSheet.create({
     color: '#999',
     fontSize: 16,
     marginTop: 40,
-  },
-  locationRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: 12,
-    paddingVertical: 12,
-    paddingHorizontal: 14,
-    borderRadius: 14,
-    backgroundColor: "rgba(255,255,255,0.9)",
-    borderWidth: 1,
-    borderColor: "rgba(0,0,0,0.06)",
-    marginBottom: 14,
-  },
-  locationText: {
-    flex: 1,
-    fontSize: 13,
-    color: "#444",
-    lineHeight: 18,
-  },
-  locationBtn: {
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 999,
-    backgroundColor: Colors.primary,
-  },
-  locationBtnText: {
-    color: "white",
-    fontWeight: "700",
-    fontSize: 13,
-  },
-  permissionCard: {
-    backgroundColor: 'white',
-    borderRadius: 16,
-    padding: 20,
-    alignItems: 'center',
-    marginBottom: 14,
-    borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.06)',
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    elevation: 3,
-  },
-  permissionIcon: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: `${Colors.primary}15`,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 12,
-  },
-  permissionTitle: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#1a1a1a',
-    marginBottom: 6,
-  },
-  permissionText: {
-    fontSize: 13,
-    color: '#666',
-    textAlign: 'center',
-    lineHeight: 18,
-    marginBottom: 16,
-  },
-  permissionBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    backgroundColor: Colors.primary,
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderRadius: 999,
-  },
-  permissionBtnText: {
-    color: 'white',
-    fontWeight: '700',
-    fontSize: 14,
-  },
-  distanceBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    marginTop: 4,
-    marginBottom: 4,
-  },
-  distanceText: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: Colors.primary,
   },
   
   // Marker Styles
@@ -643,12 +407,12 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     marginLeft: 6,
   },
-  breederLocationRow: {
+  locationRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
   },
-  breederLocationText: {
+  locationText: {
     fontSize: 14,
     color: "#666",
   },

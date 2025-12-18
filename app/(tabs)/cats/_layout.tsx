@@ -1,11 +1,14 @@
 import { Stack } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 export default function CatsLayout() {
+  const { t } = useTranslation();
+
   return (
     <Stack
       screenOptions={{
-        headerBackTitle: "Retour",
+        headerBackTitle: t("cats.back"),
         headerShadowVisible: false,
         headerTitleStyle: {
           fontWeight: "700",
@@ -15,7 +18,7 @@ export default function CatsLayout() {
       <Stack.Screen
         name="index"
         options={{
-          title: "Mes Chats",
+          title: t("cats.title"),
           headerLargeTitle: true,
         }}
       />
@@ -23,21 +26,21 @@ export default function CatsLayout() {
         name="form"
         options={{
           presentation: "modal",
-          title: "Ajouter un chat",
+          title: t("cats.addCat"),
         }}
       />
       <Stack.Screen
         name="[catId]"
         options={{
           title: "",
-          headerBackTitle: "Mes Chats",
+          headerBackTitle: t("cats.title"),
         }}
       />
       <Stack.Screen
         name="record-form"
         options={{
           presentation: "modal",
-          title: "Enregistrement",
+          title: t("cats.record"),
         }}
       />
       <Stack.Screen

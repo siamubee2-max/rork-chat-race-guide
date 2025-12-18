@@ -1,10 +1,8 @@
-import React, { useMemo } from "react";
-import { View, Text, StyleSheet, ScrollView, Pressable, Dimensions, Alert } from "react-native";
-import { useLocalSearchParams, router, Stack } from "expo-router";
+import React, { useMemo, useLayoutEffect, useCallback } from "react";
+import { View, Text, StyleSheet, ScrollView, Pressable, Dimensions } from "react-native";
+import { useLocalSearchParams, router, useNavigation } from "expo-router";
 import { TrendingUp, TrendingDown, Plus, Edit3 } from "lucide-react-native";
 import { useCats } from "@/context/cats";
-import { useTranslation } from "react-i18next";
-import { useAuth } from "@/context/auth";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const CHART_WIDTH = SCREEN_WIDTH - 60;
@@ -13,35 +11,26 @@ const CHART_HEIGHT = 220;
 export default function WeightChartScreen() {
   const { catId } = useLocalSearchParams<{ catId: string }>();
   const { cats } = useCats();
-  const { t } = useTranslation();
-  const { currentUser } = useAuth();
+  const navigation = useNavigation();
   
   const cat = cats.find((c) => c.id === catId);
 
-  const hasHealthTracking = useMemo(() => {
-    if (!currentUser) return false;
-    return currentUser.subscriptionTier === 'premium_plus' || currentUser.addOns?.includes('health_tracking');
-  }, [currentUser]);
+  const onAddWeight = useCallback(() => {
+    router.push({ pathname: "/cats/weight-form" as any, params: { catId: cat?.id } });
+  }, [cat?.id]);
 
-  // Protect the route
-  React.useEffect(() => {
-    if (!hasHealthTracking && cat) {
-      Alert.alert(
-        t('subscription.features.healthTracking'),
-        t('subscription.addOns.healthTrackingDesc'),
-        [
-          { text: t('common.cancel'), style: 'cancel', onPress: () => router.back() },
-          {
-            text: t('subscription.subscribe'),
-            onPress: () => {
-              router.back();
-              setTimeout(() => router.push('/(tabs)/subscription' as any), 100);
-            },
-          }
-        ]
-      );
+  useLayoutEffect(() => {
+    if (cat) {
+      navigation.setOptions({
+        title: `Évolution du poids - ${cat.name}`,
+        headerRight: () => (
+          <Pressable onPress={onAddWeight} style={({ pressed }) => ({ opacity: pressed ? 0.5 : 1 })}>
+            <Plus size={24} color="#007AFF" />
+          </Pressable>
+        ),
+      });
     }
-  }, [hasHealthTracking, cat, t]);
+  }, [cat, navigation, onAddWeight]);
 
   const weightHistory = useMemo(() => {
     if (!cat?.weightHistory) return [];
@@ -93,10 +82,6 @@ export default function WeightChartScreen() {
     return { diff, unit: latest.unit };
   }, [weightHistory]);
 
-  const onAddWeight = () => {
-    router.push({ pathname: "/cats/weight-form" as any, params: { catId: cat?.id } });
-  };
-
   const onEditWeight = (weightId: string) => {
     router.push({ pathname: "/cats/weight-form" as any, params: { catId: cat?.id, weightId } });
   };
@@ -110,19 +95,7 @@ export default function WeightChartScreen() {
   }
 
   return (
-    <>
-      <Stack.Screen 
-        options={{ 
-          title: `Évolution du poids - ${cat.name}`,
-          headerRight: () => (
-            <Pressable onPress={onAddWeight} style={({ pressed }) => ({ opacity: pressed ? 0.5 : 1 })}>
-              <Plus size={24} color="#007AFF" />
-            </Pressable>
-          ),
-        }} 
-      />
-      
-      <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
+    <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
         
         {chartData && chartData.length > 0 ? (
           <>
@@ -220,8 +193,7 @@ export default function WeightChartScreen() {
           </View>
         )}
 
-      </ScrollView>
-    </>
+    </ScrollView>
   );
 }
 

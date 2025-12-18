@@ -1,7 +1,10 @@
 import { Stack } from "expo-router";
+import { useTranslation } from "react-i18next";
 import { Colors } from "@/constants/colors";
 
 export default function GamificationLayout() {
+  const { t } = useTranslation();
+
   return (
     <Stack
       screenOptions={{
@@ -21,25 +24,25 @@ export default function GamificationLayout() {
       <Stack.Screen
         name="index"
         options={{
-          title: "Mon Profil",
+          title: t("gamification.profile"),
         }}
       />
       <Stack.Screen
         name="achievements"
         options={{
-          title: "Succès",
+          title: t("gamification.achievementsTitle"),
         }}
       />
       <Stack.Screen
         name="challenges"
         options={{
-          title: "Défis",
+          title: t("gamification.challengesTitle"),
         }}
       />
       <Stack.Screen
         name="leaderboard"
         options={{
-          title: "Classement",
+          title: t("gamification.leaderboard"),
         }}
       />
     </Stack>

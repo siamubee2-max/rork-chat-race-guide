@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import {
   View,
   Text,
@@ -10,9 +10,10 @@ import {
   Alert,
   TextInput,
 } from "react-native";
-import { router, useLocalSearchParams, Stack } from "expo-router";
+import { router, useLocalSearchParams, useNavigation } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Save, Calendar as CalendarIcon, UtensilsCrossed, Droplets, Activity, Trash } from "lucide-react-native";
+import { useTranslation } from "react-i18next";
 import { useCats, type DailyLog } from "@/context/cats";
 import { generateUUID } from "@/utils/polyfills";
 import { useTranslation } from "react-i18next";
@@ -29,6 +30,8 @@ export default function DailyLogFormScreen() {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation();
+  const { t } = useTranslation();
 
   const hasHealthTracking = React.useMemo(() => {
     if (!currentUser) return false;
@@ -56,6 +59,12 @@ export default function DailyLogFormScreen() {
 
   const cat = cats.find((c) => c.id === catId);
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: t("dailyLog.title"),
+    });
+  }, [navigation, t]);
+
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [appetite, setAppetite] = useState<AppetiteLevel>("normal");
   const [water, setWater] = useState<WaterLevel>("normal");
@@ -70,7 +79,7 @@ export default function DailyLogFormScreen() {
   const onSave = async () => {
     if (!cat) return;
     if (!date.trim()) {
-      Alert.alert("Erreur", "La date est obligatoire");
+      Alert.alert(t("common.error"), t("dailyLog.dateRequired"));
       return;
     }
 
@@ -95,7 +104,7 @@ export default function DailyLogFormScreen() {
       await updateCat({ ...cat, dailyLogs: updatedLogs });
       router.back();
     } catch {
-      Alert.alert("Erreur", "Impossible de sauvegarder");
+      Alert.alert(t("common.error"), t("dailyLog.saveError"));
     }
   };
 
@@ -143,10 +152,7 @@ export default function DailyLogFormScreen() {
   );
 
   return (
-    <>
-      <Stack.Screen options={{ title: "Log quotidien" }} />
-      
-      <View style={styles.screen}>
+    <View style={styles.screen}>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={{ flex: 1 }}
@@ -155,7 +161,7 @@ export default function DailyLogFormScreen() {
           <ScrollView contentContainerStyle={[styles.scrollContent, { paddingBottom: insets.bottom + 100 }]}>
             
             <View style={styles.formGroup}>
-              <Text style={styles.label}>Date</Text>
+              <Text style={styles.label}>{t("dailyLog.date")}</Text>
               <View style={styles.dateContainer}>
                 <CalendarIcon size={18} color="#666" style={styles.dateIcon} />
                 <TextInput
@@ -253,7 +259,6 @@ export default function DailyLogFormScreen() {
           </Pressable>
         </View>
       </View>
-    </>
   );
 }
 

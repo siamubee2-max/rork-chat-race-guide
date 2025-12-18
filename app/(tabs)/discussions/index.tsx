@@ -10,21 +10,31 @@ import {
   type ListRenderItem,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useTranslation } from "react-i18next";
 
 import { useDiscussions, type Discussion } from "@/context/discussions";
 
-const CATEGORIES = [
-  { id: "general", label: "Général", color: "#4A90E2" },
-  { id: "health", label: "Santé", color: "#E85D75" },
-  { id: "behavior", label: "Comportement", color: "#9B59B6" },
-  { id: "nutrition", label: "Alimentation", color: "#F39C12" },
-  { id: "advice", label: "Conseils", color: "#1ABC9C" },
-];
+const CATEGORY_COLORS: Record<string, string> = {
+  general: "#4A90E2",
+  health: "#E85D75",
+  behavior: "#9B59B6",
+  nutrition: "#F39C12",
+  advice: "#1ABC9C",
+};
 
 export default function DiscussionsScreen() {
   const { discussions, isLoading } = useDiscussions();
   const insets = useSafeAreaInsets();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const { t, i18n } = useTranslation();
+
+  const CATEGORIES = [
+    { id: "general", label: t("discussions.categories.general"), color: "#4A90E2" },
+    { id: "health", label: t("discussions.categories.health"), color: "#E85D75" },
+    { id: "behavior", label: t("discussions.categories.behavior"), color: "#9B59B6" },
+    { id: "nutrition", label: t("discussions.categories.nutrition"), color: "#F39C12" },
+    { id: "advice", label: t("discussions.categories.advice"), color: "#1ABC9C" },
+  ];
 
   const formatDate = (date: string) => {
     const d = new Date(date);
@@ -34,15 +44,15 @@ export default function DiscussionsScreen() {
     const diffHours = Math.floor(diffMs / 3600000);
     const diffDays = Math.floor(diffMs / 86400000);
 
-    if (diffMins < 1) return "À l'instant";
+    if (diffMins < 1) return t("discussions.justNow");
     if (diffMins < 60) return `${diffMins}m`;
     if (diffHours < 24) return `${diffHours}h`;
     if (diffDays < 7) return `${diffDays}j`;
-    return d.toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
+    return d.toLocaleDateString(i18n.language, { day: "numeric", month: "short" });
   };
 
   const getCategoryColor = (categoryId: string) => {
-    return CATEGORIES.find((c) => c.id === categoryId)?.color || "#999";
+    return CATEGORY_COLORS[categoryId] || "#999";
   };
 
   const getCategoryLabel = (categoryId: string) => {
@@ -95,9 +105,9 @@ export default function DiscussionsScreen() {
       <View style={styles.emptyIcon}>
         <MessageCircle color="#ccc" size={48} />
       </View>
-      <Text style={styles.emptyTitle}>Aucune discussion</Text>
+      <Text style={styles.emptyTitle}>{t("discussions.noDiscussions")}</Text>
       <Text style={styles.emptyText}>
-        Soyez le premier à démarrer une conversation !
+        {t("discussions.beFirstToStart")}
       </Text>
     </View>
   );
@@ -106,7 +116,7 @@ export default function DiscussionsScreen() {
     return (
       <View style={styles.screen}>
         <View style={styles.loadingContainer}>
-          <Text style={styles.loadingText}>Chargement...</Text>
+          <Text style={styles.loadingText}>{t("common.loading")}</Text>
         </View>
       </View>
     );

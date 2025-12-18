@@ -19,6 +19,11 @@ export class ErrorBoundary extends React.PureComponent<Props, State> {
   }
 
   componentDidCatch(error: unknown, info: unknown) {
+    // #region agent log
+    const errorMsg = error instanceof Error ? error.message : String(error);
+    const infoStr = typeof info === 'object' ? JSON.stringify(info) : String(info);
+    fetch('http://127.0.0.1:7242/ingest/bd03eb35-54e1-47b5-a23a-c26416383972',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'ErrorBoundary.tsx:21',message:'ErrorBoundary caught error',data:{error:errorMsg,info:infoStr},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'F'})}).catch(()=>{});
+    // #endregion
     console.log("[ErrorBoundary] error", error);
     console.log("[ErrorBoundary] info", info);
   }
@@ -44,7 +49,7 @@ export class ErrorBoundary extends React.PureComponent<Props, State> {
         </View>
         <Pressable
           onPress={this.onReset}
-          style={({ pressed }) => [styles.btn, pressed ? { opacity: 0.9 } : null]}
+          style={({ pressed }: { pressed: boolean }) => [styles.btn, pressed ? { opacity: 0.9 } : null]}
           testID="errorBoundaryRetry"
         >
           <Text style={styles.btnText}>Réessayer</Text>

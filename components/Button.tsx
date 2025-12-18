@@ -219,24 +219,31 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   primaryText: {
-    color: "#fff",
+    color: "#0C0A09",
+    letterSpacing: 0.5,
   },
   secondaryText: {
     color: Colors.primary,
+    letterSpacing: 0.5,
   },
   outlineText: {
     color: Colors.text,
+    letterSpacing: 0.5,
   },
   ghostText: {
     color: Colors.primary,
+    letterSpacing: 0.5,
   },
   smallText: {
-    fontSize: 13,
+    fontSize: 12,
+    fontWeight: "800",
   },
   mediumText: {
     fontSize: 15,
+    fontWeight: "800",
   },
   largeText: {
     fontSize: 17,
+    fontWeight: "800",
   },
 });

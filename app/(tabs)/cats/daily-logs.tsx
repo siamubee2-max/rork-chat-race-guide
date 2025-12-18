@@ -1,49 +1,33 @@
-import React from "react";
-import { View, Text, StyleSheet, ScrollView, Pressable, Alert } from "react-native";
-import { useLocalSearchParams, router, Stack } from "expo-router";
+import React, { useLayoutEffect, useCallback } from "react";
+import { View, Text, StyleSheet, ScrollView, Pressable } from "react-native";
+import { useLocalSearchParams, router, useNavigation } from "expo-router";
 import { Plus, Calendar, UtensilsCrossed, Droplets, Activity, Trash, AlertTriangle } from "lucide-react-native";
 import { useCats } from "@/context/cats";
-import { useTranslation } from "react-i18next";
-import { useAuth } from "@/context/auth";
 
 export default function DailyLogsScreen() {
   const { catId } = useLocalSearchParams<{ catId: string }>();
   const { cats } = useCats();
-  const { t } = useTranslation();
-  const { currentUser } = useAuth();
+  const navigation = useNavigation();
   
   const cat = cats.find((c) => c.id === catId);
-
-  const hasHealthTracking = React.useMemo(() => {
-    if (!currentUser) return false;
-    return currentUser.subscriptionTier === 'premium_plus' || currentUser.addOns?.includes('health_tracking');
-  }, [currentUser]);
-
-  // Protect the route
-  React.useEffect(() => {
-    if (!hasHealthTracking && cat) {
-      Alert.alert(
-        t('subscription.features.healthTracking'),
-        t('subscription.addOns.healthTrackingDesc'),
-        [
-          { text: t('common.cancel'), style: 'cancel', onPress: () => router.back() },
-          {
-            text: t('subscription.subscribe'),
-            onPress: () => {
-              router.back();
-              setTimeout(() => router.push('/(tabs)/subscription' as any), 100);
-            },
-          }
-        ]
-      );
-    }
-  }, [hasHealthTracking, cat, t]);
-
   const dailyLogs = cat?.dailyLogs ?? [];
 
-  const onAddLog = () => {
+  const onAddLog = useCallback(() => {
     router.push({ pathname: "/cats/daily-log-form" as any, params: { catId: cat?.id } });
-  };
+  }, [cat?.id]);
+
+  useLayoutEffect(() => {
+    if (cat) {
+      navigation.setOptions({
+        title: `Logs quotidiens - ${cat.name}`,
+        headerRight: () => (
+          <Pressable onPress={onAddLog} style={({ pressed }) => ({ opacity: pressed ? 0.5 : 1 })}>
+            <Plus size={24} color="#007AFF" />
+          </Pressable>
+        ),
+      });
+    }
+  }, [cat, navigation, onAddLog]);
 
   const getStatusColor = (value: string) => {
     if (value === "normal") return "#34C759";
@@ -72,19 +56,7 @@ export default function DailyLogsScreen() {
   }
 
   return (
-    <>
-      <Stack.Screen 
-        options={{ 
-          title: `Logs quotidiens - ${cat.name}`,
-          headerRight: () => (
-            <Pressable onPress={onAddLog} style={({ pressed }) => ({ opacity: pressed ? 0.5 : 1 })}>
-              <Plus size={24} color="#007AFF" />
-            </Pressable>
-          ),
-        }} 
-      />
-      
-      <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
+    <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
         
         {dailyLogs.length === 0 ? (
           <View style={styles.emptyState}>
@@ -185,8 +157,7 @@ export default function DailyLogsScreen() {
           </>
         )}
 
-      </ScrollView>
-    </>
+    </ScrollView>
   );
 }
 

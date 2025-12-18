@@ -1,8 +1,11 @@
 import { Stack } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Colors } from "@/constants/colors";
 
 export default function AssistantLayout() {
+  const { t } = useTranslation();
+
   return (
     <Stack
       screenOptions={{
@@ -19,25 +22,25 @@ export default function AssistantLayout() {
       <Stack.Screen
         name="index"
         options={{
-          title: "Assistant IA",
+          title: t("assistant.aiAssistant"),
         }}
       />
       <Stack.Screen
         name="insights"
         options={{
-          title: "Analyses IA",
+          title: t("assistant.aiAnalysis"),
         }}
       />
       <Stack.Screen
         name="photo-analyzer"
         options={{
-          title: "Analyseur Photo",
+          title: t("assistant.photoAnalyzer"),
         }}
       />
       <Stack.Screen
         name="behavior"
         options={{
-          title: "Comportement",
+          title: t("assistant.behavior"),
         }}
       />
     </Stack>

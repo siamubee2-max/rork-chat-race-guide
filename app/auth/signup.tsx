@@ -10,7 +10,7 @@ import {
   ScrollView,
   Alert,
 } from "react-native";
-import { router, Stack } from "expo-router";
+import { router } from "expo-router";
 import { UserPlus } from "lucide-react-native";
 import { useAuth } from "@/context/auth";
 
@@ -58,7 +58,6 @@ export default function SignupScreen() {
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <Stack.Screen options={{ title: "Inscription" }} />
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"

@@ -1,450 +1,342 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "expo-image";
-import { 
-  BookOpen, 
-  ScanLine, 
-  MessageCircle, 
-  Stethoscope,
-  Sparkles,
-  ArrowRight,
-  Cat
-} from "lucide-react-native";
-import { 
-  Animated, 
-  Pressable, 
-  StyleSheet, 
-  Text, 
-  View, 
-  ScrollView,
-  Dimensions,
-  Platform,
-  StatusBar
-} from "react-native";
+import { BookOpen, Crown, ScanLine, Sparkles } from "lucide-react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth";
 import { useLanguage } from "@/context/language";
+import { catQuotes } from "@/constants/quotes";
 import { Colors } from "@/constants/colors";
 
-const { width } = Dimensions.get("window");
-const COLUMN_WIDTH = (width - 48) / 2;
-
-const heroUri = "https://images.unsplash.com/photo-1513245543132-31f507417b26?q=80&w=1935&auto=format&fit=crop";
+const heroUri =
+  "https://images.unsplash.com/photo-1504595403659-9088ce801e29?auto=format&fit=crop&w=1400&q=80";
 
 export default function Index() {
   const { t } = useTranslation();
   const { isAuthenticated, isLoading } = useAuth();
   const { hasSelectedLanguage, isLoading: isLanguageLoading } = useLanguage();
   const insets = useSafeAreaInsets();
-  
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const slideAnim = useRef(new Animated.Value(40)).current;
-  const scaleAnim = useRef(new Animated.Value(0.95)).current;
+
+  const randomQuote = useMemo(
+    () => catQuotes[Math.floor(Math.random() * catQuotes.length)],
+    []
+  );
 
   useEffect(() => {
-    if (isAuthenticated && !isLoading && !isLanguageLoading) {
-      Animated.parallel([
-        Animated.timing(fadeAnim, {
-          toValue: 1,
-          duration: 800,
-          useNativeDriver: true,
-        }),
-        Animated.spring(slideAnim, {
-          toValue: 0,
-          friction: 8,
-          tension: 40,
-          useNativeDriver: true,
-        }),
-        Animated.timing(scaleAnim, {
-          toValue: 1,
-          duration: 800,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    }
-  }, [isAuthenticated, isLoading, isLanguageLoading, fadeAnim, slideAnim, scaleAnim]);
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/bd03eb35-54e1-47b5-a23a-c26416383972',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.tsx:29',message:'Index mounted',data:{isAuthenticated,isLoading,hasSelectedLanguage,isLanguageLoading},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'G'})}).catch(()=>{});
+    // #endregion
+    console.log("[Index] mounted", { isAuthenticated, isLoading, hasSelectedLanguage, isLanguageLoading });
+  }, [isAuthenticated, isLoading, hasSelectedLanguage, isLanguageLoading]);
 
   useEffect(() => {
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/bd03eb35-54e1-47b5-a23a-c26416383972',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.tsx:33',message:'Index navigation check',data:{isLanguageLoading,hasSelectedLanguage,isLoading,isAuthenticated},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'H'})}).catch(()=>{});
+    // #endregion
     if (!isLanguageLoading && !hasSelectedLanguage) {
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/bd03eb35-54e1-47b5-a23a-c26416383972',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.tsx:36',message:'Redirecting to language-select',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'H'})}).catch(()=>{});
+      // #endregion
+      console.log("[Index] redirecting to language-select");
       router.replace("/language-select" as any);
       return;
     }
     
     if (!isLoading && !isLanguageLoading && !isAuthenticated) {
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/bd03eb35-54e1-47b5-a23a-c26416383972',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.tsx:42',message:'Redirecting to login',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'H'})}).catch(()=>{});
+      // #endregion
+      console.log("[Index] redirecting to login");
       router.replace("/auth/login" as any);
     }
   }, [isLoading, isAuthenticated, hasSelectedLanguage, isLanguageLoading]);
 
-  const navigate = useCallback((route: string) => {
-    router.replace(route as any);
+  const goScan = useCallback(() => {
+    console.log("[Index] goScan");
+    router.replace("/(tabs)/(scan)/home" as any);
+  }, []);
+
+  const goBreeds = useCallback(() => {
+    console.log("[Index] goBreeds");
+    router.replace("/(tabs)/(breeds)/home" as any);
   }, []);
 
   if (isLoading || isLanguageLoading || !isAuthenticated) {
-    return (
-      <View style={styles.loadingScreen}>
-        <View style={styles.loadingLogo}>
-           <Cat color={Colors.primary} size={48} />
-        </View>
-      </View>
-    );
+    return <View style={styles.screen} />;
   }
 
   return (
-    <View style={styles.container} testID="indexScreen">
-      <StatusBar barStyle="light-content" />
-      
-      <ScrollView 
-        style={styles.scrollView}
-        contentContainerStyle={{ paddingBottom: 120 }}
-        showsVerticalScrollIndicator={false}
-        bounces={false}
-      >
-        <View style={styles.heroSection}>
-          <Image 
-            source={{ uri: heroUri }} 
-            style={styles.heroImage} 
-            contentFit="cover"
-            transition={500}
-          />
-          <LinearGradient
-            colors={["rgba(0,0,0,0.1)", "rgba(0,0,0,0.6)"]}
-            style={styles.heroOverlay}
-          />
-          
-          <View style={[styles.heroContent, { paddingTop: insets.top + 20 }]}>
-            <View style={styles.headerRow}>
-              <View style={styles.logoBadge}>
-                <Cat color="#fff" size={16} />
-                <Text style={styles.logoText}>PURRLY</Text>
-              </View>
-            </View>
-            
-            <Animated.View style={{ opacity: fadeAnim, transform: [{ translateY: slideAnim }] }}>
-              <Text style={styles.heroTitle}>L&apos;excellence{"\n"}pour votre félin</Text>
-              <Text style={styles.heroSubtitle}>
-                Découvrez, comprenez et prenez soin de votre compagnon avec élégance.
-              </Text>
-            </Animated.View>
+    <View style={styles.screen} testID="indexScreen">
+      <View style={styles.hero} testID="indexHero">
+        <Image source={{ uri: heroUri }} style={styles.heroImg} contentFit="cover" />
+        <LinearGradient
+          colors={["transparent", "rgba(12,10,9,0.4)", "#0C0A09"]}
+          locations={[0, 0.4, 0.9]}
+          style={styles.heroGrad}
+        />
+        
+        <View style={[styles.header, { top: insets.top + 20 }]}>
+          <View style={styles.brandPill}>
+            <Crown color={Colors.primary} size={18} />
+            <Text style={styles.brandText}>PURRLY</Text>
+          </View>
+          <View style={styles.premiumPill}>
+            <Text style={styles.premiumText}>COLLECTION</Text>
           </View>
         </View>
 
-        <Animated.View 
-          style={[
-            styles.contentContainer,
-            { 
-              opacity: fadeAnim,
-              transform: [{ translateY: slideAnim }]
-            }
-          ]}
-        >
-          {/* Main Action Card */}
-          <Pressable
-            onPress={() => navigate("/(tabs)/(scan)/home")}
-            style={({ pressed }) => [
-              styles.mainCard,
-              pressed && styles.cardPressed
-            ]}
-          >
-            <LinearGradient
-              colors={[Colors.primary, "#C06850"]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.mainCardGradient}
-            >
-              <View style={styles.mainCardContent}>
-                <View style={styles.mainCardIcon}>
-                  <ScanLine color="#fff" size={32} />
-                </View>
-                <View style={styles.mainCardText}>
-                  <Text style={styles.mainCardTitle}>{t('index.scan')}</Text>
-                  <Text style={styles.mainCardSubtitle}>Identification de race par IA</Text>
-                </View>
-                <View style={styles.arrowCircle}>
-                  <ArrowRight color={Colors.primary} size={20} />
-                </View>
-              </View>
-            </LinearGradient>
-          </Pressable>
-
-          {/* Quick Access Grid */}
-          <Text style={styles.sectionHeader}>Univers Purrly</Text>
+        <View style={styles.heroCopy}>
+          <Text style={styles.preTitle}>L&apos;ART DE LA GÉNÉTIQUE</Text>
+          <Text style={styles.title}>Le prestige dans chaque regard</Text>
+          <Text style={styles.subtitle}>
+            Découvrez l&apos;élégance pure à travers notre intelligence artificielle dédiée à l&apos;univers félin.
+          </Text>
           
-          <View style={styles.grid}>
-            <Pressable 
-              onPress={() => navigate("/(tabs)/(breeds)/home")}
-              style={({ pressed }) => [styles.gridItem, pressed && styles.cardPressed]}
+          <View style={styles.ctaContainer}>
+            <Pressable
+              onPress={goScan}
+              style={({ pressed }) => [
+                styles.primaryBtn,
+                pressed && { transform: [{ scale: 0.98 }], opacity: 0.9 },
+              ]}
             >
-              <View style={[styles.iconContainer, { backgroundColor: "#FFF5F0" }]}>
-                <BookOpen color={Colors.primary} size={24} />
-              </View>
-              <Text style={styles.gridTitle}>Encyclopédie</Text>
-              <Text style={styles.gridSub}>Toutes les races</Text>
+              <ScanLine color="#0C0A09" size={22} />
+              <Text style={styles.primaryBtnText}>Reconnaître une race</Text>
             </Pressable>
-
-            <Pressable 
-              onPress={() => navigate("/(tabs)/cats")}
-              style={({ pressed }) => [styles.gridItem, pressed && styles.cardPressed]}
+            
+            <Pressable
+              onPress={goBreeds}
+              style={({ pressed }) => [
+                styles.secondaryBtn,
+                pressed && { opacity: 0.8 },
+              ]}
             >
-              <View style={[styles.iconContainer, { backgroundColor: "#F0F7ED" }]}>
-                <Stethoscope color={Colors.success} size={24} />
-              </View>
-              <Text style={styles.gridTitle}>Santé & Suivi</Text>
-              <Text style={styles.gridSub}>Carnet médical</Text>
-            </Pressable>
-
-            <Pressable 
-              onPress={() => navigate("/(tabs)/community")}
-              style={({ pressed }) => [styles.gridItem, pressed && styles.cardPressed]}
-            >
-              <View style={[styles.iconContainer, { backgroundColor: "#EDF4F9" }]}>
-                <MessageCircle color={Colors.info} size={24} />
-              </View>
-              <Text style={styles.gridTitle}>Communauté</Text>
-              <Text style={styles.gridSub}>Passionnés</Text>
-            </Pressable>
-
-            <Pressable 
-              onPress={() => navigate("/(tabs)/assistant")}
-              style={({ pressed }) => [styles.gridItem, pressed && styles.cardPressed]}
-            >
-              <View style={[styles.iconContainer, { backgroundColor: "#FFF0F0" }]}>
-                <Sparkles color="#E85D75" size={24} />
-              </View>
-              <Text style={styles.gridTitle}>Assistant IA</Text>
-              <Text style={styles.gridSub}>Conseils 24/7</Text>
+              <Text style={styles.secondaryBtnText}>Explorer les archives</Text>
             </Pressable>
           </View>
+        </View>
+      </View>
 
-          {/* Featured Banner */}
-          <Pressable
-            onPress={() => navigate("/(tabs)/subscription")}
-            style={({ pressed }) => [
-              styles.premiumBanner,
-              pressed && styles.cardPressed
-            ]}
-          >
-            <LinearGradient
-              colors={["#2C2C2C", "#1A1A1A"]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.premiumGradient}
-            >
-              <View>
-                <Text style={styles.premiumTitle}>Purrly Premium</Text>
-                <Text style={styles.premiumSub}>Débloquez tout le potentiel</Text>
-              </View>
-              <Sparkles color="#D4A05C" size={24} />
-            </LinearGradient>
-          </Pressable>
-        </Animated.View>
-      </ScrollView>
+      <View style={[styles.content, { paddingBottom: insets.bottom + 40 }]}>
+        <View style={styles.quoteSection}>
+          <Text style={styles.quoteSymbol}>&ldquo;</Text>
+          <Text style={styles.quoteText}>{randomQuote}</Text>
+        </View>
+
+        <View style={styles.bentoGrid}>
+          <View style={[styles.bentoItem, styles.bentoItemLarge]}>
+            <Sparkles color={Colors.primary} size={24} />
+            <Text style={styles.bentoTitle}>IA de Précision</Text>
+            <Text style={styles.bentoDesc}>Une analyse biométrique raffinée pour identifier plus de 200 races avec une exactitude absolue.</Text>
+          </View>
+          
+          <View style={styles.bentoRow}>
+            <View style={styles.bentoItemSmall}>
+              <BookOpen color={Colors.primary} size={20} />
+              <Text style={styles.bentoTitleSmall}>Héritage</Text>
+            </View>
+            <View style={styles.bentoItemSmall}>
+              <Crown color={Colors.primary} size={20} />
+              <Text style={styles.bentoTitleSmall}>Prestige</Text>
+            </View>
+          </View>
+        </View>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  screen: {
     flex: 1,
-    backgroundColor: "#FAFAFA",
+    backgroundColor: Colors.background,
   },
-  loadingScreen: {
-    flex: 1,
-    backgroundColor: "#FAFAFA",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  loadingLogo: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: "#FFF5F0",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  scrollView: {
-    flex: 1,
-  },
-  heroSection: {
-    height: 420,
+  hero: {
+    height: "65%",
+    width: "100%",
     position: "relative",
   },
-  heroImage: {
+  heroImg: {
     ...StyleSheet.absoluteFillObject,
   },
-  heroOverlay: {
+  heroGrad: {
     ...StyleSheet.absoluteFillObject,
   },
-  heroContent: {
-    flex: 1,
-    justifyContent: "space-between",
-    paddingHorizontal: 24,
-    paddingBottom: 60,
-  },
-  headerRow: {
+  header: {
+    position: "absolute",
+    left: 24,
+    right: 24,
     flexDirection: "row",
-    justifyContent: "flex-start",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
-  logoBadge: {
+  brandPill: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
-    backgroundColor: "rgba(255,255,255,0.15)",
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 20,
+    gap: 10,
+    backgroundColor: "rgba(12, 10, 9, 0.6)",
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 100,
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.2)",
-    backdropFilter: "blur(10px)",
+    borderColor: "rgba(212, 160, 92, 0.3)",
   },
-  logoText: {
-    color: "#fff",
-    fontSize: 12,
-    fontWeight: "700",
+  brandText: {
+    color: Colors.ivory,
+    fontSize: 14,
+    fontWeight: "900",
     letterSpacing: 2,
   },
-  heroTitle: {
+  premiumPill: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: "rgba(253, 249, 239, 0.2)",
+  },
+  premiumText: {
+    color: Colors.ivory,
+    fontSize: 10,
+    fontWeight: "600",
+    letterSpacing: 1.5,
+    opacity: 0.8,
+  },
+  heroCopy: {
+    position: "absolute",
+    bottom: 40,
+    left: 24,
+    right: 24,
+    gap: 12,
+  },
+  preTitle: {
+    color: Colors.primary,
+    fontSize: 12,
+    fontWeight: "800",
+    letterSpacing: 3,
+    marginBottom: 4,
+  },
+  title: {
+    color: Colors.ivory,
     fontSize: 42,
-    fontWeight: "300",
-    color: "#fff",
+    fontWeight: "900",
     lineHeight: 48,
-    marginBottom: 16,
-    fontFamily: Platform.select({ ios: "Georgia", android: "serif" }),
+    letterSpacing: -1,
   },
-  heroSubtitle: {
+  subtitle: {
+    color: Colors.textSecondary,
     fontSize: 16,
-    color: "rgba(255,255,255,0.9)",
     lineHeight: 24,
-    maxWidth: 300,
-    fontWeight: "400",
+    maxWidth: "90%",
+    marginBottom: 10,
   },
-  contentContainer: {
-    flex: 1,
-    marginTop: -40,
-    paddingHorizontal: 20,
-    paddingBottom: 40,
+  ctaContainer: {
+    flexDirection: "row",
+    gap: 12,
+    marginTop: 10,
   },
-  mainCard: {
-    marginBottom: 32,
-    borderRadius: 24,
+  primaryBtn: {
+    flex: 1.5,
+    backgroundColor: Colors.primary,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 12,
+    paddingVertical: 18,
+    borderRadius: 18,
     shadowColor: Colors.primary,
-    shadowOffset: { width: 0, height: 12 },
+    shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.3,
-    shadowRadius: 20,
+    shadowRadius: 15,
     elevation: 10,
   },
-  cardPressed: {
-    transform: [{ scale: 0.98 }],
-    opacity: 0.95,
+  primaryBtnText: {
+    color: "#0C0A09",
+    fontSize: 16,
+    fontWeight: "800",
   },
-  mainCardGradient: {
+  secondaryBtn: {
+    flex: 1,
+    backgroundColor: "rgba(253, 249, 239, 0.05)",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 18,
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: "rgba(253, 249, 239, 0.15)",
+  },
+  secondaryBtnText: {
+    color: Colors.ivory,
+    fontSize: 15,
+    fontWeight: "700",
+  },
+  content: {
+    flex: 1,
+    paddingHorizontal: 24,
+    marginTop: -20,
+  },
+  quoteSection: {
+    marginBottom: 30,
+    alignItems: "center",
+  },
+  quoteSymbol: {
+    color: Colors.primary,
+    fontSize: 48,
+    fontFamily: Platform.OS === "ios" ? "Georgia" : "serif",
+    height: 30,
+    opacity: 0.5,
+  },
+  quoteText: {
+    color: Colors.textSecondary,
+    fontSize: 16,
+    fontStyle: "italic",
+    textAlign: "center",
+    lineHeight: 24,
+    paddingHorizontal: 20,
+  },
+  bentoGrid: {
+    gap: 12,
+  },
+  bentoItem: {
+    backgroundColor: Colors.backgroundSecondary,
     borderRadius: 24,
     padding: 24,
-  },
-  mainCardContent: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 16,
-  },
-  mainCardIcon: {
-    width: 56,
-    height: 56,
-    borderRadius: 18,
-    backgroundColor: "rgba(255,255,255,0.2)",
-    justifyContent: "center",
-    alignItems: "center",
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.3)",
+    borderColor: Colors.border,
   },
-  mainCardText: {
-    flex: 1,
+  bentoItemLarge: {
+    gap: 12,
   },
-  mainCardTitle: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: "#fff",
-    marginBottom: 4,
-  },
-  mainCardSubtitle: {
-    fontSize: 14,
-    color: "rgba(255,255,255,0.9)",
-  },
-  arrowCircle: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "#fff",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  sectionHeader: {
-    fontSize: 20,
-    fontWeight: "600",
-    color: "#1A1A1A",
-    marginBottom: 20,
-    paddingHorizontal: 4,
-  },
-  grid: {
+  bentoRow: {
     flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 16,
+    gap: 12,
   },
-  gridItem: {
-    width: COLUMN_WIDTH,
-    backgroundColor: "#fff",
+  bentoItemSmall: {
+    flex: 1,
+    backgroundColor: Colors.backgroundSecondary,
     borderRadius: 24,
     padding: 20,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.04,
-    shadowRadius: 12,
-    elevation: 2,
     borderWidth: 1,
-    borderColor: "rgba(0,0,0,0.03)",
-  },
-  iconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 16,
-    justifyContent: "center",
+    borderColor: Colors.border,
     alignItems: "center",
-    marginBottom: 16,
+    gap: 8,
   },
-  gridTitle: {
-    fontSize: 16,
-    fontWeight: "700",
-    color: "#1A1A1A",
-    marginBottom: 4,
+  bentoTitle: {
+    color: Colors.ivory,
+    fontSize: 20,
+    fontWeight: "800",
   },
-  gridSub: {
-    fontSize: 13,
-    color: "#888",
-  },
-  premiumBanner: {
-    marginTop: 24,
-    borderRadius: 24,
-    overflow: "hidden",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.1,
-    shadowRadius: 16,
-    elevation: 4,
-  },
-  premiumGradient: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: 24,
-  },
-  premiumTitle: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#D4A05C",
-    marginBottom: 4,
-  },
-  premiumSub: {
+  bentoTitleSmall: {
+    color: Colors.ivory,
     fontSize: 14,
-    color: "rgba(255,255,255,0.7)",
+    fontWeight: "700",
+    letterSpacing: 1,
+  },
+  bentoDesc: {
+    color: Colors.textMuted,
+    fontSize: 14,
+    lineHeight: 20,
   },
 });

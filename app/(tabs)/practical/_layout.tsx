@@ -1,7 +1,10 @@
 import { Stack } from "expo-router";
+import { useTranslation } from "react-i18next";
 import { Colors } from "@/constants/colors";
 
 export default function PracticalLayout() {
+  const { t } = useTranslation();
+
   return (
     <Stack
       screenOptions={{
@@ -21,57 +24,57 @@ export default function PracticalLayout() {
       <Stack.Screen
         name="index"
         options={{
-          title: "Pratique",
+          title: t("practical.title"),
         }}
       />
       <Stack.Screen
         name="reminders"
         options={{
-          title: "Rappels",
+          title: t("practical.reminders"),
         }}
       />
       <Stack.Screen
         name="reminder-form"
         options={{
-          title: "Nouveau rappel",
+          title: t("practical.newReminder"),
           presentation: "modal",
         }}
       />
       <Stack.Screen
         name="expenses"
         options={{
-          title: "Dépenses",
+          title: t("practical.expenses"),
         }}
       />
       <Stack.Screen
         name="expense-form"
         options={{
-          title: "Nouvelle dépense",
+          title: t("practical.newExpense"),
           presentation: "modal",
         }}
       />
       <Stack.Screen
         name="shopping"
         options={{
-          title: "Liste de courses",
+          title: t("practical.shoppingList"),
         }}
       />
       <Stack.Screen
         name="food-calculator"
         options={{
-          title: "Calculateur nourriture",
+          title: t("practical.foodCalculator"),
         }}
       />
       <Stack.Screen
         name="travel"
         options={{
-          title: "Voyage avec chat",
+          title: t("practical.travelWithCat"),
         }}
       />
       <Stack.Screen
         name="first-aid"
         options={{
-          title: "Premiers secours",
+          title: t("practical.firstAid"),
         }}
       />
     </Stack>

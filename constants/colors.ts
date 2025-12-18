@@ -1,50 +1,53 @@
 export const Colors = {
-  // Backgrounds
-  background: "#FDF8F3",
-  backgroundSecondary: "#F5EDE4",
-  backgroundCard: "#FFFBF7",
-  backgroundWarm: "#F9F1E8",
+  // Backgrounds - Luxury Dark & Warm Light
+  background: "#0C0A09", // Deep Obsidian
+  backgroundSecondary: "#171412", // Rich Charcoal
+  backgroundCard: "#1C1917", // Soft Ebony
+  backgroundWarm: "#FDF8F3", // Cream Silk (for light mode or accents)
   
-  // Primary accent - Terracotta/Coral
-  primary: "#D4775C",
-  primaryDark: "#B85A42",
-  primaryLight: "#E8A08C",
-  primaryMuted: "#E8C4B8",
+  // Primary accent - Golden Harvest / Rose Gold
+  primary: "#D4A05C", // Warm Gold
+  primaryDark: "#A87C43", // Deep Bronze
+  primaryLight: "#F7D596", // Soft Gold
+  primaryMuted: "rgba(212, 160, 92, 0.2)",
   
-  // Secondary accent - Warm Amber
-  accent: "#E8A849",
-  accentLight: "#F5D28B",
-  accentMuted: "#F5E6C8",
+  // Luxury Palette
+  gold: "#D4A05C",
+  champagne: "#F7D596",
+  ivory: "#FDF9EF",
+  slate: "#44403C",
+  stone: "#A8A29E",
   
-  // Text colors
-  text: "#3D2E24",
-  textSecondary: "#6B5749",
-  textMuted: "#9A8678",
-  textLight: "#B8A89A",
+  // Text colors - High Contrast for luxury
+  text: "#FDF9EF", // Ivory text on dark
+  textSecondary: "#D6D3D1", // Light Grey
+  textMuted: "#78716C", // Muted Taupe
+  textLight: "#44403C", // Dark for light backgrounds
   
   // UI elements
-  border: "rgba(139, 109, 89, 0.15)",
-  borderStrong: "rgba(139, 109, 89, 0.25)",
-  shadow: "rgba(61, 46, 36, 0.08)",
+  border: "rgba(247, 213, 150, 0.15)",
+  borderStrong: "rgba(247, 213, 150, 0.3)",
+  shadow: "rgba(0, 0, 0, 0.5)",
   
   // Status colors
-  success: "#7BA05B",
-  error: "#D45B5B",
-  warning: "#E8A849",
-  info: "#6B9AC4",
+  success: "#10B981",
+  error: "#EF4444",
+  warning: "#F59E0B",
+  info: "#3B82F6",
   
   // Special
-  heart: "#D45B5B",
+  heart: "#EF4444",
   premium: "#D4A05C",
   
   // Tab bar
-  tabActive: "#D4775C",
-  tabInactive: "#9A8678",
-  tabBackground: "#FDF8F3",
+  tabActive: "#F7D596",
+  tabInactive: "#78716C",
+  tabBackground: "#0C0A09",
   
-  // Gradients (for LinearGradient)
-  gradientHero: ["rgba(61, 46, 36, 0.1)", "rgba(61, 46, 36, 0.75)"],
-  gradientCard: ["rgba(253, 248, 243, 0)", "rgba(253, 248, 243, 1)"],
+  // Gradients (Luxury Transitions)
+  gradientHero: ["rgba(12, 10, 9, 0)", "rgba(12, 10, 9, 0.95)"],
+  gradientGold: ["#D4A05C", "#F7D596"],
+  gradientDark: ["#1C1917", "#0C0A09"],
 };
 
 export default {

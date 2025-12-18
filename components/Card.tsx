@@ -104,17 +104,17 @@ export function Card({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: Colors.backgroundCard,
-    borderRadius: 18,
-    padding: 16,
+    backgroundColor: Colors.backgroundSecondary,
+    borderRadius: 24,
+    padding: 20,
     borderWidth: 1,
     borderColor: Colors.border,
   },
   elevated: {
-    shadowColor: Colors.text,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 8,
-    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.15,
+    shadowRadius: 20,
+    elevation: 5,
   },
 });

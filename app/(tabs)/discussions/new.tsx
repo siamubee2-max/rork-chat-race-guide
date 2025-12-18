@@ -11,16 +11,9 @@ import {
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useTranslation } from "react-i18next";
 
 import { useDiscussions } from "@/context/discussions";
-
-const CATEGORIES = [
-  { id: "general", label: "Général", color: "#4A90E2" },
-  { id: "health", label: "Santé", color: "#E85D75" },
-  { id: "behavior", label: "Comportement", color: "#9B59B6" },
-  { id: "nutrition", label: "Alimentation", color: "#F39C12" },
-  { id: "advice", label: "Conseils", color: "#1ABC9C" },
-];
 
 export default function NewDiscussionScreen() {
   const { createDiscussion } = useDiscussions();
@@ -29,6 +22,15 @@ export default function NewDiscussionScreen() {
   const [message, setMessage] = useState("");
   const [category, setCategory] = useState("general");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { t } = useTranslation();
+
+  const CATEGORIES = [
+    { id: "general", label: t("discussions.categories.general"), color: "#4A90E2" },
+    { id: "health", label: t("discussions.categories.health"), color: "#E85D75" },
+    { id: "behavior", label: t("discussions.categories.behavior"), color: "#9B59B6" },
+    { id: "nutrition", label: t("discussions.categories.nutrition"), color: "#F39C12" },
+    { id: "advice", label: t("discussions.categories.advice"), color: "#1ABC9C" },
+  ];
 
   const handleSubmit = async () => {
     if (!title.trim() || !message.trim() || isSubmitting) return;
@@ -53,7 +55,7 @@ export default function NewDiscussionScreen() {
     >
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
         <View style={styles.section}>
-          <Text style={styles.label}>Catégorie</Text>
+          <Text style={styles.label}>{t("discussions.category")}</Text>
           <View style={styles.categories}>
             {CATEGORIES.map((cat) => (
               <Pressable
@@ -81,10 +83,10 @@ export default function NewDiscussionScreen() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.label}>Titre</Text>
+          <Text style={styles.label}>{t("discussions.titleLabel")}</Text>
           <TextInput
             style={styles.input}
-            placeholder="Ex: Problème de comportement avec mon chat"
+            placeholder={t("discussions.titlePlaceholder")}
             value={title}
             onChangeText={setTitle}
             maxLength={100}
@@ -94,10 +96,10 @@ export default function NewDiscussionScreen() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.label}>Message</Text>
+          <Text style={styles.label}>{t("discussions.messageLabel")}</Text>
           <TextInput
             style={[styles.input, styles.inputMultiline]}
-            placeholder="Décrivez votre question ou partagez votre expérience..."
+            placeholder={t("discussions.messagePlaceholder")}
             value={message}
             onChangeText={setMessage}
             multiline
@@ -116,7 +118,7 @@ export default function NewDiscussionScreen() {
           disabled={!canSubmit}
         >
           <Text style={styles.submitBtnText}>
-            {isSubmitting ? "Publication..." : "Publier"}
+            {isSubmitting ? t("discussions.publishing") : t("discussions.publish")}
           </Text>
         </Pressable>
       </View>

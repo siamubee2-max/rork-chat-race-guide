@@ -1,8 +1,11 @@
 import React from "react";
 import { Stack } from "expo-router";
+import { useTranslation } from "react-i18next";
 import { Colors } from "@/constants/colors";
 
 export default function MoreLayout() {
+  const { t } = useTranslation();
+
   return (
     <Stack
       screenOptions={{
@@ -19,7 +22,7 @@ export default function MoreLayout() {
       <Stack.Screen
         name="index"
         options={{
-          title: "Plus",
+          title: t("tabs.more"),
           headerLargeTitle: true,
         }}
       />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import {
   View,
   Text,
@@ -10,7 +10,7 @@ import {
   Platform,
   Alert,
 } from "react-native";
-import { router, useLocalSearchParams, Stack } from "expo-router";
+import { router, useLocalSearchParams, useNavigation } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Save, Trash2, Calendar as CalendarIcon } from "lucide-react-native";
 import { useCats, type WeightEntry } from "@/context/cats";
@@ -24,6 +24,7 @@ export default function WeightFormScreen() {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation();
 
   const hasHealthTracking = React.useMemo(() => {
     if (!currentUser) return false;
@@ -52,6 +53,12 @@ export default function WeightFormScreen() {
   const cat = cats.find((c) => c.id === catId);
   const existingWeight = cat?.weightHistory?.find((w) => w.id === weightId);
   const isEditing = !!weightId;
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: isEditing ? "Modifier le poids" : "Ajouter une pesée",
+    });
+  }, [isEditing, navigation]);
 
   const [weight, setWeight] = useState(existingWeight?.weight.toString() ?? "");
   const [unit, setUnit] = useState<"kg" | "lb">(existingWeight?.unit ?? "kg");
@@ -136,10 +143,7 @@ export default function WeightFormScreen() {
   };
 
   return (
-    <>
-      <Stack.Screen options={{ title: isEditing ? "Modifier le poids" : "Ajouter une pesée" }} />
-      
-      <View style={styles.screen}>
+    <View style={styles.screen}>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={{ flex: 1 }}
@@ -218,7 +222,6 @@ export default function WeightFormScreen() {
           </Pressable>
         </View>
       </View>
-    </>
   );
 }
 

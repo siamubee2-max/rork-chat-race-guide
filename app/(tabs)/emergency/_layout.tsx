@@ -1,6 +1,9 @@
 import { Stack } from "expo-router";
+import { useTranslation } from "react-i18next";
 
 export default function EmergencyLayout() {
+  const { t } = useTranslation();
+
   return (
     <Stack
       screenOptions={{
@@ -14,13 +17,13 @@ export default function EmergencyLayout() {
       <Stack.Screen
         name="index"
         options={{
-          title: "Urgences",
+          title: t("emergency.title"),
         }}
       />
       <Stack.Screen
         name="create"
         options={{
-          title: "Créer une alerte",
+          title: t("emergency.createAlert"),
           presentation: "modal",
         }}
       />

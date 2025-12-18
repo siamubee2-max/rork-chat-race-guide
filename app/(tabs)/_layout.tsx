@@ -1,9 +1,11 @@
 import React from "react";
 import { Tabs } from "expo-router";
 import { Home, Heart, Users, Sparkles, Grid3x3 } from "lucide-react-native";
+import { useTranslation } from "react-i18next";
 import { Colors } from "@/constants/colors";
 
 export default function TabLayout() {
+  const { t } = useTranslation();
 
   return (
     <Tabs
@@ -29,35 +31,35 @@ export default function TabLayout() {
       <Tabs.Screen
         name="(scan)"
         options={{
-          title: "Accueil",
+          title: t("tabs.home"),
           tabBarIcon: ({ color, size }) => <Home color={color} size={size} />,
         }}
       />
       <Tabs.Screen
         name="cats"
         options={{
-          title: "Mes Chats",
+          title: t("tabs.myCats"),
           tabBarIcon: ({ color, size }) => <Heart color={color} size={size} />,
         }}
       />
       <Tabs.Screen
         name="community"
         options={{
-          title: "Social",
+          title: t("tabs.social"),
           tabBarIcon: ({ color, size }) => <Users color={color} size={size} />,
         }}
       />
       <Tabs.Screen
         name="assistant"
         options={{
-          title: "Assistant",
+          title: t("tabs.assistant"),
           tabBarIcon: ({ color, size }) => <Sparkles color={color} size={size} />,
         }}
       />
       <Tabs.Screen
         name="more"
         options={{
-          title: "Plus",
+          title: t("tabs.more"),
           tabBarIcon: ({ color, size }) => <Grid3x3 color={color} size={size} />,
         }}
       />

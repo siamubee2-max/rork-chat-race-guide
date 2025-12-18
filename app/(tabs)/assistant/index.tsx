@@ -10,10 +10,9 @@ import {
   Platform,
   ActivityIndicator,
   Animated,
-  Keyboard,
+  useWindowDimensions,
 } from "react-native";
-import { useHeaderHeight } from "@react-navigation/elements";
-import { Send, Mic, MicOff, Sparkles, Cat, MessageCircle } from "lucide-react-native";
+import { Send, Mic, MicOff, Sparkles, Cat } from "lucide-react-native";
 import { useRorkAgent, createRorkTool } from "@rork-ai/toolkit-sdk";
 import { Audio } from "expo-av";
 import * as Haptics from "expo-haptics";
@@ -22,15 +21,15 @@ import { Colors } from "@/constants/colors";
 import { useCats } from "@/context/cats";
 import { useReminders } from "@/context/reminders";
 
-const COMMON_QUESTIONS = [
+const QUICK_PROMPTS = [
   "Pourquoi mon chat ronronne-t-il ?",
-  "Comment savoir si mon chat est malade ?",
-  "Mon chat miaule beaucoup, que faire ?",
-  "Quelle quantité de nourriture donner ?",
+  "Quels sont les signes d'un chat malade ?",
+  "Quelle quantité de nourriture pour mon chat ?",
   "Comment jouer avec mon chat ?",
-  "Pourquoi mon chat griffe les meubles ?",
-  "Mon chat ne boit pas assez, c'est grave ?",
-  "Comment habituer mon chat à un nouveau foyer ?",
+  "Mon chat ne mange plus, que faire ?",
+  "Comment éduquer mon chaton ?",
+  "Quand faire stériliser mon chat ?",
+  "Mon chat fait ses griffes partout, comment l'arrêter ?",
 ];
 
 export default function AssistantScreen() {
@@ -39,10 +38,9 @@ export default function AssistantScreen() {
   const [recording, setRecording] = useState<Audio.Recording | null>(null);
   const [isTranscribing, setIsTranscribing] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
-  const isAtBottomRef = useRef(true);
-  const lastContentHeightRef = useRef(0);
   const pulseAnim = useRef(new Animated.Value(1)).current;
-  const headerHeight = useHeaderHeight();
+  const { width } = useWindowDimensions();
+  const isTablet = width >= 768; // Considéré comme tablette si largeur >= 768px
 
   const { cats } = useCats();
   const { addReminder } = useReminders();
@@ -109,44 +107,10 @@ export default function AssistantScreen() {
   });
 
   const [isFirstMessage, setIsFirstMessage] = useState(true);
-  const prevMessagesLength = useRef(messages.length);
-
-  const scrollToBottom = useCallback((animated: boolean) => {
-    setTimeout(() => {
-      scrollViewRef.current?.scrollToEnd({ animated });
-    }, 50);
-  }, []);
 
   useEffect(() => {
-    if (messages.length > prevMessagesLength.current) {
-      const newMessages = messages.slice(prevMessagesLength.current);
-      const hasUserMessage = newMessages.some(m => m.role === 'user');
-      
-      if (hasUserMessage) {
-        setTimeout(() => {
-          scrollToBottom(true);
-        }, 100);
-      }
-    }
-    prevMessagesLength.current = messages.length;
-  }, [messages.length, messages, scrollToBottom]);
-
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow",
-      () => {
-        if (isAtBottomRef.current) {
-          setTimeout(() => {
-            scrollToBottom(true);
-          }, 80);
-        }
-      }
-    );
-
-    return () => {
-      keyboardDidShowListener.remove();
-    };
-  }, [scrollToBottom]);
+    scrollViewRef.current?.scrollToEnd({ animated: true });
+  }, [messages]);
 
   useEffect(() => {
     if (isRecording) {
@@ -270,19 +234,7 @@ Question: ${messageText}`
             body: formData,
           });
 
-          if (!response.ok) {
-            throw new Error(`Transcription request failed: ${response.status}`);
-          }
-
-          const text = await response.text();
-          let data;
-          try {
-            data = JSON.parse(text);
-          } catch {
-            console.error("Failed to parse transcription response:", text.substring(0, 100));
-            throw new Error("Invalid response from transcription service");
-          }
-
+          const data = await response.json();
           if (data.text) {
             setInput(data.text);
           }
@@ -312,30 +264,28 @@ Question: ${messageText}`
 
   return (
     <KeyboardAvoidingView
-      style={styles.container}
+      style={[
+        styles.container,
+        !isTablet && styles.containerMobile,
+      ]}
       behavior={Platform.OS === "ios" ? "padding" : undefined}
-      keyboardVerticalOffset={Platform.OS === "ios" ? headerHeight : 0}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
     >
       <ScrollView
         ref={scrollViewRef}
-        style={styles.messagesContainer}
-        contentContainerStyle={styles.messagesContent}
-        keyboardShouldPersistTaps="handled"
-        keyboardDismissMode="interactive"
-        showsVerticalScrollIndicator={false}
-        scrollEventThrottle={16}
-        onScroll={(e) => {
-          const { contentOffset, contentSize, layoutMeasurement } = e.nativeEvent;
-          const paddingToBottom = 28;
-          const isAtBottom =
-            layoutMeasurement.height + contentOffset.y >=
-            Math.max(0, contentSize.height - paddingToBottom);
-          isAtBottomRef.current = isAtBottom;
-        }}
-        onContentSizeChange={(_w, h) => {
-          lastContentHeightRef.current = h;
-        }}
-        testID="assistant-messages-scroll"
+        style={[
+          styles.messagesContainer,
+          !isTablet && styles.messagesContainerMobile,
+        ]}
+        contentContainerStyle={[
+          styles.messagesContent,
+          !isTablet && styles.messagesContentMobile,
+        ]}
+        onContentSizeChange={() =>
+          scrollViewRef.current?.scrollToEnd({ animated: true })
+        }
+        nestedScrollEnabled={true}
+        showsVerticalScrollIndicator={true}
       >
         {messages.length === 0 && (
           <View style={styles.emptyState}>
@@ -356,60 +306,125 @@ Question: ${messageText}`
               </View>
             )}
 
-            <View style={styles.questionsSection}>
-              <View style={styles.questionsTitleRow}>
-                <MessageCircle color={Colors.textSecondary} size={16} />
-                <Text style={styles.questionsTitle}>Questions courantes</Text>
-              </View>
-              <View style={styles.questionsContainer}>
-                {COMMON_QUESTIONS.map((question, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    style={styles.questionChip}
-                    onPress={() => handleQuickPrompt(question)}
-                    activeOpacity={0.7}
-                    testID={`assistant-question-${index}`}
-                  >
-                    <Text style={styles.questionText}>{question}</Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
+            <Text style={styles.quickPromptsTitle}>Questions courantes</Text>
+            <View style={styles.quickPromptsList}>
+              {QUICK_PROMPTS.map((question, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={styles.quickPromptItem}
+                  onPress={() => handleQuickPrompt(question)}
+                  activeOpacity={0.7}
+                >
+                  <Text style={styles.quickPromptText}>{question}</Text>
+                </TouchableOpacity>
+              ))}
             </View>
           </View>
         )}
 
-        {messages.map((message, messageIndex) => (
-          <View key={`${message.id || 'msg'}-${messageIndex}`}>
-            {message.parts.map((part, index) => {
-              if (part.type === "text") {
-                return (
-                  <View
-                    key={`${message.id}-${index}`}
-                    style={[
-                      styles.messageBubble,
-                      message.role === "user"
-                        ? styles.userBubble
-                        : styles.assistantBubble,
-                    ]}
-                  >
-                    {message.role === "assistant" && (
-                      <View style={styles.assistantAvatar}>
-                        <Sparkles color="#fff" size={12} />
-                      </View>
-                    )}
-                    <Text
-                      style={[
-                        styles.messageText,
-                        message.role === "user"
-                          ? styles.userText
-                          : styles.assistantText,
-                      ]}
-                    >
-                      {part.text}
-                    </Text>
-                  </View>
-                );
+        {messages.map((message) => {
+          // #region agent log
+          console.log('[DEBUG] Message:', { id: message.id, role: message.role, partsCount: message.parts.length, parts: message.parts.map(p => ({ type: p.type, textLength: p.type === 'text' ? p.text?.length : 0, text: p.type === 'text' ? p.text?.substring(0, 50) : undefined })) });
+          fetch('http://127.0.0.1:7242/ingest/bd03eb35-54e1-47b5-a23a-c26416383972',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'assistant/index.tsx:310',message:'Message rendering',data:{messageId:message.id,role:message.role,partsCount:message.parts.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+          // #endregion
+          const validParts = message.parts.filter((part) => {
+            if (part.type === "text") {
+              // Vérification stricte : le texte doit exister, être une chaîne, et avoir du contenu après suppression des espaces et caractères invisibles
+              if (!part.text || typeof part.text !== 'string') {
+                console.log('[DEBUG] Part filter: invalid text type', { type: part.type, textType: typeof part.text });
+                return false;
               }
+              // Supprimer tous les espaces, caractères invisibles, et vérifier la longueur
+              const cleanedText = part.text.replace(/[\s\u200B-\u200D\uFEFF]/g, '');
+              const hasText = cleanedText.length > 0;
+              console.log('[DEBUG] Part filter:', { type: part.type, hasText, textLength: part.text.length, cleanedLength: cleanedText.length, textPreview: part.text.substring(0, 30) });
+              return hasText;
+            }
+            return true;
+          });
+          
+          console.log('[DEBUG] Valid parts:', { total: message.parts.length, valid: validParts.length });
+          
+          if (validParts.length === 0) {
+            return null;
+          }
+          
+          return (
+            <View 
+              key={message.id} 
+              style={[
+                { flexShrink: 1, minHeight: 0 },
+                !isTablet && { alignSelf: 'flex-start', width: '100%' }
+              ]}
+            >
+              {validParts.map((part, index) => {
+                // #region agent log
+                fetch('http://127.0.0.1:7242/ingest/bd03eb35-54e1-47b5-a23a-c26416383972',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'assistant/index.tsx:313',message:'Part rendering',data:{partType:part.type,partIndex:index,textLength:part.type==='text'?part.text?.length:0,textEmpty:part.type==='text'?(!part.text||part.text.trim()===''):null},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+                // #endregion
+                if (part.type === "text") {
+                  // #region agent log
+                  console.log('[DEBUG] Rendering text part:', { textLength: part.text?.length, text: part.text?.substring(0, 50), isEmpty: !part.text || part.text.trim() === "" });
+                  fetch('http://127.0.0.1:7242/ingest/bd03eb35-54e1-47b5-a23a-c26416383972',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'assistant/index.tsx:316',message:'Text part rendering',data:{textValue:part.text,textLength:part.text?.length,isEmpty:!part.text||part.text.trim()==='',role:message.role},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+                  // #endregion
+                  // Ne pas afficher la bulle si le texte est vide
+                  if (!part.text || typeof part.text !== 'string') {
+                    console.log('[DEBUG] Skipping invalid text part');
+                    return null;
+                  }
+                  // Supprimer tous les espaces et caractères invisibles
+                  const cleanedText = part.text.replace(/[\s\u200B-\u200D\uFEFF]/g, '');
+                  if (cleanedText.length === 0) {
+                    console.log('[DEBUG] Skipping empty text part after cleaning');
+                    return null;
+                  }
+                  // Utiliser le texte original pour l'affichage, mais vérifier qu'il n'est pas vide
+                  const textToRender = part.text.trim();
+                  if (textToRender.length === 0) {
+                    console.log('[DEBUG] Skipping empty text part after trim');
+                    return null;
+                  }
+                  
+                  return (
+                    <View
+                      key={`${message.id}-${index}`}
+                      style={[
+                        styles.messageBubble,
+                        message.role === "user"
+                          ? styles.userBubble
+                          : styles.assistantBubble,
+                        !isTablet && styles.messageBubbleMobile,
+                      ]}
+                      onLayout={(e) => {
+                        // #region agent log
+                        console.log('[DEBUG] Bubble layout:', { width: e.nativeEvent.layout.width, height: e.nativeEvent.layout.height, role: message.role, textLength: textToRender.length });
+                        fetch('http://127.0.0.1:7242/ingest/bd03eb35-54e1-47b5-a23a-c26416383972',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'assistant/index.tsx:325',message:'Bubble layout measured',data:{width:e.nativeEvent.layout.width,height:e.nativeEvent.layout.height,role:message.role,textLength:textToRender.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
+                        // #endregion
+                      }}
+                    >
+                      {message.role === "assistant" && (
+                        <View style={styles.assistantAvatar}>
+                          <Sparkles color="#fff" size={12} />
+                        </View>
+                      )}
+                      <Text
+                        style={[
+                          styles.messageText,
+                          message.role === "user"
+                            ? styles.userText
+                            : styles.assistantText,
+                        ]}
+                        onLayout={(e) => {
+                          // #region agent log
+                          console.log('[DEBUG] Text layout:', { width: e.nativeEvent.layout.width, height: e.nativeEvent.layout.height, textLength: textToRender.length });
+                          fetch('http://127.0.0.1:7242/ingest/bd03eb35-54e1-47b5-a23a-c26416383972',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'assistant/index.tsx:337',message:'Text layout measured',data:{width:e.nativeEvent.layout.width,height:e.nativeEvent.layout.height,textLength:textToRender.length,role:message.role},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
+                          // #endregion
+                        }}
+                      >
+                        {textToRender}
+                      </Text>
+                    </View>
+                  );
+                }
               if (part.type === "tool") {
                 const toolName = part.toolName;
                 if (part.state === "output-available") {
@@ -521,13 +536,28 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.background,
   },
+  containerMobile: {
+    flex: 1,
+    minHeight: 0,
+  },
   messagesContainer: {
     flex: 1,
   },
+  messagesContainerMobile: {
+    flex: 1,
+    minHeight: 0,
+    flexShrink: 1,
+  },
   messagesContent: {
     padding: 16,
-    paddingBottom: 18,
     gap: 12,
+    flexGrow: 0,
+  },
+  messagesContentMobile: {
+    flexGrow: 0,
+    flexShrink: 1,
+    minHeight: 0,
+    alignSelf: 'stretch',
   },
   emptyState: {
     alignItems: "center" as const,
@@ -571,44 +601,42 @@ const styles = StyleSheet.create({
     fontWeight: "500" as const,
     color: Colors.primary,
   },
-  questionsSection: {
-    width: "100%",
-    marginTop: 8,
-  },
-  questionsTitleRow: {
-    flexDirection: "row" as const,
-    alignItems: "center" as const,
-    gap: 6,
-    marginBottom: 12,
-  },
-  questionsTitle: {
+  quickPromptsTitle: {
     fontSize: 14,
     fontWeight: "600" as const,
     color: Colors.textSecondary,
+    marginBottom: 12,
+    alignSelf: "flex-start" as const,
   },
-  questionsContainer: {
-    flexDirection: "row" as const,
-    flexWrap: "wrap" as const,
+  quickPromptsList: {
+    width: "100%",
     gap: 8,
   },
-  questionChip: {
+  quickPromptItem: {
     backgroundColor: Colors.backgroundCard,
-    borderRadius: 20,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
+    borderRadius: 12,
+    padding: 14,
     borderWidth: 1,
     borderColor: Colors.border,
+    alignItems: "flex-start" as const,
   },
-  questionText: {
-    fontSize: 13,
+  quickPromptText: {
+    fontSize: 14,
     color: Colors.text,
-    fontWeight: "500" as const,
+    lineHeight: 20,
   },
   messageBubble: {
     maxWidth: "85%",
     padding: 14,
     borderRadius: 20,
     marginVertical: 4,
+    flexShrink: 1,
+    minHeight: 0,
+  },
+  messageBubbleMobile: {
+    flexShrink: 1,
+    minHeight: 0,
+    alignSelf: 'flex-start',
   },
   userBubble: {
     alignSelf: "flex-end" as const,
@@ -623,7 +651,11 @@ const styles = StyleSheet.create({
     borderColor: Colors.border,
     flexDirection: "row" as const,
     alignItems: "flex-start" as const,
+    alignContent: "flex-start" as const,
     gap: 10,
+    flexShrink: 1,
+    flexWrap: "nowrap" as const,
+    minHeight: 0,
   },
   assistantAvatar: {
     width: 24,

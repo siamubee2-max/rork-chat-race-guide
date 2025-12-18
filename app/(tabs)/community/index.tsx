@@ -22,6 +22,7 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as Haptics from "expo-haptics";
+import { useTranslation } from "react-i18next";
 
 import { useSocial, type Post } from "@/context/social";
 import { useAuth } from "@/context/auth";
@@ -35,6 +36,7 @@ export default function CommunityScreen() {
   const insets = useSafeAreaInsets();
   const [activeTab, setActiveTab] = useState<TabType>("feed");
   const [refreshing, setRefreshing] = useState(false);
+  const { t, i18n } = useTranslation();
 
   const conversations = getUserConversations();
 
@@ -52,16 +54,16 @@ export default function CommunityScreen() {
     const diffHours = Math.floor(diffMs / 3600000);
     const diffDays = Math.floor(diffMs / 86400000);
 
-    if (diffMins < 1) return "À l'instant";
+    if (diffMins < 1) return t("discussions.justNow");
     if (diffMins < 60) return `${diffMins}m`;
     if (diffHours < 24) return `${diffHours}h`;
     if (diffDays < 7) return `${diffDays}j`;
-    return d.toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
+    return d.toLocaleDateString(i18n.language, { day: "numeric", month: "short" });
   };
 
   const formatEventDate = (date: string) => {
     const d = new Date(date);
-    return d.toLocaleDateString("fr-FR", { 
+    return d.toLocaleDateString(i18n.language, { 
       weekday: "short",
       day: "numeric", 
       month: "short" 
@@ -88,14 +90,7 @@ export default function CommunityScreen() {
   };
 
   const getEventTypeLabel = (type: string) => {
-    const labels: { [key: string]: string } = {
-      meetup: "Rencontre",
-      adoption: "Adoption",
-      show: "Exposition",
-      workshop: "Atelier",
-      charity: "Caritatif",
-    };
-    return labels[type] || type;
+    return t(`community.eventTypes.${type}`, { defaultValue: type });
   };
 
   const getEventTypeColor = (type: string) => {
@@ -186,7 +181,7 @@ export default function CommunityScreen() {
           {item.commentsCount > 0 && (
             <Pressable onPress={() => router.push(`/(tabs)/community/post/${item.id}` as any)}>
               <Text style={styles.viewComments}>
-                Voir les {item.commentsCount} commentaires
+                {t("community.viewComments", { count: item.commentsCount })}
               </Text>
             </Pressable>
           )}
@@ -227,7 +222,7 @@ export default function CommunityScreen() {
             <View style={styles.eventInfoRow}>
               <Users size={14} color={Colors.textMuted} />
               <Text style={styles.eventInfoText}>
-                {item.attendeesCount} participants
+                {item.attendeesCount} {t("community.participants")}
                 {item.maxAttendees && ` / ${item.maxAttendees}`}
               </Text>
             </View>
@@ -242,7 +237,7 @@ export default function CommunityScreen() {
 
   const renderConversation = ({ item }: { item: typeof conversations[0] }) => {
     const otherUserId = item.participants.find(p => p !== currentUser?.id) || "";
-    const otherUserName = item.participantNames[otherUserId] || "Utilisateur";
+    const otherUserName = item.participantNames[otherUserId] || t("community.user");
 
     return (
       <Pressable 
@@ -276,12 +271,12 @@ export default function CommunityScreen() {
       <View style={styles.emptyIcon}>
         <Sparkles size={48} color={Colors.primaryMuted} />
       </View>
-      <Text style={styles.emptyTitle}>Bienvenue dans la communauté</Text>
+      <Text style={styles.emptyTitle}>{t("community.welcome")}</Text>
       <Text style={styles.emptyText}>
-        Partagez des photos de vos chats et découvrez ceux des autres membres.
+        {t("community.welcomeText")}
       </Text>
       <Pressable style={styles.emptyBtn} onPress={handleNewPost}>
-        <Text style={styles.emptyBtnText}>Publier une photo</Text>
+        <Text style={styles.emptyBtnText}>{t("community.publishPhoto")}</Text>
       </Pressable>
     </View>
   );
@@ -291,15 +286,15 @@ export default function CommunityScreen() {
       <View style={styles.emptyIcon}>
         <Calendar size={48} color={Colors.primaryMuted} />
       </View>
-      <Text style={styles.emptyTitle}>Aucun événement</Text>
+      <Text style={styles.emptyTitle}>{t("community.noEvents")}</Text>
       <Text style={styles.emptyText}>
-        Créez un événement pour rencontrer d&apos;autres passionnés de chats !
+        {t("community.noEventsText")}
       </Text>
       <Pressable 
         style={styles.emptyBtn} 
         onPress={() => router.push("/(tabs)/community/new-event" as any)}
       >
-        <Text style={styles.emptyBtnText}>Créer un événement</Text>
+        <Text style={styles.emptyBtnText}>{t("community.createEvent")}</Text>
       </Pressable>
     </View>
   );
@@ -309,9 +304,9 @@ export default function CommunityScreen() {
       <View style={styles.emptyIcon}>
         <Send size={48} color={Colors.primaryMuted} />
       </View>
-      <Text style={styles.emptyTitle}>Aucun message</Text>
+      <Text style={styles.emptyTitle}>{t("community.noMessages")}</Text>
       <Text style={styles.emptyText}>
-        Envoyez un message à un membre pour démarrer une conversation !
+        {t("community.noMessagesText")}
       </Text>
     </View>
   );
@@ -328,7 +323,7 @@ export default function CommunityScreen() {
             color={activeTab === "feed" ? Colors.primary : Colors.textMuted} 
           />
           <Text style={[styles.tabText, activeTab === "feed" && styles.tabTextActive]}>
-            Feed
+            {t("community.feed")}
           </Text>
         </Pressable>
         <Pressable
@@ -340,7 +335,7 @@ export default function CommunityScreen() {
             color={activeTab === "events" ? Colors.primary : Colors.textMuted} 
           />
           <Text style={[styles.tabText, activeTab === "events" && styles.tabTextActive]}>
-            Événements
+            {t("community.events")}
           </Text>
         </Pressable>
         <Pressable
@@ -352,7 +347,7 @@ export default function CommunityScreen() {
             color={activeTab === "messages" ? Colors.primary : Colors.textMuted} 
           />
           <Text style={[styles.tabText, activeTab === "messages" && styles.tabTextActive]}>
-            Messages
+            {t("community.messages")}
           </Text>
           {conversations.length > 0 && (
             <View style={styles.badge}>
