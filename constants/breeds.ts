@@ -198,7 +198,8 @@ export const BREEDS: BreedProfile[] = [
         "L’eau est clé : fontaine recommandée",
       ],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/OOD3VXAQn.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/qk5dl0megpp1u5o0lxxiv",
   },
   {
     id: "british-shorthair",
@@ -252,7 +253,8 @@ export const BREEDS: BreedProfile[] = [
         "Gamelles anti-glouton si besoin",
       ],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/s4wQfYoEk.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/w6kxsafpnchycxa6nz08m",
   },
   {
     id: "siamese",
@@ -303,7 +305,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Sous-alimentation (perte de poids)"],
       notes: ["Surveiller la silhouette : chat naturellement élancé"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/ai6Jps4sx.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/ws0ydy8nj68q7pkk6l2gf",
   },
   {
     id: "bengal",
@@ -355,7 +358,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Excès de céréales", "Gâteries très sucrées"],
       notes: ["Observer le transit : ajuster fibres/qualité"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/O3btzLlsO.png",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/p7z20p7rm4vwrne9ry79p",
   },
   {
     id: "persian",
@@ -386,7 +390,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Aliments trop durs", "Excès de friandises"],
       notes: ["Surveiller la prise de boisson"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/e8s9-S6AD.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/9x517o954pf5zxl2hbveg",
   },
   {
     id: "ragdoll",
@@ -414,7 +419,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Nourriture à volonté"],
       notes: ["Gros gabarit, croissance lente"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/oGefY4YoG.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/35pewrd3gapfnsx8y14mu",
   },
   {
     id: "sphynx",
@@ -442,7 +448,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Aliments bas de gamme"],
       notes: ["Appétit souvent vorace"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/BDb8ZXb1v.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/k1l09itpvaqp2wzgi90gi",
   },
   {
     id: "abyssinian",
@@ -470,7 +477,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Excès de glucides"],
       notes: ["Chat très actif, besoins énergétiques"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/EHG3sOpAM.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/eecgweoqpr4nc9m6v8ed5",
   },
   {
     id: "sacred-birman",
@@ -498,7 +506,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Changements brutaux"],
       notes: ["Gourmand mais régulé"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/HOrX5gwLS.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/1oq7b9aa27u7lioat2sat",
   },
   {
     id: "oriental",
@@ -526,7 +535,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Monotonie (aime varier)"],
       notes: ["Métabolisme rapide"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/LutjkZJpH.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/tdr48u430s3ai1y6kgat0",
   },
   {
     id: "devon-rex",
@@ -554,7 +564,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Excès (gourmand)"],
       notes: ["A tendance à quémander"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/4RzEwvyzz.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/8snglh2i3vp8v1yypdw7l",
   },
   {
     id: "norwegian",
@@ -582,7 +593,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Surpoids (articulations)"],
       notes: ["Chat robuste, gros mangeur"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/06dgGmEOV.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/685v5en2mxafx9eom10at",
   },
   {
     id: "russian-blue",
@@ -610,7 +622,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Trop de friandises"],
       notes: ["Appétit souvent grand pour peu d'activité"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/Rhj-JsTLP.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/owciofcvjqh9mv4olcpb7",
   },
   {
     id: "siberian",
@@ -638,7 +651,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Carence en taurine"],
       notes: ["Peut manger beaucoup pendant la croissance"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/3bkZAjRh1.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/7ty3p3tlvamfhypu5g3ln",
   },
   {
     id: "chartreux",
@@ -666,7 +680,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Excès de magnésium"],
       notes: ["Chat robuste mais gourmand"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/j6oFGLpRG.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/i40xohotb5ndziomh4v2v",
   },
   {
     id: "ragamuffin",
@@ -694,7 +709,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Restes de table"],
       notes: ["Tendance à engraisser facilement"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/MvMo3NctT.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/x1k2l4cwcac008ptl21qf",
   },
   {
     id: "exotic-shorthair",
@@ -722,7 +738,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Trop calorique"],
       notes: ["Mange parfois salement (face plate)"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/YnPrYEmfe.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/j0fmvbmmas246pqu9l6h8",
   },
   {
     id: "burmese",
@@ -750,7 +767,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Sucres cachés"],
       notes: ["Musculaire et lourd pour sa taille"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/4lXnnfxac.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/m0q117vej20nq83592gsw",
   },
   {
     id: "tonkinese",
@@ -778,7 +796,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Ennui alimentaire"],
       notes: ["Compromis entre Siamois et Burmese"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/KBroiVNCM.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/kcsiimvr0hlbce0fquwxa",
   },
   {
     id: "scottish-fold",
@@ -819,7 +838,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Surpoids (stress articulaire)"],
       notes: ["Contrôler le poids régulièrement"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/o9t0LDcsa.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/xq00ouigds409z6hs6yay",
   },
   {
     id: "somali",
@@ -847,7 +867,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Aliments de basse qualité"],
       notes: ["Chat très actif, besoins énergétiques élevés"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/EPF2ejNS0.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/17e8grmx7k7ifjyd2jg9x",
   },
   {
     id: "turkish-angora",
@@ -875,7 +896,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Sous-alimentation (chat actif)"],
       notes: ["Chat élancé et athlétique"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/7CGV6WVXq.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/qoxud8bnd94mxbmpaguh9",
   },
   {
     id: "american-shorthair",
@@ -903,7 +925,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Libre-service", "Friandises excessives"],
       notes: ["Race robuste mais gourmande"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/JFPROfGtQ.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/xmcusvpq0f8wjmdtd3iyi",
   },
   {
     id: "cornish-rex",
@@ -931,7 +954,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Restriction calorique"],
       notes: ["Mange beaucoup pour maintenir température corporelle"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/unPP08xOZ.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/lja5n5ozl69aiu8o8owe1",
   },
   {
     id: "manx",
@@ -972,7 +996,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Aliments constipants"],
       notes: ["Surveillance du transit essentielle"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/fhYh4b8Qp.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/i3s9gxx7yq0axccowswqv",
   },
   {
     id: "balinese",
@@ -1000,7 +1025,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Sous-nutrition"],
       notes: ["Chat élancé et actif"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/1apdk2A8y.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/oeokaokrjghvaxrq3rgr3",
   },
   {
     id: "ocicat",
@@ -1028,7 +1054,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Excès de glucides"],
       notes: ["Chat musclé et athlétique"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/JAx-08Y0n.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/octatsnspfar00u1bxmio",
   },
   {
     id: "korat",
@@ -1060,7 +1087,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Suralimentation"],
       notes: ["Race rare, précieuse"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/DbwiefiaY.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/jbc02vkt1yhl2zoqer49i",
   },
   {
     id: "turkish-van",
@@ -1092,7 +1120,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Restriction calorique (chat actif)"],
       notes: ["Grand chat athlétique"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/sxIXJax6h.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/5dzxtwevmoulbfhehze92",
   },
   {
     id: "himalayan",
@@ -1145,7 +1174,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Aliments durs", "Excès de phosphore"],
       notes: ["Surveiller la fonction rénale régulièrement"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/CDhOtM-Ig.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/8ak1b81w7anmjtlmsv78v",
   },
   {
     id: "egyptian-mau",
@@ -1185,7 +1215,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Allergènes courants"],
       notes: ["Race athlétique et musclée"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/TuSyTkt2M.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/mpotqplduy2r1w7fvjs8i",
   },
   {
     id: "savannah",
@@ -1230,7 +1261,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Céréales en excès", "Aliments transformés"],
       notes: ["Grand chat, besoins nutritionnels spécifiques"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/a8nIYvs6S.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/ggu37bx59oqp89nj93zu9",
   },
   {
     id: "laperm",
@@ -1262,7 +1294,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Aliments de basse qualité"],
       notes: ["Race robuste avec peu d'exigences spéciales"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/aKbsEYjSl.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/fxla62rbyscjjiql19wn7",
   },
   {
     id: "singapura",
@@ -1303,7 +1336,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Suralimentation"],
       notes: ["Petit chat mais très actif"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/Qtncp2nRe.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/q3yfcsn2yxi48oeay02z6",
   },
   {
     id: "selkirk-rex",
@@ -1331,7 +1365,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Aliments allergènes"],
       notes: ["Race généralement robuste"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/II9dOZmrw.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/2s2rym7dcmkkybf1bal93",
   },
   {
     id: "pixiebob",
@@ -1359,7 +1394,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Sous-nutrition"],
       notes: ["Chat musclé et puissant"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/z7fJRNeN6.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/kdki9e9yiejhygjz2rsrf",
   },
   {
     id: "bombay",
@@ -1387,7 +1423,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Surpoids (tendance gourmande)"],
       notes: ["Musclé mais compact"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/5iYq9NmT1.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/1rbm8ihixgks03juwni5m",
   },
   {
     id: "havana-brown",
@@ -1415,7 +1452,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Aliments bas de gamme"],
       notes: ["Chat élancé et musclé"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/njKCSkHjY.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/pxwmjcxizm51pcspzrobh",
   },
   {
     id: "cymric",
@@ -1443,7 +1481,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Aliments constipants"],
       notes: ["Transit à surveiller de près"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/3dbtapCWM.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/4tlhp2069wiuco33bn1eo",
   },
   {
     id: "american-curl",
@@ -1471,7 +1510,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Suralimentation"],
       notes: ["Chat de taille moyenne, actif"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/xnsqonbjW.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/v68me0v6vts7936863ti9",
   },
   {
     id: "japanese-bobtail",
@@ -1499,7 +1539,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Monotonie alimentaire"],
       notes: ["Chat élancé et musclé"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/-TRBoJWKl.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/u1a1qxu49hraayjl66akn",
   },
   {
     id: "chausie",
@@ -1527,7 +1568,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Céréales", "Légumineuses", "Végétaux en excès"],
       notes: ["Besoins nutritionnels proches chat sauvage"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/vJ3lEYgXr.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/5jcjhqh4xhbmbpeeicv8g",
   },
   {
     id: "munchkin",
@@ -1555,7 +1597,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Surpoids (articulations fragiles)"],
       notes: ["Poids optimal crucial pour la santé"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/j5cVSqLer.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/yhlaf1z3ifak7o60oh929",
   },
   {
     id: "toyger",
@@ -1583,7 +1626,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Surpoids"],
       notes: ["Chat musclé de taille moyenne"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/O3F3_S1XN.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/gkaht67x60tjwl8z0021r",
   },
   {
     id: "peterbald",
@@ -1611,7 +1655,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Aliments bas de gamme"],
       notes: ["Métabolisme élevé comme Sphynx"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/o7Xq4ULRu.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/h9doouy6w3edxi5snpvkh",
   },
   {
     id: "nebelung",
@@ -1639,7 +1684,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Suralimentation"],
       notes: ["Similaire au Bleu Russe mais poil long"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/OGTWqNNOt.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/azik5y1ln01wwrv3vurbb",
   },
   {
     id: "york-chocolate",
@@ -1667,7 +1713,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Aliments de basse qualité"],
       notes: ["Chat actif et musclé"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/JFPROfGtQ.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/9hkdnk1nym5iw9gwdum02",
   },
   {
     id: "snowshoe",
@@ -1695,7 +1742,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Surpoids"],
       notes: ["Chat actif et musclé"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/MK-sYESvO.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/gch118lqajlcu27fx0dsa",
   },
   {
     id: "lykoi",
@@ -1723,7 +1771,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Allergènes"],
       notes: ["Métabolisme normal"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/d5y9H576b.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/0n0vlfb0m79bt4lave2mp",
   },
   {
     id: "khao-manee",
@@ -1751,7 +1800,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Colorants artificiels"],
       notes: ["Chat de taille moyenne, actif"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/BDb8ZXb1v.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/u0dbonnr5z06j6hfiqud8",
   },
   {
     id: "neva-masquerade",
@@ -1779,7 +1829,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Sous-alimentation"],
       notes: ["Grand chat, croissance lente"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/3bkZAjRh1.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/7wz57arjgrak39h1ia9wk",
   },
   {
     id: "highlander",
@@ -1807,7 +1858,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Céréales en excès"],
       notes: ["Chat très actif, besoins énergétiques élevés"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/xnsqonbjW.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/2a87n2zi3ig9zx3dl5un2",
   },
   {
     id: "kurilian-bobtail",
@@ -1835,7 +1887,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Aliments bas de gamme"],
       notes: ["Chat robuste et musclé"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/NdKRyzUrF.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/kek1hyjrdquzfpkg3nqqr",
   },
   {
     id: "dragon-li",
@@ -1863,7 +1916,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Excès de glucides"],
       notes: ["Chat musclé et actif"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/O3btzLlsO.png",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/3wpicwrze5ita8mma73gg",
   },
   {
     id: "california-spangled",
@@ -1891,7 +1945,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Aliments bas de gamme"],
       notes: ["Chat athlétique"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/O3btzLlsO.png",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/b6nxmfsvel8j7nek62lt7",
   },
   {
     id: "american-bobtail",
@@ -1919,7 +1974,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Surpoids"],
       notes: ["Chat de taille moyenne à grande"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/hBXicehMA.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/4kdc48r5yc4z9220nfaec",
   },
   {
     id: "donskoy",
@@ -1947,7 +2003,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Aliments de basse qualité"],
       notes: ["Métabolisme très élevé"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/BDb8ZXb1v.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/lpsuiecdd8aq08njkimc7",
   },
   {
     id: "bambino",
@@ -1980,7 +2037,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Surpoids (critique pour pattes)"],
       notes: ["Métabolisme élevé + articulations fragiles"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/BDb8ZXb1v.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/juc6pw0z7ac87sj2zpveo",
   },
   {
     id: "dwelf",
@@ -2023,7 +2081,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Surpoids"],
       notes: ["Race controversée, besoins spéciaux multiples"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/BDb8ZXb1v.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/jeaws6hskgjueu9pm4dbo",
   },
   {
     id: "minskin",
@@ -2051,7 +2110,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Surpoids"],
       notes: ["Métabolisme élevé"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/BDb8ZXb1v.jpg",
+    imageUri:
+      "https://r2-pub.rork.com/generated-images/f2f79232-0eae-4b51-b1ac-1cb8786f8707.png",
   },
   {
     id: "ukrainian-levkoy",
@@ -2079,35 +2139,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Aliments bas de gamme"],
       notes: ["Métabolisme élevé"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/BDb8ZXb1v.jpg",
-  },
-  {
-    id: "ojos-azules",
-    name: "Ojos Azules",
-    origin: "États-Unis",
-    temperament: ["affectueux", "actif", "intelligent"],
-    coat: {
-      length: "court",
-      shedding: "faible",
-      notes: ["Yeux bleus intenses", "Toutes couleurs de robe", "Très rare"],
-    },
-    care: {
-      grooming: ["Brossage hebdomadaire", "Nettoyage yeux"],
-      habits: ["Actif", "Joueur", "Affectueux"],
-      watchouts: ["Race extrêmement rare", "Problèmes génétiques possibles"],
-    },
-    health: {
-      common: ["Anomalies crâniennes (si homozygote)"],
-      specific: ["Létalité si deux gènes yeux bleus"],
-      prevention: ["Élevage très contrôlé", "Tests génétiques"],
-      vetWhen: ["Tout symptôme neurologique"],
-    },
-    diet: {
-      recommended: ["Équilibrée", "Protéines de qualité"],
-      avoid: ["Aliments de basse qualité"],
-      notes: ["Besoins standards"],
-    },
-    imageUri: "https://cdn2.thecatapi.com/images/Rhj-JsTLP.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/0si84lkgtj2tjr3wsvps2",
   },
   {
     id: "german-rex",
@@ -2135,7 +2168,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Excès de friandises"],
       notes: ["Besoins standards"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/4RzEwvyzz.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/diej1henijnthk8xarayw",
   },
   {
     id: "sokoke",
@@ -2163,7 +2197,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Aliments transformés"],
       notes: ["Chat très actif"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/O3btzLlsO.png",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/v6k7796do7bcpk1khn2to",
   },
   {
     id: "arabian-mau",
@@ -2191,7 +2226,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Excès de glucides"],
       notes: ["Chat musclé et résistant"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/TuSyTkt2M.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/e52ac2xbjoxa7xcs462q6",
   },
   {
     id: "asian",
@@ -2219,7 +2255,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Surpoids"],
       notes: ["Chat musclé et compact"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/4lXnnfxac.jpg",
+    imageUri:
+      "https://images.unsplash.com/photo-1528659529456-1188448eb36d?auto=format&fit=crop&w=1200&q=80",
   },
   {
     id: "serengeti",
@@ -2247,7 +2284,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Céréales en excès"],
       notes: ["Chat athlétique, besoins élevés"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/a8nIYvs6S.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/04hqwd9iftptfiev1ec53",
   },
   {
     id: "european-shorthair",
@@ -2275,7 +2313,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Aliments de basse qualité"],
       notes: ["Chat robuste, peu d'exigences spéciales"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/yG9slH40W.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/ssyqd03sfmlz5q5fm5l0w",
   },
   {
     id: "aegean",
@@ -2303,7 +2342,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Monotonie alimentaire"],
       notes: ["Chat musclé et actif"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/JFPROfGtQ.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/95lzg0a9z97sosskz11z6",
   },
   {
     id: "chantilly-tiffany",
@@ -2331,7 +2371,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Surpoids"],
       notes: ["Chat de taille moyenne"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/JFPROfGtQ.jpg",
+    imageUri:
+      "https://images.unsplash.com/photo-1568152950566-c1bf43f4ab28?auto=format&fit=crop&w=1200&q=80",
   },
   {
     id: "javanese",
@@ -2359,7 +2400,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Sous-nutrition"],
       notes: ["Chat élancé et actif"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/xoI_EpOKe.jpg",
+    imageUri:
+      "https://images.unsplash.com/photo-1606214174585-fe31582dc6ee?auto=format&fit=crop&w=1200&q=80",
   },
   {
     id: "colorpoint-shorthair",
@@ -2387,7 +2429,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Sous-alimentation"],
       notes: ["Silhouette élancée naturelle"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/ai6Jps4sx.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/aloay4j2pahcvx5az965t",
   },
   {
     id: "burmilla",
@@ -2415,7 +2458,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Excès de phosphore"],
       notes: ["Surveiller fonction rénale"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/jvg3XfEdC.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/46awtdshkoucre2yl0wwy",
   },
   {
     id: "australian-mist",
@@ -2443,7 +2487,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Surpoids"],
       notes: ["Chat d'appartement calme"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/_6x-3TiCA.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/ayw5bqv6jgu04213kkbmv",
   },
   {
     id: "tiffanie",
@@ -2471,7 +2516,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Sucres", "Surpoids"],
       notes: ["Chat musclé et élégant"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/4lXnnfxac.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/cvh65jiz96cr9c2nr5gxw",
   },
   {
     id: "foldex",
@@ -2503,7 +2549,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Surpoids (articulations)"],
       notes: ["Double vigilance nécessaire"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/o9t0LDcsa.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/esldipox5twsr59krmipk",
   },
   {
     id: "napoleon",
@@ -2535,7 +2582,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Surpoids (critique)"],
       notes: ["Poids optimal essentiel"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/e8s9-S6AD.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/26x0lf3otta8k6pjseeki",
   },
   {
     id: "kinkalow",
@@ -2563,7 +2611,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Surpoids"],
       notes: ["Poids crucial pour articulations"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/xnsqonbjW.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/x6emwt0bjluciuunjwdin",
   },
   {
     id: "lambkin",
@@ -2595,7 +2644,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Surpoids"],
       notes: ["Poids optimal crucial"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/II9dOZmrw.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/ttvj6k5ute07hm73ggugh",
   },
   {
     id: "skookum",
@@ -2623,7 +2673,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Surpoids (articulations fragiles)"],
       notes: ["Petit chat actif"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/aKbsEYjSl.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/d8fskhd88hktnzgbm33qi",
   },
   {
     id: "genetta",
@@ -2659,7 +2710,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Surpoids (critique)", "Céréales en excès"],
       notes: ["Chat actif, articulations fragiles"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/O3btzLlsO.png",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/qhpfmd41hb4gkel6tbtl4",
   },
   {
     id: "thai",
@@ -2687,7 +2739,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Sous-alimentation"],
       notes: ["Chat actif et musclé"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/d8bl-iiP7.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/z3kboxdofsvtsq7iacopv",
   },
   {
     id: "aphrodite-giant",
@@ -2715,7 +2768,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Surpoids"],
       notes: ["Un des plus grands chats domestiques naturels"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/OOD3VXAQn.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/24cfafnqw2vt29y1edsqu",
   },
   {
     id: "suphalak",
@@ -2743,7 +2797,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Aliments de basse qualité"],
       notes: ["Chat de taille moyenne"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/4lXnnfxac.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/p845gruir6kum40jegoyc",
   },
   {
     id: "raas",
@@ -2771,7 +2826,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Aliments transformés"],
       notes: ["Chat musclé et athlétique"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/-TRBoJWKl.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/ooubepc9yb4gl5lnan8nu",
   },
   {
     id: "cyprus",
@@ -2799,7 +2855,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Aliments de basse qualité"],
       notes: ["Chat rustique"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/tKeo_GrGE.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/svz73i5pr3i2f4c0f08u9",
   },
   {
     id: "sam-sawet",
@@ -2827,7 +2884,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Aliments de basse qualité"],
       notes: ["Chat de taille moyenne"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/ai6Jps4sx.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/e7ycflzl58q0foff42nfw",
   },
   {
     id: "german-longhair",
@@ -2855,7 +2913,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Changements brutaux"],
       notes: ["Chat de taille moyenne à grande"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/OOD3VXAQn.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/0ki3ezb6blurf62n9afz3",
   },
   {
     id: "ural-rex",
@@ -2883,7 +2942,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Aliments de basse qualité"],
       notes: ["Chat de taille moyenne"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/4RzEwvyzz.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/8yokp55nzty6yye9q87eo",
   },
   {
     id: "mekong-bobtail",
@@ -2911,7 +2971,8 @@ export const BREEDS: BreedProfile[] = [
       avoid: ["Surpoids"],
       notes: ["Race robuste et longévive"],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/ai6Jps4sx.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/euh1eauf9h4ct2364cces",
   },
   {
     id: "ojos-azules",
@@ -2969,7 +3030,8 @@ export const BREEDS: BreedProfile[] = [
         "Pas de besoins nutritionnels spécifiques",
       ],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/Rhj-JsTLP.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/4xfwlbq670m31rgee60tn",
   },
   {
     id: "gouttiere",
@@ -3027,7 +3089,8 @@ export const BREEDS: BreedProfile[] = [
         "Surveiller le poids si stérilisé",
       ],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/JFPROfGtQ.jpg",
+    imageUri:
+      "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=1200&q=80",
   },
   {
     id: "gouttiere-poil-long",
@@ -3094,7 +3157,8 @@ export const BREEDS: BreedProfile[] = [
         "Surveiller le poids si stérilisé",
       ],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/MvMo3NctT.jpg",
+    imageUri:
+      "https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?auto=format&fit=crop&w=1200&q=80",
   },
   {
     id: "gouttiere-blanc-brun-roux",
@@ -3152,7 +3216,8 @@ export const BREEDS: BreedProfile[] = [
         "Surveiller le poids si stérilisé",
       ],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/JFPROfGtQ.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/6iqi12tphogqr5s73pyj1",
   },
   {
     id: "gouttiere-blanc-chartreux",
@@ -3210,7 +3275,8 @@ export const BREEDS: BreedProfile[] = [
         "Surveiller le poids si stérilisé",
       ],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/j6oFGLpRG.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/mp3pyzhnstb0dpf7azscc",
   },
   {
     id: "gouttiere-noir-blanc",
@@ -3268,7 +3334,8 @@ export const BREEDS: BreedProfile[] = [
         "Surveiller le poids si stérilisé",
       ],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/5iYq9NmT1.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/tl0u38mzs2zhqd3n4ywob",
   },
   {
     id: "gouttiere-roux",
@@ -3327,7 +3394,8 @@ export const BREEDS: BreedProfile[] = [
         "Surveiller le poids si stérilisé",
       ],
     },
-    imageUri: "https://cdn2.thecatapi.com/images/JFPROfGtQ.jpg",
+    imageUri:
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/04hwjqrgpj2aah58z83e2",
   },
 ];
 
