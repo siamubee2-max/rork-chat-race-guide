@@ -20,6 +20,7 @@ import { StripeProvider } from "@/context/stripe";
 import { GamificationContext } from "@/context/gamification";
 import { AIContext } from "@/context/ai";
 import { ScanImageProvider } from "@/context/scan-image";
+import { UserLocationProvider } from "@/context/user-location";
 import '@/i18n/config';
 
 SplashScreen.preventAutoHideAsync();
@@ -104,10 +105,12 @@ export default function RootLayout() {
                               <GamificationContext>
                                 <AIContext>
                                   <ScanImageProvider>
-                                    {/* #region agent log */}
-                                    {(()=>{fetch('http://127.0.0.1:7242/ingest/bd03eb35-54e1-47b5-a23a-c26416383972',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'_layout.tsx:88',message:'Rendering RootLayoutNav',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});return null;})()}
-                                    {/* #endregion */}
-                                    <RootLayoutNav />
+                                    <UserLocationProvider>
+                                      {/* #region agent log */}
+                                      {(()=>{fetch('http://127.0.0.1:7242/ingest/bd03eb35-54e1-47b5-a23a-c26416383972',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'_layout.tsx:88',message:'Rendering RootLayoutNav',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});return null;})()}
+                                      {/* #endregion */}
+                                      <RootLayoutNav />
+                                    </UserLocationProvider>
                                   </ScanImageProvider>
                                 </AIContext>
                               </GamificationContext>
