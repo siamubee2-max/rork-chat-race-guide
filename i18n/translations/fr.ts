@@ -230,6 +230,8 @@ export default {
     openGoogleMaps: "Ouvrir Google Maps",
     tip: "Conseil",
     tipText: "Les résultats sont fournis par Google Maps. Vérifiez les horaires et appelez avant de vous déplacer.",
+    mapView: "Vue carte",
+    tapMarkerHint: "Appuyez sur les boutons pour naviguer ou ouvrir dans l'app Maps",
   },
   tabs: {
     home: "Accueil",

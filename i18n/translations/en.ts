@@ -230,6 +230,8 @@ export default {
     openGoogleMaps: "Open Google Maps",
     tip: "Tip",
     tipText: "Results are provided by Google Maps. Check hours and call before visiting.",
+    mapView: "Map view",
+    tapMarkerHint: "Tap the buttons to navigate or open in Maps app",
   },
   tabs: {
     home: "Home",

@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import { useUserLocation } from "@/context/user-location";
 import { 
-  Navigation, 
   MapPin, 
   Stethoscope, 
   Home, 
@@ -22,10 +21,13 @@ import {
   ExternalLink,
   Locate,
   Map,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Colors } from "@/constants/colors";
 import { useTranslation } from "react-i18next";
+import NativeMap from "@/components/NativeMap";
 
 interface SearchCategory {
   id: string;
@@ -49,6 +51,7 @@ export default function VetsScreen() {
   } = useUserLocation();
 
   const [hasAskedPermission, setHasAskedPermission] = useState(false);
+  const [showMap, setShowMap] = useState(true);
 
   const handleRequestLocation = useCallback(() => {
     console.log("[VetsScreen] user requested location");
@@ -257,6 +260,40 @@ export default function VetsScreen() {
                     </View>
                   </TouchableOpacity>
                 ))}
+              </View>
+
+              {/* Native Map Section */}
+              <View style={styles.mapSection}>
+                <TouchableOpacity 
+                  style={styles.mapToggleHeader}
+                  onPress={() => setShowMap(!showMap)}
+                  activeOpacity={0.7}
+                >
+                  <View style={styles.mapToggleLeft}>
+                    <Map size={18} color={Colors.primary} />
+                    <Text style={styles.mapToggleTitle}>{t("vets.mapView")}</Text>
+                  </View>
+                  {showMap ? (
+                    <ChevronUp size={20} color={Colors.textMuted} />
+                  ) : (
+                    <ChevronDown size={20} color={Colors.textMuted} />
+                  )}
+                </TouchableOpacity>
+
+                {showMap && coords && (
+                  <View style={styles.mapContainer}>
+                    <NativeMap
+                      latitude={coords.latitude}
+                      longitude={coords.longitude}
+                      height={280}
+                      zoomLevel={14}
+                      showUserLocation={true}
+                    />
+                    <Text style={styles.mapHint}>
+                      {t("vets.tapMarkerHint")}
+                    </Text>
+                  </View>
+                )}
               </View>
 
               {/* Quick Actions */}
@@ -494,5 +531,41 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: Colors.textSecondary,
     lineHeight: 20,
+  },
+  mapSection: {
+    marginBottom: 24,
+    backgroundColor: Colors.backgroundCard,
+    borderRadius: 18,
+    overflow: "hidden",
+    borderWidth: 1,
+    borderColor: Colors.border,
+  },
+  mapToggleHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.border,
+  },
+  mapToggleLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  mapToggleTitle: {
+    fontSize: 15,
+    fontWeight: "700",
+    color: Colors.text,
+  },
+  mapContainer: {
+    padding: 12,
+  },
+  mapHint: {
+    fontSize: 12,
+    color: Colors.textMuted,
+    textAlign: "center",
+    marginTop: 10,
+    fontStyle: "italic",
   },
 });
