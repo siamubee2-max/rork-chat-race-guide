@@ -3,7 +3,7 @@ import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "expo-image";
 import { BookOpen, Crown, ScanLine, Sparkles } from "lucide-react-native";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth";
@@ -15,7 +15,7 @@ const heroUri =
   "https://images.unsplash.com/photo-1504595403659-9088ce801e29?auto=format&fit=crop&w=1400&q=80";
 
 export default function Index() {
-  const { t } = useTranslation();
+  useTranslation();
   const { isAuthenticated, isLoading } = useAuth();
   const { hasSelectedLanguage, isLoading: isLanguageLoading } = useLanguage();
   const insets = useSafeAreaInsets();

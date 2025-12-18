@@ -450,7 +450,8 @@ Question: ${messageText}`
               return null;
             })}
           </View>
-        ))}
+        );
+        })}
 
         {error && (
           <View style={styles.errorContainer}>

@@ -39,6 +39,10 @@ export const Colors = {
   heart: "#EF4444",
   premium: "#D4A05C",
   
+  // Accent colors
+  accent: "#D4A05C",
+  accentMuted: "rgba(212, 160, 92, 0.2)",
+  
   // Tab bar
   tabActive: "#F7D596",
   tabInactive: "#78716C",

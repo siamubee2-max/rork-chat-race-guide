@@ -16,7 +16,6 @@ import { Save, Calendar as CalendarIcon, UtensilsCrossed, Droplets, Activity, Tr
 import { useTranslation } from "react-i18next";
 import { useCats, type DailyLog } from "@/context/cats";
 import { generateUUID } from "@/utils/polyfills";
-import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth";
 
 type AppetiteLevel = "normal" | "increased" | "decreased" | "none";
@@ -31,7 +30,6 @@ export default function DailyLogFormScreen() {
   const { currentUser } = useAuth();
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
-  const { t } = useTranslation();
 
   const hasHealthTracking = React.useMemo(() => {
     if (!currentUser) return false;

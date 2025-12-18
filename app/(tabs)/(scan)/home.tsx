@@ -4,7 +4,7 @@ import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Haptics from "expo-haptics";
 import * as ImagePicker from "expo-image-picker";
-import { Camera, Sparkles, Upload, Info } from "lucide-react-native";
+import { Camera, Sparkles, Upload, Info, Crown } from "lucide-react-native";
 import {
   Alert,
   Platform,
