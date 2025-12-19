@@ -646,10 +646,10 @@ const styles = StyleSheet.create({
   },
   assistantBubble: {
     alignSelf: "flex-start" as const,
-    backgroundColor: Colors.backgroundCard,
+    backgroundColor: Colors.backgroundSecondary,
     borderBottomLeftRadius: 6,
-    borderWidth: 1,
-    borderColor: Colors.border,
+    borderWidth: 1.5,
+    borderColor: Colors.borderStrong,
     flexDirection: "row" as const,
     alignItems: "flex-start" as const,
     alignContent: "flex-start" as const,
@@ -673,11 +673,11 @@ const styles = StyleSheet.create({
     flexShrink: 1,
   },
   userText: {
-    color: "#000000",
-    fontWeight: "500" as const,
+    color: "#1C1917",
+    fontWeight: "600" as const,
   },
   assistantText: {
-    color: "#FFFFFF",
+    color: Colors.text,
     fontWeight: "500" as const,
   },
   toolResultBubble: {
@@ -754,14 +754,14 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    backgroundColor: Colors.backgroundCard,
+    backgroundColor: Colors.backgroundSecondary,
     borderRadius: 22,
     paddingHorizontal: 16,
     paddingVertical: 12,
     fontSize: 15,
     maxHeight: 100,
-    color: "#FFFFFF",
-    borderWidth: 1,
+    color: Colors.text,
+    borderWidth: 1.5,
     borderColor: Colors.primary,
   },
   sendButton: {
