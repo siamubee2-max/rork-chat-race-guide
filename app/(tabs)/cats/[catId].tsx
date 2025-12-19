@@ -1,8 +1,8 @@
-import React, { useLayoutEffect, useCallback } from "react";
-import { View, Text, StyleSheet, ScrollView, Pressable, Platform } from "react-native";
+import React, { useLayoutEffect, useCallback, useState } from "react";
+import { View, Text, StyleSheet, ScrollView, Pressable, Platform, Modal, Dimensions } from "react-native";
 import { useLocalSearchParams, router, useNavigation } from "expo-router";
 import { Image } from "expo-image";
-import { Cat, Plus, Calendar, Syringe, Stethoscope, Pill, HeartPulse, ChevronRight, Heart, Bug, Activity } from "lucide-react-native";
+import { Cat, Plus, Calendar, Syringe, Stethoscope, Pill, HeartPulse, ChevronRight, Heart, Bug, Activity, Images, X } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { useCats, MedicalRecordType } from "@/context/cats";
 import { getBreedById } from "@/constants/breeds";
@@ -14,6 +14,7 @@ export default function CatDetailsScreen() {
   const navigation = useNavigation();
   
   const cat = cats.find((c) => c.id === catId);
+  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState<number | null>(null);
 
   const breed = cat?.breedId ? getBreedById(cat.breedId) : null;
   const breedDisplay = breed?.name ?? t("cats.mixedBreed");
@@ -90,7 +91,8 @@ export default function CatDetailsScreen() {
   };
 
   return (
-    <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
+    <View style={styles.container}>
+      <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
         
         {/* Header Profile */}
         <View style={styles.header}>
@@ -117,6 +119,31 @@ export default function CatDetailsScreen() {
             ) : null}
           </View>
         </View>
+
+        {/* Photo Gallery */}
+        {cat.gallery && cat.gallery.length > 0 && (
+          <View style={styles.gallerySection}>
+            <View style={styles.gallerySectionHeader}>
+              <Images size={18} color="#111" />
+              <Text style={styles.gallerySectionTitle}>Galerie ({cat.gallery.length})</Text>
+            </View>
+            <ScrollView 
+              horizontal 
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.galleryScroll}
+            >
+              {cat.gallery.map((photo, index) => (
+                <Pressable 
+                  key={photo.id} 
+                  onPress={() => setSelectedPhotoIndex(index)}
+                  style={({ pressed }) => [styles.galleryItem, pressed && styles.pressed]}
+                >
+                  <Image source={{ uri: photo.uri }} style={styles.galleryThumbnail} contentFit="cover" />
+                </Pressable>
+              ))}
+            </ScrollView>
+          </View>
+        )}
 
         {/* Health Dashboard Card */}
         <Pressable 
@@ -190,6 +217,56 @@ export default function CatDetailsScreen() {
         )}
 
     </ScrollView>
+
+      {/* Full Screen Photo Modal */}
+      <Modal
+        visible={selectedPhotoIndex !== null}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setSelectedPhotoIndex(null)}
+      >
+        <View style={styles.modalOverlay}>
+          <Pressable 
+            style={styles.modalCloseBtn}
+            onPress={() => setSelectedPhotoIndex(null)}
+          >
+            <X size={24} color="#fff" />
+          </Pressable>
+          
+          {selectedPhotoIndex !== null && cat.gallery && cat.gallery[selectedPhotoIndex] && (
+            <View style={styles.modalContent}>
+              <Image 
+                source={{ uri: cat.gallery[selectedPhotoIndex].uri }} 
+                style={styles.fullImage} 
+                contentFit="contain" 
+              />
+              <View style={styles.modalNav}>
+                <Pressable 
+                  onPress={() => setSelectedPhotoIndex(Math.max(0, selectedPhotoIndex - 1))}
+                  style={[styles.navBtn, selectedPhotoIndex === 0 && styles.navBtnDisabled]}
+                  disabled={selectedPhotoIndex === 0}
+                >
+                  <Text style={styles.navBtnText}>←</Text>
+                </Pressable>
+                <Text style={styles.photoCounter}>
+                  {selectedPhotoIndex + 1} / {cat.gallery.length}
+                </Text>
+                <Pressable 
+                  onPress={() => setSelectedPhotoIndex(Math.min(cat.gallery!.length - 1, selectedPhotoIndex + 1))}
+                  style={[styles.navBtn, selectedPhotoIndex === cat.gallery.length - 1 && styles.navBtnDisabled]}
+                  disabled={selectedPhotoIndex === cat.gallery.length - 1}
+                >
+                  <Text style={styles.navBtnText}>→</Text>
+                </Pressable>
+              </View>
+              {cat.gallery[selectedPhotoIndex].date && (
+                <Text style={styles.photoDate}>{cat.gallery[selectedPhotoIndex].date}</Text>
+              )}
+            </View>
+          )}
+        </View>
+      </Modal>
+    </View>
   );
 }
 
@@ -419,5 +496,97 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: "#666",
     lineHeight: 18,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: "#F2F2F7",
+  },
+  gallerySection: {
+    backgroundColor: "#fff",
+    marginTop: 12,
+    paddingVertical: 16,
+  },
+  gallerySectionHeader: {
+    flexDirection: "row" as const,
+    alignItems: "center" as const,
+    gap: 8,
+    paddingHorizontal: 20,
+    marginBottom: 12,
+  },
+  gallerySectionTitle: {
+    fontSize: 17,
+    fontWeight: "700" as const,
+    color: "#111",
+  },
+  galleryScroll: {
+    paddingHorizontal: 20,
+    gap: 10,
+  },
+  galleryItem: {
+    borderRadius: 12,
+    overflow: "hidden" as const,
+  },
+  galleryThumbnail: {
+    width: 110,
+    height: 110,
+    borderRadius: 12,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.95)",
+    justifyContent: "center" as const,
+    alignItems: "center" as const,
+  },
+  modalCloseBtn: {
+    position: "absolute" as const,
+    top: 60,
+    right: 20,
+    zIndex: 10,
+    padding: 8,
+    backgroundColor: "rgba(255,255,255,0.2)",
+    borderRadius: 20,
+  },
+  modalContent: {
+    flex: 1,
+    justifyContent: "center" as const,
+    alignItems: "center" as const,
+    width: "100%" as const,
+  },
+  fullImage: {
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height * 0.7,
+  },
+  modalNav: {
+    flexDirection: "row" as const,
+    alignItems: "center" as const,
+    gap: 30,
+    marginTop: 20,
+  },
+  navBtn: {
+    padding: 12,
+    backgroundColor: "rgba(255,255,255,0.2)",
+    borderRadius: 25,
+    width: 50,
+    height: 50,
+    alignItems: "center" as const,
+    justifyContent: "center" as const,
+  },
+  navBtnDisabled: {
+    opacity: 0.3,
+  },
+  navBtnText: {
+    color: "#fff",
+    fontSize: 20,
+    fontWeight: "700" as const,
+  },
+  photoCounter: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600" as const,
+  },
+  photoDate: {
+    color: "rgba(255,255,255,0.7)",
+    fontSize: 14,
+    marginTop: 12,
   },
 });

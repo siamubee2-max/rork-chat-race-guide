@@ -45,6 +45,13 @@ export type FeedingSchedule = {
   completed?: boolean;
 };
 
+export type CatPhoto = {
+  id: string;
+  uri: string;
+  caption?: string;
+  date: string;
+};
+
 export type CatProfile = {
   id: string;
   name: string;
@@ -52,6 +59,7 @@ export type CatProfile = {
   microchip: string;
   birthDate?: string;
   imageUri?: string;
+  gallery?: CatPhoto[];
   weight?: string;
   notes?: string;
   medicalRecords?: MedicalRecord[];

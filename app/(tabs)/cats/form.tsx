@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { router, useLocalSearchParams } from "expo-router";
 import * as ImagePicker from "expo-image-picker";
 import { Image } from "expo-image";
-import { Camera, Save, Trash2, X, Heart } from "lucide-react-native";
+import { Camera, Save, Trash2, X, Heart, Plus, Images } from "lucide-react-native";
 import {
   Alert,
   KeyboardAvoidingView,
@@ -17,7 +17,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 
-import { useCats } from "@/context/cats";
+import { useCats, CatPhoto } from "@/context/cats";
 import { BREEDS } from "@/constants/breeds";
 import { generateUUID } from "@/utils/polyfills";
 
@@ -39,6 +39,7 @@ export default function CatFormScreen() {
     existingCat?.imageUri,
   );
   const [notes, setNotes] = useState(existingCat?.notes ?? "");
+  const [gallery, setGallery] = useState<CatPhoto[]>(existingCat?.gallery ?? []);
 
   // Simple breed selector state
   const [showBreedSelect, setShowBreedSelect] = useState(false);
@@ -50,6 +51,7 @@ export default function CatFormScreen() {
       setMicrochip(existingCat.microchip);
       setImageUri(existingCat.imageUri);
       setNotes(existingCat.notes ?? "");
+      setGallery(existingCat.gallery ?? []);
     }
   }, [existingCat]);
 
@@ -70,6 +72,32 @@ export default function CatFormScreen() {
     }
   };
 
+  const onAddGalleryPhoto = async () => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsMultipleSelection: true,
+        quality: 0.8,
+        selectionLimit: 10,
+      });
+
+      if (!result.canceled && result.assets.length > 0) {
+        const newPhotos: CatPhoto[] = result.assets.map((asset) => ({
+          id: generateUUID(),
+          uri: asset.uri,
+          date: new Date().toISOString().split("T")[0],
+        }));
+        setGallery((prev) => [...prev, ...newPhotos]);
+      }
+    } catch {
+      Alert.alert("Erreur", "Impossible d'ajouter les photos");
+    }
+  };
+
+  const onRemoveGalleryPhoto = (photoId: string) => {
+    setGallery((prev) => prev.filter((p) => p.id !== photoId));
+  };
+
   const onSave = async () => {
     if (!name.trim()) {
       Alert.alert("Erreur", "Le nom est obligatoire");
@@ -82,8 +110,12 @@ export default function CatFormScreen() {
       breedId: breedId || null,
       microchip: microchip.trim(),
       imageUri,
+      gallery,
       notes: notes.trim(),
       medicalRecords: existingCat?.medicalRecords ?? [],
+      weightHistory: existingCat?.weightHistory ?? [],
+      dailyLogs: existingCat?.dailyLogs ?? [],
+      feedingSchedule: existingCat?.feedingSchedule ?? [],
     };
 
     try {
@@ -251,6 +283,49 @@ export default function CatFormScreen() {
               placeholderTextColor="#999"
               multiline
             />
+          </View>
+
+          {/* Gallery Section */}
+          <View style={styles.formGroup}>
+            <View style={styles.galleryHeader}>
+              <View style={styles.galleryTitleRow}>
+                <Images size={18} color="#1C1C1E" />
+                <Text style={styles.label}>Galerie photos</Text>
+              </View>
+              <Pressable onPress={onAddGalleryPhoto} style={styles.addGalleryBtn}>
+                <Plus size={16} color="#fff" />
+                <Text style={styles.addGalleryText}>Ajouter</Text>
+              </Pressable>
+            </View>
+            
+            {gallery.length === 0 ? (
+              <Pressable onPress={onAddGalleryPhoto} style={styles.emptyGallery}>
+                <Images size={32} color="#999" />
+                <Text style={styles.emptyGalleryText}>Ajouter des photos à la galerie</Text>
+                <Text style={styles.emptyGallerySubtext}>Capturez les meilleurs moments de votre chat</Text>
+              </Pressable>
+            ) : (
+              <ScrollView 
+                horizontal 
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.galleryScroll}
+              >
+                {gallery.map((photo) => (
+                  <View key={photo.id} style={styles.galleryItem}>
+                    <Image source={{ uri: photo.uri }} style={styles.galleryImage} contentFit="cover" />
+                    <Pressable
+                      onPress={() => onRemoveGalleryPhoto(photo.id)}
+                      style={styles.removeGalleryBtn}
+                    >
+                      <X color="#fff" size={12} />
+                    </Pressable>
+                  </View>
+                ))}
+                <Pressable onPress={onAddGalleryPhoto} style={styles.addMoreBtn}>
+                  <Plus size={24} color="#666" />
+                </Pressable>
+              </ScrollView>
+            )}
           </View>
 
           {isEditing && (
@@ -437,5 +512,81 @@ const styles = StyleSheet.create({
   deleteText: {
     color: "#FF3B30",
     fontWeight: "600",
+  },
+  galleryHeader: {
+    flexDirection: "row" as const,
+    alignItems: "center" as const,
+    justifyContent: "space-between" as const,
+    marginBottom: 12,
+  },
+  galleryTitleRow: {
+    flexDirection: "row" as const,
+    alignItems: "center" as const,
+    gap: 8,
+  },
+  addGalleryBtn: {
+    flexDirection: "row" as const,
+    alignItems: "center" as const,
+    gap: 4,
+    backgroundColor: "#111",
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 12,
+  },
+  addGalleryText: {
+    color: "#fff",
+    fontSize: 13,
+    fontWeight: "600" as const,
+  },
+  emptyGallery: {
+    backgroundColor: "#F2F2F7",
+    borderRadius: 16,
+    padding: 32,
+    alignItems: "center" as const,
+    borderWidth: 2,
+    borderColor: "#E5E5EA",
+    borderStyle: "dashed" as const,
+  },
+  emptyGalleryText: {
+    fontSize: 15,
+    fontWeight: "600" as const,
+    color: "#666",
+    marginTop: 12,
+  },
+  emptyGallerySubtext: {
+    fontSize: 13,
+    color: "#999",
+    marginTop: 4,
+  },
+  galleryScroll: {
+    gap: 10,
+    paddingVertical: 4,
+  },
+  galleryItem: {
+    position: "relative" as const,
+  },
+  galleryImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 12,
+  },
+  removeGalleryBtn: {
+    position: "absolute" as const,
+    top: 4,
+    right: 4,
+    backgroundColor: "rgba(0,0,0,0.6)",
+    borderRadius: 10,
+    padding: 4,
+  },
+  addMoreBtn: {
+    width: 100,
+    height: 100,
+    borderRadius: 12,
+    backgroundColor: "#F2F2F7",
+    alignItems: "center" as const,
+    justifyContent: "center" as const,
+    borderWidth: 2,
+    borderColor: "#E5E5EA",
+    borderStyle: "dashed" as const,
   },
 });
