@@ -54,3 +54,4 @@ export function getBreedImageSync(breedId: string): string {
   return getVerifiedBreedImage(breedId);
 }
 
+

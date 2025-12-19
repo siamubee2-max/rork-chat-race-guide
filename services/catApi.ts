@@ -249,3 +249,4 @@ export function getVerifiedBreedImage(breedId: string): string {
     `https://cdn2.thecatapi.com/images/${CAT_API_BREED_MAP[breedId] || breedId}.jpg`;
 }
 
+

@@ -43,7 +43,17 @@ export default function MoreScreen() {
     try {
       await Haptics.selectionAsync();
     } catch {}
-    router.push(route as any);
+    try {
+      router.push(route as any);
+    } catch (error) {
+      console.error(`Navigation error to ${route}:`, error);
+      // Fallback: try with router.navigate
+      try {
+        router.navigate(route as any);
+      } catch (navError) {
+        console.error(`Navigation fallback failed:`, navError);
+      }
+    }
   };
 
   const menuSections: { title: string; items: MenuItem[] }[] = [
@@ -76,7 +86,7 @@ export default function MoreScreen() {
           icon: <Stethoscope color="#D45B5B" size={22} />,
           title: t("more.vetEmergency"),
           subtitle: t("more.emergencyContacts"),
-          route: "/(tabs)/emergency/index",
+          route: "/(tabs)/emergency",
           color: "rgba(212, 91, 91, 0.15)",
           badge: "SOS",
         },
@@ -85,7 +95,7 @@ export default function MoreScreen() {
           icon: <BookOpen color="#5B8FD4" size={22} />,
           title: t("more.veterinarians"),
           subtitle: t("more.findVet"),
-          route: "/(tabs)/vets/index",
+          route: "/(tabs)/vets",
           color: "rgba(91, 143, 212, 0.15)",
         },
       ],
@@ -98,7 +108,7 @@ export default function MoreScreen() {
           icon: <Wrench color="#8E7CC3" size={22} />,
           title: t("more.practicalTools"),
           subtitle: t("more.toolsSubtitle"),
-          route: "/(tabs)/practical/index",
+          route: "/(tabs)/practical",
           color: "rgba(142, 124, 195, 0.15)",
         },
         {
@@ -106,7 +116,7 @@ export default function MoreScreen() {
           icon: <MessageCircle color="#E89C3F" size={22} />,
           title: t("more.forum"),
           subtitle: t("more.askQuestions"),
-          route: "/(tabs)/discussions/index",
+          route: "/(tabs)/discussions",
           color: "rgba(232, 156, 63, 0.15)",
         },
       ],
@@ -119,7 +129,7 @@ export default function MoreScreen() {
           icon: <Trophy color="#D4A65D" size={22} />,
           title: t("more.profileAchievements"),
           subtitle: t("more.challengesBadges"),
-          route: "/(tabs)/gamification/index",
+          route: "/(tabs)/gamification",
           color: "rgba(212, 166, 93, 0.15)",
         },
       ],
@@ -132,7 +142,7 @@ export default function MoreScreen() {
           icon: <Crown color="#D4775C" size={22} />,
           title: t("more.purrlyPremium"),
           subtitle: t("more.unlimitedAccess"),
-          route: "/(tabs)/subscription/index",
+          route: "/(tabs)/subscription",
           color: "rgba(212, 119, 92, 0.15)",
           badge: "PRO",
         },
