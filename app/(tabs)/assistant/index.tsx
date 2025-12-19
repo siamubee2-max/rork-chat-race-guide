@@ -493,8 +493,8 @@ Question: ${messageText}`
           style={styles.input}
           value={input}
           onChangeText={setInput}
-          placeholder={isRecording ? "Écoute en cours..." : "Posez votre question..."}
-          placeholderTextColor="#78716C"
+          placeholder={isRecording ? "Écoute en cours..." : "Écrivez votre question..."}
+          placeholderTextColor="#999999"
           multiline
           maxLength={500}
           onSubmitEditing={() => handleSend()}
@@ -646,10 +646,10 @@ const styles = StyleSheet.create({
   },
   assistantBubble: {
     alignSelf: "flex-start" as const,
-    backgroundColor: Colors.backgroundSecondary,
+    backgroundColor: "#2C2826",
     borderBottomLeftRadius: 6,
-    borderWidth: 1.5,
-    borderColor: Colors.borderStrong,
+    borderWidth: 2,
+    borderColor: Colors.primary,
     flexDirection: "row" as const,
     alignItems: "flex-start" as const,
     alignContent: "flex-start" as const,
@@ -668,17 +668,18 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   messageText: {
-    fontSize: 15,
-    lineHeight: 22,
+    fontSize: 16,
+    lineHeight: 24,
     flexShrink: 1,
+    fontWeight: "500" as const,
   },
   userText: {
-    color: "#1C1917",
-    fontWeight: "600" as const,
+    color: "#000000",
+    fontWeight: "700" as const,
   },
   assistantText: {
-    color: Colors.text,
-    fontWeight: "500" as const,
+    color: "#FFFFFF",
+    fontWeight: "600" as const,
   },
   toolResultBubble: {
     alignSelf: "flex-start" as const,
@@ -754,15 +755,16 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    backgroundColor: Colors.backgroundSecondary,
+    backgroundColor: "#FFFFFF",
     borderRadius: 22,
     paddingHorizontal: 16,
     paddingVertical: 12,
-    fontSize: 15,
+    fontSize: 16,
     maxHeight: 100,
-    color: Colors.text,
-    borderWidth: 1.5,
+    color: "#000000",
+    borderWidth: 2,
     borderColor: Colors.primary,
+    fontWeight: "500" as const,
   },
   sendButton: {
     width: 44,
