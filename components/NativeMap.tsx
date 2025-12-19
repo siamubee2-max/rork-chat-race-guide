@@ -8,7 +8,7 @@ import {
   Linking,
   ActivityIndicator,
 } from "react-native";
-import MapView, { Marker, Region, PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, { Marker, Region } from "react-native-maps";
 import { MapPin, Navigation, ExternalLink } from "lucide-react-native";
 import { Colors } from "@/constants/colors";
 
@@ -161,7 +161,6 @@ export default function NativeMap({
       <MapView
         ref={mapRef}
         style={styles.map}
-        provider={PROVIDER_GOOGLE}
         initialRegion={initialRegion}
         showsUserLocation={showUserLocation}
         showsMyLocationButton={false}
