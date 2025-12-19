@@ -81,24 +81,27 @@ export default function VetsScreen() {
     setSelectedCategory(categoryId);
     console.log("[VetsScreen] searching nearby places for category:", categoryId);
 
-    const categoryQueries: Record<string, string> = {
-      vet: '["amenity"="veterinary"]',
-      emergency: '["amenity"="veterinary"]["emergency"~"yes|24/7"]',
-      clinic: '["amenity"="veterinary"]',
-      pharmacy: '["amenity"="pharmacy"]',
-      shop: '["shop"="pet"]',
-      shelter: '["amenity"="animal_shelter"]',
-      boarding: '["amenity"="animal_boarding"]',
+    const categoryQueries: Record<string, string[]> = {
+      vet: ['["amenity"="veterinary"]', '["healthcare"="veterinary"]'],
+      emergency: ['["amenity"="veterinary"]', '["healthcare"="veterinary"]', '["amenity"="hospital"]["veterinary"="yes"]'],
+      clinic: ['["amenity"="veterinary"]', '["amenity"="clinic"]["veterinary"="yes"]', '["healthcare"="veterinary"]'],
+      pharmacy: ['["amenity"="pharmacy"]', '["shop"="chemist"]'],
+      shop: ['["shop"="pet"]', '["shop"="pet_grooming"]', '["shop"="pet_food"]'],
+      shelter: ['["amenity"="animal_shelter"]', '["amenity"="animal_boarding"]["shelter"="yes"]'],
+      boarding: ['["amenity"="animal_boarding"]', '["tourism"="pet_friendly"]'],
     };
 
-    const query = categoryQueries[categoryId] || '["amenity"="veterinary"]';
-    const radius = 10000; // 10km
+    const queries = categoryQueries[categoryId] || ['["amenity"="veterinary"]'];
+    const radius = 25000; // 25km for better coverage
+
+    const queryParts = queries.map(q => 
+      `node${q}(around:${radius},${coords.latitude},${coords.longitude});\n        way${q}(around:${radius},${coords.latitude},${coords.longitude});`
+    ).join('\n        ');
 
     const overpassQuery = `
-      [out:json][timeout:25];
+      [out:json][timeout:30];
       (
-        node${query}(around:${radius},${coords.latitude},${coords.longitude});
-        way${query}(around:${radius},${coords.latitude},${coords.longitude});
+        ${queryParts}
       );
       out body center;
     `;
@@ -123,30 +126,42 @@ export default function VetsScreen() {
       console.log("[VetsScreen] Overpass response:", data.elements?.length, "results");
 
       const places: NearbyPlace[] = data.elements
-        .filter((el: any) => el.tags?.name)
-        .map((el: any) => ({
-          id: el.id.toString(),
-          name: el.tags.name,
-          lat: el.lat || el.center?.lat,
-          lon: el.lon || el.center?.lon,
-          type: categoryId,
-          address: [
-            el.tags["addr:housenumber"],
-            el.tags["addr:street"],
-            el.tags["addr:postcode"],
-            el.tags["addr:city"],
-          ].filter(Boolean).join(" ") || undefined,
-          phone: el.tags.phone || el.tags["contact:phone"],
-          website: el.tags.website || el.tags["contact:website"],
-          openingHours: el.tags.opening_hours,
-        }))
-        .filter((p: NearbyPlace) => p.lat && p.lon)
-        .slice(0, 20);
+        .map((el: any) => {
+          const lat = el.lat || el.center?.lat;
+          const lon = el.lon || el.center?.lon;
+          if (!lat || !lon) return null;
+          
+          const name = el.tags?.name || 
+            el.tags?.brand || 
+            el.tags?.operator || 
+            (el.tags?.amenity ? `${el.tags.amenity.charAt(0).toUpperCase()}${el.tags.amenity.slice(1)}` : null) ||
+            (el.tags?.shop ? `${el.tags.shop.charAt(0).toUpperCase()}${el.tags.shop.slice(1)}` : null) ||
+            'Établissement';
+          
+          return {
+            id: el.id.toString(),
+            name,
+            lat,
+            lon,
+            type: categoryId,
+            address: [
+              el.tags?.["addr:housenumber"],
+              el.tags?.["addr:street"],
+              el.tags?.["addr:postcode"],
+              el.tags?.["addr:city"],
+            ].filter(Boolean).join(" ") || undefined,
+            phone: el.tags?.phone || el.tags?.["contact:phone"],
+            website: el.tags?.website || el.tags?.["contact:website"],
+            openingHours: el.tags?.opening_hours,
+          };
+        })
+        .filter((p: NearbyPlace | null): p is NearbyPlace => p !== null)
+        .slice(0, 30);
 
       setNearbyPlaces(places);
       
       if (places.length === 0) {
-        setSearchError("Aucun résultat trouvé dans un rayon de 10km");
+        setSearchError("Aucun résultat trouvé dans un rayon de 25km. Essayez une autre catégorie ou ouvrez Google Maps.");
       }
     } catch (error) {
       console.log("[VetsScreen] search error:", error);
