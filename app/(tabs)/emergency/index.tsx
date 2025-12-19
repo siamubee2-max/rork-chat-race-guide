@@ -262,15 +262,57 @@ export default function EmergencyListScreen() {
     void locateOnce();
   }, [locateOnce]);
 
-  const userCountry = address?.country;
+  const normalizeCountryName = useCallback((country: string | undefined): string | null => {
+    if (!country) return null;
+    
+    const normalized = country.toLowerCase().trim();
+    
+    const countryMap: Record<string, string> = {
+      'france': 'France',
+      'francia': 'France',
+      'frankreich': 'France',
+      'belgium': 'Belgium',
+      'belgique': 'Belgium',
+      'belgië': 'Belgium',
+      'belgien': 'Belgium',
+      'switzerland': 'Switzerland',
+      'suisse': 'Switzerland',
+      'schweiz': 'Switzerland',
+      'svizzera': 'Switzerland',
+      'canada': 'Canada',
+      'united states': 'United States',
+      'usa': 'United States',
+      'états-unis': 'United States',
+      'vereinigte staaten': 'United States',
+      'united kingdom': 'United Kingdom',
+      'uk': 'United Kingdom',
+      'royaume-uni': 'United Kingdom',
+      'vereinigtes königreich': 'United Kingdom',
+      'germany': 'Germany',
+      'allemagne': 'Germany',
+      'deutschland': 'Germany',
+      'germania': 'Germany',
+      'spain': 'Spain',
+      'espagne': 'Spain',
+      'spanien': 'Spain',
+      'españa': 'Spain',
+      'spagna': 'Spain',
+      'italy': 'Italy',
+      'italie': 'Italy',
+      'italien': 'Italy',
+      'italia': 'Italy',
+    };
+    
+    return countryMap[normalized] || null;
+  }, []);
+
+  const userCountry = useMemo(() => normalizeCountryName(address?.country), [address?.country, normalizeCountryName]);
 
   const filteredContacts = useMemo(() => {
     if (!userCountry) {
-      // Show France contacts by default if no location
       return EMERGENCY_CONTACTS.filter(c => c.country === "France");
     }
     const countryContacts = EMERGENCY_CONTACTS.filter(c => c.country === userCountry);
-    // If no contacts for this country, show France + search suggestion
     return countryContacts.length > 0 ? countryContacts : [];
   }, [userCountry]);
 
@@ -463,25 +505,29 @@ export default function EmergencyListScreen() {
         <View style={styles.countryBadge}>
           <MapPin size={14} color={Colors.primary} />
           <Text style={styles.countryText}>
-            Pays détecté : {userCountry}
+            📍 Numéros d&apos;urgence pour : {userCountry}
           </Text>
           <TouchableOpacity onPress={() => { void locateOnce(); }}>
-            <Text style={styles.refreshText}>Actualiser</Text>
+            <Text style={styles.refreshText}>↻</Text>
           </TouchableOpacity>
         </View>
       )}
       
       {userCountry && filteredContacts.length === 0 && (
         <View style={styles.noDataCard}>
-          <Globe size={24} color={Colors.primary} />
+          <AlertTriangle size={24} color={"#F59E0B"} />
+          <Text style={styles.noDataTitle}>
+            Numéros non disponibles pour {userCountry}
+          </Text>
           <Text style={styles.noDataText}>
-            Nous n&apos;avons pas encore de numéros d&apos;urgence pour {userCountry}. Voici les contacts France par défaut et un lien pour rechercher dans votre pays.
+            Nous affichons les contacts France par défaut. Recherchez les numéros d&apos;urgence vétérinaire locaux.
           </Text>
           <TouchableOpacity
             onPress={() => Linking.openURL(`https://www.google.com/search?q=urgence+v%C3%A9t%C3%A9rinaire+${encodeURIComponent(userCountry)}`)}
             style={styles.googleSearchBtn}
           >
-            <Text style={styles.googleSearchBtnText}>Rechercher sur Google</Text>
+            <Globe size={16} color="white" />
+            <Text style={styles.googleSearchBtnText}>Rechercher en ligne</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -1057,30 +1103,40 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   noDataCard: {
-    backgroundColor: Colors.backgroundCard,
+    backgroundColor: '#FEF3C7',
     borderRadius: 16,
     padding: 20,
     alignItems: 'center',
     gap: 12,
     marginBottom: 8,
-    borderWidth: 1,
-    borderColor: Colors.border,
+    borderWidth: 2,
+    borderColor: '#F59E0B',
+  },
+  noDataTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#92400E',
+    textAlign: 'center',
   },
   noDataText: {
-    fontSize: 14,
-    color: Colors.textSecondary,
+    fontSize: 13,
+    color: '#78350F',
     textAlign: 'center',
-    lineHeight: 20,
+    lineHeight: 18,
   },
   googleSearchBtn: {
-    backgroundColor: Colors.primary,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: '#F59E0B',
     paddingHorizontal: 20,
-    paddingVertical: 10,
+    paddingVertical: 12,
     borderRadius: 999,
+    marginTop: 4,
   },
   googleSearchBtnText: {
     color: 'white',
-    fontWeight: '600',
+    fontWeight: '700',
     fontSize: 14,
   },
   defaultCountryBadge: {
