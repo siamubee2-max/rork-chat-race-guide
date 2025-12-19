@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback } from "react";
 import { router } from "expo-router";
 import { Image } from "expo-image";
-import { Plus, AlertTriangle, MapPin, Phone, CheckCircle, PhoneCall, Globe, Navigation } from "lucide-react-native";
+import { Plus, AlertTriangle, MapPin, Phone, CheckCircle, PhoneCall, Globe, Navigation, MoreVertical, Trash2, RotateCcw, Check, X } from "lucide-react-native";
 import {
   FlatList,
   Pressable,
@@ -13,6 +13,7 @@ import {
   Alert,
   type ListRenderItem,
   TouchableOpacity,
+  Modal,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -250,7 +251,9 @@ const EMERGENCY_CONTACTS: EmergencyContact[] = [
 ];
 
 export default function EmergencyListScreen() {
-  const { alerts } = useEmergency();
+  const { alerts, updateAlert, deleteAlert } = useEmergency();
+  const [selectedAlert, setSelectedAlert] = React.useState<EmergencyAlert | null>(null);
+  const [showArchivedAlerts, setShowArchivedAlerts] = React.useState<boolean>(false);
   const insets = useSafeAreaInsets();
   const { address, locateOnce, isLocating } = useUserLocation();
 
@@ -278,6 +281,61 @@ export default function EmergencyListScreen() {
   };
 
   const activeAlerts = alerts.filter((a) => !a.resolved);
+  const archivedAlerts = alerts.filter((a) => a.resolved);
+
+  const handleResolveAlert = async (alert: EmergencyAlert) => {
+    Alert.alert(
+      "Résoudre l'alerte",
+      "Marquer cette alerte comme résolue ?",
+      [
+        { text: "Annuler", style: "cancel" },
+        {
+          text: "Résoudre",
+          style: "default",
+          onPress: async () => {
+            await updateAlert({ ...alert, resolved: true });
+            setSelectedAlert(null);
+          },
+        },
+      ]
+    );
+  };
+
+  const handleReactivateAlert = async (alert: EmergencyAlert) => {
+    Alert.alert(
+      "Réactiver l'alerte",
+      "Réactiver cette alerte archivée ?",
+      [
+        { text: "Annuler", style: "cancel" },
+        {
+          text: "Réactiver",
+          style: "default",
+          onPress: async () => {
+            await updateAlert({ ...alert, resolved: false });
+            setSelectedAlert(null);
+          },
+        },
+      ]
+    );
+  };
+
+  const handleDeleteAlert = async (alert: EmergencyAlert) => {
+    Alert.alert(
+      "Supprimer l'alerte",
+      "Êtes-vous sûr de vouloir supprimer cette alerte définitivement ?",
+      [
+        { text: "Annuler", style: "cancel" },
+        {
+          text: "Supprimer",
+          style: "destructive",
+          onPress: async () => {
+            await deleteAlert(alert.id);
+            setSelectedAlert(null);
+          },
+        },
+      ]
+    );
+  };
 
   const renderItem: ListRenderItem<EmergencyAlert> = ({ item }) => {
     const typeInfo = EMERGENCY_TYPES[item.type];
@@ -290,12 +348,7 @@ export default function EmergencyListScreen() {
     });
 
     return (
-      <Pressable
-        style={({ pressed }) => [
-          styles.card,
-          pressed ? { transform: [{ scale: 0.98 }] } : null,
-        ]}
-      >
+      <View style={styles.card}>
         <View style={[styles.statusBadge, { backgroundColor: typeInfo.color }]}>
           <Text style={styles.statusEmoji}>{typeInfo.icon}</Text>
           <Text style={styles.statusText}>{typeInfo.label}</Text>
@@ -346,7 +399,14 @@ export default function EmergencyListScreen() {
             <Text style={styles.resolvedText}>Résolu</Text>
           </View>
         )}
-      </Pressable>
+
+        <Pressable
+          style={styles.moreButton}
+          onPress={() => setSelectedAlert(item)}
+        >
+          <MoreVertical color={Colors.textSecondary} size={20} />
+        </Pressable>
+      </View>
     );
   };
 
@@ -496,6 +556,92 @@ export default function EmergencyListScreen() {
     </View>
   );
 
+  const ArchivedAlertsSection = () => (
+    <View style={styles.archivedSection}>
+      <Pressable
+        style={styles.archivedHeader}
+        onPress={() => setShowArchivedAlerts(!showArchivedAlerts)}
+      >
+        <Text style={styles.archivedTitle}>
+          📋 Alertes archivées ({archivedAlerts.length})
+        </Text>
+        <Text style={styles.archivedToggle}>
+          {showArchivedAlerts ? "▼" : "►"}
+        </Text>
+      </Pressable>
+      {showArchivedAlerts && archivedAlerts.map((alert) => {
+        const typeInfo = EMERGENCY_TYPES[alert.type];
+        const date = new Date(alert.date);
+        const formattedDate = date.toLocaleDateString("fr-FR", {
+          day: "numeric",
+          month: "short",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+
+        return (
+          <View key={alert.id} style={styles.card}>
+            <View style={[styles.statusBadge, { backgroundColor: typeInfo.color }]}>
+              <Text style={styles.statusEmoji}>{typeInfo.icon}</Text>
+              <Text style={styles.statusText}>{typeInfo.label}</Text>
+            </View>
+
+            <View style={styles.cardContent}>
+              {alert.catImageUri && (
+                <Image
+                  source={{ uri: alert.catImageUri }}
+                  style={styles.catImage}
+                  contentFit="cover"
+                />
+              )}
+
+              <View style={styles.cardInfo}>
+                <Text style={styles.catName}>{alert.catName}</Text>
+                {alert.catBreed && (
+                  <Text style={styles.catBreed}>{alert.catBreed}</Text>
+                )}
+                
+                {alert.microchip && (
+                  <View style={styles.chipBadge}>
+                    <Text style={styles.chipText}>Puce: {alert.microchip}</Text>
+                  </View>
+                )}
+
+                <View style={styles.infoRow}>
+                  <MapPin color="#666" size={14} />
+                  <Text style={styles.infoText}>{alert.location}</Text>
+                </View>
+
+                <View style={styles.infoRow}>
+                  <Phone color="#666" size={14} />
+                  <Text style={styles.infoText}>{alert.contactPhone}</Text>
+                </View>
+
+                <Text style={styles.description} numberOfLines={2}>
+                  {alert.description}
+                </Text>
+
+                <Text style={styles.date}>{formattedDate}</Text>
+              </View>
+            </View>
+
+            <View style={styles.resolvedBadge}>
+              <CheckCircle color="#10B981" size={16} />
+              <Text style={styles.resolvedText}>Résolu</Text>
+            </View>
+
+            <Pressable
+              style={styles.moreButton}
+              onPress={() => setSelectedAlert(alert)}
+            >
+              <MoreVertical color={Colors.textSecondary} size={20} />
+            </Pressable>
+          </View>
+        );
+      })}
+    </View>
+  );
+
   return (
     <View style={styles.screen}>
       <FlatList
@@ -505,6 +651,7 @@ export default function EmergencyListScreen() {
         contentContainerStyle={styles.listContent}
         ListHeaderComponent={EmergencyContactsHeader}
         ListEmptyComponent={EmptyState}
+        ListFooterComponent={archivedAlerts.length > 0 ? ArchivedAlertsSection : null}
       />
 
       {activeAlerts.length > 0 && (
@@ -519,6 +666,62 @@ export default function EmergencyListScreen() {
           </Pressable>
         </View>
       )}
+
+      <Modal
+        visible={selectedAlert !== null}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setSelectedAlert(null)}
+      >
+        <Pressable
+          style={styles.modalOverlay}
+          onPress={() => setSelectedAlert(null)}
+        >
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Actions</Text>
+            
+            {selectedAlert && !selectedAlert.resolved && (
+              <Pressable
+                style={styles.modalAction}
+                onPress={() => handleResolveAlert(selectedAlert)}
+              >
+                <Check color="#10B981" size={20} />
+                <Text style={styles.modalActionText}>Marquer comme résolu</Text>
+              </Pressable>
+            )}
+
+            {selectedAlert && selectedAlert.resolved && (
+              <Pressable
+                style={styles.modalAction}
+                onPress={() => handleReactivateAlert(selectedAlert)}
+              >
+                <RotateCcw color="#2563EB" size={20} />
+                <Text style={styles.modalActionText}>Réactiver l&apos;alerte</Text>
+              </Pressable>
+            )}
+
+            {selectedAlert && (
+              <Pressable
+                style={styles.modalAction}
+                onPress={() => handleDeleteAlert(selectedAlert)}
+              >
+                <Trash2 color="#DC2626" size={20} />
+                <Text style={[styles.modalActionText, { color: "#DC2626" }]}>
+                  Supprimer définitivement
+                </Text>
+              </Pressable>
+            )}
+
+            <Pressable
+              style={styles.modalCancel}
+              onPress={() => setSelectedAlert(null)}
+            >
+              <X color={Colors.textSecondary} size={20} />
+              <Text style={styles.modalCancelText}>Annuler</Text>
+            </Pressable>
+          </View>
+        </Pressable>
+      </Modal>
     </View>
   );
 }
@@ -546,6 +749,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 3,
+    marginBottom: 12,
   },
   statusBadge: {
     flexDirection: "row",
@@ -893,5 +1097,94 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: Colors.primary,
     fontWeight: '600',
+  },
+  moreButton: {
+    position: 'absolute',
+    top: 12,
+    right: 12,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'flex-end',
+  },
+  modalContent: {
+    backgroundColor: Colors.backgroundCard,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    padding: 24,
+    paddingBottom: 40,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: Colors.text,
+    marginBottom: 16,
+  },
+  modalAction: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    paddingVertical: 16,
+    paddingHorizontal: 12,
+    borderRadius: 12,
+    backgroundColor: Colors.background,
+    marginBottom: 8,
+  },
+  modalActionText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: Colors.text,
+  },
+  modalCancel: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    paddingVertical: 16,
+    marginTop: 8,
+  },
+  modalCancelText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: Colors.textSecondary,
+  },
+  archivedSection: {
+    marginTop: 24,
+  },
+  archivedHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    backgroundColor: Colors.backgroundCard,
+    borderRadius: 12,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: Colors.border,
+  },
+  archivedTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: Colors.text,
+  },
+  archivedToggle: {
+    fontSize: 14,
+    color: Colors.textSecondary,
   },
 });
