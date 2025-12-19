@@ -20,7 +20,7 @@ import { Colors } from "@/constants/colors";
 import { useScanImage } from "@/context/scan-image";
 
 const heroImageUri =
-  "https://images.unsplash.com/photo-1495360010541-f48722b34f7d?auto=format&fit=crop&w=1200&q=80";
+  "https://images.unsplash.com/photo-1573865526739-10c1dd7aa5b8?auto=format&fit=crop&w=1200&q=80";
 
 export default function ScanHomeScreen() {
   const { t } = useTranslation();

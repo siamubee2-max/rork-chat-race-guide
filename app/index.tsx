@@ -12,7 +12,7 @@ import { catQuotes } from "@/constants/quotes";
 import { Colors } from "@/constants/colors";
 
 const heroUri =
-  "https://images.unsplash.com/photo-1504595403659-9088ce801e29?auto=format&fit=crop&w=1400&q=80";
+  "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=1400&q=80";
 
 export default function Index() {
   useTranslation();
