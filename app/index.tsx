@@ -3,7 +3,7 @@ import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "expo-image";
 import { BookOpen, Crown, ScanLine, Sparkles } from "lucide-react-native";
-import { Animated, Platform, Pressable, StyleSheet, Text, View } from "react-native";
+import { Animated, Dimensions, Platform, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth";
@@ -13,6 +13,8 @@ import { Colors } from "@/constants/colors";
 
 const heroUri =
   "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=1400&q=80";
+
+const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 export default function Index() {
   useTranslation();
@@ -70,6 +72,11 @@ export default function Index() {
 
   return (
     <View style={styles.screen} testID="indexScreen">
+      <ScrollView 
+        style={styles.scrollView}
+        contentContainerStyle={{ paddingBottom: insets.bottom + 40 }}
+        showsVerticalScrollIndicator={false}
+      >
       <View style={styles.hero} testID="indexHero">
         <Image source={{ uri: heroUri }} style={styles.heroImg} contentFit="cover" />
         <LinearGradient
@@ -120,7 +127,7 @@ export default function Index() {
         </Animated.View>
       </View>
 
-      <Animated.View style={[styles.content, { paddingBottom: insets.bottom + 40, opacity: fadeAnim }]}>
+      <Animated.View style={[styles.content, { opacity: fadeAnim }]}>
         <View style={styles.quoteSection}>
           <Text style={styles.quoteSymbol}>&ldquo;</Text>
           <Text style={styles.quoteText}>{randomQuote}</Text>
@@ -145,6 +152,7 @@ export default function Index() {
           </View>
         </View>
       </Animated.View>
+      </ScrollView>
     </View>
   );
 }
@@ -154,8 +162,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.background,
   },
+  scrollView: {
+    flex: 1,
+  },
   hero: {
-    height: "65%",
+    height: Math.max(SCREEN_HEIGHT * 0.65, 500),
     width: "100%",
     position: "relative",
   },
@@ -206,10 +217,10 @@ const styles = StyleSheet.create({
   },
   heroCopy: {
     position: "absolute",
-    bottom: 40,
+    bottom: 30,
     left: 24,
     right: 24,
-    gap: 12,
+    gap: 10,
   },
   preTitle: {
     color: Colors.primary,
@@ -220,9 +231,9 @@ const styles = StyleSheet.create({
   },
   title: {
     color: Colors.ivory,
-    fontSize: 42,
+    fontSize: Math.min(42, SCREEN_HEIGHT * 0.05),
     fontWeight: "900",
-    lineHeight: 48,
+    lineHeight: Math.min(48, SCREEN_HEIGHT * 0.056),
     letterSpacing: -1,
   },
   subtitle: {
@@ -273,9 +284,9 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   content: {
-    flex: 1,
     paddingHorizontal: 24,
     marginTop: -20,
+    paddingBottom: 20,
   },
   quoteSection: {
     marginBottom: 30,
