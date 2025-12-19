@@ -14,6 +14,7 @@ import {
   Languages,
   ChevronRight,
   Zap,
+  Bell,
 } from "lucide-react-native";
 import {
   ScrollView,
@@ -21,9 +22,13 @@ import {
   Text,
   View,
   Pressable,
+  Switch,
+  Platform,
+  Alert,
 } from "react-native";
 import { Colors } from "@/constants/colors";
 import { useAuth } from "@/context/auth";
+import { useNotifications } from "@/context/notifications";
 
 interface MenuItem {
   id: string;
@@ -38,6 +43,11 @@ interface MenuItem {
 export default function MoreScreen() {
   const { currentUser } = useAuth();
   const { t } = useTranslation();
+  const { 
+    notificationsEnabled, 
+    requestPermissions, 
+    disableNotifications,
+  } = useNotifications();
 
   const handleNavigation = async (route: string) => {
     try {
@@ -47,12 +57,37 @@ export default function MoreScreen() {
       router.push(route as any);
     } catch (error) {
       console.error(`Navigation error to ${route}:`, error);
-      // Fallback: try with router.navigate
       try {
         router.navigate(route as any);
       } catch (navError) {
         console.error(`Navigation fallback failed:`, navError);
       }
+    }
+  };
+
+  const handleToggleNotifications = async (value: boolean) => {
+    try {
+      await Haptics.selectionAsync();
+    } catch {}
+
+    if (Platform.OS === "web") {
+      Alert.alert(
+        t("notifications.title"),
+        t("notifications.notAvailableWeb")
+      );
+      return;
+    }
+
+    if (value) {
+      const granted = await requestPermissions();
+      if (!granted) {
+        Alert.alert(
+          t("notifications.permissionDenied"),
+          t("notifications.permissionDeniedText")
+        );
+      }
+    } else {
+      await disableNotifications();
     }
   };
 
@@ -219,6 +254,27 @@ export default function MoreScreen() {
             </View>
           </View>
         ))}
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>{t("notifications.settingsTitle")}</Text>
+          <View style={styles.sectionContent}>
+            <View style={styles.menuItem}>
+              <View style={[styles.menuIcon, { backgroundColor: notificationsEnabled ? "rgba(76, 175, 80, 0.15)" : "rgba(158, 158, 158, 0.15)" }]}>
+                <Bell color={notificationsEnabled ? "#4CAF50" : Colors.textMuted} size={22} />
+              </View>
+              <View style={styles.menuContent}>
+                <Text style={styles.menuTitle}>{t("notifications.pushNotifications")}</Text>
+                <Text style={styles.menuSubtitle}>{t("notifications.pushNotificationsDesc")}</Text>
+              </View>
+              <Switch
+                value={notificationsEnabled}
+                onValueChange={handleToggleNotifications}
+                trackColor={{ false: Colors.border, true: Colors.primary }}
+                thumbColor={notificationsEnabled ? "#fff" : "#f4f3f4"}
+              />
+            </View>
+          </View>
+        </View>
 
         <View style={styles.footer}>
           <Text style={styles.footerText}>Purrly v1.0.0</Text>

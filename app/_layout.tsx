@@ -21,6 +21,7 @@ import { GamificationContext } from "@/context/gamification";
 import { AIContext } from "@/context/ai";
 import { ScanImageProvider } from "@/context/scan-image";
 import { UserLocationProvider } from "@/context/user-location";
+import { NotificationsContext } from "@/context/notifications";
 import '@/i18n/config';
 
 SplashScreen.preventAutoHideAsync();
@@ -87,7 +88,9 @@ export default function RootLayout() {
                                 <AIContext>
                                   <ScanImageProvider>
                                     <UserLocationProvider>
-                                      <RootLayoutNav />
+                                      <NotificationsContext>
+                                        <RootLayoutNav />
+                                      </NotificationsContext>
                                     </UserLocationProvider>
                                   </ScanImageProvider>
                                 </AIContext>
