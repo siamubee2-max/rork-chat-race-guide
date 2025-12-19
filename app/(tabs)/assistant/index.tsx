@@ -546,19 +546,16 @@ const styles = StyleSheet.create({
   },
   messagesContainerMobile: {
     flex: 1,
-    minHeight: 0,
-    flexShrink: 1,
   },
   messagesContent: {
     padding: 16,
     gap: 12,
-    flexGrow: 0,
+    flexGrow: 1,
+    paddingBottom: 24,
   },
   messagesContentMobile: {
-    flexGrow: 0,
-    flexShrink: 1,
-    minHeight: 0,
-    alignSelf: 'stretch',
+    flexGrow: 1,
+    paddingBottom: 24,
   },
   emptyState: {
     alignItems: "center" as const,
