@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -8,6 +8,7 @@ import {
   ScrollView,
   Linking,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import { useUserLocation } from "@/context/user-location";
 import { 
@@ -18,7 +19,6 @@ import {
   Hotel, 
   Pill, 
   Building2,
-  ExternalLink,
   Locate,
   Map,
   ChevronDown,
@@ -27,7 +27,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Colors } from "@/constants/colors";
 import { useTranslation } from "react-i18next";
-import NativeMap from "@/components/NativeMap";
+import NativeMap, { MapMarker } from "@/components/NativeMap";
 
 interface SearchCategory {
   id: string;
@@ -38,6 +38,18 @@ interface SearchCategory {
   emoji: string;
   color: string;
 }
+
+type NearbyPlace = {
+  id: string;
+  name: string;
+  lat: number;
+  lon: number;
+  type: string;
+  address?: string;
+  phone?: string;
+  website?: string;
+  openingHours?: string;
+};
 
 export default function VetsScreen() {
   const { t } = useTranslation();
@@ -51,11 +63,105 @@ export default function VetsScreen() {
   } = useUserLocation();
 
   const [showMap, setShowMap] = useState(true);
+  const [nearbyPlaces, setNearbyPlaces] = useState<NearbyPlace[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchError, setSearchError] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>("vet");
 
   const handleRequestLocation = useCallback(() => {
     console.log("[VetsScreen] user requested location");
     void locateOnce();
   }, [locateOnce]);
+
+  const searchNearbyPlaces = useCallback(async (categoryId: string) => {
+    if (!coords) return;
+    
+    setIsSearching(true);
+    setSearchError(null);
+    setSelectedCategory(categoryId);
+    console.log("[VetsScreen] searching nearby places for category:", categoryId);
+
+    const categoryQueries: Record<string, string> = {
+      vet: '["amenity"="veterinary"]',
+      emergency: '["amenity"="veterinary"]["emergency"~"yes|24/7"]',
+      clinic: '["amenity"="veterinary"]',
+      pharmacy: '["amenity"="pharmacy"]',
+      shop: '["shop"="pet"]',
+      shelter: '["amenity"="animal_shelter"]',
+      boarding: '["amenity"="animal_boarding"]',
+    };
+
+    const query = categoryQueries[categoryId] || '["amenity"="veterinary"]';
+    const radius = 10000; // 10km
+
+    const overpassQuery = `
+      [out:json][timeout:25];
+      (
+        node${query}(around:${radius},${coords.latitude},${coords.longitude});
+        way${query}(around:${radius},${coords.latitude},${coords.longitude});
+      );
+      out body center;
+    `;
+
+    try {
+      const response = await fetch(
+        "https://overpass-api.de/api/interpreter",
+        {
+          method: "POST",
+          body: `data=${encodeURIComponent(overpassQuery)}`,
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Erreur de recherche");
+      }
+
+      const data = await response.json();
+      console.log("[VetsScreen] Overpass response:", data.elements?.length, "results");
+
+      const places: NearbyPlace[] = data.elements
+        .filter((el: any) => el.tags?.name)
+        .map((el: any) => ({
+          id: el.id.toString(),
+          name: el.tags.name,
+          lat: el.lat || el.center?.lat,
+          lon: el.lon || el.center?.lon,
+          type: categoryId,
+          address: [
+            el.tags["addr:housenumber"],
+            el.tags["addr:street"],
+            el.tags["addr:postcode"],
+            el.tags["addr:city"],
+          ].filter(Boolean).join(" ") || undefined,
+          phone: el.tags.phone || el.tags["contact:phone"],
+          website: el.tags.website || el.tags["contact:website"],
+          openingHours: el.tags.opening_hours,
+        }))
+        .filter((p: NearbyPlace) => p.lat && p.lon)
+        .slice(0, 20);
+
+      setNearbyPlaces(places);
+      
+      if (places.length === 0) {
+        setSearchError("Aucun résultat trouvé dans un rayon de 10km");
+      }
+    } catch (error) {
+      console.log("[VetsScreen] search error:", error);
+      setSearchError("Erreur lors de la recherche. Réessayez.");
+    } finally {
+      setIsSearching(false);
+    }
+  }, [coords]);
+
+  useEffect(() => {
+    if (coords) {
+      searchNearbyPlaces("vet");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [coords]);
 
   const openGoogleMaps = useCallback((query: string) => {
     let googleMapsUrl: string | undefined;
@@ -94,6 +200,30 @@ export default function VetsScreen() {
       });
     }
   }, [coords, t]);
+
+  const openPlaceDetails = useCallback((place: NearbyPlace) => {
+    const url = `https://www.google.com/maps/search/?api=1&query=${place.lat},${place.lon}`;
+    Linking.openURL(url).catch(() => {
+      Alert.alert(t("common.error"), t("vets.cannotOpenMaps"));
+    });
+  }, [t]);
+
+  const callPlace = useCallback((phone: string) => {
+    Linking.openURL(`tel:${phone.replace(/\s/g, "")}`).catch(() => {
+      Alert.alert(t("common.error"), "Impossible d'appeler ce numéro");
+    });
+  }, [t]);
+
+  const mapMarkers: MapMarker[] = nearbyPlaces.map((place) => ({
+    id: place.id,
+    latitude: place.lat,
+    longitude: place.lon,
+    title: place.name,
+    description: place.address,
+    color: "#EF5350",
+    emoji: "🏥",
+    onPress: () => openPlaceDetails(place),
+  }));
 
   const categories: SearchCategory[] = [
     {
@@ -244,64 +374,138 @@ export default function VetsScreen() {
                   </Text>
                 </View>
               )}
-              <View style={styles.categoriesGrid}>
+              <ScrollView 
+                horizontal 
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.categoryScroll}
+              >
                 {categories.map((category) => (
                   <TouchableOpacity
                     key={category.id}
-                    style={styles.categoryCard}
-                    onPress={() => openGoogleMaps(category.query)}
+                    style={[
+                      styles.categoryChip,
+                      selectedCategory === category.id && styles.categoryChipActive,
+                    ]}
+                    onPress={() => searchNearbyPlaces(category.id)}
                     activeOpacity={0.8}
                   >
-                    <View style={[styles.categoryIcon, { backgroundColor: category.color }]}>
+                    <View style={[styles.categoryChipIcon, { backgroundColor: category.color }]}>
                       {category.icon}
                     </View>
-                    <View style={styles.categoryContent}>
-                      <Text style={styles.categoryEmoji}>{category.emoji}</Text>
-                      <Text style={styles.categoryTitle}>{category.title}</Text>
-                      <Text style={styles.categorySubtitle} numberOfLines={2}>
-                        {category.subtitle}
-                      </Text>
-                    </View>
-                    <View style={styles.categoryArrow}>
-                      <ExternalLink size={16} color={Colors.textMuted} />
-                    </View>
+                    <Text style={[
+                      styles.categoryChipText,
+                      selectedCategory === category.id && styles.categoryChipTextActive,
+                    ]}>
+                      {category.title}
+                    </Text>
                   </TouchableOpacity>
                 ))}
-              </View>
+              </ScrollView>
 
-              {/* Native Map Section */}
-              {coords && <View style={styles.mapSection}>
-                <TouchableOpacity 
-                  style={styles.mapToggleHeader}
-                  onPress={() => setShowMap(!showMap)}
-                  activeOpacity={0.7}
-                >
-                  <View style={styles.mapToggleLeft}>
-                    <Map size={18} color={Colors.primary} />
-                    <Text style={styles.mapToggleTitle}>{t("vets.mapView")}</Text>
-                  </View>
-                  {showMap ? (
-                    <ChevronUp size={20} color={Colors.textMuted} />
-                  ) : (
-                    <ChevronDown size={20} color={Colors.textMuted} />
-                  )}
-                </TouchableOpacity>
-
-                {showMap && (
-                  <View style={styles.mapContainer}>
-                    <NativeMap
-                      latitude={coords.latitude}
-                      longitude={coords.longitude}
-                      height={280}
-                      zoomLevel={14}
-                      showUserLocation={true}
-                    />
-                    <Text style={styles.mapHint}>
-                      {t("vets.tapMarkerHint")}
+              {/* Results Section */}
+              {isSearching ? (
+                <View style={styles.loadingContainer}>
+                  <ActivityIndicator size="large" color={Colors.primary} />
+                  <Text style={styles.loadingText}>Recherche en cours...</Text>
+                </View>
+              ) : searchError ? (
+                <View style={styles.errorContainer}>
+                  <Text style={styles.errorText}>{searchError}</Text>
+                  <TouchableOpacity
+                    style={styles.retryBtn}
+                    onPress={() => searchNearbyPlaces(selectedCategory)}
+                  >
+                    <Text style={styles.retryBtnText}>Réessayer</Text>
+                  </TouchableOpacity>
+                </View>
+              ) : nearbyPlaces.length > 0 ? (
+                <>
+                  <View style={styles.resultsHeader}>
+                    <Text style={styles.resultsCount}>
+                      🏥 {nearbyPlaces.length} résultat{nearbyPlaces.length > 1 ? "s" : ""} trouvé{nearbyPlaces.length > 1 ? "s" : ""}
                     </Text>
                   </View>
-                )}
-              </View>}
+
+                  {/* Native Map Section */}
+                  {coords && <View style={styles.mapSection}>
+                    <TouchableOpacity 
+                      style={styles.mapToggleHeader}
+                      onPress={() => setShowMap(!showMap)}
+                      activeOpacity={0.7}
+                    >
+                      <View style={styles.mapToggleLeft}>
+                        <Map size={18} color={Colors.primary} />
+                        <Text style={styles.mapToggleTitle}>{t("vets.mapView")}</Text>
+                      </View>
+                      {showMap ? (
+                        <ChevronUp size={20} color={Colors.textMuted} />
+                      ) : (
+                        <ChevronDown size={20} color={Colors.textMuted} />
+                      )}
+                    </TouchableOpacity>
+
+                    {showMap && (
+                      <View style={styles.mapContainer}>
+                        <NativeMap
+                          latitude={coords.latitude}
+                          longitude={coords.longitude}
+                          markers={mapMarkers}
+                          height={280}
+                          zoomLevel={13}
+                          showUserLocation={true}
+                        />
+                      </View>
+                    )}
+                  </View>}
+
+                  {/* Results List */}
+                  <View style={styles.resultsList}>
+                    {nearbyPlaces.map((place) => (
+                      <TouchableOpacity
+                        key={place.id}
+                        style={styles.resultCard}
+                        onPress={() => openPlaceDetails(place)}
+                        activeOpacity={0.8}
+                      >
+                        <View style={styles.resultIcon}>
+                          <Stethoscope size={24} color="#fff" />
+                        </View>
+                        <View style={styles.resultContent}>
+                          <Text style={styles.resultName} numberOfLines={1}>
+                            {place.name}
+                          </Text>
+                          {place.address && (
+                            <Text style={styles.resultAddress} numberOfLines={2}>
+                              {place.address}
+                            </Text>
+                          )}
+                          {place.openingHours && (
+                            <Text style={styles.resultHours} numberOfLines={1}>
+                              🕐 {place.openingHours}
+                            </Text>
+                          )}
+                          <View style={styles.resultActions}>
+                            {place.phone && (
+                              <TouchableOpacity
+                                style={styles.resultActionBtn}
+                                onPress={() => callPlace(place.phone!)}
+                              >
+                                <Text style={styles.resultActionText}>📞 Appeler</Text>
+                              </TouchableOpacity>
+                            )}
+                            <TouchableOpacity
+                              style={styles.resultActionBtn}
+                              onPress={() => openPlaceDetails(place)}
+                            >
+                              <Text style={styles.resultActionText}>📍 Itinéraire</Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </>
+              ) : null}
 
               {/* Quick Actions */}
               <View style={styles.quickActions}>
@@ -585,5 +789,137 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: "#92400E",
     textAlign: "center",
+  },
+  categoryScroll: {
+    paddingBottom: 16,
+    gap: 10,
+  },
+  categoryChip: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: Colors.backgroundCard,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    gap: 8,
+  },
+  categoryChipActive: {
+    backgroundColor: Colors.primaryMuted,
+    borderColor: Colors.primary,
+  },
+  categoryChipIcon: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  categoryChipText: {
+    fontSize: 14,
+    fontWeight: "700",
+    color: Colors.text,
+  },
+  categoryChipTextActive: {
+    color: Colors.primary,
+  },
+  loadingContainer: {
+    padding: 40,
+    alignItems: "center",
+    gap: 12,
+  },
+  loadingText: {
+    fontSize: 15,
+    color: Colors.textSecondary,
+  },
+  errorContainer: {
+    padding: 24,
+    alignItems: "center",
+    backgroundColor: Colors.backgroundCard,
+    borderRadius: 16,
+    marginBottom: 20,
+  },
+  errorText: {
+    fontSize: 15,
+    color: Colors.textSecondary,
+    textAlign: "center",
+    marginBottom: 16,
+  },
+  retryBtn: {
+    backgroundColor: Colors.primary,
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 999,
+  },
+  retryBtnText: {
+    color: Colors.background,
+    fontWeight: "700",
+    fontSize: 15,
+  },
+  resultsHeader: {
+    marginBottom: 16,
+  },
+  resultsCount: {
+    fontSize: 15,
+    fontWeight: "700",
+    color: Colors.text,
+  },
+  resultsList: {
+    gap: 12,
+    marginTop: 16,
+  },
+  resultCard: {
+    flexDirection: "row",
+    backgroundColor: Colors.backgroundCard,
+    borderRadius: 18,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    gap: 14,
+  },
+  resultIcon: {
+    width: 52,
+    height: 52,
+    borderRadius: 16,
+    backgroundColor: "#EF5350",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  resultContent: {
+    flex: 1,
+  },
+  resultName: {
+    fontSize: 17,
+    fontWeight: "800",
+    color: Colors.text,
+    marginBottom: 4,
+  },
+  resultAddress: {
+    fontSize: 13,
+    color: Colors.textSecondary,
+    lineHeight: 18,
+    marginBottom: 4,
+  },
+  resultHours: {
+    fontSize: 12,
+    color: Colors.textMuted,
+    marginBottom: 8,
+  },
+  resultActions: {
+    flexDirection: "row",
+    gap: 10,
+    marginTop: 4,
+  },
+  resultActionBtn: {
+    backgroundColor: Colors.primaryMuted,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 8,
+  },
+  resultActionText: {
+    fontSize: 12,
+    fontWeight: "700",
+    color: Colors.primary,
   },
 });
