@@ -1,12 +1,14 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import { router } from "expo-router";
 import { Image } from "expo-image";
 import * as Haptics from "expo-haptics";
 import { generateText } from "@rork-ai/toolkit-sdk";
-import { Cat, ChevronRight } from "lucide-react-native";
+import { Cat, ChevronRight, Scan, Sparkles, Search, Eye } from "lucide-react-native";
+import { Colors } from "@/constants/colors";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
-  ActivityIndicator,
+  Animated,
+  Easing,
   FlatList,
   Pressable,
   StyleSheet,
@@ -14,6 +16,7 @@ import {
   View,
   type ListRenderItem,
 } from "react-native";
+
 import { useScanImage } from "@/context/scan-image";
 import { BREEDS, type BreedId } from "@/constants/breeds";
 
@@ -110,6 +113,358 @@ function findBreedMatch(aiName: string): { id: BreedId; name: string } | null {
   console.log("No breed match found for:", aiName, "normalized:", normalized);
   return null;
 }
+
+function ScanningAnimation({ imageUri }: { imageUri?: string }) {
+  const scanLineAnim = useRef(new Animated.Value(0)).current;
+  const pulseAnim = useRef(new Animated.Value(1)).current;
+  const rotateAnim = useRef(new Animated.Value(0)).current;
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const progressAnim = useRef(new Animated.Value(0)).current;
+  const [scanPhase, setScanPhase] = useState(0);
+  const phases = [
+    { icon: "scan", text: "Détection du chat..." },
+    { icon: "search", text: "Analyse des caractéristiques..." },
+    { icon: "eye", text: "Identification de la race..." },
+    { icon: "sparkles", text: "Finalisation des résultats..." },
+  ];
+
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 400,
+      useNativeDriver: true,
+    }).start();
+
+    const scanLoop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(scanLineAnim, {
+          toValue: 1,
+          duration: 2000,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+        Animated.timing(scanLineAnim, {
+          toValue: 0,
+          duration: 2000,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+      ])
+    );
+
+    const pulseLoop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseAnim, {
+          toValue: 1.15,
+          duration: 800,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulseAnim, {
+          toValue: 1,
+          duration: 800,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+      ])
+    );
+
+    const rotateLoop = Animated.loop(
+      Animated.timing(rotateAnim, {
+        toValue: 1,
+        duration: 3000,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      })
+    );
+
+    Animated.timing(progressAnim, {
+      toValue: 1,
+      duration: 8000,
+      easing: Easing.linear,
+      useNativeDriver: false,
+    }).start();
+
+    scanLoop.start();
+    pulseLoop.start();
+    rotateLoop.start();
+
+    const phaseInterval = setInterval(() => {
+      setScanPhase((prev) => (prev + 1) % phases.length);
+    }, 2000);
+
+    return () => {
+      scanLoop.stop();
+      pulseLoop.stop();
+      rotateLoop.stop();
+      clearInterval(phaseInterval);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const scanLineTranslate = scanLineAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 180],
+  });
+
+  const rotation = rotateAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["0deg", "360deg"],
+  });
+
+  const progressWidth = progressAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["0%", "100%"],
+  });
+
+  const renderPhaseIcon = () => {
+    const iconColor = Colors.primary;
+    const iconSize = 24;
+    switch (phases[scanPhase].icon) {
+      case "scan":
+        return <Scan color={iconColor} size={iconSize} />;
+      case "search":
+        return <Search color={iconColor} size={iconSize} />;
+      case "eye":
+        return <Eye color={iconColor} size={iconSize} />;
+      case "sparkles":
+        return <Sparkles color={iconColor} size={iconSize} />;
+      default:
+        return <Scan color={iconColor} size={iconSize} />;
+    }
+  };
+
+  return (
+    <Animated.View style={[scanStyles.container, { opacity: fadeAnim }]}>
+      <View style={scanStyles.imageWrapper}>
+        {imageUri && (
+          <Animated.Image
+            source={{ uri: imageUri }}
+            style={[scanStyles.scanImage, { transform: [{ scale: pulseAnim }] }]}
+          />
+        )}
+        
+        <View style={scanStyles.scanOverlay}>
+          <Animated.View
+            style={[
+              scanStyles.scanLine,
+              { transform: [{ translateY: scanLineTranslate }] },
+            ]}
+          />
+          
+          <View style={scanStyles.cornerTL} />
+          <View style={scanStyles.cornerTR} />
+          <View style={scanStyles.cornerBL} />
+          <View style={scanStyles.cornerBR} />
+        </View>
+
+        <Animated.View
+          style={[
+            scanStyles.orbitRing,
+            { transform: [{ rotate: rotation }] },
+          ]}
+        >
+          <View style={scanStyles.orbitDot} />
+        </Animated.View>
+      </View>
+
+      <View style={scanStyles.infoSection}>
+        <View style={scanStyles.phaseContainer}>
+          <Animated.View style={[scanStyles.phaseIcon, { transform: [{ scale: pulseAnim }] }]}>
+            {renderPhaseIcon()}
+          </Animated.View>
+          <Text style={scanStyles.phaseText}>{phases[scanPhase].text}</Text>
+        </View>
+
+        <View style={scanStyles.progressContainer}>
+          <View style={scanStyles.progressTrack}>
+            <Animated.View style={[scanStyles.progressFill, { width: progressWidth }]} />
+          </View>
+          <View style={scanStyles.progressDots}>
+            {phases.map((_, index) => (
+              <View
+                key={index}
+                style={[
+                  scanStyles.progressDot,
+                  index <= scanPhase && scanStyles.progressDotActive,
+                ]}
+              />
+            ))}
+          </View>
+        </View>
+
+        <Text style={scanStyles.subtitle}>
+          Notre IA analyse les caractéristiques uniques de votre chat
+        </Text>
+      </View>
+    </Animated.View>
+  );
+}
+
+const scanStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: Colors.background,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 24,
+  },
+  imageWrapper: {
+    width: 220,
+    height: 220,
+    borderRadius: 24,
+    overflow: "hidden",
+    position: "relative",
+    backgroundColor: Colors.backgroundSecondary,
+  },
+  scanImage: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 24,
+  },
+  scanOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: 24,
+  },
+  scanLine: {
+    position: "absolute",
+    left: 10,
+    right: 10,
+    height: 3,
+    backgroundColor: Colors.primary,
+    shadowColor: Colors.primary,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 10,
+    elevation: 5,
+  },
+  cornerTL: {
+    position: "absolute",
+    top: 12,
+    left: 12,
+    width: 30,
+    height: 30,
+    borderTopWidth: 3,
+    borderLeftWidth: 3,
+    borderColor: Colors.primary,
+    borderTopLeftRadius: 8,
+  },
+  cornerTR: {
+    position: "absolute",
+    top: 12,
+    right: 12,
+    width: 30,
+    height: 30,
+    borderTopWidth: 3,
+    borderRightWidth: 3,
+    borderColor: Colors.primary,
+    borderTopRightRadius: 8,
+  },
+  cornerBL: {
+    position: "absolute",
+    bottom: 12,
+    left: 12,
+    width: 30,
+    height: 30,
+    borderBottomWidth: 3,
+    borderLeftWidth: 3,
+    borderColor: Colors.primary,
+    borderBottomLeftRadius: 8,
+  },
+  cornerBR: {
+    position: "absolute",
+    bottom: 12,
+    right: 12,
+    width: 30,
+    height: 30,
+    borderBottomWidth: 3,
+    borderRightWidth: 3,
+    borderColor: Colors.primary,
+    borderBottomRightRadius: 8,
+  },
+  orbitRing: {
+    position: "absolute",
+    top: -20,
+    left: -20,
+    right: -20,
+    bottom: -20,
+    borderRadius: 140,
+    borderWidth: 2,
+    borderColor: "rgba(212, 160, 92, 0.2)",
+    borderStyle: "dashed",
+  },
+  orbitDot: {
+    position: "absolute",
+    top: 0,
+    left: "50%",
+    marginLeft: -6,
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    backgroundColor: Colors.primary,
+  },
+  infoSection: {
+    marginTop: 40,
+    alignItems: "center",
+    width: "100%",
+  },
+  phaseContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    marginBottom: 24,
+  },
+  phaseIcon: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: "rgba(212, 160, 92, 0.15)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  phaseText: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: Colors.ivory,
+  },
+  progressContainer: {
+    width: "100%",
+    marginBottom: 20,
+  },
+  progressTrack: {
+    height: 6,
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    borderRadius: 3,
+    overflow: "hidden",
+  },
+  progressFill: {
+    height: "100%",
+    backgroundColor: Colors.primary,
+    borderRadius: 3,
+  },
+  progressDots: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 12,
+    paddingHorizontal: 4,
+  },
+  progressDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: "rgba(255, 255, 255, 0.2)",
+  },
+  progressDotActive: {
+    backgroundColor: Colors.primary,
+  },
+  subtitle: {
+    fontSize: 14,
+    color: Colors.textSecondary,
+    textAlign: "center",
+    lineHeight: 20,
+    maxWidth: 280,
+  },
+});
 
 export default function ScanResultScreen() {
   const { imageData, clearImage } = useScanImage();
@@ -356,15 +711,7 @@ Race: Persan | Confiance: Faible | Raison: Pelage long et épais visible.`;
       )}
 
       {isAnalyzing ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#111" />
-          <Text style={styles.loadingText}>
-            Analyse de l&apos;image en cours...
-          </Text>
-          <Text style={styles.loadingSubtext}>
-            Notre IA identifie la race de votre chat
-          </Text>
-        </View>
+        <ScanningAnimation imageUri={imageData?.uri} />
       ) : error ? (
         <View style={styles.errorContainer}>
           <Text style={styles.errorText}>{error}</Text>
@@ -476,24 +823,7 @@ const styles = StyleSheet.create({
     borderTopColor: "rgba(0,0,0,0.05)",
     backgroundColor: "#fff",
   },
-  loadingContainer: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 32,
-  },
-  loadingText: {
-    marginTop: 16,
-    fontSize: 18,
-    fontWeight: "800",
-    color: "rgba(0,0,0,0.9)",
-  },
-  loadingSubtext: {
-    marginTop: 8,
-    fontSize: 14,
-    color: "rgba(0,0,0,0.6)",
-    textAlign: "center",
-  },
+
   errorContainer: {
     flex: 1,
     alignItems: "center",
