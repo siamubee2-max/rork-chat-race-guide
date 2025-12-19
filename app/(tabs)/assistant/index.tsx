@@ -494,7 +494,7 @@ Question: ${messageText}`
           value={input}
           onChangeText={setInput}
           placeholder={isRecording ? "Écoute en cours..." : "Posez votre question..."}
-          placeholderTextColor={Colors.textMuted}
+          placeholderTextColor="#78716C"
           multiline
           maxLength={500}
           onSubmitEditing={() => handleSend()}
@@ -673,10 +673,12 @@ const styles = StyleSheet.create({
     flexShrink: 1,
   },
   userText: {
-    color: "#0B0A09",
+    color: "#000000",
+    fontWeight: "500" as const,
   },
   assistantText: {
-    color: Colors.text,
+    color: "#FFFFFF",
+    fontWeight: "500" as const,
   },
   toolResultBubble: {
     alignSelf: "flex-start" as const,
@@ -752,15 +754,15 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    backgroundColor: Colors.background,
+    backgroundColor: Colors.backgroundCard,
     borderRadius: 22,
     paddingHorizontal: 16,
     paddingVertical: 12,
     fontSize: 15,
     maxHeight: 100,
-    color: Colors.text,
+    color: "#FFFFFF",
     borderWidth: 1,
-    borderColor: Colors.border,
+    borderColor: Colors.primary,
   },
   sendButton: {
     width: 44,
