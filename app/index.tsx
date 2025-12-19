@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "expo-image";
 import { BookOpen, Crown, ScanLine, Sparkles } from "lucide-react-native";
-import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
+import { Animated, Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth";
@@ -25,42 +25,42 @@ export default function Index() {
     []
   );
 
-  useEffect(() => {
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/bd03eb35-54e1-47b5-a23a-c26416383972',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.tsx:29',message:'Index mounted',data:{isAuthenticated,isLoading,hasSelectedLanguage,isLanguageLoading},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'G'})}).catch(()=>{});
-    // #endregion
-    console.log("[Index] mounted", { isAuthenticated, isLoading, hasSelectedLanguage, isLanguageLoading });
-  }, [isAuthenticated, isLoading, hasSelectedLanguage, isLanguageLoading]);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(30)).current;
 
   useEffect(() => {
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/bd03eb35-54e1-47b5-a23a-c26416383972',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.tsx:33',message:'Index navigation check',data:{isLanguageLoading,hasSelectedLanguage,isLoading,isAuthenticated},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'H'})}).catch(()=>{});
-    // #endregion
+    if (isAuthenticated && !isLoading && !isLanguageLoading) {
+      Animated.parallel([
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: 600,
+          useNativeDriver: true,
+        }),
+        Animated.timing(slideAnim, {
+          toValue: 0,
+          duration: 500,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    }
+  }, [isAuthenticated, isLoading, isLanguageLoading, fadeAnim, slideAnim]);
+
+  useEffect(() => {
     if (!isLanguageLoading && !hasSelectedLanguage) {
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/bd03eb35-54e1-47b5-a23a-c26416383972',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.tsx:36',message:'Redirecting to language-select',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'H'})}).catch(()=>{});
-      // #endregion
-      console.log("[Index] redirecting to language-select");
       router.replace("/language-select" as any);
       return;
     }
     
     if (!isLoading && !isLanguageLoading && !isAuthenticated) {
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/bd03eb35-54e1-47b5-a23a-c26416383972',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.tsx:42',message:'Redirecting to login',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'H'})}).catch(()=>{});
-      // #endregion
-      console.log("[Index] redirecting to login");
       router.replace("/auth/login" as any);
     }
   }, [isLoading, isAuthenticated, hasSelectedLanguage, isLanguageLoading]);
 
   const goScan = useCallback(() => {
-    console.log("[Index] goScan");
     router.replace("/(tabs)/(scan)/home" as any);
   }, []);
 
   const goBreeds = useCallback(() => {
-    console.log("[Index] goBreeds");
     router.replace("/(tabs)/(breeds)/home" as any);
   }, []);
 
@@ -88,7 +88,7 @@ export default function Index() {
           </View>
         </View>
 
-        <View style={styles.heroCopy}>
+        <Animated.View style={[styles.heroCopy, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
           <Text style={styles.preTitle}>L&apos;ART DE LA GÉNÉTIQUE</Text>
           <Text style={styles.title}>Le prestige dans chaque regard</Text>
           <Text style={styles.subtitle}>
@@ -117,10 +117,10 @@ export default function Index() {
               <Text style={styles.secondaryBtnText}>Explorer les archives</Text>
             </Pressable>
           </View>
-        </View>
+        </Animated.View>
       </View>
 
-      <View style={[styles.content, { paddingBottom: insets.bottom + 40 }]}>
+      <Animated.View style={[styles.content, { paddingBottom: insets.bottom + 40, opacity: fadeAnim }]}>
         <View style={styles.quoteSection}>
           <Text style={styles.quoteSymbol}>&ldquo;</Text>
           <Text style={styles.quoteText}>{randomQuote}</Text>
@@ -144,7 +144,7 @@ export default function Index() {
             </View>
           </View>
         </View>
-      </View>
+      </Animated.View>
     </View>
   );
 }

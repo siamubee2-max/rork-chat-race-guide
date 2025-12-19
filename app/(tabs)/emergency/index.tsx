@@ -529,7 +529,7 @@ export default function EmergencyListScreen() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: Colors.background,
   },
   listContent: {
     padding: 16,
@@ -540,17 +540,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   card: {
-    backgroundColor: "#fff",
+    backgroundColor: Colors.backgroundCard,
     borderRadius: 20,
     overflow: "hidden",
     borderWidth: 1,
-    borderColor: "rgba(0,0,0,0.08)",
+    borderColor: Colors.border,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 3,
   },
@@ -586,15 +586,15 @@ const styles = StyleSheet.create({
   catName: {
     fontSize: 20,
     fontWeight: "700",
-    color: "#111",
+    color: Colors.text,
   },
   catBreed: {
     fontSize: 15,
-    color: "#666",
+    color: Colors.textSecondary,
   },
   chipBadge: {
     alignSelf: "flex-start",
-    backgroundColor: "#F0F9FF",
+    backgroundColor: Colors.primaryMuted,
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 6,
@@ -602,7 +602,7 @@ const styles = StyleSheet.create({
   },
   chipText: {
     fontSize: 12,
-    color: "#0284C7",
+    color: Colors.primary,
     fontWeight: "600",
   },
   infoRow: {
@@ -613,17 +613,17 @@ const styles = StyleSheet.create({
   },
   infoText: {
     fontSize: 14,
-    color: "#666",
+    color: Colors.textSecondary,
   },
   description: {
     fontSize: 14,
-    color: "#444",
+    color: Colors.textSecondary,
     lineHeight: 20,
     marginTop: 4,
   },
   date: {
     fontSize: 12,
-    color: "#999",
+    color: Colors.textMuted,
     marginTop: 8,
   },
   resolvedBadge: {
@@ -648,20 +648,22 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: "#FEF2F2",
+    backgroundColor: Colors.backgroundSecondary,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 16,
+    borderWidth: 1,
+    borderColor: Colors.border,
   },
   emptyTitle: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#111",
+    color: Colors.text,
     marginBottom: 8,
   },
   emptyText: {
     fontSize: 14,
-    color: "#666",
+    color: Colors.textSecondary,
     textAlign: "center",
     lineHeight: 20,
     marginBottom: 24,
@@ -707,7 +709,7 @@ const styles = StyleSheet.create({
   emergencyTitle: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#111",
+    color: Colors.text,
     marginBottom: 4,
   },
   emergencyCardWrapper: {
@@ -718,10 +720,10 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.15,
+    shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 3,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.backgroundCard,
   },
   emergencyCard: {
     flexDirection: "row",
@@ -785,16 +787,16 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   permissionCard: {
-    backgroundColor: 'white',
+    backgroundColor: Colors.backgroundCard,
     borderRadius: 16,
     padding: 20,
     alignItems: 'center',
     marginBottom: 8,
     borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.06)',
+    borderColor: Colors.border,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
+    shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 3,
   },
@@ -810,12 +812,12 @@ const styles = StyleSheet.create({
   permissionTitle: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#1a1a1a',
+    color: Colors.text,
     marginBottom: 6,
   },
   permissionText: {
     fontSize: 13,
-    color: '#666',
+    color: Colors.textSecondary,
     textAlign: 'center',
     lineHeight: 18,
     marginBottom: 16,
@@ -847,7 +849,7 @@ const styles = StyleSheet.create({
   countryText: {
     flex: 1,
     fontSize: 13,
-    color: '#444',
+    color: Colors.textSecondary,
     fontWeight: '500',
   },
   refreshText: {
@@ -856,18 +858,18 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   noDataCard: {
-    backgroundColor: 'white',
+    backgroundColor: Colors.backgroundCard,
     borderRadius: 16,
     padding: 20,
     alignItems: 'center',
     gap: 12,
     marginBottom: 8,
     borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.06)',
+    borderColor: Colors.border,
   },
   noDataText: {
     fontSize: 14,
-    color: '#666',
+    color: Colors.textSecondary,
     textAlign: 'center',
     lineHeight: 20,
   },
@@ -886,7 +888,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-    backgroundColor: '#FEF3C7',
+    backgroundColor: Colors.primaryMuted,
     paddingHorizontal: 14,
     paddingVertical: 10,
     borderRadius: 12,
@@ -894,7 +896,7 @@ const styles = StyleSheet.create({
   },
   defaultCountryText: {
     fontSize: 13,
-    color: '#92400E',
+    color: Colors.primary,
     fontWeight: '600',
   },
 });
