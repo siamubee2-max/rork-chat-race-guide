@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback } from "react";
 import { router } from "expo-router";
 import { Image } from "expo-image";
-import { Plus, AlertTriangle, MapPin, Phone, CheckCircle, PhoneCall, Globe, Navigation, MoreVertical, Trash2, RotateCcw, Check, X } from "lucide-react-native";
+import { Plus, AlertTriangle, MapPin, Phone, CheckCircle, PhoneCall, Globe, Navigation, MoreVertical, Trash2, RotateCcw, Check, X, Share2 } from "lucide-react-native";
 import {
   FlatList,
   Pressable,
@@ -14,6 +14,7 @@ import {
   type ListRenderItem,
   TouchableOpacity,
   Modal,
+  Share,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -379,6 +380,70 @@ export default function EmergencyListScreen() {
     );
   };
 
+  const handleShareAlert = async (alert: EmergencyAlert) => {
+    const typeInfo = EMERGENCY_TYPES[alert.type];
+    const typeLabel = typeInfo.label.toUpperCase();
+    
+    let message = `🚨 ${typeLabel} 🚨\n\n`;
+    message += `📛 Nom: ${alert.catName}\n`;
+    
+    if (alert.catBreed) {
+      message += `🐱 Race: ${alert.catBreed}\n`;
+    }
+    
+    if (alert.microchip) {
+      message += `💳 Puce: ${alert.microchip}\n`;
+    }
+    
+    message += `📍 Lieu: ${alert.location}\n`;
+    
+    if (alert.description) {
+      message += `\n📝 Description:\n${alert.description}\n`;
+    }
+    
+    message += `\n📞 Contact: ${alert.contactPhone}`;
+    
+    if (alert.contactEmail) {
+      message += `\n📧 Email: ${alert.contactEmail}`;
+    }
+    
+    message += `\n\n⚠️ Merci de partager pour aider à retrouver ce chat !`;
+
+    try {
+      if (Platform.OS === 'web') {
+        await navigator.clipboard.writeText(message);
+        Alert.alert(
+          "Message copié",
+          "Le message a été copié dans le presse-papiers. Vous pouvez maintenant le coller sur vos réseaux sociaux.",
+          [
+            {
+              text: "Ouvrir Facebook",
+              onPress: () => Linking.openURL('https://www.facebook.com')
+            },
+            {
+              text: "Ouvrir Twitter",
+              onPress: () => Linking.openURL('https://www.twitter.com')
+            },
+            { text: "OK" }
+          ]
+        );
+      } else {
+        const result = await Share.share({
+          message,
+          title: `${typeLabel} - ${alert.catName}`,
+        });
+        
+        if (result.action === Share.sharedAction) {
+          console.log('[Emergency] Alert shared successfully');
+        }
+      }
+      setSelectedAlert(null);
+    } catch (error) {
+      console.error('[Emergency] Error sharing alert:', error);
+      Alert.alert("Erreur", "Impossible de partager l'alerte");
+    }
+  };
+
   const renderItem: ListRenderItem<EmergencyAlert> = ({ item }) => {
     const typeInfo = EMERGENCY_TYPES[item.type];
     const date = new Date(item.date);
@@ -725,6 +790,16 @@ export default function EmergencyListScreen() {
         >
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Actions</Text>
+            
+            {selectedAlert && (
+              <Pressable
+                style={styles.modalAction}
+                onPress={() => handleShareAlert(selectedAlert)}
+              >
+                <Share2 color="#2563EB" size={20} />
+                <Text style={styles.modalActionText}>Partager sur les réseaux sociaux</Text>
+              </Pressable>
+            )}
             
             {selectedAlert && !selectedAlert.resolved && (
               <Pressable
