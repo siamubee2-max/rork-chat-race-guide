@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback } from "react";
+import React, { useMemo, useCallback } from "react";
 import { router } from "expo-router";
 import { Image } from "expo-image";
 import { Plus, AlertTriangle, MapPin, Phone, CheckCircle, PhoneCall, Globe, Navigation } from "lucide-react-native";
@@ -252,22 +252,26 @@ const EMERGENCY_CONTACTS: EmergencyContact[] = [
 export default function EmergencyListScreen() {
   const { alerts } = useEmergency();
   const insets = useSafeAreaInsets();
-  const { address, permission, locateOnce, isLocating } = useUserLocation();
-  const [hasAskedPermission, setHasAskedPermission] = useState(false);
+  const { address, locateOnce, isLocating } = useUserLocation();
 
   const handleRequestLocation = useCallback(() => {
     console.log("[EmergencyScreen] user requested location");
-    setHasAskedPermission(true);
     void locateOnce();
   }, [locateOnce]);
 
   const userCountry = address?.country;
 
   const filteredContacts = useMemo(() => {
-    if (!userCountry) return [];
+    if (!userCountry) {
+      // Show France contacts by default if no location
+      return EMERGENCY_CONTACTS.filter(c => c.country === "France");
+    }
     const countryContacts = EMERGENCY_CONTACTS.filter(c => c.country === userCountry);
-    return countryContacts;
+    // If no contacts for this country, show France + search suggestion
+    return countryContacts.length > 0 ? countryContacts : [];
   }, [userCountry]);
+
+  const showDefaultContacts = !userCountry || filteredContacts.length === 0;
 
   const onCreateAlert = () => {
     router.push("/(tabs)/emergency/create" as any);
@@ -373,14 +377,14 @@ export default function EmergencyListScreen() {
     <View style={styles.emergencySection}>
       <Text style={styles.emergencyTitle}>📞 Numéros d&apos;Urgence</Text>
       
-      {!hasAskedPermission && permission === "unknown" ? (
+      {!userCountry && (
         <View style={styles.permissionCard}>
           <View style={styles.permissionIcon}>
             <MapPin size={28} color={Colors.primary} />
           </View>
           <Text style={styles.permissionTitle}>Localisation</Text>
           <Text style={styles.permissionText}>
-            Autorisez la localisation pour afficher les numéros d&apos;urgence de votre pays.
+            Autorisez la localisation pour afficher les numéros d&apos;urgence de votre pays. En attendant, voici les contacts pour la France.
           </Text>
           <TouchableOpacity
             testID="emergency-request-location"
@@ -393,23 +397,25 @@ export default function EmergencyListScreen() {
             </Text>
           </TouchableOpacity>
         </View>
-      ) : (
+      )}
+      
+      {userCountry && (
         <View style={styles.countryBadge}>
           <MapPin size={14} color={Colors.primary} />
           <Text style={styles.countryText}>
-            {userCountry ? `Pays détecté : ${userCountry}` : "Localisation en cours..."}
+            Pays détecté : {userCountry}
           </Text>
-          <TouchableOpacity onPress={() => { setHasAskedPermission(true); void locateOnce(); }}>
+          <TouchableOpacity onPress={() => { void locateOnce(); }}>
             <Text style={styles.refreshText}>Actualiser</Text>
           </TouchableOpacity>
         </View>
       )}
       
-      {hasAskedPermission && userCountry && filteredContacts.length === 0 && (
+      {userCountry && filteredContacts.length === 0 && (
         <View style={styles.noDataCard}>
           <Globe size={24} color={Colors.primary} />
           <Text style={styles.noDataText}>
-            Nous n&apos;avons pas encore de numéros d&apos;urgence pour {userCountry}. Recherchez &quot;urgence vétérinaire&quot; sur Google.
+            Nous n&apos;avons pas encore de numéros d&apos;urgence pour {userCountry}. Voici les contacts France par défaut et un lien pour rechercher dans votre pays.
           </Text>
           <TouchableOpacity
             onPress={() => Linking.openURL(`https://www.google.com/search?q=urgence+v%C3%A9t%C3%A9rinaire+${encodeURIComponent(userCountry)}`)}
@@ -420,7 +426,13 @@ export default function EmergencyListScreen() {
         </View>
       )}
       
-      {filteredContacts.map((contact) => (
+      {showDefaultContacts && !userCountry && (
+        <View style={styles.defaultCountryBadge}>
+          <Text style={styles.defaultCountryText}>🇫🇷 Contacts France (par défaut)</Text>
+        </View>
+      )}
+      
+      {(filteredContacts.length > 0 ? filteredContacts : EMERGENCY_CONTACTS.filter(c => c.country === "France")).map((contact) => (
         <View key={contact.id} style={styles.emergencyCardWrapper}>
           <View
             style={[
@@ -869,5 +881,20 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '600',
     fontSize: 14,
+  },
+  defaultCountryBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: '#FEF3C7',
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 12,
+    marginBottom: 8,
+  },
+  defaultCountryText: {
+    fontSize: 13,
+    color: '#92400E',
+    fontWeight: '600',
   },
 });

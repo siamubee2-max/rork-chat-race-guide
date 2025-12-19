@@ -50,48 +50,49 @@ export default function VetsScreen() {
     isLocating,
   } = useUserLocation();
 
-  const [hasAskedPermission, setHasAskedPermission] = useState(false);
   const [showMap, setShowMap] = useState(true);
 
   const handleRequestLocation = useCallback(() => {
     console.log("[VetsScreen] user requested location");
-    setHasAskedPermission(true);
     void locateOnce();
   }, [locateOnce]);
 
   const openGoogleMaps = useCallback((query: string) => {
-    if (!coords) {
-      Alert.alert(
-        t("vets.locationRequired"),
-        t("vets.enableLocationFirst")
-      );
-      return;
+    let googleMapsUrl: string | undefined;
+    let webFallback: string;
+
+    if (coords) {
+      const { latitude, longitude } = coords;
+      googleMapsUrl = Platform.select({
+        ios: `comgooglemaps://?q=${encodeURIComponent(query)}&center=${latitude},${longitude}`,
+        android: `geo:${latitude},${longitude}?q=${encodeURIComponent(query)}`,
+        default: `https://www.google.com/maps/search/${encodeURIComponent(query)}/@${latitude},${longitude},14z`,
+      });
+      webFallback = `https://www.google.com/maps/search/${encodeURIComponent(query)}/@${latitude},${longitude},14z`;
+    } else {
+      // Sans localisation, recherche générale
+      googleMapsUrl = undefined;
+      webFallback = `https://www.google.com/maps/search/${encodeURIComponent(query)}`;
     }
 
-    const { latitude, longitude } = coords;
-    
-    // URL Google Maps avec recherche à proximité
-    const googleMapsUrl = Platform.select({
-      ios: `comgooglemaps://?q=${encodeURIComponent(query)}&center=${latitude},${longitude}`,
-      android: `geo:${latitude},${longitude}?q=${encodeURIComponent(query)}`,
-      default: `https://www.google.com/maps/search/${encodeURIComponent(query)}/@${latitude},${longitude},14z`,
-    });
-
-    const webFallback = `https://www.google.com/maps/search/${encodeURIComponent(query)}/@${latitude},${longitude},14z`;
-
-    // Essayer d'ouvrir l'app Google Maps, sinon fallback web
-    Linking.canOpenURL(googleMapsUrl || webFallback)
-      .then((supported) => {
-        if (supported && googleMapsUrl) {
-          return Linking.openURL(googleMapsUrl);
-        }
-        return Linking.openURL(webFallback);
-      })
-      .catch(() => {
-        Linking.openURL(webFallback).catch(() => {
-          Alert.alert(t("common.error"), t("vets.cannotOpenMaps"));
+    if (googleMapsUrl) {
+      Linking.canOpenURL(googleMapsUrl)
+        .then((supported) => {
+          if (supported) {
+            return Linking.openURL(googleMapsUrl!);
+          }
+          return Linking.openURL(webFallback);
+        })
+        .catch(() => {
+          Linking.openURL(webFallback).catch(() => {
+            Alert.alert(t("common.error"), t("vets.cannotOpenMaps"));
+          });
         });
+    } else {
+      Linking.openURL(webFallback).catch(() => {
+        Alert.alert(t("common.error"), t("vets.cannotOpenMaps"));
       });
+    }
   }, [coords, t]);
 
   const categories: SearchCategory[] = [
@@ -191,7 +192,7 @@ export default function VetsScreen() {
           </View>
 
           {/* Location Card */}
-          {!hasAskedPermission || (!coords && permission !== "denied") ? (
+          {!coords ? (
             <View style={styles.locationCard}>
               <View style={styles.locationIconContainer}>
                 <MapPin size={32} color={Colors.primary} />
@@ -233,10 +234,16 @@ export default function VetsScreen() {
             </View>
           )}
 
-          {/* Categories Grid */}
-          {coords && (
-            <>
-              <Text style={styles.sectionTitle}>{t("vets.searchNearby")}</Text>
+          {/* Categories Grid - Always show with fallback search */}
+          <>
+              <Text style={styles.sectionTitle}>{coords ? t("vets.searchNearby") : "🔍 Recherche rapide"}</Text>
+              {!coords && (
+                <View style={styles.noLocationHint}>
+                  <Text style={styles.noLocationHintText}>
+                    Sans localisation, les recherches s&apos;ouvriront sur Google Maps
+                  </Text>
+                </View>
+              )}
               <View style={styles.categoriesGrid}>
                 {categories.map((category) => (
                   <TouchableOpacity
@@ -263,7 +270,7 @@ export default function VetsScreen() {
               </View>
 
               {/* Native Map Section */}
-              <View style={styles.mapSection}>
+              {coords && <View style={styles.mapSection}>
                 <TouchableOpacity 
                   style={styles.mapToggleHeader}
                   onPress={() => setShowMap(!showMap)}
@@ -280,7 +287,7 @@ export default function VetsScreen() {
                   )}
                 </TouchableOpacity>
 
-                {showMap && coords && (
+                {showMap && (
                   <View style={styles.mapContainer}>
                     <NativeMap
                       latitude={coords.latitude}
@@ -294,7 +301,7 @@ export default function VetsScreen() {
                     </Text>
                   </View>
                 )}
-              </View>
+              </View>}
 
               {/* Quick Actions */}
               <View style={styles.quickActions}>
@@ -316,7 +323,6 @@ export default function VetsScreen() {
                 </Text>
               </View>
             </>
-          )}
         </ScrollView>
       </SafeAreaView>
     </View>
@@ -567,5 +573,17 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 10,
     fontStyle: "italic",
+  },
+  noLocationHint: {
+    backgroundColor: "#FEF3C7",
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 12,
+    marginBottom: 12,
+  },
+  noLocationHintText: {
+    fontSize: 13,
+    color: "#92400E",
+    textAlign: "center",
   },
 });
