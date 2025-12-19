@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect, useLayoutEffect } from "react";
 import { StyleSheet, View, Text, Platform, TouchableOpacity, ScrollView } from "react-native";
-import MapView, { Marker, PROVIDER_GOOGLE, PROVIDER_DEFAULT } from "react-native-maps";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { Image } from "expo-image";
 import { MapPin, Phone, Star, Navigation } from "lucide-react-native";
@@ -110,7 +110,7 @@ export default function BreedersScreen() {
       
       <MapView
         style={styles.map}
-        provider={Platform.OS === "android" ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
+        provider={PROVIDER_GOOGLE}
         initialRegion={initialRegion}
         showsUserLocation={true}
         showsMyLocationButton={true}

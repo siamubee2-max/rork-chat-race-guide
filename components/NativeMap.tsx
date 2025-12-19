@@ -161,7 +161,7 @@ export default function NativeMap({
       <MapView
         ref={mapRef}
         style={styles.map}
-        provider={Platform.OS === "android" ? PROVIDER_GOOGLE : undefined}
+        provider={PROVIDER_GOOGLE}
         initialRegion={initialRegion}
         showsUserLocation={showUserLocation}
         showsMyLocationButton={false}
