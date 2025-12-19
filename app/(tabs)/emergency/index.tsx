@@ -502,10 +502,7 @@ export default function EmergencyListScreen() {
         data={activeAlerts}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
-        contentContainerStyle={[
-          styles.listContent,
-          activeAlerts.length === 0 && styles.listContentEmpty,
-        ]}
+        contentContainerStyle={styles.listContent}
         ListHeaderComponent={EmergencyContactsHeader}
         ListEmptyComponent={EmptyState}
       />
@@ -533,11 +530,7 @@ const styles = StyleSheet.create({
   },
   listContent: {
     padding: 16,
-    gap: 16,
-  },
-  listContentEmpty: {
-    flex: 1,
-    justifyContent: "center",
+    paddingBottom: 100,
   },
   card: {
     backgroundColor: Colors.backgroundCard,
@@ -643,6 +636,8 @@ const styles = StyleSheet.create({
   emptyContainer: {
     alignItems: "center",
     padding: 32,
+    minHeight: 300,
+    justifyContent: "center",
   },
   emptyIcon: {
     width: 80,
