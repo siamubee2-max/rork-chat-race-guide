@@ -60,6 +60,7 @@ export default function BreedsHomeScreen() {
         }
         style={({ pressed }) => [
           styles.card,
+          { width: cardSize },
           pressed ? { transform: [{ scale: 0.98 }], opacity: 0.95 } : null,
         ]}
         testID={`breedCard-${item.id}`}
@@ -88,7 +89,7 @@ export default function BreedsHomeScreen() {
         </View>
       </Pressable>
     );
-  }, [t]);
+  }, [cardSize]);
 
   const keyExtractor = useCallback((item: BreedRow) => item.id, []);
 
@@ -136,6 +137,8 @@ export default function BreedsHomeScreen() {
         data={data}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
+        numColumns={2}
+        columnWrapperStyle={styles.row}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
         testID="breedsList"
@@ -203,7 +206,10 @@ const styles = StyleSheet.create({
   listContent: {
     paddingTop: 14,
     paddingBottom: 10,
-    gap: 14,
+  },
+  row: {
+    justifyContent: "space-between",
+    marginBottom: 14,
   },
   mapButton: {
     flexDirection: "row",
