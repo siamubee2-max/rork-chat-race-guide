@@ -17,6 +17,7 @@ import { useRorkAgent, createRorkTool } from "@rork-ai/toolkit-sdk";
 import { Audio } from "expo-av";
 import * as Haptics from "expo-haptics";
 import { z } from "zod";
+import { useTranslation } from "react-i18next";
 import { Colors } from "@/constants/colors";
 import { useCats } from "@/context/cats";
 import { useReminders } from "@/context/reminders";
@@ -450,7 +451,8 @@ Question: ${messageText}`
               return null;
             })}
           </View>
-        ))}
+        );
+        })}
 
         {error && (
           <View style={styles.errorContainer}>
