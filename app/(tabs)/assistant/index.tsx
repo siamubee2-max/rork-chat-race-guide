@@ -108,8 +108,6 @@ export default function AssistantScreen() {
     },
   });
 
-  const [isFirstMessage, setIsFirstMessage] = useState(true);
-
   useEffect(() => {
     scrollViewRef.current?.scrollToEnd({ animated: true });
   }, [messages]);
@@ -142,22 +140,15 @@ export default function AssistantScreen() {
     if (!customMessage) setInput("");
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
-    const systemPrompt = isFirstMessage
-      ? `Tu es Purrly, un assistant IA spécialisé dans les chats, chaleureux et expert. ${catsContext}
-         
-Tu peux:
-- Répondre aux questions sur la santé, le comportement, l'alimentation des chats
-- Créer des rappels pour les soins (utilise l'outil createReminder)
-- Consulter les infos des chats de l'utilisateur (utilise l'outil getCatInfo)
+    const isFirstUserMessage = messages.length === 0;
+    const fullMessage = isFirstUserMessage
+      ? `[Contexte: Tu es Purrly, un assistant IA spécialisé dans les chats. ${catsContext} Tu peux créer des rappels et consulter les infos des chats. Réponds de manière concise et amicale en français.]
 
-Réponds de manière concise, amicale et en français. Utilise des emojis occasionnellement 🐱
-
-Question: ${messageText}`
+${messageText}`
       : messageText;
 
-    setIsFirstMessage(false);
-    await sendMessage(systemPrompt);
-  }, [input, isFirstMessage, catsContext, sendMessage]);
+    await sendMessage(fullMessage);
+  }, [input, sendMessage, messages.length, catsContext]);
 
   const startRecording = useCallback(async () => {
     if (Platform.OS === "web") {
@@ -260,7 +251,6 @@ Question: ${messageText}`
 
   const clearChat = useCallback(() => {
     setMessages([]);
-    setIsFirstMessage(true);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
   }, [setMessages]);
 
