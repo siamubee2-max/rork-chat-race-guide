@@ -357,8 +357,7 @@ Question: ${messageText}`
             <View 
               key={message.id} 
               style={[
-                { flexShrink: 1, minHeight: 0 },
-                !isTablet && { alignSelf: 'flex-start', width: '100%' }
+                { width: '100%', flexShrink: 1, minHeight: 0 }
               ]}
             >
               {validParts.map((part, index) => {
@@ -635,7 +634,6 @@ const styles = StyleSheet.create({
   messageBubbleMobile: {
     flexShrink: 1,
     minHeight: 0,
-    alignSelf: 'flex-start',
   },
   userBubble: {
     alignSelf: "flex-end" as const,
