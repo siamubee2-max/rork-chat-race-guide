@@ -641,7 +641,7 @@ Race: Persan | Confiance: Faible | Raison: Pelage long et épais visible.`;
       isMounted = false;
       clearImage();
     };
-  }, [imageData, clearImage]);
+  }, [imageData, clearImage, t]);
 
   const onSelect = useCallback(async (id: string) => {
     setSelectedId(id);
@@ -662,8 +662,7 @@ Race: Persan | Confiance: Faible | Raison: Pelage long et épais visible.`;
       console.log("Navigating to breed details:", selectedId);
     }
     
-    // Use direct path string for better reliability across tabs
-    router.push(`/(tabs)/(breeds)/${selectedId}` as any);
+    router.push(`/(breeds)/${selectedId}`);
   }, [selectedId]);
 
   const selected = candidates.find((c) => c.id === selectedId) ?? null;
