@@ -20,7 +20,7 @@ import { Colors } from "@/constants/colors";
 import { useScanImage } from "@/context/scan-image";
 
 const heroImageUri =
-  "https://images.unsplash.com/photo-1573865526739-10c1dd7aa5b8?auto=format&fit=crop&w=1200&q=80";
+  "https://images.unsplash.com/photo-1495360010541-f48722b34f7d?auto=format&fit=crop&w=1200&q=80";
 
 export default function ScanHomeScreen() {
   const { t } = useTranslation();
@@ -120,6 +120,8 @@ export default function ScanHomeScreen() {
           source={{ uri: heroImageUri }}
           style={styles.heroImage}
           contentFit="cover"
+          cachePolicy="memory-disk"
+          transition={300}
         />
         <LinearGradient
           colors={["transparent", "rgba(12,10,9,0.3)", "#0C0A09"]}
@@ -129,7 +131,7 @@ export default function ScanHomeScreen() {
         <View style={[styles.heroTopRow, { top: insets.top + 16 }]}>
           <View style={styles.brandPill}>
             <Crown color={Colors.primary} size={16} />
-            <Text style={styles.brandText}>LUXE EDITION</Text>
+            <Text style={styles.brandText}>{t("scan.luxeEdition")}</Text>
           </View>
           <Pressable
             onPress={onAbout}
@@ -143,8 +145,8 @@ export default function ScanHomeScreen() {
         </View>
 
         <View style={styles.heroCopy}>
-          <Text style={styles.preTitle}>INTELLIGENCE ARTIFICIELLE</Text>
-          <Text style={styles.heroTitle}>Décodez le mystère de son regard</Text>
+          <Text style={styles.preTitle}>{t("scan.aiTitle")}</Text>
+          <Text style={styles.heroTitle}>{t("scan.heroTitle")}</Text>
         </View>
       </View>
 
@@ -162,7 +164,7 @@ export default function ScanHomeScreen() {
               <Camera color="#0C0A09" size={28} />
             </View>
             <Text style={styles.actionTitleLight}>{t("scan.takePhoto")}</Text>
-            <Text style={styles.actionSubtitleLight}>Instantané</Text>
+            <Text style={styles.actionSubtitleLight}>{t("scan.instant")}</Text>
           </Pressable>
 
           <Pressable
@@ -177,7 +179,7 @@ export default function ScanHomeScreen() {
               <Upload color={Colors.primary} size={24} />
             </View>
             <Text style={styles.actionTitle}>{t("scan.choosePhoto")}</Text>
-            <Text style={styles.actionSubtitle}>Galerie</Text>
+            <Text style={styles.actionSubtitle}>{t("scan.gallery")}</Text>
           </Pressable>
         </View>
 

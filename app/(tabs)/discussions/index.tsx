@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { router } from "expo-router";
 import { MessageCircle, Plus } from "lucide-react-native";
 import {
@@ -13,6 +13,9 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 
 import { useDiscussions, type Discussion } from "@/context/discussions";
+
+const DISCUSSION_CARD_HEIGHT = 120;
+const DISCUSSION_CARD_MARGIN = 12;
 
 const CATEGORY_COLORS: Record<string, string> = {
   general: "#4A90E2",
@@ -59,15 +62,20 @@ export default function DiscussionsScreen() {
     return CATEGORIES.find((c) => c.id === categoryId)?.label || categoryId;
   };
 
-  const handleNewDiscussion = () => {
+  const handleNewDiscussion = useCallback(() => {
     router.push("/(tabs)/discussions/new" as any);
-  };
+  }, []);
 
-  const filteredDiscussions = selectedCategory
-    ? discussions.filter((d) => d.category === selectedCategory)
-    : discussions;
+  const filteredDiscussions = useMemo(
+    () =>
+      selectedCategory
+        ? discussions.filter((d) => d.category === selectedCategory)
+        : discussions,
+    [discussions, selectedCategory]
+  );
 
-  const renderItem: ListRenderItem<Discussion> = ({ item }) => {
+  const renderItem: ListRenderItem<Discussion> = useCallback(
+    ({ item }) => {
     const categoryColor = getCategoryColor(item.category);
 
     return (
@@ -98,9 +106,53 @@ export default function DiscussionsScreen() {
         </View>
       </Pressable>
     );
-  };
+    },
+    [t, i18n, getCategoryColor, getCategoryLabel]
+  );
 
-  const EmptyState = () => (
+  const keyExtractor = useCallback((item: Discussion) => item.id, []);
+
+  const getItemLayout = useCallback(
+    (_: any, index: number) => ({
+      length: DISCUSSION_CARD_HEIGHT,
+      offset: (DISCUSSION_CARD_HEIGHT + DISCUSSION_CARD_MARGIN) * index,
+      index,
+    }),
+    []
+  );
+
+  const renderCategoryChip = useCallback(
+    ({ item }: { item: typeof CATEGORIES[0] }) => (
+      <Pressable
+        onPress={() =>
+          setSelectedCategory(selectedCategory === item.id ? null : item.id)
+        }
+        style={[
+          styles.categoryChip,
+          selectedCategory === item.id && {
+            backgroundColor: item.color,
+          },
+        ]}
+      >
+        <Text
+          style={[
+            styles.categoryChipText,
+            selectedCategory === item.id && styles.categoryChipTextActive,
+          ]}
+        >
+          {item.label}
+        </Text>
+      </Pressable>
+    ),
+    [selectedCategory]
+  );
+
+  const categoryKeyExtractor = useCallback(
+    (item: typeof CATEGORIES[0]) => item.id,
+    []
+  );
+
+  const EmptyState = useCallback(() => (
     <View style={styles.emptyContainer}>
       <View style={styles.emptyIcon}>
         <MessageCircle color="#ccc" size={48} />
@@ -110,6 +162,14 @@ export default function DiscussionsScreen() {
         {t("discussions.beFirstToStart")}
       </Text>
     </View>
+  ), [t]);
+
+  const listContentStyle = useMemo(
+    () => [
+      styles.listContent,
+      filteredDiscussions.length === 0 && styles.listContentEmpty,
+    ],
+    [filteredDiscussions.length]
   );
 
   if (isLoading) {
@@ -129,42 +189,22 @@ export default function DiscussionsScreen() {
           horizontal
           showsHorizontalScrollIndicator={false}
           data={CATEGORIES}
-          keyExtractor={(item) => item.id}
+          keyExtractor={categoryKeyExtractor}
           contentContainerStyle={styles.categoriesContent}
-          renderItem={({ item }) => (
-            <Pressable
-              onPress={() =>
-                setSelectedCategory(selectedCategory === item.id ? null : item.id)
-              }
-              style={[
-                styles.categoryChip,
-                selectedCategory === item.id && {
-                  backgroundColor: item.color,
-                },
-              ]}
-            >
-              <Text
-                style={[
-                  styles.categoryChipText,
-                  selectedCategory === item.id && styles.categoryChipTextActive,
-                ]}
-              >
-                {item.label}
-              </Text>
-            </Pressable>
-          )}
+          renderItem={renderCategoryChip}
         />
       </View>
 
       <FlatList
         data={filteredDiscussions}
-        keyExtractor={(item) => item.id}
+        keyExtractor={keyExtractor}
         renderItem={renderItem}
-        contentContainerStyle={[
-          styles.listContent,
-          filteredDiscussions.length === 0 && styles.listContentEmpty,
-        ]}
+        getItemLayout={filteredDiscussions.length > 0 ? getItemLayout : undefined}
+        contentContainerStyle={listContentStyle}
         ListEmptyComponent={EmptyState}
+        removeClippedSubviews={true}
+        maxToRenderPerBatch={10}
+        windowSize={10}
       />
 
       <View style={[styles.fabContainer, { bottom: insets.bottom + 20 }]}>

@@ -8,10 +8,12 @@ import {
   View,
 } from "react-native";
 import { Check } from "lucide-react-native";
+import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/context/language";
 import { languages } from "@/i18n/translations";
 
 export default function LanguageSelectorModal() {
+  const { t } = useTranslation();
   const { currentLanguage, changeLanguage } = useLanguage();
 
   const handleLanguageSelect = async (langCode: string) => {
@@ -22,12 +24,12 @@ export default function LanguageSelectorModal() {
   return (
     <View style={styles.screen}>
       <View style={styles.header}>
-        <Text style={styles.title}>Choisir la langue</Text>
+        <Text style={styles.title}>{t("modal.chooseLanguage")}</Text>
         <Pressable
           onPress={() => router.back()}
           style={styles.closeBtn}
         >
-          <Text style={styles.closeBtnText}>✕</Text>
+          <Text style={styles.closeBtnText}>{t("common.close")}</Text>
         </Pressable>
       </View>
 

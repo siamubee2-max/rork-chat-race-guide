@@ -21,18 +21,8 @@ import { Colors } from "@/constants/colors";
 import { useCats } from "@/context/cats";
 import { useReminders } from "@/context/reminders";
 
-const QUICK_PROMPTS = [
-  "Pourquoi mon chat ronronne-t-il ?",
-  "Quels sont les signes d'un chat malade ?",
-  "Quelle quantité de nourriture pour mon chat ?",
-  "Comment jouer avec mon chat ?",
-  "Mon chat ne mange plus, que faire ?",
-  "Comment éduquer mon chaton ?",
-  "Quand faire stériliser mon chat ?",
-  "Mon chat fait ses griffes partout, comment l'arrêter ?",
-];
-
 export default function AssistantScreen() {
+  const { t } = useTranslation();
   const [input, setInput] = useState("");
   const [isRecording, setIsRecording] = useState(false);
   const [recording, setRecording] = useState<Audio.Recording | null>(null);
@@ -44,6 +34,17 @@ export default function AssistantScreen() {
 
   const { cats } = useCats();
   const { addReminder } = useReminders();
+
+  const QUICK_PROMPTS = [
+    t("assistant.quickPrompts.whyPurr"),
+    t("assistant.quickPrompts.sickSigns"),
+    t("assistant.quickPrompts.foodAmount"),
+    t("assistant.quickPrompts.playWithCat"),
+    t("assistant.quickPrompts.catNotEating"),
+    t("assistant.quickPrompts.educateKitten"),
+    t("assistant.quickPrompts.whenSterilize"),
+    t("assistant.quickPrompts.scratching"),
+  ];
 
   const catsContext = cats.length > 0
     ? `L'utilisateur a ${cats.length} chat(s): ${cats.map(c => {
@@ -323,27 +324,29 @@ Question: ${messageText}`
         )}
 
         {messages.map((message) => {
-          // #region agent log
-          console.log('[DEBUG] Message:', { id: message.id, role: message.role, partsCount: message.parts.length, parts: message.parts.map(p => ({ type: p.type, textLength: p.type === 'text' ? p.text?.length : 0, text: p.type === 'text' ? p.text?.substring(0, 50) : undefined })) });
-          fetch('http://127.0.0.1:7242/ingest/bd03eb35-54e1-47b5-a23a-c26416383972',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'assistant/index.tsx:310',message:'Message rendering',data:{messageId:message.id,role:message.role,partsCount:message.parts.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-          // #endregion
           const validParts = message.parts.filter((part) => {
             if (part.type === "text") {
               // Vérification stricte : le texte doit exister, être une chaîne, et avoir du contenu après suppression des espaces et caractères invisibles
               if (!part.text || typeof part.text !== 'string') {
-                console.log('[DEBUG] Part filter: invalid text type', { type: part.type, textType: typeof part.text });
+                if (__DEV__) {
+                  console.log('[DEBUG] Part filter: invalid text type', { type: part.type, textType: typeof part.text });
+                }
                 return false;
               }
               // Supprimer tous les espaces, caractères invisibles, et vérifier la longueur
               const cleanedText = part.text.replace(/[\s\u200B-\u200D\uFEFF]/g, '');
               const hasText = cleanedText.length > 0;
-              console.log('[DEBUG] Part filter:', { type: part.type, hasText, textLength: part.text.length, cleanedLength: cleanedText.length, textPreview: part.text.substring(0, 30) });
+              if (__DEV__) {
+                console.log('[DEBUG] Part filter:', { type: part.type, hasText, textLength: part.text.length, cleanedLength: cleanedText.length });
+              }
               return hasText;
             }
             return true;
           });
           
-          console.log('[DEBUG] Valid parts:', { total: message.parts.length, valid: validParts.length });
+          if (__DEV__) {
+            console.log('[DEBUG] Valid parts:', { total: message.parts.length, valid: validParts.length });
+          }
           
           if (validParts.length === 0) {
             return null;
@@ -358,29 +361,28 @@ Question: ${messageText}`
               ]}
             >
               {validParts.map((part, index) => {
-                // #region agent log
-                fetch('http://127.0.0.1:7242/ingest/bd03eb35-54e1-47b5-a23a-c26416383972',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'assistant/index.tsx:313',message:'Part rendering',data:{partType:part.type,partIndex:index,textLength:part.type==='text'?part.text?.length:0,textEmpty:part.type==='text'?(!part.text||part.text.trim()===''):null},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-                // #endregion
                 if (part.type === "text") {
-                  // #region agent log
-                  console.log('[DEBUG] Rendering text part:', { textLength: part.text?.length, text: part.text?.substring(0, 50), isEmpty: !part.text || part.text.trim() === "" });
-                  fetch('http://127.0.0.1:7242/ingest/bd03eb35-54e1-47b5-a23a-c26416383972',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'assistant/index.tsx:316',message:'Text part rendering',data:{textValue:part.text,textLength:part.text?.length,isEmpty:!part.text||part.text.trim()==='',role:message.role},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-                  // #endregion
                   // Ne pas afficher la bulle si le texte est vide
                   if (!part.text || typeof part.text !== 'string') {
-                    console.log('[DEBUG] Skipping invalid text part');
+                    if (__DEV__) {
+                      console.log('[DEBUG] Skipping invalid text part');
+                    }
                     return null;
                   }
                   // Supprimer tous les espaces et caractères invisibles
                   const cleanedText = part.text.replace(/[\s\u200B-\u200D\uFEFF]/g, '');
                   if (cleanedText.length === 0) {
-                    console.log('[DEBUG] Skipping empty text part after cleaning');
+                    if (__DEV__) {
+                      console.log('[DEBUG] Skipping empty text part after cleaning');
+                    }
                     return null;
                   }
                   // Utiliser le texte original pour l'affichage, mais vérifier qu'il n'est pas vide
                   const textToRender = part.text.trim();
                   if (textToRender.length === 0) {
-                    console.log('[DEBUG] Skipping empty text part after trim');
+                    if (__DEV__) {
+                      console.log('[DEBUG] Skipping empty text part after trim');
+                    }
                     return null;
                   }
                   
@@ -395,10 +397,9 @@ Question: ${messageText}`
                         !isTablet && styles.messageBubbleMobile,
                       ]}
                       onLayout={(e) => {
-                        // #region agent log
-                        console.log('[DEBUG] Bubble layout:', { width: e.nativeEvent.layout.width, height: e.nativeEvent.layout.height, role: message.role, textLength: textToRender.length });
-                        fetch('http://127.0.0.1:7242/ingest/bd03eb35-54e1-47b5-a23a-c26416383972',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'assistant/index.tsx:325',message:'Bubble layout measured',data:{width:e.nativeEvent.layout.width,height:e.nativeEvent.layout.height,role:message.role,textLength:textToRender.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
-                        // #endregion
+                        if (__DEV__) {
+                          console.log('[DEBUG] Bubble layout:', { width: e.nativeEvent.layout.width, height: e.nativeEvent.layout.height, role: message.role, textLength: textToRender.length });
+                        }
                       }}
                     >
                       {message.role === "assistant" && (
@@ -414,10 +415,9 @@ Question: ${messageText}`
                             : styles.assistantText,
                         ]}
                         onLayout={(e) => {
-                          // #region agent log
-                          console.log('[DEBUG] Text layout:', { width: e.nativeEvent.layout.width, height: e.nativeEvent.layout.height, textLength: textToRender.length });
-                          fetch('http://127.0.0.1:7242/ingest/bd03eb35-54e1-47b5-a23a-c26416383972',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'assistant/index.tsx:337',message:'Text layout measured',data:{width:e.nativeEvent.layout.width,height:e.nativeEvent.layout.height,textLength:textToRender.length,role:message.role},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-                          // #endregion
+                          if (__DEV__) {
+                            console.log('[DEBUG] Text layout:', { width: e.nativeEvent.layout.width, height: e.nativeEvent.layout.height, textLength: textToRender.length });
+                          }
                         }}
                       >
                         {textToRender}
@@ -450,8 +450,7 @@ Question: ${messageText}`
               return null;
             })}
           </View>
-        );
-        })}
+        ))}
 
         {error && (
           <View style={styles.errorContainer}>

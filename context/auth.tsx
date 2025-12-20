@@ -21,6 +21,20 @@ interface StoredUser extends User {
 const STORAGE_USERS = "users";
 const STORAGE_CURRENT_USER = "current_user";
 
+// Fonction de hash simple pour les mots de passe
+// NOTE: En production, utiliser un vrai système d'authentification avec backend et bcrypt
+const hashPassword = (password: string, email: string): string => {
+  // Hash simple basé sur le mot de passe et l'email comme salt
+  let hash = 0;
+  const str = password + email.toLowerCase();
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+  return Math.abs(hash).toString(36);
+};
+
 export const [AuthProvider, useAuth] = createContextHook(() => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -36,7 +50,9 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
         setCurrentUser(JSON.parse(userData));
       }
     } catch (error) {
-      console.error("Error loading current user:", error);
+      if (__DEV__) {
+        console.error("Error loading current user:", error);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -59,7 +75,7 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
       const newUser: StoredUser = {
         id: Date.now().toString(),
         email,
-        password,
+        password: hashPassword(password, email), // Stocker le hash au lieu du mot de passe en clair
         name,
         createdAt: new Date().toISOString(),
         subscriptionTier: 'free',
@@ -84,7 +100,9 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
 
       return { success: true };
     } catch (error) {
-      console.error("Error signing up:", error);
+      if (__DEV__) {
+        console.error("Error signing up:", error);
+      }
       return { success: false, error: "Erreur lors de l'inscription" };
     }
   };
@@ -94,8 +112,9 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
       const usersData = await AsyncStorage.getItem(STORAGE_USERS);
       const users: StoredUser[] = usersData ? JSON.parse(usersData) : [];
 
+      const passwordHash = hashPassword(password, email);
       const user = users.find(
-        (u) => u.email.toLowerCase() === email.toLowerCase() && u.password === password
+        (u) => u.email.toLowerCase() === email.toLowerCase() && u.password === passwordHash
       );
 
       if (!user) {
@@ -117,7 +136,9 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
 
       return { success: true };
     } catch (error) {
-      console.error("Error logging in:", error);
+      if (__DEV__) {
+        console.error("Error logging in:", error);
+      }
       return { success: false, error: "Erreur lors de la connexion" };
     }
   };
@@ -127,7 +148,9 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
       await AsyncStorage.removeItem(STORAGE_CURRENT_USER);
       setCurrentUser(null);
     } catch (error) {
-      console.error("Error logging out:", error);
+      if (__DEV__) {
+        console.error("Error logging out:", error);
+      }
     }
   };
 
@@ -137,7 +160,9 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
       const users: StoredUser[] = usersData ? JSON.parse(usersData) : [];
       return users.map((u) => u.email);
     } catch (error) {
-      console.error("Error getting registered emails:", error);
+      if (__DEV__) {
+        console.error("Error getting registered emails:", error);
+      }
       return [];
     }
   };
@@ -149,7 +174,9 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
       const user = users.find((u) => u.email.toLowerCase() === email.toLowerCase());
       return user ? { name: user.name, password: user.password } : null;
     } catch (error) {
-      console.error("Error getting user by email:", error);
+      if (__DEV__) {
+        console.error("Error getting user by email:", error);
+      }
       return null;
     }
   };
@@ -186,7 +213,9 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
       setCurrentUser(updatedUser);
       await AsyncStorage.setItem(STORAGE_CURRENT_USER, JSON.stringify(updatedUser));
     } catch (error) {
-      console.error("Error updating subscription:", error);
+      if (__DEV__) {
+        console.error("Error updating subscription:", error);
+      }
     }
   };
 

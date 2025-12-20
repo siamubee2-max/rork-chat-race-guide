@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import { router } from "expo-router";
 import { Image } from "expo-image";
 import { Plus, Cat, Heart } from "lucide-react-native";
@@ -18,20 +18,23 @@ import { useCats, type CatProfile } from "@/context/cats";
 import { getBreedById } from "@/constants/breeds";
 import { Colors } from "@/constants/colors";
 
+const CARD_HEIGHT = 88; // 60 (avatar) + 14*2 (padding) + gap
+const CARD_MARGIN = 14;
+
 export default function CatsListScreen() {
   const { t } = useTranslation();
   const { cats } = useCats();
   const insets = useSafeAreaInsets();
 
-  const onAddCat = () => {
+  const onAddCat = useCallback(() => {
     router.push("/(tabs)/cats/form" as any);
-  };
+  }, []);
 
-  const onOpenCat = (cat: CatProfile) => {
+  const onOpenCat = useCallback((cat: CatProfile) => {
     router.push(`/(tabs)/cats/${cat.id}` as any);
-  };
+  }, []);
 
-  const renderItem: ListRenderItem<CatProfile> = ({ item }) => {
+  const renderItem: ListRenderItem<CatProfile> = useCallback(({ item }) => {
     const breed = item.breedId ? getBreedById(item.breedId) : null;
     const breedDisplay = breed?.name ?? t("cats.mixedBreed");
 
@@ -50,6 +53,8 @@ export default function CatsListScreen() {
                 source={{ uri: item.imageUri }}
                 style={styles.avatarImage}
                 contentFit="cover"
+                cachePolicy="memory-disk"
+                transition={200}
               />
             ) : (
               <Cat color={Colors.textMuted} size={24} />
@@ -71,9 +76,20 @@ export default function CatsListScreen() {
         </View>
       </Pressable>
     );
-  };
+  }, [t, onOpenCat]);
 
-  const EmptyState = () => (
+  const keyExtractor = useCallback((item: CatProfile) => item.id, []);
+
+  const getItemLayout = useCallback(
+    (_: any, index: number) => ({
+      length: CARD_HEIGHT,
+      offset: (CARD_HEIGHT + CARD_MARGIN) * index,
+      index,
+    }),
+    []
+  );
+
+  const EmptyState = useCallback(() => (
     <View style={styles.emptyContainer}>
       <View style={styles.emptyIcon}>
         <Cat color={Colors.textMuted} size={48} />
@@ -97,20 +113,29 @@ export default function CatsListScreen() {
         <Text style={styles.emptyBtnText}>{t("cats.addCat")}</Text>
       </Pressable>
     </View>
+  ), [t, onAddCat]);
+
+  const listContentStyle = useMemo(
+    () => [
+      styles.listContent,
+      cats.length === 0 && styles.listContentEmpty,
+    ],
+    [cats.length]
   );
 
   return (
     <View style={styles.screen}>
       <FlatList
         data={cats}
-        keyExtractor={(item) => item.id}
+        keyExtractor={keyExtractor}
         renderItem={renderItem}
-        contentContainerStyle={[
-          styles.listContent,
-          cats.length === 0 && styles.listContentEmpty,
-        ]}
+        getItemLayout={cats.length > 0 ? getItemLayout : undefined}
+        contentContainerStyle={listContentStyle}
         ListEmptyComponent={EmptyState}
         contentInsetAdjustmentBehavior="automatic"
+        removeClippedSubviews={true}
+        maxToRenderPerBatch={10}
+        windowSize={10}
       />
 
       {cats.length > 0 && (

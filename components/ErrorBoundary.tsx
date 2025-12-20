@@ -1,5 +1,6 @@
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   children: React.ReactNode;
@@ -19,44 +20,50 @@ export class ErrorBoundary extends React.PureComponent<Props, State> {
   }
 
   componentDidCatch(error: unknown, info: unknown) {
-    // #region agent log
-    const errorMsg = error instanceof Error ? error.message : String(error);
-    const infoStr = typeof info === 'object' ? JSON.stringify(info) : String(info);
-    fetch('http://127.0.0.1:7242/ingest/bd03eb35-54e1-47b5-a23a-c26416383972',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'ErrorBoundary.tsx:21',message:'ErrorBoundary caught error',data:{error:errorMsg,info:infoStr},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'F'})}).catch(()=>{});
-    // #endregion
-    console.log("[ErrorBoundary] error", error);
-    console.log("[ErrorBoundary] info", info);
+    if (__DEV__) {
+      console.log("[ErrorBoundary] error", error);
+      console.log("[ErrorBoundary] info", info);
+    }
+    // TODO: En production, envoyer les erreurs à un service de logging (Sentry, etc.)
   }
 
   private onReset = () => {
-    console.log("[ErrorBoundary] reset");
+    if (__DEV__) {
+      console.log("[ErrorBoundary] reset");
+    }
     this.setState({ hasError: false, message: "" });
   };
 
   render() {
     if (!this.state.hasError) return this.props.children;
 
-    return (
-      <View style={styles.screen} testID="errorBoundary">
-        <Text style={styles.title}>Oups…</Text>
-        <Text style={styles.subtitle}>
-          Un problème est survenu. Appuyez sur “Réessayer”.
-        </Text>
-        <View style={styles.card}>
-          <Text style={styles.mono} numberOfLines={8}>
-            {this.state.message || "Erreur inconnue"}
-          </Text>
-        </View>
-        <Pressable
-          onPress={this.onReset}
-          style={({ pressed }: { pressed: boolean }) => [styles.btn, pressed ? { opacity: 0.9 } : null]}
-          testID="errorBoundaryRetry"
-        >
-          <Text style={styles.btnText}>Réessayer</Text>
-        </Pressable>
-      </View>
-    );
+    return <ErrorBoundaryContent message={this.state.message} onReset={this.onReset} />;
   }
+}
+
+function ErrorBoundaryContent({ message, onReset }: { message: string; onReset: () => void }) {
+  const { t } = useTranslation();
+
+  return (
+    <View style={styles.screen} testID="errorBoundary">
+      <Text style={styles.title}>{t("errorBoundary.title")}</Text>
+      <Text style={styles.subtitle}>
+        {t("errorBoundary.message")}
+      </Text>
+      <View style={styles.card}>
+        <Text style={styles.mono} numberOfLines={8}>
+          {message || t("common.unknownError")}
+        </Text>
+      </View>
+      <Pressable
+        onPress={onReset}
+        style={({ pressed }: { pressed: boolean }) => [styles.btn, pressed ? { opacity: 0.9 } : null]}
+        testID="errorBoundaryRetry"
+      >
+        <Text style={styles.btnText}>{t("errorBoundary.retry")}</Text>
+      </Pressable>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

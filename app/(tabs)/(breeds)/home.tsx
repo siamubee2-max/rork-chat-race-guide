@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { router } from "expo-router";
 import { Image } from "expo-image";
 import { Search, Globe, Cat } from "lucide-react-native";
@@ -9,6 +9,7 @@ import {
   Text,
   TextInput,
   View,
+  useWindowDimensions,
   type ListRenderItem,
 } from "react-native";
 import { useTranslation } from "react-i18next";
@@ -28,6 +29,8 @@ type BreedRow = {
 export default function BreedsHomeScreen() {
   const { t } = useTranslation();
   const [query, setQuery] = useState<string>("");
+  const { width } = useWindowDimensions();
+  const cardSize = useMemo(() => (width - 18 * 2 - 14) / 2, [width]);
 
   const data = useMemo((): BreedRow[] => {
     const q = query.trim().toLowerCase();
@@ -46,7 +49,7 @@ export default function BreedsHomeScreen() {
     });
   }, [query]);
 
-  const renderItem: ListRenderItem<BreedRow> = ({ item }) => {
+  const renderItem: ListRenderItem<BreedRow> = useCallback(({ item }) => {
     return (
       <Pressable
         onPress={() =>
@@ -65,7 +68,9 @@ export default function BreedsHomeScreen() {
           source={{ uri: item.imageUri }}
           style={styles.cardImage}
           contentFit="cover"
-          transition={120}
+          transition={200}
+          cachePolicy="memory-disk"
+          placeholder={{ blurhash: "L6PZfSi_.AyE_3t7t7R**0o#DgR4" }}
         />
         <LinearGradient
           colors={["rgba(0, 0, 0, 0.55)", "rgba(0, 0, 0, 0.15)", "rgba(0, 0, 0, 0.4)"]}
@@ -83,7 +88,13 @@ export default function BreedsHomeScreen() {
         </View>
       </Pressable>
     );
-  };
+  }, [t]);
+
+  const keyExtractor = useCallback((item: BreedRow) => item.id, []);
+
+  const onBreedersPress = useCallback(() => {
+    router.push("/(tabs)/(breeds)/breeders" as any);
+  }, []);
 
   return (
     <View style={styles.screen} testID="breedsHomeScreen">
@@ -115,7 +126,7 @@ export default function BreedsHomeScreen() {
           styles.mapButton,
           pressed && { opacity: 0.9, transform: [{ scale: 0.98 }] }
         ]}
-        onPress={() => router.push("/(tabs)/(breeds)/breeders" as any)}
+        onPress={onBreedersPress}
       >
         <Globe color="#fff" size={18} />
         <Text style={styles.mapButtonText}>{t('breeds.worldMap')}</Text>
@@ -123,11 +134,15 @@ export default function BreedsHomeScreen() {
 
       <FlatList
         data={data}
-        keyExtractor={(item) => item.id}
+        keyExtractor={keyExtractor}
         renderItem={renderItem}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
         testID="breedsList"
+        removeClippedSubviews={true}
+        maxToRenderPerBatch={10}
+        windowSize={10}
+        initialNumToRender={10}
       />
     </View>
   );

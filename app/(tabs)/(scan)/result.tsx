@@ -4,6 +4,7 @@ import { Image } from "expo-image";
 import * as Haptics from "expo-haptics";
 import { generateText } from "@rork-ai/toolkit-sdk";
 import { Cat, ChevronRight, Scan, Sparkles, Search, Eye } from "lucide-react-native";
+import { useTranslation } from "react-i18next";
 import { Colors } from "@/constants/colors";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
@@ -110,7 +111,9 @@ function findBreedMatch(aiName: string): { id: BreedId; name: string } | null {
     if (match) return { id: match.id, name: match.name };
   }
   
-  console.log("No breed match found for:", aiName, "normalized:", normalized);
+  if (__DEV__) {
+    console.log("No breed match found for:", aiName, "normalized:", normalized);
+  }
   return null;
 }
 
@@ -467,6 +470,7 @@ const scanStyles = StyleSheet.create({
 });
 
 export default function ScanResultScreen() {
+  const { t } = useTranslation();
   const { imageData, clearImage } = useScanImage();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [candidates, setCandidates] = useState<CandidateBreed[]>([]);
@@ -475,10 +479,14 @@ export default function ScanResultScreen() {
   const insets = useSafeAreaInsets();
 
   useEffect(() => {
-    console.log("ScanResult imageData:", imageData ? 'present' : 'missing');
+    if (__DEV__) {
+      console.log("ScanResult imageData:", imageData ? 'present' : 'missing');
+    }
     if (!imageData?.base64) {
-      console.log("No image data provided");
-      setError("Aucune image fournie");
+      if (__DEV__) {
+        console.log("No image data provided");
+      }
+      setError(t("scan.noImageProvided"));
       setIsAnalyzing(false);
       return;
     }
@@ -495,7 +503,9 @@ export default function ScanResultScreen() {
         // Small delay to allow UI to render loading state and avoid freezing immediately
         await new Promise(resolve => setTimeout(resolve, 500));
 
-        console.log("Starting AI analysis, base64 length:", imageBase64.length);
+        if (__DEV__) {
+          console.log("Starting AI analysis, base64 length:", imageBase64.length);
+        }
 
         const prompt = `Analyse cette image d'un chat et identifie sa race. 
 Fournis exactement 3 races possibles avec leurs niveaux de confiance (Élevée, Moyenne, ou Faible).
@@ -526,9 +536,13 @@ Race: Persan | Confiance: Faible | Raison: Pelage long et épais visible.`;
               },
             ],
           });
-          console.log("AI Response received:", response?.substring(0, 200));
+          if (__DEV__) {
+            console.log("AI Response received:", response?.substring(0, 200));
+          }
         } catch (aiError) {
-          console.error("AI generateText error:", aiError);
+          if (__DEV__) {
+            console.error("AI generateText error:", aiError);
+          }
           throw new Error("Impossible de contacter l'IA. Vérifiez votre connexion.");
         }
 
@@ -587,12 +601,16 @@ Race: Persan | Confiance: Faible | Raison: Pelage long et épais visible.`;
         if (!isMounted) return;
 
         if (parsedCandidates.length > 0) {
-          console.log("Parsed candidates:", parsedCandidates);
+          if (__DEV__) {
+            console.log("Parsed candidates:", parsedCandidates);
+          }
           setCandidates(parsedCandidates);
           // Pre-select the first candidate to simplify UX
           setSelectedId(parsedCandidates[0].id);
         } else {
-          console.log("No candidates parsed, using fallback");
+          if (__DEV__) {
+            console.log("No candidates parsed, using fallback");
+          }
           const fallback = {
             id: "european-shorthair",
             name: "Chat Européen",
@@ -603,9 +621,11 @@ Race: Persan | Confiance: Faible | Raison: Pelage long et épais visible.`;
           setSelectedId(fallback.id);
         }
       } catch (err) {
-        console.error("Analysis error:", err);
+        if (__DEV__) {
+          console.error("Analysis error:", err);
+        }
         if (isMounted) {
-          const errorMessage = err instanceof Error ? err.message : "Erreur lors de l'analyse. Veuillez réessayer.";
+          const errorMessage = err instanceof Error ? err.message : t("scan.analysisError");
           setError(errorMessage);
         }
       } finally {
@@ -638,7 +658,9 @@ Race: Persan | Confiance: Faible | Raison: Pelage long et épais visible.`;
       );
     } catch {}
     
-    console.log("Navigating to breed details:", selectedId);
+    if (__DEV__) {
+      console.log("Navigating to breed details:", selectedId);
+    }
     
     // Use direct path string for better reliability across tabs
     router.push(`/(tabs)/(breeds)/${selectedId}` as any);
@@ -722,7 +744,7 @@ Race: Persan | Confiance: Faible | Raison: Pelage long et épais visible.`;
               pressed ? { opacity: 0.8 } : null,
             ]}
           >
-            <Text style={styles.errorBtnText}>Réessayer</Text>
+            <Text style={styles.errorBtnText}>{t("scan.retry")}</Text>
           </Pressable>
         </View>
       ) : (
