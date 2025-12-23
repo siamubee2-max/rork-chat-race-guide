@@ -198,6 +198,16 @@ export default {
     aiAnalysis: "AI分析",
     photoAnalyzer: "写真アナライザー",
     behavior: "行動",
+    quickPrompts: {
+      whyPurr: "なぜ猫はゴロゴロ鳴くのですか？",
+      sickSigns: "病気の兆候は何ですか？",
+      foodAmount: "どのくらいの食事を与えるべきですか？",
+      playWithCat: "猫とどのように遊びますか？",
+      catNotEating: "猫が食べません、どうすればいいですか？",
+      educateKitten: "子猫をどのようにしつけますか？",
+      whenSterilize: "いつ猫を不妊手術すべきですか？",
+      scratching: "引っかきにどう対処しますか？",
+    },
   },
   vets: {
     title: "猫のサービス",

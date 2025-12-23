@@ -198,6 +198,16 @@ export default {
     aiAnalysis: "Analyses IA",
     photoAnalyzer: "Analyseur Photo",
     behavior: "Comportement",
+    quickPrompts: {
+      whyPurr: "Pourquoi mon chat ronronne-t-il ?",
+      sickSigns: "Quels sont les signes de maladie ?",
+      foodAmount: "Quelle quantité de nourriture donner ?",
+      playWithCat: "Comment jouer avec mon chat ?",
+      catNotEating: "Mon chat ne mange pas, que faire ?",
+      educateKitten: "Comment éduquer un chaton ?",
+      whenSterilize: "Quand faire stériliser mon chat ?",
+      scratching: "Comment gérer les griffures ?",
+    },
   },
   vets: {
     title: "Services pour chats",

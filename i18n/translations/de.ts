@@ -186,6 +186,16 @@ export default {
     aiAnalysis: "KI-Analyse",
     photoAnalyzer: "Foto-Analysator",
     behavior: "Verhalten",
+    quickPrompts: {
+      whyPurr: "Warum schnurrt meine Katze?",
+      sickSigns: "Was sind die Anzeichen von Krankheit?",
+      foodAmount: "Wie viel Futter soll ich geben?",
+      playWithCat: "Wie spiele ich mit meiner Katze?",
+      catNotEating: "Meine Katze frisst nicht, was tun?",
+      educateKitten: "Wie erzieht man ein Kätzchen?",
+      whenSterilize: "Wann soll ich meine Katze sterilisieren?",
+      scratching: "Wie gehe ich mit Kratzen um?",
+    },
   },
   vets: {
     title: "Dienste für Katzen",

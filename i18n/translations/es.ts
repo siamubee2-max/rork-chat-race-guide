@@ -186,6 +186,16 @@ export default {
     aiAnalysis: "Análisis IA",
     photoAnalyzer: "Analizador de Fotos",
     behavior: "Comportamiento",
+    quickPrompts: {
+      whyPurr: "¿Por qué ronronea mi gato?",
+      sickSigns: "¿Cuáles son los signos de enfermedad?",
+      foodAmount: "¿Cuánta comida debo dar?",
+      playWithCat: "¿Cómo jugar con mi gato?",
+      catNotEating: "Mi gato no come, ¿qué hacer?",
+      educateKitten: "¿Cómo educar un gatito?",
+      whenSterilize: "¿Cuándo esterilizar a mi gato?",
+      scratching: "¿Cómo manejar los arañazos?",
+    },
   },
   vets: {
     title: "Servicios para gatos",

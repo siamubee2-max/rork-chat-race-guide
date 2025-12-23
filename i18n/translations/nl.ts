@@ -198,6 +198,16 @@ export default {
     aiAnalysis: "AI Analyse",
     photoAnalyzer: "Foto Analyzer",
     behavior: "Gedrag",
+    quickPrompts: {
+      whyPurr: "Waarom spint mijn kat?",
+      sickSigns: "Wat zijn de tekenen van ziekte?",
+      foodAmount: "Hoeveel eten moet ik geven?",
+      playWithCat: "Hoe speel ik met mijn kat?",
+      catNotEating: "Mijn kat eet niet, wat te doen?",
+      educateKitten: "Hoe train ik een kitten?",
+      whenSterilize: "Wanneer mijn kat steriliseren?",
+      scratching: "Hoe om te gaan met krabben?",
+    },
   },
   vets: {
     title: "Kattendiensten",

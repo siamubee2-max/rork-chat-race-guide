@@ -186,6 +186,16 @@ export default {
     aiAnalysis: "AI分析",
     photoAnalyzer: "照片分析器",
     behavior: "行为",
+    quickPrompts: {
+      whyPurr: "为什么我的猫会呼噜呼噜叫？",
+      sickSigns: "疾病的迹象是什么？",
+      foodAmount: "我应该给多少食物？",
+      playWithCat: "如何与我的猫玩耍？",
+      catNotEating: "我的猫不吃东西，怎么办？",
+      educateKitten: "如何训练小猫？",
+      whenSterilize: "什么时候给我的猫做绝育手术？",
+      scratching: "如何处理抓挠？",
+    },
   },
   vets: {
     title: "猫咪服务",

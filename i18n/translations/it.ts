@@ -186,6 +186,16 @@ export default {
     aiAnalysis: "Analisi IA",
     photoAnalyzer: "Analizzatore Foto",
     behavior: "Comportamento",
+    quickPrompts: {
+      whyPurr: "Perché il mio gatto fa le fusa?",
+      sickSigns: "Quali sono i segni di malattia?",
+      foodAmount: "Quanto cibo devo dare?",
+      playWithCat: "Come giocare con il mio gatto?",
+      catNotEating: "Il mio gatto non mangia, cosa fare?",
+      educateKitten: "Come educare un gattino?",
+      whenSterilize: "Quando sterilizzare il mio gatto?",
+      scratching: "Come gestire i graffi?",
+    },
   },
   vets: {
     title: "Servizi per gatti",

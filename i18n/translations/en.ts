@@ -198,6 +198,16 @@ export default {
     aiAnalysis: "AI Analysis",
     photoAnalyzer: "Photo Analyzer",
     behavior: "Behavior",
+    quickPrompts: {
+      whyPurr: "Why does my cat purr?",
+      sickSigns: "What are the signs of illness?",
+      foodAmount: "How much food should I give?",
+      playWithCat: "How to play with my cat?",
+      catNotEating: "My cat isn't eating, what to do?",
+      educateKitten: "How to train a kitten?",
+      whenSterilize: "When to sterilize my cat?",
+      scratching: "How to handle scratching?",
+    },
   },
   vets: {
     title: "Cat Services",

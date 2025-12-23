@@ -198,6 +198,16 @@ export default {
     aiAnalysis: "ИИ Анализ",
     photoAnalyzer: "Фото Анализатор",
     behavior: "Поведение",
+    quickPrompts: {
+      whyPurr: "Почему моя кошка мурлычет?",
+      sickSigns: "Какие признаки болезни?",
+      foodAmount: "Сколько еды нужно давать?",
+      playWithCat: "Как играть с моей кошкой?",
+      catNotEating: "Моя кошка не ест, что делать?",
+      educateKitten: "Как воспитывать котенка?",
+      whenSterilize: "Когда стерилизовать кошку?",
+      scratching: "Как справиться с царапаньем?",
+    },
   },
   vets: {
     title: "Услуги для кошек",

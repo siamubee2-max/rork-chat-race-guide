@@ -198,6 +198,16 @@ export default {
     aiAnalysis: "تحليل الذكاء الاصطناعي",
     photoAnalyzer: "محلل الصور",
     behavior: "السلوك",
+    quickPrompts: {
+      whyPurr: "لماذا تخرخر قطتي؟",
+      sickSigns: "ما هي علامات المرض؟",
+      foodAmount: "كم من الطعام يجب أن أعطي؟",
+      playWithCat: "كيف ألعب مع قطتي؟",
+      catNotEating: "قطتي لا تأكل، ماذا أفعل؟",
+      educateKitten: "كيف أدرب قطة صغيرة؟",
+      whenSterilize: "متى أقوم بتعقيم قطتي؟",
+      scratching: "كيف أتعامل مع الخدش؟",
+    },
   },
   vets: {
     title: "خدمات القطط",
