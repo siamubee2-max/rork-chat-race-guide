@@ -317,27 +317,14 @@ ${messageText}`
         {messages.map((message) => {
           const validParts = message.parts.filter((part) => {
             if (part.type === "text") {
-              // Vérification stricte : le texte doit exister, être une chaîne, et avoir du contenu après suppression des espaces et caractères invisibles
               if (!part.text || typeof part.text !== 'string') {
-                if (__DEV__) {
-                  console.log('[DEBUG] Part filter: invalid text type', { type: part.type, textType: typeof part.text });
-                }
                 return false;
               }
-              // Supprimer tous les espaces, caractères invisibles, et vérifier la longueur
               const cleanedText = part.text.replace(/[\s\u200B-\u200D\uFEFF]/g, '');
-              const hasText = cleanedText.length > 0;
-              if (__DEV__) {
-                console.log('[DEBUG] Part filter:', { type: part.type, hasText, textLength: part.text.length, cleanedLength: cleanedText.length });
-              }
-              return hasText;
+              return cleanedText.length > 0;
             }
             return true;
           });
-          
-          if (__DEV__) {
-            console.log('[DEBUG] Valid parts:', { total: message.parts.length, valid: validParts.length });
-          }
           
           if (validParts.length === 0) {
             return null;
@@ -346,33 +333,19 @@ ${messageText}`
           return (
             <View 
               key={message.id} 
-              style={[
-                { width: '100%', flexShrink: 1, minHeight: 0 }
-              ]}
+              style={{ width: '100%', flexShrink: 1, minHeight: 0 }}
             >
               {validParts.map((part, index) => {
                 if (part.type === "text") {
-                  // Ne pas afficher la bulle si le texte est vide
                   if (!part.text || typeof part.text !== 'string') {
-                    if (__DEV__) {
-                      console.log('[DEBUG] Skipping invalid text part');
-                    }
                     return null;
                   }
-                  // Supprimer tous les espaces et caractères invisibles
                   const cleanedText = part.text.replace(/[\s\u200B-\u200D\uFEFF]/g, '');
                   if (cleanedText.length === 0) {
-                    if (__DEV__) {
-                      console.log('[DEBUG] Skipping empty text part after cleaning');
-                    }
                     return null;
                   }
-                  // Utiliser le texte original pour l'affichage, mais vérifier qu'il n'est pas vide
                   const textToRender = part.text.trim();
                   if (textToRender.length === 0) {
-                    if (__DEV__) {
-                      console.log('[DEBUG] Skipping empty text part after trim');
-                    }
                     return null;
                   }
                   
@@ -386,11 +359,6 @@ ${messageText}`
                           : styles.assistantBubble,
                         !isTablet && styles.messageBubbleMobile,
                       ]}
-                      onLayout={(e) => {
-                        if (__DEV__) {
-                          console.log('[DEBUG] Bubble layout:', { width: e.nativeEvent.layout.width, height: e.nativeEvent.layout.height, role: message.role, textLength: textToRender.length });
-                        }
-                      }}
                     >
                       {message.role === "assistant" && (
                         <View style={styles.assistantAvatar}>
@@ -404,43 +372,39 @@ ${messageText}`
                             ? styles.userText
                             : styles.assistantText,
                         ]}
-                        onLayout={(e) => {
-                          if (__DEV__) {
-                            console.log('[DEBUG] Text layout:', { width: e.nativeEvent.layout.width, height: e.nativeEvent.layout.height, textLength: textToRender.length });
-                          }
-                        }}
                       >
                         {textToRender}
                       </Text>
                     </View>
                   );
                 }
-              if (part.type === "tool") {
-                const toolName = part.toolName;
-                if (part.state === "output-available") {
-                  return (
-                    <View key={`${message.id}-${index}`} style={styles.toolResultBubble}>
-                      <Text style={styles.toolResultText}>
-                        ✅ {toolName === "createReminder" ? "Rappel créé" : "Information récupérée"}
-                      </Text>
-                    </View>
-                  );
+                
+                if (part.type === "tool") {
+                  const toolName = part.toolName;
+                  if (part.state === "output-available") {
+                    return (
+                      <View key={`${message.id}-${index}`} style={styles.toolResultBubble}>
+                        <Text style={styles.toolResultText}>
+                          ✅ {toolName === "createReminder" ? "Rappel créé" : "Information récupérée"}
+                        </Text>
+                      </View>
+                    );
+                  }
+                  if (part.state === "input-streaming" || part.state === "input-available") {
+                    return (
+                      <View key={`${message.id}-${index}`} style={styles.toolLoadingBubble}>
+                        <ActivityIndicator size="small" color={Colors.primary} />
+                        <Text style={styles.toolLoadingText}>
+                          {toolName === "createReminder" ? "Création du rappel..." : "Consultation des données..."}
+                        </Text>
+                      </View>
+                    );
+                  }
                 }
-                if (part.state === "input-streaming" || part.state === "input-available") {
-                  return (
-                    <View key={`${message.id}-${index}`} style={styles.toolLoadingBubble}>
-                      <ActivityIndicator size="small" color={Colors.primary} />
-                      <Text style={styles.toolLoadingText}>
-                        {toolName === "createReminder" ? "Création du rappel..." : "Consultation des données..."}
-                      </Text>
-                    </View>
-                  );
-                }
-              }
-              return null;
-            })}
-          </View>
-        );
+                return null;
+              })}
+            </View>
+          );
         })}
 
         {error && (
