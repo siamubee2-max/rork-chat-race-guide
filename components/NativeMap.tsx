@@ -8,7 +8,7 @@ import {
   Linking,
   ActivityIndicator,
 } from "react-native";
-import MapView, { Marker, Region, PROVIDER_DEFAULT } from "react-native-maps";
+import MapView, { Marker, Region } from "react-native-maps";
 import { MapPin, Navigation, ExternalLink } from "lucide-react-native";
 import { Colors } from "@/constants/colors";
 
@@ -167,7 +167,6 @@ export default function NativeMap({
         showsCompass={true}
         showsScale={true}
         onPress={handleMapPress}
-        provider={PROVIDER_DEFAULT}
       >
         {markers.map((marker) => (
           <Marker
