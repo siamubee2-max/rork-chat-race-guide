@@ -8,40 +8,13 @@ import {
   Alert,
   ActivityIndicator,
 } from "react-native";
-import { Check, Crown, Sparkles, Zap, CreditCard, RefreshCw } from "lucide-react-native";
+import { Check, Crown, Zap, CreditCard, RefreshCw } from "lucide-react-native";
 import { useAuth } from "@/context/auth";
 import { useStripe } from "@/context/stripe";
 import { useTranslation } from "react-i18next";
 import { router } from "expo-router";
 
 const SUBSCRIPTION_TIERS = [
-  {
-    id: 'free',
-    name: 'Free',
-    price: 0,
-    yearlyPrice: 0,
-    features: [
-      'subscription.features.scanLimitOne',
-      'subscription.features.basicBreedsLimited',
-    ],
-    color: '#94a3b8',
-    icon: Sparkles,
-    popular: false,
-  },
-  {
-    id: 'trial',
-    name: 'Essai Premium',
-    price: 0,
-    yearlyPrice: 0,
-    features: [
-      'subscription.features.trial3Days',
-      'subscription.features.allPremiumFeatures',
-      'subscription.features.autoConvert',
-    ],
-    color: '#f59e0b',
-    icon: Sparkles,
-    popular: false,
-  },
   {
     id: 'premium',
     name: 'Premium',
@@ -126,31 +99,6 @@ export default function SubscriptionScreen() {
 
     const tier = SUBSCRIPTION_TIERS.find((t) => t.id === tierId);
     if (!tier) return;
-
-    if (tierId === 'free') {
-      return;
-    }
-
-    if (tierId === 'trial') {
-      Alert.alert(
-        t('subscription.confirmTrialTitle'),
-        t('subscription.confirmTrialDesc'),
-        [
-          { text: t('common.cancel'), style: 'cancel' },
-          {
-            text: t('subscription.startTrial'),
-            onPress: async () => {
-              await updateSubscription('premium' as any, addOns, Date.now() + 3 * 24 * 60 * 60 * 1000);
-              Alert.alert(
-                t('common.success'),
-                t('subscription.trialStarted')
-              );
-            },
-          },
-        ]
-      );
-      return;
-    }
 
     const price = billingCycle === 'yearly' ? tier.yearlyPrice : tier.price;
     const period = billingCycle === 'yearly' ? t('subscription.perYear') : t('subscription.perMonth');
@@ -308,17 +256,13 @@ export default function SubscriptionScreen() {
 
               <View style={styles.priceContainer}>
                 <Text style={styles.price}>
-                  {tier.price === 0
-                    ? tier.id === 'trial' ? t('subscription.free3Days') : t('subscription.free')
-                    : `€${(billingCycle === 'yearly' ? tier.yearlyPrice : tier.price).toFixed(2)}`}
+                  €{(billingCycle === 'yearly' ? tier.yearlyPrice : tier.price).toFixed(2)}
                 </Text>
-                {tier.price > 0 && (
-                  <Text style={styles.priceUnit}>
-                    {billingCycle === 'yearly' ? t('subscription.perYear') : t('subscription.perMonth')}
-                  </Text>
-                )}
+                <Text style={styles.priceUnit}>
+                  {billingCycle === 'yearly' ? t('subscription.perYear') : t('subscription.perMonth')}
+                </Text>
               </View>
-              {tier.price > 0 && billingCycle === 'yearly' && (
+              {billingCycle === 'yearly' && (
                 <View style={styles.savingsBadge}>
                   <Text style={styles.savingsBadgeText}>
                     {t('subscription.saveAmount', {
