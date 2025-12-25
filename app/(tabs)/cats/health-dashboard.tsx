@@ -14,13 +14,22 @@ import {
   Heart
 } from "lucide-react-native";
 import { useCats } from "@/context/cats";
+import { useAuth } from "@/context/auth";
 
 export default function HealthDashboardScreen() {
   const { catId } = useLocalSearchParams<{ catId: string }>();
   const { cats } = useCats();
+  const { currentUser } = useAuth();
   const navigation = useNavigation();
   
   const cat = cats.find((c) => c.id === catId);
+
+  const hasHealthAccess = useMemo(() => {
+    if (!currentUser) return false;
+    const isPremium = currentUser.subscriptionTier === 'premium' || currentUser.subscriptionTier === 'premium_plus';
+    const hasAddon = currentUser.addOns?.includes('health_tracking');
+    return isPremium || hasAddon;
+  }, [currentUser]);
 
   useLayoutEffect(() => {
     if (cat) {
@@ -116,6 +125,26 @@ export default function HealthDashboardScreen() {
     return (
       <View style={styles.center}>
         <Text style={styles.errorText}>Chat introuvable</Text>
+      </View>
+    );
+  }
+
+  if (!hasHealthAccess) {
+    return (
+      <View style={styles.center}>
+        <Heart size={64} color="#ccc" style={{ marginBottom: 16 }} />
+        <Text style={styles.premiumTitle}>Suivi Santé Premium</Text>
+        <Text style={styles.premiumText}>Cette fonctionnalité est disponible avec:</Text>
+        <View style={styles.premiumList}>
+          <Text style={styles.premiumItem}>• Abonnement Premium ou Premium Plus</Text>
+          <Text style={styles.premiumItem}>• Module &quot;Suivi Santé Avancé&quot;</Text>
+        </View>
+        <Pressable 
+          style={styles.upgradeBtn}
+          onPress={() => router.push('/(tabs)/subscription' as any)}
+        >
+          <Text style={styles.upgradeBtnText}>Découvrir Premium</Text>
+        </Pressable>
       </View>
     );
   }
@@ -453,6 +482,38 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "800",
     color: "#111",
+  },
+  premiumTitle: {
+    fontSize: 22,
+    fontWeight: "700",
+    color: "#111",
+    marginBottom: 8,
+    textAlign: "center",
+  },
+  premiumText: {
+    fontSize: 16,
+    color: "#666",
+    marginBottom: 16,
+    textAlign: "center",
+  },
+  premiumList: {
+    marginBottom: 24,
+  },
+  premiumItem: {
+    fontSize: 15,
+    color: "#444",
+    marginBottom: 8,
+  },
+  upgradeBtn: {
+    backgroundColor: "#007AFF",
+    paddingHorizontal: 32,
+    paddingVertical: 14,
+    borderRadius: 12,
+  },
+  upgradeBtnText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "700",
   },
   quickActions: {
     flexDirection: "row",

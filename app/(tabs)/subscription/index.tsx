@@ -51,6 +51,7 @@ const SUBSCRIPTION_TIERS = [
       'subscription.features.unlimitedScans',
       'subscription.features.allBreeds',
       'subscription.features.aiAssistant',
+      'subscription.features.healthTracking',
       'subscription.features.emergencyPosters',
       'subscription.features.noAds',
     ],
@@ -363,8 +364,9 @@ export default function SubscriptionScreen() {
         </Text>
 
         {ADD_ONS.map((addOn) => {
+          const isPremium = currentUser?.subscriptionTier === 'premium';
           const isPremiumPlus = currentUser?.subscriptionTier === 'premium_plus';
-          const isIncludedInPlan = addOn.id === 'health_tracking' && isPremiumPlus;
+          const isIncludedInPlan = addOn.id === 'health_tracking' && (isPremium || isPremiumPlus);
           const hasAddOn = currentUser?.addOns?.includes(addOn.id) || isIncludedInPlan;
 
           return (

@@ -1,16 +1,18 @@
 import React, { useLayoutEffect, useCallback, useState } from "react";
-import { View, Text, StyleSheet, ScrollView, Pressable, Platform, Modal, Dimensions } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Pressable, Platform, Modal, Dimensions, Alert } from "react-native";
 import { useLocalSearchParams, router, useNavigation } from "expo-router";
 import { Image } from "expo-image";
 import { Cat, Plus, Calendar, Syringe, Stethoscope, Pill, HeartPulse, ChevronRight, Heart, Bug, Activity, Images, X } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { useCats, MedicalRecordType } from "@/context/cats";
+import { useAuth } from "@/context/auth";
 import { getBreedById } from "@/constants/breeds";
 
 export default function CatDetailsScreen() {
   const { t } = useTranslation();
   const { catId } = useLocalSearchParams<{ catId: string }>();
   const { cats } = useCats();
+  const { currentUser } = useAuth();
   const navigation = useNavigation();
   
   const cat = cats.find((c) => c.id === catId);
@@ -64,6 +66,21 @@ export default function CatDetailsScreen() {
   };
 
   const onOpenHealthDashboard = () => {
+    const isPremium = currentUser?.subscriptionTier === 'premium' || currentUser?.subscriptionTier === 'premium_plus';
+    const hasAddon = currentUser?.addOns?.includes('health_tracking');
+    
+    if (!isPremium && !hasAddon) {
+      Alert.alert(
+        "Fonctionnalité Premium",
+        "Le suivi santé avancé est disponible avec l'abonnement Premium ou le module complémentaire.",
+        [
+          { text: "Annuler", style: "cancel" },
+          { text: "Découvrir Premium", onPress: () => router.push('/(tabs)/subscription' as any) },
+        ]
+      );
+      return;
+    }
+    
     router.push({
       pathname: "/cats/health-dashboard" as any,
       params: { catId: cat.id },
