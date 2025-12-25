@@ -61,7 +61,7 @@ export default function ScanHomeScreen() {
         setImage(asset.uri, asset.base64);
         router.push("/(tabs)/(scan)/result" as any);
       } else {
-        Alert.alert(t('scan.error'), t('scan.imageProcessingError'));
+        Alert.alert(t('common.error'), t('scan.imageProcessingError'));
       }
     }
   }, [t, setImage]);
@@ -104,7 +104,7 @@ export default function ScanHomeScreen() {
         setImage(asset.uri, asset.base64);
         router.push("/(tabs)/(scan)/result" as any);
       } else {
-        Alert.alert(t('scan.error'), t('scan.imageProcessingError'));
+        Alert.alert(t('common.error'), t('scan.imageProcessingError'));
       }
     }
   }, [t, setImage]);

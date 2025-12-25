@@ -23,6 +23,7 @@ import { Colors } from "@/constants/colors";
 import { useReminders } from "@/context/reminders";
 import { useExpenses } from "@/context/expenses";
 import { useShopping } from "@/context/shopping";
+import { useTranslation } from "react-i18next";
 
 type FeatureCardProps = {
   icon: React.ReactNode;
@@ -83,6 +84,7 @@ const QuickAction = ({ icon, label, onPress, color }: QuickActionProps) => (
 );
 
 export default function PracticalScreen() {
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const { overdueReminders, upcomingReminders } = useReminders();
   const { totalThisMonth } = useExpenses();
@@ -98,9 +100,9 @@ export default function PracticalScreen() {
       showsVerticalScrollIndicator={false}
     >
       <View style={styles.header}>
-        <Text style={styles.title}>Boîte à outils</Text>
+        <Text style={styles.title}>{t('practical.toolbox')}</Text>
         <Text style={styles.subtitle}>
-          Tout pour prendre soin de votre chat au quotidien
+          {t('practical.toolboxSubtitle')}
         </Text>
       </View>
 
@@ -114,38 +116,38 @@ export default function PracticalScreen() {
           </View>
           <View style={styles.alertContent}>
             <Text style={styles.alertTitle}>
-              {overdueCount} rappel{overdueCount > 1 ? "s" : ""} en retard
+              {t('practical.overdueReminders', { count: overdueCount })}
             </Text>
-            <Text style={styles.alertSubtitle}>Appuyez pour voir les détails</Text>
+            <Text style={styles.alertSubtitle}>{t('practical.tapToSeeDetails')}</Text>
           </View>
           <ChevronRight size={20} color="#fff" />
         </Pressable>
       )}
 
       <View style={styles.quickActionsContainer}>
-        <Text style={styles.sectionTitle}>Accès rapide</Text>
+        <Text style={styles.sectionTitle}>{t('practical.quickAccess')}</Text>
         <View style={styles.quickActionsGrid}>
           <QuickAction
             icon={<MapPin size={22} color={Colors.primary} />}
-            label="Vétérinaires"
+            label={t('practical.veterinarians')}
             onPress={() => router.push("/(tabs)/vets/" as any)}
             color={Colors.primary}
           />
           <QuickAction
             icon={<AlertCircle size={22} color={Colors.error} />}
-            label="Urgences"
+            label={t('practical.emergencies')}
             onPress={() => router.push("/(tabs)/emergency/" as any)}
             color={Colors.error}
           />
           <QuickAction
             icon={<Heart size={22} color="#E91E63" />}
-            label="Premiers soins"
+            label={t('practical.firstAidShort')}
             onPress={() => router.push("/(tabs)/practical/first-aid" as any)}
             color="#E91E63"
           />
           <QuickAction
             icon={<Calculator size={22} color={Colors.info} />}
-            label="Portions"
+            label={t('practical.portions')}
             onPress={() => router.push("/(tabs)/practical/food-calculator" as any)}
             color={Colors.info}
           />
@@ -153,12 +155,12 @@ export default function PracticalScreen() {
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Gestion quotidienne</Text>
+        <Text style={styles.sectionTitle}>{t('practical.dailyManagement')}</Text>
         
         <FeatureCard
           icon={<Bell size={24} color={Colors.warning} />}
-          title="Rappels & Rendez-vous"
-          subtitle={`${upcomingCount} rappels à venir`}
+          title={t('practical.remindersAppointments')}
+          subtitle={t('practical.upcomingReminders', { count: upcomingCount })}
           badge={overdueCount > 0 ? overdueCount : undefined}
           badgeColor={Colors.error}
           onPress={() => router.push("/(tabs)/practical/reminders" as any)}
@@ -167,16 +169,16 @@ export default function PracticalScreen() {
 
         <FeatureCard
           icon={<Wallet size={24} color={Colors.success} />}
-          title="Suivi des dépenses"
-          subtitle={`${totalThisMonth.toFixed(2)}€ ce mois`}
+          title={t('practical.expenseTracking')}
+          subtitle={`${totalThisMonth.toFixed(2)}€ ${t('practical.thisMonth')}`}
           onPress={() => router.push("/(tabs)/practical/expenses" as any)}
           color={Colors.success}
         />
 
         <FeatureCard
           icon={<ShoppingCart size={24} color={Colors.info} />}
-          title="Liste de courses"
-          subtitle={`${uncheckedItems.length} article${uncheckedItems.length !== 1 ? "s" : ""} à acheter`}
+          title={t('practical.shoppingListTitle')}
+          subtitle={t('practical.itemsToBuy', { count: uncheckedItems.length })}
           badge={uncheckedItems.length > 0 ? uncheckedItems.length : undefined}
           badgeColor={Colors.info}
           onPress={() => router.push("/(tabs)/practical/shopping" as any)}
@@ -185,28 +187,28 @@ export default function PracticalScreen() {
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Outils pratiques</Text>
+        <Text style={styles.sectionTitle}>{t('practical.practicalTools')}</Text>
 
         <FeatureCard
           icon={<Calculator size={24} color="#9C27B0" />}
-          title="Calculateur de nourriture"
-          subtitle="Portions adaptées au poids de votre chat"
+          title={t('practical.foodCalculatorTitle')}
+          subtitle={t('practical.foodCalculatorDesc')}
           onPress={() => router.push("/(tabs)/practical/food-calculator" as any)}
           color="#9C27B0"
         />
 
         <FeatureCard
           icon={<Plane size={24} color="#00BCD4" />}
-          title="Checklist voyage"
-          subtitle="Préparez vos déplacements sereinement"
+          title={t('practical.travelChecklist')}
+          subtitle={t('practical.travelChecklistDesc')}
           onPress={() => router.push("/(tabs)/practical/travel" as any)}
           color="#00BCD4"
         />
 
         <FeatureCard
           icon={<Heart size={24} color="#E91E63" />}
-          title="Guide premiers secours"
-          subtitle="Réagir en cas d'urgence"
+          title={t('practical.firstAidGuide')}
+          subtitle={t('practical.firstAidGuideDesc')}
           onPress={() => router.push("/(tabs)/practical/first-aid" as any)}
           color="#E91E63"
         />
@@ -214,10 +216,9 @@ export default function PracticalScreen() {
 
       <View style={styles.tipCard}>
         <Text style={styles.tipEmoji}>💡</Text>
-        <Text style={styles.tipTitle}>Le saviez-vous ?</Text>
+        <Text style={styles.tipTitle}>{t('practical.didYouKnow')}</Text>
         <Text style={styles.tipText}>
-          Un chat adulte a besoin de 40 à 60ml d&apos;eau par kg de poids corporel par jour. 
-          Surveillez sa consommation d&apos;eau, surtout s&apos;il mange des croquettes.
+          {t('practical.waterTip')}
         </Text>
       </View>
     </ScrollView>

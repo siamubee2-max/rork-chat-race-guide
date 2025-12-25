@@ -21,12 +21,9 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useEmergency, type EmergencyAlert } from "@/context/emergency";
 import { useUserLocation } from "@/context/user-location";
 import { Colors } from "@/constants/colors";
+import { useTranslation } from "react-i18next";
 
-const EMERGENCY_TYPES = {
-  lost: { label: "Perdu", color: "#FF6B6B", icon: "🔍" },
-  injured: { label: "Blessé", color: "#FF8C42", icon: "🚑" },
-  found: { label: "Trouvé", color: "#4ECDC4", icon: "✨" },
-};
+
 
 type EmergencyContact = {
   id: string;
@@ -39,13 +36,21 @@ type EmergencyContact = {
   country: string;
 };
 
-const EMERGENCY_CONTACTS: EmergencyContact[] = [
-  // France
+export default function EmergencyScreen() {
+  const { t } = useTranslation();
+  
+  const EMERGENCY_TYPES = useMemo(() => ({
+    lost: { label: t('emergency.types.lost'), color: "#FF6B6B", icon: "🔍" },
+    injured: { label: t('emergency.types.injured'), color: "#FF8C42", icon: "🚑" },
+    found: { label: t('emergency.types.found'), color: "#4ECDC4", icon: "✨" },
+  }), [t]);
+
+const EMERGENCY_CONTACTS: EmergencyContact[] = useMemo(() => [
   {
     id: "poison-fr",
-    name: "Centre Antipoison Animal",
+    name: t('emergency.contacts.poisonAnimal'),
     phone: "01 48 94 31 00",
-    description: "CNITV Alfort - Disponible 24h/24",
+    description: t('emergency.contacts.poisonAnimalDesc'),
     color: "#DC2626",
     icon: "☠️",
     website: "https://www.centre-antipoison-animal.com",
@@ -249,10 +254,10 @@ const EMERGENCY_CONTACTS: EmergencyContact[] = [
     website: "https://www.fnovi.it",
     country: "Italy",
   },
-];
+], [t]);
 
-export default function EmergencyListScreen() {
-  const { alerts, updateAlert, deleteAlert } = useEmergency();
+
+const { alerts, updateAlert, deleteAlert } = useEmergency();
   const [selectedAlert, setSelectedAlert] = React.useState<EmergencyAlert | null>(null);
   const [showArchivedAlerts, setShowArchivedAlerts] = React.useState<boolean>(false);
   const insets = useSafeAreaInsets();
@@ -315,7 +320,7 @@ export default function EmergencyListScreen() {
     }
     const countryContacts = EMERGENCY_CONTACTS.filter(c => c.country === userCountry);
     return countryContacts.length > 0 ? countryContacts : [];
-  }, [userCountry]);
+  }, [userCountry, EMERGENCY_CONTACTS]);
 
   const showDefaultContacts = !userCountry || filteredContacts.length === 0;
 
