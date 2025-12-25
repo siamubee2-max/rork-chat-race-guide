@@ -419,6 +419,7 @@ export default {
       advancedAI: "Advanced AI with detailed analysis",
       vetConsultations: "Online vet consultations",
       healthTracking: "Advanced health tracking",
+      advancedHealthTracking: "Advanced health tracking",
       prioritySupport: "24/7 priority support",
       exclusiveContent: "Exclusive content and training",
     },

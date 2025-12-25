@@ -436,6 +436,7 @@ export default {
       advancedAI: "IA avancée avec analyses détaillées",
       vetConsultations: "Consultations vétérinaires en ligne",
       healthTracking: "Suivi santé avancé",
+      advancedHealthTracking: "Suivi santé avancé",
       prioritySupport: "Support prioritaire 24/7",
       exclusiveContent: "Contenu exclusif et formations",
     },
