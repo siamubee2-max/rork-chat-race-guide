@@ -26,9 +26,7 @@ export default function HealthDashboardScreen() {
 
   const hasHealthAccess = useMemo(() => {
     if (!currentUser) return false;
-    const isPremium = currentUser.subscriptionTier === 'premium' || currentUser.subscriptionTier === 'premium_plus';
-    const hasAddon = currentUser.addOns?.includes('health_tracking');
-    return isPremium || hasAddon;
+    return currentUser.subscriptionTier === 'premium_plus';
   }, [currentUser]);
 
   useLayoutEffect(() => {

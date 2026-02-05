@@ -33,7 +33,7 @@ export default function DailyLogFormScreen() {
 
   const hasHealthTracking = React.useMemo(() => {
     if (!currentUser) return false;
-    return currentUser.subscriptionTier === 'premium_plus' || currentUser.addOns?.includes('health_tracking');
+    return currentUser.subscriptionTier === 'premium_plus';
   }, [currentUser]);
 
   React.useEffect(() => {

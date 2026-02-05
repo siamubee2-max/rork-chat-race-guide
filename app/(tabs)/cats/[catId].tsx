@@ -66,10 +66,9 @@ export default function CatDetailsScreen() {
   };
 
   const onOpenHealthDashboard = () => {
-    const isPremium = currentUser?.subscriptionTier === 'premium' || currentUser?.subscriptionTier === 'premium_plus';
-    const hasAddon = currentUser?.addOns?.includes('health_tracking');
+    const hasPremiumPlus = currentUser?.subscriptionTier === 'premium_plus';
     
-    if (!isPremium && !hasAddon) {
+    if (!hasPremiumPlus) {
       Alert.alert(
         "Fonctionnalité Premium",
         "Le suivi santé avancé est disponible avec l'abonnement Premium ou le module complémentaire.",
