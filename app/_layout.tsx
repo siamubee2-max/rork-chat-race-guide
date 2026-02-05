@@ -16,7 +16,7 @@ import { RemindersContext } from "@/context/reminders";
 import { ExpensesContext } from "@/context/expenses";
 import { ShoppingContext } from "@/context/shopping";
 import { LanguageProvider } from "@/context/language";
-import { StripeProvider } from "@/context/stripe";
+
 import { GamificationContext } from "@/context/gamification";
 import { AIContext } from "@/context/ai";
 import { ScanImageProvider } from "@/context/scan-image";
@@ -76,7 +76,6 @@ export default function RootLayout() {
         <ErrorBoundary>
           <LanguageProvider>
             <AuthProvider>
-              <StripeProvider>
                 <CatsContext>
                   <DiscussionsProvider>
                     <EmergencyContext>
@@ -102,7 +101,6 @@ export default function RootLayout() {
                     </EmergencyContext>
                   </DiscussionsProvider>
                 </CatsContext>
-              </StripeProvider>
             </AuthProvider>
           </LanguageProvider>
         </ErrorBoundary>

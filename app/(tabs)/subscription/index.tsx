@@ -8,9 +8,9 @@ import {
   Alert,
   ActivityIndicator,
 } from "react-native";
-import { Check, Crown, Zap, CreditCard, RefreshCw } from "lucide-react-native";
+import { Check, Crown, Zap, RefreshCw } from "lucide-react-native";
 import { useAuth } from "@/context/auth";
-import { useStripe } from "@/context/stripe";
+
 import { useTranslation } from "react-i18next";
 import { router } from "expo-router";
 
@@ -76,7 +76,7 @@ const ADD_ONS = [
 
 export default function SubscriptionScreen() {
   const { currentUser, updateSubscription, isAuthenticated } = useAuth();
-  const { initiateSubscription, initiateAddOnPurchase, isProcessing, restorePurchases } = useStripe();
+  const [isProcessing, setIsProcessing] = React.useState(false);
   const { t } = useTranslation();
   const [billingCycle, setBillingCycle] = React.useState<'monthly' | 'yearly'>('monthly');
 
@@ -112,9 +112,17 @@ export default function SubscriptionScreen() {
       [
         { text: t('common.cancel'), style: 'cancel' },
         {
-          text: t('subscription.payWithStripe'),
+          text: t('subscription.confirm'),
           onPress: async () => {
-            await initiateSubscription(tierId, billingCycle);
+            setIsProcessing(true);
+            try {
+              await updateSubscription(tier.id as any, currentUser?.addOns || []);
+              Alert.alert(t('common.success'), t('subscription.subscriptionActivated', { plan: tier.name }));
+            } catch (error) {
+              Alert.alert(t('common.error'), t('subscription.subscriptionError'));
+            } finally {
+              setIsProcessing(false);
+            }
           },
         },
       ]
@@ -154,9 +162,18 @@ export default function SubscriptionScreen() {
         [
           { text: t('common.cancel'), style: 'cancel' },
           {
-            text: t('subscription.payWithStripe'),
+            text: t('subscription.confirm'),
             onPress: async () => {
-              await initiateAddOnPurchase(addOnId, billingCycle);
+              setIsProcessing(true);
+              try {
+                const newAddOns = [...(currentUser?.addOns || []), addOnId];
+                await updateSubscription(currentUser?.subscriptionTier || 'free', newAddOns);
+                Alert.alert(t('common.success'), t('subscription.addOnAdded'));
+              } catch (error) {
+                Alert.alert(t('common.error'), t('subscription.addOnError'));
+              } finally {
+                setIsProcessing(false);
+              }
             },
           },
         ]
@@ -357,14 +374,10 @@ export default function SubscriptionScreen() {
         })}
       </View>
 
-      <View style={styles.stripeSection}>
-        <View style={styles.stripeInfo}>
-          <CreditCard size={20} color="#635bff" />
-          <Text style={styles.stripeText}>{t('subscription.securedByStripe')}</Text>
-        </View>
+      <View style={styles.restoreSection}>
         <Pressable
           style={styles.restoreButton}
-          onPress={restorePurchases}
+          onPress={() => Alert.alert(t('subscription.restorePurchases'), t('subscription.restorePurchasesInfo'))}
           disabled={isProcessing}
         >
           <RefreshCw size={16} color="#64748b" />
@@ -602,24 +615,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 20,
   },
-  stripeSection: {
+  restoreSection: {
     padding: 20,
     alignItems: 'center',
-    gap: 16,
-  },
-  stripeInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    backgroundColor: '#f8fafc',
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderRadius: 8,
-  },
-  stripeText: {
-    fontSize: 14,
-    color: '#635bff',
-    fontWeight: '600',
   },
   restoreButton: {
     flexDirection: 'row',
