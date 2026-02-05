@@ -226,7 +226,7 @@ export const VERIFIED_BREED_IMAGES: Record<string, string> = {
   "japanese-bobtail": "https://cdn2.thecatapi.com/images/-TRBoJWKl.jpg",
   "chausie": "https://cdn2.thecatapi.com/images/vJ3lEYgXr.jpg",
   "munchkin": "https://cdn2.thecatapi.com/images/j5cVSqLer.jpg",
-  "toyger": "https://cdn2.thecatapi.com/images/O3F3_S1XN.jpg",
+  "toyger": "https://rork.app/pa/355i9jn1mif3ki6hoexx7/assets/images/breeds/toyger.png",
   "nebelung": "https://cdn2.thecatapi.com/images/OGTWqNNOt.jpg",
   "snowshoe": "https://cdn2.thecatapi.com/images/MK-sYESvO.jpg",
   "lykoi": "https://cdn2.thecatapi.com/images/d5y9H576b.jpg",
