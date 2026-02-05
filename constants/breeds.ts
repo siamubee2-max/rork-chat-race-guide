@@ -2827,7 +2827,7 @@ export const BREEDS: BreedProfile[] = [
       notes: ["Chat musclé et athlétique"],
     },
     imageUri:
-      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/ooubepc9yb4gl5lnan8nu",
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/6qbvk4uh55yotkd9qcpgt",
   },
   {
     id: "cyprus",
