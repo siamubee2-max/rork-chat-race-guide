@@ -214,7 +214,7 @@ export const VERIFIED_BREED_IMAGES: Record<string, string> = {
   "turkish-van": "https://cdn2.thecatapi.com/images/sxIXJax6h.jpg",
   "himalayan": "https://cdn2.thecatapi.com/images/CDhOtM-Ig.jpg",
   "egyptian-mau": "https://cdn2.thecatapi.com/images/TuSyTkt2M.jpg",
-  "savannah": "https://cdn2.thecatapi.com/images/a8nIYvs6S.jpg",
+  "savannah": "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/d09blop80gudztvlx1a8n",
   "laperm": "https://cdn2.thecatapi.com/images/aKbsEYjSl.jpg",
   "singapura": "https://cdn2.thecatapi.com/images/Qtncp2nRe.jpg",
   "selkirk-rex": "https://cdn2.thecatapi.com/images/II9dOZmrw.jpg",

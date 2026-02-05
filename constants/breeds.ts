@@ -1262,7 +1262,7 @@ export const BREEDS: BreedProfile[] = [
       notes: ["Grand chat, besoins nutritionnels spécifiques"],
     },
     imageUri:
-      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/ggu37bx59oqp89nj93zu9",
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/d09blop80gudztvlx1a8n",
   },
   {
     id: "laperm",
