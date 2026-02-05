@@ -390,6 +390,7 @@ export default {
     headerSubtitle: "Раскройте весь потенциал CatID с нашими Premium-формулами",
     currentPlan: "Текущий план",
     popular: "Популярный",
+    allAccess: "Полный доступ",
     free: "Бесплатно",
     free3Days: "3 дня бесплатно",
     perMonth: "/месяц",

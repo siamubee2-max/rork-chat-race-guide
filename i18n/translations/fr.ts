@@ -446,6 +446,7 @@ export default {
     headerSubtitle: "Débloquez tout le potentiel de CatID avec nos formules Premium",
     currentPlan: "Formule actuelle",
     popular: "Populaire",
+    allAccess: "Accès complet",
     free: "Gratuit",
     free3Days: "Gratuit 3 jours",
     perMonth: "/mois",

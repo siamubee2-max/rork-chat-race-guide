@@ -390,6 +390,7 @@ export default {
     headerSubtitle: "افتح كل إمكانيات CatID مع صيغنا المميزة",
     currentPlan: "الخطة الحالية",
     popular: "شائع",
+    allAccess: "وصول كامل",
     free: "مجاني",
     free3Days: "3 أيام مجاناً",
     perMonth: "/شهر",

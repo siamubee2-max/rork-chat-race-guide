@@ -390,6 +390,7 @@ export default {
     headerSubtitle: "Ontgrendel het volledige potentieel van CatID met onze Premium formules",
     currentPlan: "Huidige formule",
     popular: "Populair",
+    allAccess: "Volledige toegang",
     free: "Gratis",
     free3Days: "3 dagen gratis",
     perMonth: "/maand",

@@ -378,6 +378,7 @@ export default {
     headerSubtitle: "Entfalten Sie das volle Potenzial von CatID mit unseren Premium-Plänen",
     currentPlan: "Aktueller Plan",
     popular: "Beliebt",
+    allAccess: "Voller Zugang",
     free: "Kostenlos",
     perMonth: "/Monat",
     select: "Auswählen",

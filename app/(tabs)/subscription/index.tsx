@@ -8,71 +8,32 @@ import {
   Alert,
   ActivityIndicator,
 } from "react-native";
-import { Check, Crown, Zap, RefreshCw } from "lucide-react-native";
+import { Check, Crown, RefreshCw } from "lucide-react-native";
 import { useAuth } from "@/context/auth";
 
 import { useTranslation } from "react-i18next";
 import { router } from "expo-router";
 
-const SUBSCRIPTION_TIERS = [
-  {
-    id: 'premium',
-    name: 'Premium',
-    price: 19.99,
-    yearlyPrice: 179.99,
-    features: [
-      'subscription.features.unlimitedScans',
-      'subscription.features.allBreeds',
-      'subscription.features.aiAssistant',
-      'subscription.features.emergencyPosters',
-      'subscription.features.noAds',
-    ],
-    color: '#3b82f6',
-    icon: Crown,
-    popular: true,
-  },
-  {
-    id: 'premium_plus',
-    name: 'Premium Plus',
-    price: 34.99,
-    yearlyPrice: 299.99,
-    features: [
-      'subscription.features.allPremium',
-      'subscription.features.advancedAI',
-      'subscription.features.advancedHealthTracking',
-      'subscription.features.vetConsultations',
-      'subscription.features.prioritySupport',
-      'subscription.features.exclusiveContent',
-    ],
-    color: '#8b5cf6',
-    icon: Zap,
-    popular: false,
-  },
-] as const;
-
-const ADD_ONS = [
-  {
-    id: 'health_tracking',
-    name: 'subscription.addOns.healthTracking',
-    price: 6.99,
-    yearlyPrice: 59.99,
-    description: 'subscription.addOns.healthTrackingDesc',
-  },
-  {
-    id: 'vet_directory',
-    name: 'subscription.addOns.vetDirectory',
-    price: 4.99,
-    yearlyPrice: 39.99,
-    description: 'subscription.addOns.vetDirectoryDesc',
-  },
-  {
-    id: 'breeder_network',
-    name: 'subscription.addOns.breederNetwork',
-    price: 7.99,
-    yearlyPrice: 69.99,
-    description: 'subscription.addOns.breederNetworkDesc',
-  },
-] as const;
+const SUBSCRIPTION = {
+  id: 'premium',
+  name: 'Premium',
+  monthlyPrice: 29.99,
+  yearlyPrice: 249.99,
+  features: [
+    'subscription.features.unlimitedScans',
+    'subscription.features.allBreeds',
+    'subscription.features.aiAssistant',
+    'subscription.features.emergencyPosters',
+    'subscription.features.noAds',
+    'subscription.features.advancedAI',
+    'subscription.features.advancedHealthTracking',
+    'subscription.features.vetConsultations',
+    'subscription.features.prioritySupport',
+    'subscription.features.exclusiveContent',
+  ],
+  color: '#3b82f6',
+  icon: Crown,
+};
 
 export default function SubscriptionScreen() {
   const { currentUser, updateSubscription, isAuthenticated } = useAuth();
@@ -80,7 +41,7 @@ export default function SubscriptionScreen() {
   const { t } = useTranslation();
   const [billingCycle, setBillingCycle] = React.useState<'monthly' | 'yearly'>('monthly');
 
-  const handleSubscribe = async (tierId: string, addOns: string[] = []) => {
+  const handleSubscribe = async () => {
     if (!isAuthenticated) {
       Alert.alert(
         t('subscription.loginRequired'),
@@ -96,16 +57,13 @@ export default function SubscriptionScreen() {
       return;
     }
 
-    const tier = SUBSCRIPTION_TIERS.find((t) => t.id === tierId);
-    if (!tier) return;
-
-    const price = billingCycle === 'yearly' ? tier.yearlyPrice : tier.price;
+    const price = billingCycle === 'yearly' ? SUBSCRIPTION.yearlyPrice : SUBSCRIPTION.monthlyPrice;
     const period = billingCycle === 'yearly' ? t('subscription.perYear') : t('subscription.perMonth');
 
     Alert.alert(
       t('subscription.confirmTitle'),
       t('subscription.confirmDescNew', {
-        plan: tier.name,
+        plan: SUBSCRIPTION.name,
         price: price.toFixed(2),
         period,
       }),
@@ -116,9 +74,9 @@ export default function SubscriptionScreen() {
           onPress: async () => {
             setIsProcessing(true);
             try {
-              await updateSubscription(tier.id as any, currentUser?.addOns || []);
-              Alert.alert(t('common.success'), t('subscription.subscriptionActivated', { plan: tier.name }));
-            } catch (error) {
+              await updateSubscription('premium', []);
+              Alert.alert(t('common.success'), t('subscription.subscriptionActivated', { plan: SUBSCRIPTION.name }));
+            } catch {
               Alert.alert(t('common.error'), t('subscription.subscriptionError'));
             } finally {
               setIsProcessing(false);
@@ -127,58 +85,6 @@ export default function SubscriptionScreen() {
         },
       ]
     );
-  };
-
-  const handleAddOn = async (addOnId: string) => {
-    if (!isAuthenticated) {
-      Alert.alert(
-        t('subscription.loginRequired'),
-        t('subscription.loginRequiredDesc')
-      );
-      return;
-    }
-
-    const currentAddOns = currentUser?.addOns || [];
-    const hasAddOn = currentAddOns.includes(addOnId);
-
-    if (hasAddOn) {
-      const newAddOns = currentAddOns.filter((id) => id !== addOnId);
-      await updateSubscription(currentUser?.subscriptionTier || 'free', newAddOns);
-      Alert.alert(t('common.success'), t('subscription.addOnRemoved'));
-    } else {
-      const addOn = ADD_ONS.find((a) => a.id === addOnId);
-      if (!addOn) return;
-
-      const price = billingCycle === 'yearly' ? addOn.yearlyPrice : addOn.price;
-      const period = billingCycle === 'yearly' ? t('subscription.perYear') : t('subscription.perMonth');
-
-      Alert.alert(
-        t('subscription.confirmTitle'),
-        t('subscription.confirmAddOnDescNew', {
-          addOn: t(addOn.name),
-          price: price.toFixed(2),
-          period,
-        }),
-        [
-          { text: t('common.cancel'), style: 'cancel' },
-          {
-            text: t('subscription.confirm'),
-            onPress: async () => {
-              setIsProcessing(true);
-              try {
-                const newAddOns = [...(currentUser?.addOns || []), addOnId];
-                await updateSubscription(currentUser?.subscriptionTier || 'free', newAddOns);
-                Alert.alert(t('common.success'), t('subscription.addOnAdded'));
-              } catch (error) {
-                Alert.alert(t('common.error'), t('subscription.addOnError'));
-              } finally {
-                setIsProcessing(false);
-              }
-            },
-          },
-        ]
-      );
-    }
   };
 
   return (
@@ -233,47 +139,39 @@ export default function SubscriptionScreen() {
           <Text style={styles.currentPlanTitle}>
             {t('subscription.currentPlan')}
           </Text>
-          <View style={styles.currentPlanBadge}>
+          <View style={[styles.currentPlanBadge, currentUser.subscriptionTier === 'free' && styles.freeBadge]}>
             <Crown size={16} color="#fff" />
             <Text style={styles.currentPlanText}>
-              {currentUser.subscriptionTier === 'free'
-                ? 'Free'
-                : currentUser.subscriptionTier === 'premium'
-                ? 'Premium'
-                : 'Premium Plus'}
+              {currentUser.subscriptionTier === 'free' ? 'Free' : 'Premium'}
             </Text>
           </View>
         </View>
       )}
 
       <View style={styles.tiersContainer}>
-        {SUBSCRIPTION_TIERS.map((tier) => {
-          const Icon = tier.icon;
-          const isCurrentPlan = currentUser?.subscriptionTier === tier.id;
+        {(() => {
+          const Icon = SUBSCRIPTION.icon;
+          const isCurrentPlan = currentUser?.subscriptionTier === 'premium';
+          const price = billingCycle === 'yearly' ? SUBSCRIPTION.yearlyPrice : SUBSCRIPTION.monthlyPrice;
+          const savings = SUBSCRIPTION.monthlyPrice * 12 - SUBSCRIPTION.yearlyPrice;
 
           return (
-            <View key={tier.id} style={styles.tierCard}>
-              {tier.popular && (
-                <View style={styles.popularBadge}>
-                  <Text style={styles.popularText}>
-                    {t('subscription.popular')}
-                  </Text>
-                </View>
-              )}
+            <View style={[styles.tierCard, styles.tierCardHighlight]}>
+              <View style={styles.popularBadge}>
+                <Text style={styles.popularText}>
+                  {t('subscription.allAccess')}
+                </Text>
+              </View>
 
               <View style={styles.tierHeader}>
-                <View
-                  style={[styles.tierIcon, { backgroundColor: tier.color }]}
-                >
+                <View style={[styles.tierIcon, { backgroundColor: SUBSCRIPTION.color }]}>
                   <Icon size={24} color="#fff" />
                 </View>
-                <Text style={styles.tierName}>{tier.name}</Text>
+                <Text style={styles.tierName}>{SUBSCRIPTION.name}</Text>
               </View>
 
               <View style={styles.priceContainer}>
-                <Text style={styles.price}>
-                  €{(billingCycle === 'yearly' ? tier.yearlyPrice : tier.price).toFixed(2)}
-                </Text>
+                <Text style={styles.price}>€{price.toFixed(2)}</Text>
                 <Text style={styles.priceUnit}>
                   {billingCycle === 'yearly' ? t('subscription.perYear') : t('subscription.perMonth')}
                 </Text>
@@ -281,17 +179,15 @@ export default function SubscriptionScreen() {
               {billingCycle === 'yearly' && (
                 <View style={styles.savingsBadge}>
                   <Text style={styles.savingsBadgeText}>
-                    {t('subscription.saveAmount', {
-                      amount: (tier.price * 12 - tier.yearlyPrice).toFixed(0),
-                    })}
+                    {t('subscription.saveAmount', { amount: savings.toFixed(0) })}
                   </Text>
                 </View>
               )}
 
               <View style={styles.featuresContainer}>
-                {tier.features.map((feature, index) => (
+                {SUBSCRIPTION.features.map((feature, index) => (
                   <View key={index} style={styles.featureRow}>
-                    <Check size={18} color={tier.color} />
+                    <Check size={18} color={SUBSCRIPTION.color} />
                     <Text style={styles.featureText}>{t(feature)}</Text>
                   </View>
                 ))}
@@ -300,78 +196,19 @@ export default function SubscriptionScreen() {
               <Pressable
                 style={[
                   styles.subscribeButton,
-                  { backgroundColor: tier.color },
+                  { backgroundColor: SUBSCRIPTION.color },
                   isCurrentPlan && styles.currentPlanButton,
                 ]}
-                onPress={() => !isCurrentPlan && handleSubscribe(tier.id)}
+                onPress={() => !isCurrentPlan && handleSubscribe()}
                 disabled={isCurrentPlan}
               >
                 <Text style={styles.subscribeButtonText}>
-                  {isCurrentPlan
-                    ? t('subscription.currentPlan')
-                    : t('subscription.select')}
+                  {isCurrentPlan ? t('subscription.currentPlan') : t('subscription.select')}
                 </Text>
               </Pressable>
             </View>
           );
-        })}
-      </View>
-
-      <View style={styles.addOnsSection}>
-        <Text style={styles.sectionTitle}>{t('subscription.addOnsTitle')}</Text>
-        <Text style={styles.sectionSubtitle}>
-          {t('subscription.addOnsSubtitle')}
-        </Text>
-
-        {ADD_ONS.map((addOn) => {
-          const isPremiumPlus = currentUser?.subscriptionTier === 'premium_plus';
-          const isIncludedInPlan = addOn.id === 'health_tracking' && isPremiumPlus;
-          const hasAddOn = currentUser?.addOns?.includes(addOn.id) || isIncludedInPlan;
-
-          return (
-            <Pressable
-              key={addOn.id}
-              style={[
-                styles.addOnCard, 
-                hasAddOn && styles.addOnCardActive,
-                isIncludedInPlan && styles.addOnCardIncluded
-              ]}
-              onPress={() => !isIncludedInPlan && handleAddOn(addOn.id)}
-              disabled={isIncludedInPlan}
-            >
-              <View style={styles.addOnContent}>
-                <Text style={styles.addOnName}>{t(addOn.name)}</Text>
-                <Text style={styles.addOnDescription}>
-                  {t(addOn.description)}
-                </Text>
-                <Text style={styles.addOnPrice}>
-                  {isIncludedInPlan ? (
-                    t('subscription.included')
-                  ) : (
-                    <>
-                      €{(billingCycle === 'yearly' ? addOn.yearlyPrice : addOn.price).toFixed(2)}{' '}
-                      <Text style={styles.addOnPriceUnit}>
-                        {billingCycle === 'yearly' ? t('subscription.perYear') : t('subscription.perMonth')}
-                      </Text>
-                    </>
-                  )}
-                </Text>
-                {billingCycle === 'yearly' && !isIncludedInPlan && (
-                  <Text style={styles.addOnSavings}>
-                    {t('subscription.saveAmount', {
-                      amount: (addOn.price * 12 - addOn.yearlyPrice).toFixed(0),
-                    })}
-                  </Text>
-                )}
-              </View>
-              {hasAddOn && (
-                <View style={[styles.addOnCheck, isIncludedInPlan && styles.addOnCheckIncluded]}>
-                  <Check size={20} color={isIncludedInPlan ? "#fff" : "#10b981"} />
-                </View>
-              )}
-            </Pressable>
-          );
-        })}
+        })()}
       </View>
 
       <View style={styles.restoreSection}>
@@ -552,58 +389,16 @@ const styles = StyleSheet.create({
     color: '#64748b',
     marginBottom: 16,
   },
-  addOnCard: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 20,
-    marginBottom: 12,
-    flexDirection: 'row',
-    borderWidth: 2,
-    borderColor: '#e2e8f0',
-  },
-  addOnCardActive: {
-    borderColor: '#10b981',
-    backgroundColor: '#f0fdf4',
-  },
-  addOnCardIncluded: {
-    backgroundColor: '#eff6ff',
+  tierCardHighlight: {
     borderColor: '#3b82f6',
+    shadowColor: '#3b82f6',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 6,
   },
-  addOnCheckIncluded: {
-    backgroundColor: '#3b82f6',
-  },
-  addOnContent: {
-    flex: 1,
-  },
-  addOnName: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#111',
-    marginBottom: 6,
-  },
-  addOnDescription: {
-    fontSize: 14,
-    color: '#64748b',
-    marginBottom: 8,
-    lineHeight: 20,
-  },
-  addOnPrice: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#111',
-  },
-  addOnPriceUnit: {
-    fontSize: 14,
-    color: '#64748b',
-    fontWeight: '400',
-  },
-  addOnCheck: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#dcfce7',
-    alignItems: 'center',
-    justifyContent: 'center',
+  freeBadge: {
+    backgroundColor: '#94a3b8',
   },
   footer: {
     padding: 24,
@@ -701,10 +496,5 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '700',
   },
-  addOnSavings: {
-    fontSize: 13,
-    color: '#10b981',
-    fontWeight: '600',
-    marginTop: 4,
-  },
+
 });

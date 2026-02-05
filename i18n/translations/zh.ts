@@ -378,6 +378,7 @@ export default {
     headerSubtitle: "通过我们的高级计划解锁CatID的全部潜力",
     currentPlan: "当前计划",
     popular: "热门",
+    allAccess: "完整访问",
     free: "免费",
     free3Days: "3天免费",
     perMonth: "/月",

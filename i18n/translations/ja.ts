@@ -390,6 +390,7 @@ export default {
     headerSubtitle: "プレミアムプランでCatIDの可能性を最大限に引き出しましょう",
     currentPlan: "現在のプラン",
     popular: "人気",
+    allAccess: "フルアクセス",
     free: "無料",
     free3Days: "3日間無料",
     perMonth: "/月",

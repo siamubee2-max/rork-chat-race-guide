@@ -378,6 +378,7 @@ export default {
     headerSubtitle: "Desbloquea todo el potencial de CatID con nuestros planes Premium",
     currentPlan: "Plan actual",
     popular: "Popular",
+    allAccess: "Acceso completo",
     free: "Gratis",
     free3Days: "3 días gratis",
     perMonth: "/mes",

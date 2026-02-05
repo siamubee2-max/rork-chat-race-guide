@@ -446,6 +446,7 @@ export default {
     headerSubtitle: "Unlock the full potential of CatID with our Premium plans",
     currentPlan: "Current Plan",
     popular: "Popular",
+    allAccess: "Full Access",
     free: "Free",
     perMonth: "/month",
     select: "Select",
