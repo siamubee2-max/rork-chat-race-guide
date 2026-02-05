@@ -15,6 +15,9 @@ import {
   ChevronRight,
   Zap,
   Bell,
+  Shield,
+  FileText,
+  HelpCircle,
 } from "lucide-react-native";
 import {
   ScrollView,
@@ -193,6 +196,35 @@ export default function MoreScreen() {
           subtitle: t("more.changeLanguage"),
           route: "/modal",
           color: Colors.backgroundSecondary,
+        },
+      ],
+    },
+    {
+      title: t("legal.sectionTitle"),
+      items: [
+        {
+          id: "privacy",
+          icon: <Shield color="#5BA88F" size={22} />,
+          title: t("legal.privacyPolicy"),
+          subtitle: t("legal.privacySubtitle"),
+          route: "/(tabs)/more/privacy",
+          color: "rgba(91, 168, 143, 0.15)",
+        },
+        {
+          id: "terms",
+          icon: <FileText color="#7B8FA1" size={22} />,
+          title: t("legal.termsOfUse"),
+          subtitle: t("legal.termsSubtitle"),
+          route: "/(tabs)/more/terms",
+          color: "rgba(123, 143, 161, 0.15)",
+        },
+        {
+          id: "faq",
+          icon: <HelpCircle color="#C4A35A" size={22} />,
+          title: t("legal.faqTitle"),
+          subtitle: t("legal.faqSubtitle"),
+          route: "/(tabs)/more/faq",
+          color: "rgba(196, 163, 90, 0.15)",
         },
       ],
     },
