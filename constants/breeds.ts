@@ -1975,7 +1975,7 @@ export const BREEDS: BreedProfile[] = [
       notes: ["Chat de taille moyenne à grande"],
     },
     imageUri:
-      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/4kdc48r5yc4z9220nfaec",
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/w6ueho3c7nhin2rzoln4m",
   },
   {
     id: "donskoy",
