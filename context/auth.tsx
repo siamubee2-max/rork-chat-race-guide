@@ -11,7 +11,6 @@ export interface User {
   createdAt: string;
   subscriptionTier: SubscriptionTier;
   subscriptionExpiry?: string;
-  addOns: string[];
 }
 
 interface StoredUser extends User {
@@ -79,7 +78,6 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
         name,
         createdAt: new Date().toISOString(),
         subscriptionTier: 'free',
-        addOns: [],
       };
 
       users.push(newUser);
@@ -92,7 +90,6 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
         createdAt: newUser.createdAt,
         subscriptionTier: newUser.subscriptionTier,
         subscriptionExpiry: newUser.subscriptionExpiry,
-        addOns: newUser.addOns,
       };
 
       setCurrentUser(userToStore);
@@ -128,7 +125,6 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
         createdAt: user.createdAt,
         subscriptionTier: user.subscriptionTier || 'free',
         subscriptionExpiry: user.subscriptionExpiry,
-        addOns: user.addOns || [],
       };
 
       setCurrentUser(userToStore);
@@ -181,7 +177,7 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
     }
   };
 
-  const updateSubscription = async (tier: SubscriptionTier, addOns: string[] = [], customExpiry?: number) => {
+  const updateSubscription = async (tier: SubscriptionTier, customExpiry?: number) => {
     try {
       if (!currentUser) return;
 
@@ -199,7 +195,6 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
 
       users[userIndex].subscriptionTier = tier;
       users[userIndex].subscriptionExpiry = expiry;
-      users[userIndex].addOns = addOns;
 
       await AsyncStorage.setItem(STORAGE_USERS, JSON.stringify(users));
 
@@ -207,7 +202,6 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
         ...currentUser,
         subscriptionTier: tier,
         subscriptionExpiry: expiry,
-        addOns,
       };
 
       setCurrentUser(updatedUser);

@@ -74,7 +74,7 @@ export default function SubscriptionScreen() {
           onPress: async () => {
             setIsProcessing(true);
             try {
-              await updateSubscription('premium', []);
+              await updateSubscription('premium');
               Alert.alert(t('common.success'), t('subscription.subscriptionActivated', { plan: SUBSCRIPTION.name }));
             } catch {
               Alert.alert(t('common.error'), t('subscription.subscriptionError'));
