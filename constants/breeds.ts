@@ -1569,7 +1569,7 @@ export const BREEDS: BreedProfile[] = [
       notes: ["Besoins nutritionnels proches chat sauvage"],
     },
     imageUri:
-      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/5jcjhqh4xhbmbpeeicv8g",
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/f2530gbxaqj6iqlonk2ou",
   },
   {
     id: "munchkin",
