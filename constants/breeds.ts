@@ -1917,7 +1917,7 @@ export const BREEDS: BreedProfile[] = [
       notes: ["Chat musclé et actif"],
     },
     imageUri:
-      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/3wpicwrze5ita8mma73gg",
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/mtq44pjaufwmsji72wh19",
   },
   {
     id: "california-spangled",
