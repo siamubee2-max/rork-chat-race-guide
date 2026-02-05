@@ -2256,7 +2256,7 @@ export const BREEDS: BreedProfile[] = [
       notes: ["Chat musclé et compact"],
     },
     imageUri:
-      "https://images.unsplash.com/photo-1528659529456-1188448eb36d?auto=format&fit=crop&w=1200&q=80",
+      "https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/6ewfb7wchz5li8s86qj07",
   },
   {
     id: "serengeti",
