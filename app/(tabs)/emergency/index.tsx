@@ -22,6 +22,7 @@ import { useEmergency, type EmergencyAlert } from "@/context/emergency";
 import { useUserLocation } from "@/context/user-location";
 import { Colors } from "@/constants/colors";
 import { useTranslation } from "react-i18next";
+import { PremiumGate } from "@/components/PremiumGate";
 
 
 
@@ -759,7 +760,8 @@ const { alerts, updateAlert, deleteAlert } = useEmergency();
   );
 
   return (
-    <View style={styles.screen}>
+    <PremiumGate>
+      <View style={styles.screen}>
       <FlatList
         data={activeAlerts}
         keyExtractor={(item) => item.id}
@@ -848,7 +850,8 @@ const { alerts, updateAlert, deleteAlert } = useEmergency();
           </View>
         </Pressable>
       </Modal>
-    </View>
+      </View>
+    </PremiumGate>
   );
 }
 

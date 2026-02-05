@@ -420,4 +420,9 @@ export default {
     },
     footerText: "Alle Abonnements verlängern sich automatisch. Sie können jederzeit kündigen.",
   },
+  premiumGate: {
+    title: "Premium-Funktion",
+    description: "Abonnieren Sie Premium, um alle Funktionen freizuschalten und das Beste aus der App herauszuholen.",
+    subscribe: "Jetzt abonnieren",
+  },
 };

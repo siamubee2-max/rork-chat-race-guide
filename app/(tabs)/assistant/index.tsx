@@ -20,6 +20,7 @@ import { z } from "zod";
 import { useTranslation } from "react-i18next";
 import { Colors } from "@/constants/colors";
 import { useCats } from "@/context/cats";
+import { PremiumGate } from "@/components/PremiumGate";
 import { useReminders } from "@/context/reminders";
 
 export default function AssistantScreen() {
@@ -255,7 +256,8 @@ ${messageText}`
   }, [setMessages]);
 
   return (
-    <KeyboardAvoidingView
+    <PremiumGate>
+      <KeyboardAvoidingView
       style={[
         styles.container,
         !isTablet && styles.containerMobile,
@@ -470,7 +472,8 @@ ${messageText}`
           />
         </TouchableOpacity>
       </View>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </PremiumGate>
   );
 }
 

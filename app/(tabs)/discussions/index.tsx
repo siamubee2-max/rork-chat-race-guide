@@ -13,6 +13,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 
 import { useDiscussions, type Discussion } from "@/context/discussions";
+import { PremiumGate } from "@/components/PremiumGate";
 
 const DISCUSSION_CARD_HEIGHT = 120;
 const DISCUSSION_CARD_MARGIN = 12;
@@ -183,8 +184,9 @@ export default function DiscussionsScreen() {
   }
 
   return (
-    <View style={styles.screen}>
-      <View style={styles.categories}>
+    <PremiumGate>
+      <View style={styles.screen}>
+        <View style={styles.categories}>
         <FlatList
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -212,9 +214,8 @@ export default function DiscussionsScreen() {
           <Plus color="#fff" size={24} />
         </Pressable>
       </View>
-
-
-    </View>
+      </View>
+    </PremiumGate>
   );
 }
 

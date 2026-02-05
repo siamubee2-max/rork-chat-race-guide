@@ -453,5 +453,10 @@ export default {
     restorePurchases: "Aankopen herstellen",
     processing: "Verwerken...",
   },
+  premiumGate: {
+    title: "Premium Functie",
+    description: "Abonneer je op Premium om alle functies te ontgrendelen en het meeste uit de app te halen.",
+    subscribe: "Nu abonneren",
+  },
 };
 

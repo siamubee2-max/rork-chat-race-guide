@@ -24,6 +24,7 @@ import { useReminders } from "@/context/reminders";
 import { useExpenses } from "@/context/expenses";
 import { useShopping } from "@/context/shopping";
 import { useTranslation } from "react-i18next";
+import { PremiumGate } from "@/components/PremiumGate";
 
 type FeatureCardProps = {
   icon: React.ReactNode;
@@ -94,8 +95,9 @@ export default function PracticalScreen() {
   const upcomingCount = upcomingReminders.slice(0, 5).length;
 
   return (
-    <ScrollView
-      style={styles.container}
+    <PremiumGate>
+      <ScrollView
+        style={styles.container}
       contentContainerStyle={[styles.content, { paddingBottom: insets.bottom + 100 }]}
       showsVerticalScrollIndicator={false}
     >
@@ -221,7 +223,8 @@ export default function PracticalScreen() {
           {t('practical.waterTip')}
         </Text>
       </View>
-    </ScrollView>
+      </ScrollView>
+    </PremiumGate>
   );
 }
 

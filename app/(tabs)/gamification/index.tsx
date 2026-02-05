@@ -22,6 +22,7 @@ import {
 } from "lucide-react-native";
 import { Colors } from "@/constants/colors";
 import { useGamification, ACHIEVEMENTS } from "@/context/gamification";
+import { PremiumGate } from "@/components/PremiumGate";
 
 const { width } = Dimensions.get("window");
 
@@ -61,7 +62,8 @@ export default function GamificationScreen() {
   const completedWeekly = weeklyChallenges.filter((c) => c.completed).length;
 
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+    <PremiumGate>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <Animated.View style={[styles.profileCard, { transform: [{ scale: scaleAnim }] }]}>
         <View style={styles.levelBadge}>
           <Text style={styles.levelNumber}>{stats.level}</Text>
@@ -236,7 +238,8 @@ export default function GamificationScreen() {
       </View>
 
       <View style={styles.bottomPadding} />
-    </ScrollView>
+      </ScrollView>
+    </PremiumGate>
   );
 }
 

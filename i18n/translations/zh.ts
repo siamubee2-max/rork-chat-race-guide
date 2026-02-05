@@ -441,4 +441,9 @@ export default {
     restorePurchases: "恢复购买",
     processing: "处理中...",
   },
+  premiumGate: {
+    title: "高级功能",
+    description: "订阅高级版以解锁所有功能，充分利用应用程序。",
+    subscribe: "立即订阅",
+  },
 };

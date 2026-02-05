@@ -453,4 +453,9 @@ export default {
     restorePurchases: "استعادة المشتريات",
     processing: "جاري المعالجة...",
   },
+  premiumGate: {
+    title: "ميزة مميزة",
+    description: "اشترك في Premium لفتح جميع الميزات والحصول على أقصى استفادة من التطبيق.",
+    subscribe: "اشترك الآن",
+  },
 };

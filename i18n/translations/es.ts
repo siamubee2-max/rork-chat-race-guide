@@ -441,4 +441,9 @@ export default {
     restorePurchases: "Restaurar compras",
     processing: "Procesando...",
   },
+  premiumGate: {
+    title: "Función Premium",
+    description: "Suscríbete a Premium para desbloquear todas las funciones y aprovechar al máximo la aplicación.",
+    subscribe: "Suscribirse ahora",
+  },
 };

@@ -17,6 +17,7 @@ import { useTranslation } from "react-i18next";
 import { useCats, type CatProfile } from "@/context/cats";
 import { getBreedById } from "@/constants/breeds";
 import { Colors } from "@/constants/colors";
+import { PremiumGate } from "@/components/PremiumGate";
 
 const CARD_HEIGHT = 88; // 60 (avatar) + 14*2 (padding) + gap
 const CARD_MARGIN = 14;
@@ -124,8 +125,9 @@ export default function CatsListScreen() {
   );
 
   return (
-    <View style={styles.screen}>
-      <FlatList
+    <PremiumGate>
+      <View style={styles.screen}>
+        <FlatList
         data={cats}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
@@ -155,8 +157,9 @@ export default function CatsListScreen() {
             <Plus color="#fff" size={24} />
           </Pressable>
         </View>
-      )}
-    </View>
+        )}
+      </View>
+    </PremiumGate>
   );
 }
 

@@ -561,6 +561,11 @@ export default {
     subtitle: "Select the language for the app",
     confirm: "Continue",
   },
+  premiumGate: {
+    title: "Premium Feature",
+    description: "Subscribe to Premium to unlock all features and get the most out of the app.",
+    subscribe: "Subscribe Now",
+  },
   notifications: {
     title: "Notifications",
     enabled: "Notifications enabled",

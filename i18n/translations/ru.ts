@@ -453,4 +453,9 @@ export default {
     restorePurchases: "Восстановить покупки",
     processing: "Обработка...",
   },
+  premiumGate: {
+    title: "Премиум функция",
+    description: "Подпишитесь на Premium, чтобы разблокировать все функции и получить максимум от приложения.",
+    subscribe: "Подписаться сейчас",
+  },
 };

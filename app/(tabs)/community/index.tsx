@@ -27,6 +27,7 @@ import { useTranslation } from "react-i18next";
 import { useSocial, type Post } from "@/context/social";
 import { useAuth } from "@/context/auth";
 import { Colors } from "@/constants/colors";
+import { PremiumGate } from "@/components/PremiumGate";
 
 type TabType = "feed" | "events" | "messages";
 
@@ -312,7 +313,8 @@ export default function CommunityScreen() {
   );
 
   return (
-    <View style={styles.screen}>
+    <PremiumGate>
+      <View style={styles.screen}>
       <View style={styles.tabs}>
         <Pressable
           style={[styles.tab, activeTab === "feed" && styles.tabActive]}
@@ -420,8 +422,9 @@ export default function CommunityScreen() {
         >
           <Plus size={24} color="#fff" />
         </Pressable>
-      )}
-    </View>
+        )}
+      </View>
+    </PremiumGate>
   );
 }
 

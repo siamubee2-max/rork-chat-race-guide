@@ -453,4 +453,9 @@ export default {
     restorePurchases: "購入を復元",
     processing: "処理中...",
   },
+  premiumGate: {
+    title: "プレミアム機能",
+    description: "プレミアムに登録して、すべての機能を解除し、アプリを最大限に活用しましょう。",
+    subscribe: "今すぐ登録",
+  },
 };

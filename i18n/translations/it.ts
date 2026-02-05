@@ -420,6 +420,11 @@ export default {
     },
     footerText: "Tutti gli abbonamenti si rinnovano automaticamente. Puoi annullare in qualsiasi momento.",
   },
+  premiumGate: {
+    title: "Funzione Premium",
+    description: "Abbonati a Premium per sbloccare tutte le funzionalità e ottenere il massimo dall'app.",
+    subscribe: "Abbonati ora",
+  },
   nav: {
     aboutTitle: "Informazioni",
     notFoundTitle: "Non trovato",

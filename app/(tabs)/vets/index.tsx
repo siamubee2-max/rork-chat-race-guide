@@ -28,6 +28,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Colors } from "@/constants/colors";
 import { useTranslation } from "react-i18next";
 import NativeMap, { MapMarker } from "@/components/NativeMap";
+import { PremiumGate } from "@/components/PremiumGate";
 
 interface SearchCategory {
   id: string;
@@ -321,8 +322,9 @@ export default function VetsScreen() {
   })();
 
   return (
-    <View style={styles.container}>
-      <SafeAreaView edges={["top"]} style={styles.safeArea}>
+    <PremiumGate>
+      <View style={styles.container}>
+        <SafeAreaView edges={["top"]} style={styles.safeArea}>
         <ScrollView 
           style={styles.scrollView}
           contentContainerStyle={styles.scrollContent}
@@ -543,8 +545,9 @@ export default function VetsScreen() {
               </View>
             </>
         </ScrollView>
-      </SafeAreaView>
-    </View>
+        </SafeAreaView>
+      </View>
+    </PremiumGate>
   );
 }
 
