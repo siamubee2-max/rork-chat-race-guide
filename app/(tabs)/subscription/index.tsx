@@ -17,8 +17,8 @@ import { router } from "expo-router";
 const SUBSCRIPTION = {
   id: 'premium',
   name: 'Premium',
-  monthlyPrice: 29.99,
-  yearlyPrice: 249.99,
+  monthlyPrice: 27.99,
+  yearlyPrice: 229.99,
   features: [
     'subscription.features.unlimitedScans',
     'subscription.features.allBreeds',
