@@ -313,6 +313,7 @@ export default function MoreScreen() {
           <Text style={styles.footerSubtext}>
             {t("more.madeWithLove")}
           </Text>
+          <Text style={styles.footerCredit}>Réalisée par InferenceVision</Text>
         </View>
       </ScrollView>
     </View>
@@ -328,7 +329,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    paddingBottom: 40,
+    paddingBottom: 120,
   },
   header: {
     padding: 24,
@@ -457,5 +458,12 @@ const styles = StyleSheet.create({
     color: Colors.textMuted,
     marginTop: 6,
     opacity: 0.6,
+  },
+  footerCredit: {
+    fontSize: 11,
+    color: Colors.textMuted,
+    marginTop: 8,
+    opacity: 0.5,
+    letterSpacing: 0.5,
   },
 });
