@@ -67,7 +67,7 @@ export default function SheltersScreen() {
                     <Text style={styles.cardTitle}>{shelter.name}</Text>
                     <View style={styles.animalsBadge}>
                       <PawPrint size={12} color="#E8835A" />
-                      <Text style={styles.animalsText}>{shelter.animals}</Text>
+                      <Text style={styles.animalsText}>{shelter.focus}</Text>
                     </View>
                   </View>
                   <Text style={styles.cardDescription} numberOfLines={2}>{shelter.description}</Text>
@@ -142,7 +142,7 @@ export default function SheltersScreen() {
 
                 <View style={styles.animalsRow}>
                   <PawPrint size={14} color="#E8835A" />
-                  <Text style={styles.animalsValue}>{selectedShelter.animals} animaux</Text>
+                  <Text style={styles.animalsValue}>{selectedShelter.focus}</Text>
                 </View>
 
                 <View style={styles.locationRow}>
