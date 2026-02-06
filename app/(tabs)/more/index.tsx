@@ -18,6 +18,7 @@ import {
   Shield,
   FileText,
   HelpCircle,
+  Heart,
 } from "lucide-react-native";
 import {
   ScrollView,
@@ -113,6 +114,14 @@ export default function MoreScreen() {
           subtitle: t("more.findBreeders"),
           route: "/(tabs)/(breeds)/breeders",
           color: "rgba(139, 115, 85, 0.15)",
+        },
+        {
+          id: "shelters",
+          icon: <Heart color="#E8835A" size={22} />,
+          title: t("more.shelters"),
+          subtitle: t("more.findShelters"),
+          route: "/(tabs)/(breeds)/shelters",
+          color: "rgba(232, 131, 90, 0.15)",
         },
       ],
     },

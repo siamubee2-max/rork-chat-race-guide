@@ -21,6 +21,7 @@ export default function BreedsStackLayout() {
       />
       <Stack.Screen name="[breedId]" options={{ headerTitle: t("breeds.details") }} />
       <Stack.Screen name="breeders" options={{ headerTitle: t("breeds.breeders") }} />
+      <Stack.Screen name="shelters" options={{ headerTitle: t("breeds.shelters") }} />
     </Stack>
   );
 }

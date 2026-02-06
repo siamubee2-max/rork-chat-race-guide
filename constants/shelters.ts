@@ -1,0 +1,135 @@
+export type Shelter = {
+  id: string;
+  name: string;
+  address: string;
+  city: string;
+  country: string;
+  latitude: number;
+  longitude: number;
+  phone: string;
+  website?: string;
+  rating: number;
+  imageUri: string;
+  description: string;
+  animals: number;
+};
+
+export const SHELTERS: Shelter[] = [
+  {
+    id: "sh-1",
+    name: "SPA Paris",
+    address: "39 Boulevard Berthier",
+    city: "Paris",
+    country: "France",
+    latitude: 48.8850,
+    longitude: 2.3050,
+    phone: "+33 1 43 80 40 66",
+    website: "https://www.la-spa.fr",
+    rating: 4.6,
+    imageUri: "https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&w=800&q=80",
+    description: "Le plus grand refuge de la SPA en Île-de-France.",
+    animals: 120,
+  },
+  {
+    id: "sh-2",
+    name: "Refuge de l'Arche",
+    address: "Route de Ménil",
+    city: "Château-Gontier",
+    country: "France",
+    latitude: 47.8283,
+    longitude: -0.7030,
+    phone: "+33 2 43 07 24 41",
+    rating: 4.8,
+    imageUri: "https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?auto=format&fit=crop&w=800&q=80",
+    description: "Refuge accueillant chats et chiens dans la Mayenne.",
+    animals: 85,
+  },
+  {
+    id: "sh-3",
+    name: "Battersea Dogs & Cats Home",
+    address: "4 Battersea Park Road",
+    city: "London",
+    country: "UK",
+    latitude: 51.4761,
+    longitude: -0.1465,
+    phone: "+44 20 7622 3626",
+    website: "https://www.battersea.org.uk",
+    rating: 4.9,
+    imageUri: "https://images.unsplash.com/photo-1571566882372-1598d88abd90?auto=format&fit=crop&w=800&q=80",
+    description: "One of the UK's oldest and most famous animal rescue centres.",
+    animals: 200,
+  },
+  {
+    id: "sh-4",
+    name: "ASPCA Adoption Center",
+    address: "424 E 92nd St",
+    city: "New York",
+    country: "USA",
+    latitude: 40.7823,
+    longitude: -73.9470,
+    phone: "+1 212-876-7700",
+    website: "https://www.aspca.org",
+    rating: 4.7,
+    imageUri: "https://images.unsplash.com/photo-1548546738-8509cb246ed3?auto=format&fit=crop&w=800&q=80",
+    description: "Leading animal welfare organization in the United States.",
+    animals: 150,
+  },
+  {
+    id: "sh-5",
+    name: "Refuge AVA",
+    address: "Chemin des Music",
+    city: "Cuy-Saint-Fiacre",
+    country: "France",
+    latitude: 49.6500,
+    longitude: 1.6833,
+    phone: "+33 2 35 90 26 34",
+    rating: 4.5,
+    imageUri: "https://images.unsplash.com/photo-1595433707802-6b2626ef1c91?auto=format&fit=crop&w=800&q=80",
+    description: "Refuge Assistons les Vieux Animaux, spécialisé dans les animaux âgés.",
+    animals: 60,
+  },
+  {
+    id: "sh-6",
+    name: "Tierheim Berlin",
+    address: "Hausvaterweg 39",
+    city: "Berlin",
+    country: "Germany",
+    latitude: 52.5460,
+    longitude: 13.5130,
+    phone: "+49 30 76888 0",
+    website: "https://www.tierschutz-berlin.de",
+    rating: 4.8,
+    imageUri: "https://images.unsplash.com/photo-1573865526739-10659fec78a5?auto=format&fit=crop&w=800&q=80",
+    description: "Le plus grand refuge animalier d'Europe.",
+    animals: 300,
+  },
+  {
+    id: "sh-7",
+    name: "Refuge de Gennevilliers",
+    address: "30 Avenue du Général de Gaulle",
+    city: "Gennevilliers",
+    country: "France",
+    latitude: 48.9322,
+    longitude: 2.2968,
+    phone: "+33 1 47 98 57 40",
+    rating: 4.4,
+    imageUri: "https://images.unsplash.com/photo-1596854407944-bf87f6fdd49e?auto=format&fit=crop&w=800&q=80",
+    description: "Refuge SPA historique en région parisienne.",
+    animals: 95,
+  },
+  {
+    id: "sh-8",
+    name: "Toronto Humane Society",
+    address: "11 River Street",
+    city: "Toronto",
+    country: "Canada",
+    latitude: 43.6580,
+    longitude: -79.3595,
+    phone: "+1 416-392-2273",
+    website: "https://www.torontohumanesociety.com",
+    rating: 4.6,
+    imageUri: "https://images.unsplash.com/photo-1606214174585-fe31582dc6ee?auto=format&fit=crop&w=800&q=80",
+    description: "A leader in animal welfare in Canada since 1887.",
+    animals: 110,
+  },
+];
