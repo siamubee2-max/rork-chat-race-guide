@@ -23,7 +23,6 @@ export default function MoreLayout() {
         name="index"
         options={{
           title: t("tabs.more"),
-          headerLargeTitle: true,
         }}
       />
       <Stack.Screen name="privacy" />

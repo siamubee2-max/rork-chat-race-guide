@@ -342,7 +342,7 @@ const styles = StyleSheet.create({
   },
   header: {
     padding: 24,
-    paddingTop: 8,
+    paddingTop: 24,
   },
   profileCard: {
     flexDirection: "row",
