@@ -1,27 +1,30 @@
 {
-    "cli": {
-          "version": ">= 13.2.0",
-          "appVersionSource": "remote"
-    },
-    "build": {
-          "development": {
-                  "developmentClient": true,
-                  "distribution": "internal"
-          },
-          "preview": {
-                  "distribution": "internal"
-          },
-          "production": {
-                  "autoIncrement": true
-          }
-    },
-    "submit": {
-          "production": {
-                  "ios": {
-                            "appleId": "siamubee2@gmail.com",
-                            "ascAppId": "app.rork.chat-race-guide",
-                            "appleTeamId": "SPLML3CN76"
-                  }
-          }
-    }
+      "cli": {
+              "version": ">= 13.2.0",
+              "appVersionSource": "remote"
+      },
+      "build": {
+              "development": {
+                        "developmentClient": true,
+                        "distribution": "internal"
+              },
+              "preview": {
+                        "distribution": "internal"
+              },
+              "production": {
+                        "autoIncrement": true,
+                        "env": {
+                                    "BUN_CONFIG_FROZEN_LOCKFILE": "0"
+                        }
+              }
+      },
+      "submit": {
+              "production": {
+                        "ios": {
+                                    "appleId": "siamubee2@gmail.com",
+                                    "ascAppId": "app.rork.chat-race-guide",
+                                    "appleTeamId": "SPLML3CN76"
+                        }
+              }
+      }
 }
