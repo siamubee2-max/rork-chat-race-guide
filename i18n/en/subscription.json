@@ -1,0 +1,86 @@
+{
+  "subscription": {
+    "tiers": {
+      "free": "Free",
+      "premium": "Premium",
+      "family": "Family",
+      "pro": "Pro",
+      "founder": "Founder"
+    },
+    "features": {
+      "scans": "10 scans/month",
+      "unlimitedScans": "UNLIMITED scans",
+      "allBreeds": "All breeds (400+)",
+      "aiQuestions": "15 AI questions/month",
+      "aiUnlimited": "UNLIMITED AI Assistant + GPT-4",
+      "communityBasic": "Community (3 posts/month)",
+      "communityUnlimited": "Unlimited community access",
+      "vetsDirectory": "Directory of 10k+ vets",
+      "emergencyPosterBasic": "1 emergency poster",
+      "emergencyPostersPremium": "5 premium poster designs",
+      "gamificationBasic": "Gamification levels 1-3",
+      "gamificationFull": "Full gamification",
+      "practicalGuides": "Advanced practical guides",
+      "withAds": "⚠️ With ads",
+      "noAds": "✨ AD-FREE",
+      "prioritySupport": "Priority support < 2h",
+      "premiumBadge": "Premium badge in community",
+      "betaAccess": "Beta access to new features",
+      "allPremium": "All Premium features +",
+      "upTo5Pets": "Up to 5 pets",
+      "familySharing": "Family sharing (5 accounts)",
+      "unlimitedPosters": "Unlimited posters",
+      "priorityAI": "Priority AI vet consultation",
+      "healthReminders": "Automatic vaccination reminders",
+      "multiPetHealth": "Multi-pet health records",
+      "analytics": "Statistics & analytics",
+      "dataExport": "PDF data export",
+      "allFamily": "All Family features +",
+      "multiLitters": "Multi-litter management",
+      "professionalProfile": "Verified professional profile",
+      "expertBadge": "Certified Expert badge",
+      "advancedAnalytics": "Advanced analytics",
+      "apiAccess": "API access",
+      "businessTools": "Business tools (CRM, invoicing)",
+      "dedicatedSupport": "Dedicated phone support",
+      "marketplacePriority": "Marketplace priority",
+      "founderPrice": "9.99 $ price LOCKED FOR LIFE",
+      "founderBadge": "Exclusive Founding Member badge",
+      "earlyAccess": "Priority access all features",
+      "founderPerks": "Exclusive future perks"
+    },
+    "loginRequired": "Login required",
+    "loginRequiredDesc": "You must be logged in to subscribe.",
+    "comparison": {
+      "title": "Buy separately vs Purrly",
+      "breedScanner": "Breed scanner",
+      "aiAssistant": "AI assistant",
+      "vetsDirectory": "Vets directory",
+      "emergencies": "Emergencies",
+      "total": "TOTAL elsewhere",
+      "purrlyPremium": "Purrly Premium",
+      "savings": "Save {amount} per year ({percent}%)"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "q1": "Can I change plans later?",
+      "a1": "Yes! You can upgrade or downgrade at any time.",
+      "q2": "Is there a commitment?",
+      "a2": "No. Cancel anytime with 1 click. 30-day money-back guarantee.",
+      "q3": "Is the Founder offer really for life?",
+      "a3": "Yes! The 9.99 $/month price is LOCKED FOR LIFE for the first 1000. After that, it will be 14.99 $."
+    },
+    "trust": {
+      "noCommitment": "No commitment",
+      "cancelAnytime": "Cancel in 1 click",
+      "moneyBack": "30-day money-back",
+      "securePayment": "Secure payment"
+    },
+    "cta": {
+      "startFree": "Start for free",
+      "choosePlan": "Choose this plan",
+      "reserveSpot": "Reserve my spot",
+      "trialText": "14-day free trial • No credit card"
+    }
+  }
+}
