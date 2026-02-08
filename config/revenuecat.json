@@ -1,0 +1,117 @@
+{
+  "revenuecat": {
+    "app_name": "Purrly",
+    "products": {
+      "free": {
+        "identifier": "purrly_free",
+        "display_name": "Free",
+        "price": 0,
+        "currency": "USD",
+        "type": "free",
+        "description": "Découverte - 10 scans/mois + 15 questions IA"
+      },
+      "premium_monthly": {
+        "identifier": "purrly_premium_monthly",
+        "display_name": "Premium Monthly",
+        "price": 14.99,
+        "currency": "USD",
+        "type": "subscription",
+        "period": "monthly",
+        "description": "Illimité + Sans pub"
+      },
+      "premium_yearly": {
+        "identifier": "purrly_premium_yearly",
+        "display_name": "Premium Yearly",
+        "price": 149.99,
+        "currency": "USD",
+        "type": "subscription",
+        "period": "yearly",
+        "savings": "17%",
+        "description": "Illimité + Sans pub (économie 17%)"
+      },
+      "family_monthly": {
+        "identifier": "purrly_family_monthly",
+        "display_name": "Family Monthly",
+        "price": 24.99,
+        "currency": "USD",
+        "type": "subscription",
+        "period": "monthly",
+        "description": "5 animaux + 5 comptes familiaux"
+      },
+      "family_yearly": {
+        "identifier": "purrly_family_yearly",
+        "display_name": "Family Yearly",
+        "price": 239.99,
+        "currency": "USD",
+        "type": "subscription",
+        "period": "yearly",
+        "savings": "20%",
+        "description": "5 animaux + 5 comptes familiaux (économie 20%)"
+      },
+      "pro_monthly": {
+        "identifier": "purrly_pro_monthly",
+        "display_name": "Pro Monthly",
+        "price": 49.99,
+        "currency": "USD",
+        "type": "subscription",
+        "period": "monthly",
+        "description": "Outils business pour éleveurs et vétérinaires"
+      },
+      "pro_yearly": {
+        "identifier": "purrly_pro_yearly",
+        "display_name": "Pro Yearly",
+        "price": 499.99,
+        "currency": "USD",
+        "type": "subscription",
+        "period": "yearly",
+        "savings": "17%",
+        "description": "Outils business pour éleveurs et vétérinaires (économie 17%)"
+      },
+      "founder": {
+        "identifier": "purrly_founder_lifetime",
+        "display_name": "Founder",
+        "price": 9.99,
+        "currency": "USD",
+        "type": "lifetime",
+        "limit": 1000,
+        "description": "Accès complet À VIE - Limité aux 1000 premiers"
+      }
+    },
+    "entitlements": {
+      "premium": {
+        "products": [
+          "purrly_premium_monthly",
+          "purrly_premium_yearly",
+          "purrly_founder_lifetime"
+        ]
+      },
+      "family": {
+        "products": [
+          "purrly_family_monthly",
+          "purrly_family_yearly"
+        ]
+      },
+      "pro": {
+        "products": [
+          "purrly_pro_monthly",
+          "purrly_pro_yearly"
+        ]
+      }
+    },
+    "offerings": {
+      "default": {
+        "identifier": "default",
+        "packages": [
+          "purrly_free",
+          "purrly_premium_monthly",
+          "purrly_premium_yearly",
+          "purrly_family_monthly",
+          "purrly_family_yearly",
+          "purrly_pro_monthly",
+          "purrly_pro_yearly",
+          "purrly_founder_lifetime"
+        ]
+      }
+    }
+  }
+}
