@@ -151,15 +151,15 @@ export default function SubscriptionScreen() {
   const handleSubscribe = async (tierId: string) => {
     if (!isAuthenticated) {
       Alert.alert(
-        t("subscription.loginRequired"),
-        t("subscription.loginRequiredDesc"),
+        "Connexion requise",
+        "Veuillez vous connecter pour souscrire à un plan.",
         [
           {
-            text: t("common.cancel"),
+            text: "Annuler",
             style: "cancel",
           },
           {
-            text: t("auth.login"),
+            text: "Se connecter",
             onPress: () => router.push("/auth/login" as any),
           },
         ]
@@ -291,7 +291,7 @@ export default function SubscriptionScreen() {
             <View key={idx} style={styles.featureRow}>
               <Check size={16} color={plan.color} />
               <Text style={styles.featureText}>
-                {t(feature)}
+                {feature}
               </Text>
             </View>
           ))}
@@ -370,3 +370,249 @@ export default function SubscriptionScreen() {
             Mensuel
           </Text>
         </Pressable>
+
+        <Pressable
+          style={[
+            styles.toggleButton,
+            billingCycle === "yearly" && styles.toggleButtonActive,
+          ]}
+          onPress={() => setBillingCycle("yearly")}
+        >
+          <Text
+            style={[
+              styles.toggleText,
+              billingCycle === "yearly" && styles.toggleTextActive,
+            ]}
+          >
+            Annuel
+          </Text>
+        </Pressable>
+      </View>
+
+      {/* Pricing Cards */}
+      {Object.keys(SUBSCRIPTION_TIERS).map((tier, index) =>
+        renderPricingCard(tier as keyof typeof SUBSCRIPTION_TIERS, index)
+      )}
+
+      {/* Restore Purchases Button */}
+      <Pressable
+        style={styles.restoreButton}
+        onPress={() => {
+          // TODO: Implement restore purchases
+          Alert.alert("Restaurer les achats", "Fonctionnalité à implémenter");
+        }}
+      >
+        <RefreshCw size={18} color="#8b5cf6" />
+        <Text style={styles.restoreText}>Restaurer mes achats</Text>
+      </Pressable>
+
+      {/* Bottom Spacer */}
+      <View style={{ height: 40 }} />
+    </ScrollView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#0f172a",
+  },
+  header: {
+    paddingHorizontal: 20,
+    paddingTop: 60,
+    paddingBottom: 30,
+    alignItems: "center",
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: "bold",
+    color: "#f8fafc",
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  subtitle: {
+    fontSize: 16,
+    color: "#94a3b8",
+    textAlign: "center",
+    lineHeight: 24,
+  },
+  billingToggle: {
+    flexDirection: "row",
+    backgroundColor: "#1e293b",
+    borderRadius: 12,
+    padding: 4,
+    marginHorizontal: 20,
+    marginBottom: 30,
+  },
+  toggleButton: {
+    flex: 1,
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  toggleButtonActive: {
+    backgroundColor: "#8b5cf6",
+  },
+  toggleText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#94a3b8",
+  },
+  toggleTextActive: {
+    color: "#ffffff",
+  },
+  pricingCard: {
+    backgroundColor: "#1e293b",
+    borderRadius: 16,
+    padding: 24,
+    marginHorizontal: 20,
+    marginBottom: 20,
+    borderWidth: 2,
+    borderColor: "transparent",
+  },
+  pricingCardHighlighted: {
+    borderWidth: 2,
+    shadowColor: "#8b5cf6",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  badge: {
+    position: "absolute",
+    top: -12,
+    left: 20,
+    right: 20,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  badgeText: {
+    color: "#ffffff",
+    fontSize: 12,
+    fontWeight: "bold",
+    textTransform: "uppercase",
+  },
+  cardHeader: {
+    marginTop: 8,
+    marginBottom: 16,
+  },
+  planName: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#f8fafc",
+    marginBottom: 4,
+  },
+  planTarget: {
+    fontSize: 14,
+    color: "#94a3b8",
+  },
+  priceContainer: {
+    flexDirection: "row",
+    alignItems: "baseline",
+    marginBottom: 8,
+    flexWrap: "wrap",
+  },
+  freeText: {
+    fontSize: 32,
+    fontWeight: "bold",
+    color: "#8b5cf6",
+  },
+  price: {
+    fontSize: 40,
+    fontWeight: "bold",
+    color: "#f8fafc",
+  },
+  pricePeriod: {
+    fontSize: 16,
+    color: "#94a3b8",
+    marginLeft: 4,
+  },
+  originalPrice: {
+    fontSize: 16,
+    color: "#94a3b8",
+    textDecorationLine: "line-through",
+    marginLeft: 8,
+  },
+  savings: {
+    fontSize: 14,
+    color: "#10b981",
+    fontWeight: "600",
+    marginBottom: 16,
+  },
+  limitedCounter: {
+    backgroundColor: "#1e293b",
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: "#334155",
+  },
+  limitedText: {
+    fontSize: 14,
+    color: "#f8fafc",
+    fontWeight: "600",
+    marginBottom: 8,
+  },
+  progressBar: {
+    height: 6,
+    backgroundColor: "#334155",
+    borderRadius: 3,
+    overflow: "hidden",
+  },
+  progressFill: {
+    height: "100%",
+    borderRadius: 3,
+  },
+  featuresContainer: {
+    marginBottom: 20,
+  },
+  featureRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 12,
+  },
+  featureText: {
+    fontSize: 14,
+    color: "#f8fafc",
+    marginLeft: 12,
+    flex: 1,
+  },
+  ctaButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 16,
+    borderRadius: 12,
+    gap: 8,
+  },
+  ctaButtonOutline: {
+    borderWidth: 2,
+    borderColor: "#8b5cf6",
+  },
+  ctaText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#ffffff",
+  },
+  trialText: {
+    fontSize: 12,
+    color: "#94a3b8",
+    textAlign: "center",
+    marginTop: 12,
+  },
+  restoreButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 16,
+    marginHorizontal: 20,
+    gap: 8,
+  },
+  restoreText: {
+    fontSize: 16,
+    color: "#8b5cf6",
+    fontWeight: "600",
+  },
+});
