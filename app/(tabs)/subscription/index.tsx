@@ -369,7 +369,7 @@ export default function SubscriptionScreen() {
               billingCycle === "monthly" && styles.toggleTextActive,
             ]}
           >
-            Mensuel
+            {t("subscription.monthly")}
           </Text>
         </Pressable>
 
@@ -386,7 +386,7 @@ export default function SubscriptionScreen() {
               billingCycle === "yearly" && styles.toggleTextActive,
             ]}
           >
-            Annuel
+            {t("subscription.yearly")}
           </Text>
         </Pressable>
       </View>
@@ -398,10 +398,13 @@ export default function SubscriptionScreen() {
 
       {/* Restore Purchases */}
       <Pressable style={styles.restoreButton} onPress={() => {
-        Alert.alert("Restauration", "Restauration des achats...");
+        Alert.alert(
+          t("subscription.restorePurchases"),
+          t("subscription.processing")
+        );
       }}>
         <RefreshCw size={16} color="#8b5cf6" />
-        <Text style={styles.restoreText}>Restaurer mes achats</Text>
+        <Text style={styles.restoreText}>{t("subscription.restorePurchases")}</Text>
       </Pressable>
 
       {/* Spacer */}
