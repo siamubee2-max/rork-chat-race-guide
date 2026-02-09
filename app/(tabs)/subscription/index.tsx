@@ -11,6 +11,7 @@ import {
 import { Check, Crown, RefreshCw } from "lucide-react-native";
 import { useAuth } from "@/context/auth";
 import { router } from "expo-router";
+import { useTranslation } from "react-i18next";
 
 // ===================================
 // NOUVELLE STRATÉGIE PRICING - LEADER DU MARCHÉ
@@ -143,6 +144,7 @@ const SUBSCRIPTION_TIERS = {
 
 export default function SubscriptionScreen() {
   const { isAuthenticated } = useAuth();
+  const { t } = useTranslation();
   const [billingCycle, setBillingCycle] = React.useState<"monthly" | "yearly">(
     "yearly"
   );
@@ -370,3 +372,239 @@ export default function SubscriptionScreen() {
             Mensuel
           </Text>
         </Pressable>
+
+        <Pressable
+          style={[
+            styles.toggleButton,
+            billingCycle === "yearly" && styles.toggleButtonActive,
+          ]}
+          onPress={() => setBillingCycle("yearly")}
+        >
+          <Text
+            style={[
+              styles.toggleText,
+              billingCycle === "yearly" && styles.toggleTextActive,
+            ]}
+          >
+            Annuel
+          </Text>
+        </Pressable>
+      </View>
+
+      {/* Pricing Cards */}
+      {(Object.keys(SUBSCRIPTION_TIERS) as Array<keyof typeof SUBSCRIPTION_TIERS>).map((tier, index) =>
+        renderPricingCard(tier, index)
+      )}
+
+      {/* Restore Purchases */}
+      <Pressable style={styles.restoreButton} onPress={() => {
+        Alert.alert("Restauration", "Restauration des achats...");
+      }}>
+        <RefreshCw size={16} color="#8b5cf6" />
+        <Text style={styles.restoreText}>Restaurer mes achats</Text>
+      </Pressable>
+
+      {/* Spacer */}
+      <View style={{ height: 40 }} />
+    </ScrollView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#0f172a",
+  },
+  header: {
+    paddingHorizontal: 20,
+    paddingTop: 60,
+    paddingBottom: 30,
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: "bold",
+    color: "#f8fafc",
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: "#94a3b8",
+    lineHeight: 24,
+  },
+  billingToggle: {
+    flexDirection: "row",
+    backgroundColor: "#1e293b",
+    borderRadius: 12,
+    padding: 4,
+    marginHorizontal: 20,
+    marginBottom: 30,
+  },
+  toggleButton: {
+    flex: 1,
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  toggleButtonActive: {
+    backgroundColor: "#8b5cf6",
+  },
+  toggleText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#94a3b8",
+  },
+  toggleTextActive: {
+    color: "#ffffff",
+  },
+  pricingCard: {
+    backgroundColor: "#1e293b",
+    borderRadius: 16,
+    padding: 20,
+    marginHorizontal: 20,
+    marginBottom: 16,
+    borderWidth: 2,
+    borderColor: "transparent",
+  },
+  pricingCardHighlighted: {
+    borderWidth: 2,
+    shadowColor: "#8b5cf6",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  badge: {
+    position: "absolute",
+    top: -12,
+    left: 20,
+    right: 20,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 20,
+    alignItems: "center",
+  },
+  badgeText: {
+    fontSize: 12,
+    fontWeight: "bold",
+    color: "#ffffff",
+  },
+  cardHeader: {
+    marginBottom: 16,
+  },
+  planName: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#f8fafc",
+    marginBottom: 4,
+  },
+  planTarget: {
+    fontSize: 14,
+    color: "#94a3b8",
+  },
+  priceContainer: {
+    flexDirection: "row",
+    alignItems: "baseline",
+    marginBottom: 8,
+    flexWrap: "wrap",
+  },
+  freeText: {
+    fontSize: 32,
+    fontWeight: "bold",
+    color: "#f8fafc",
+  },
+  price: {
+    fontSize: 32,
+    fontWeight: "bold",
+    color: "#f8fafc",
+  },
+  pricePeriod: {
+    fontSize: 16,
+    color: "#94a3b8",
+    marginLeft: 4,
+  },
+  originalPrice: {
+    fontSize: 16,
+    color: "#94a3b8",
+    textDecorationLine: "line-through",
+    marginLeft: 8,
+  },
+  savings: {
+    fontSize: 14,
+    color: "#10b981",
+    fontWeight: "600",
+    marginBottom: 12,
+  },
+  limitedCounter: {
+    backgroundColor: "#1e293b",
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: "#334155",
+  },
+  limitedText: {
+    fontSize: 14,
+    color: "#f59e0b",
+    fontWeight: "600",
+    marginBottom: 8,
+  },
+  progressBar: {
+    height: 6,
+    backgroundColor: "#334155",
+    borderRadius: 3,
+    overflow: "hidden",
+  },
+  progressFill: {
+    height: "100%",
+    borderRadius: 3,
+  },
+  featuresContainer: {
+    marginBottom: 20,
+  },
+  featureRow: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    marginBottom: 10,
+  },
+  featureText: {
+    fontSize: 14,
+    color: "#e2e8f0",
+    marginLeft: 8,
+    flex: 1,
+  },
+  ctaButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 16,
+    borderRadius: 12,
+    gap: 8,
+  },
+  ctaButtonOutline: {
+    backgroundColor: "transparent",
+    borderWidth: 2,
+  },
+  ctaText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#ffffff",
+  },
+  trialText: {
+    fontSize: 12,
+    color: "#94a3b8",
+    textAlign: "center",
+    marginTop: 8,
+  },
+  restoreButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 16,
+    gap: 8,
+  },
+  restoreText: {
+    fontSize: 14,
+    color: "#8b5cf6",
+    fontWeight: "600",
+  },
+});
