@@ -408,7 +408,7 @@ export default function SubscriptionScreen() {
       </Pressable>
 
       {/* Spacer */}
-      <View style={{ height: 40 }} />
+      <View style={styles.spacer} />
     </ScrollView>
   );
 }
@@ -433,6 +433,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#94a3b8",
     lineHeight: 24,
+  },
+  spacer: {
+    height: 40,
   },
   billingToggle: {
     flexDirection: "row",
