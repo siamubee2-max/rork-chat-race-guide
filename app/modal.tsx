@@ -7,13 +7,12 @@ import {
   Text,
   View,
 } from "react-native";
-import { Check } from "lucide-react-native";
-import { useTranslation } from "react-i18next";
+import { Check, X } from "lucide-react-native";
 import { useLanguage } from "@/context/language";
 import { languages } from "@/i18n/translations";
+import { Colors } from "@/constants/colors";
 
 export default function LanguageSelectorModal() {
-  const { t } = useTranslation();
   const { currentLanguage, changeLanguage } = useLanguage();
 
   const handleLanguageSelect = async (langCode: string) => {
@@ -24,12 +23,12 @@ export default function LanguageSelectorModal() {
   return (
     <View style={styles.screen}>
       <View style={styles.header}>
-        <Text style={styles.title}>{t("modal.chooseLanguage")}</Text>
+        <Text style={styles.title}>Langue</Text>
         <Pressable
           onPress={() => router.back()}
           style={styles.closeBtn}
         >
-          <Text style={styles.closeBtnText}>{t("common.close")}</Text>
+          <X color={Colors.textSecondary} size={18} />
         </Pressable>
       </View>
 
@@ -56,7 +55,7 @@ export default function LanguageSelectorModal() {
               </Text>
               {isSelected && (
                 <Check 
-                  color="#111" 
+                  color={Colors.primary} 
                   size={20} 
                   strokeWidth={3}
                 />
@@ -72,7 +71,7 @@ export default function LanguageSelectorModal() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: Colors.background,
   },
   header: {
     flexDirection: "row",
@@ -81,13 +80,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "rgba(0,0,0,0.08)",
+    borderBottomColor: Colors.border,
   },
   title: {
     fontSize: 22,
-    fontWeight: "900",
+    fontWeight: "900" as const,
     letterSpacing: -0.3,
-    color: "rgba(0,0,0,0.95)",
+    color: Colors.text,
   },
   closeBtn: {
     width: 32,
@@ -95,11 +94,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 16,
-    backgroundColor: "rgba(0,0,0,0.06)",
-  },
-  closeBtnText: {
-    fontSize: 18,
-    color: "rgba(0,0,0,0.7)",
+    backgroundColor: Colors.backgroundCard,
   },
   scroll: {
     flex: 1,
@@ -115,13 +110,13 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: 16,
     borderRadius: 14,
-    backgroundColor: "#F6F7FB",
+    backgroundColor: Colors.backgroundCard,
     borderWidth: 2,
     borderColor: "transparent",
   },
   langItemSelected: {
-    backgroundColor: "rgba(0,0,0,0.04)",
-    borderColor: "#111",
+    backgroundColor: Colors.primaryMuted,
+    borderColor: Colors.primary,
   },
   flag: {
     fontSize: 28,
@@ -129,11 +124,11 @@ const styles = StyleSheet.create({
   langName: {
     flex: 1,
     fontSize: 16,
-    fontWeight: "600",
-    color: "rgba(0,0,0,0.75)",
+    fontWeight: "600" as const,
+    color: Colors.textSecondary,
   },
   langNameSelected: {
-    fontWeight: "800",
-    color: "rgba(0,0,0,0.95)",
+    fontWeight: "800" as const,
+    color: Colors.primary,
   },
 });
