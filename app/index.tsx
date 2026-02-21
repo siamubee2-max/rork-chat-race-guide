@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   primaryBtn: {
-    flex: 1.5,
+    flex: 1,
     backgroundColor: Colors.primary,
     flexDirection: "row",
     alignItems: "center",
