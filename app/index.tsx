@@ -85,17 +85,16 @@ export default function Index() {
           style={styles.heroGrad}
         />
         
-        <View style={[styles.header, { top: insets.top + 20 }]}>
-          <View style={styles.brandPill}>
-            <Crown color={Colors.primary} size={18} />
-            <Text style={styles.brandText}>PURRLY</Text>
-          </View>
-          <View style={styles.premiumPill}>
-            <Text style={styles.premiumText}>COLLECTION</Text>
-          </View>
-        </View>
-
         <Animated.View style={[styles.heroCopy, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
+          <View style={styles.header}>
+            <View style={styles.brandPill}>
+              <Crown color={Colors.primary} size={18} />
+              <Text style={styles.brandText}>PURRLY</Text>
+            </View>
+            <View style={styles.premiumPill}>
+              <Text style={styles.premiumText}>COLLECTION</Text>
+            </View>
+          </View>
           <Text style={styles.preTitle}>L&apos;ART DE LA GÉNÉTIQUE</Text>
           <Text style={styles.title}>Le prestige dans chaque regard</Text>
           <Text style={styles.subtitle}>
@@ -177,12 +176,10 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
   header: {
-    position: "absolute",
-    left: 24,
-    right: 24,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    marginBottom: 14,
   },
   brandPill: {
     flexDirection: "row",
