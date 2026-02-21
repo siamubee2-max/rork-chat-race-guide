@@ -101,23 +101,22 @@ export default function ScanHomeScreen() {
           style={styles.heroGradient}
         />
 
-        <View style={[styles.heroTopRow, { top: insets.top + 16 }]}>
-          <View style={styles.brandPill}>
-            <Crown color={Colors.primary} size={16} />
-            <Text style={styles.brandText}>{t("scan.luxeEdition")}</Text>
-          </View>
-          <Pressable
+        <Pressable
             onPress={onAbout}
             style={({ pressed }) => [
               styles.aboutBtn,
+              { position: 'absolute', top: insets.top + 16, right: 24 },
               pressed && { opacity: 0.7 },
             ]}
           >
             <Info color={Colors.ivory} size={20} />
           </Pressable>
-        </View>
 
         <View style={styles.heroCopy}>
+          <View style={styles.brandPill}>
+            <Crown color={Colors.primary} size={16} />
+            <Text style={styles.brandText}>{t("scan.luxeEdition")}</Text>
+          </View>
           <Text style={styles.preTitle}>{t("scan.aiTitle")}</Text>
           <Text style={styles.heroTitle}>{t("scan.heroTitle")}</Text>
         </View>
