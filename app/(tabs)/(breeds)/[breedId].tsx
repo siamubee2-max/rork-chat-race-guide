@@ -8,6 +8,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  useWindowDimensions,
   type ViewStyle,
 } from "react-native";
 
@@ -69,6 +70,8 @@ function BulletList({ items, testID }: { items: string[]; testID?: string }) {
 export default function BreedDetailsScreen() {
   const params = useLocalSearchParams<Params>();
   const navigation = useNavigation();
+  const { width: screenWidth } = useWindowDimensions();
+  const isTablet = screenWidth >= 768;
 
   const breed = useMemo((): BreedProfile | null => {
     const id = toId(params.breedId);
@@ -91,17 +94,18 @@ export default function BreedDetailsScreen() {
 
       {breed ? (
         <>
-          <View style={styles.hero}>
+          <View style={[styles.hero, isTablet && styles.heroTablet]}>
             <Image
               source={{ uri: breed.imageUri }}
               style={styles.heroImage}
               contentFit="cover"
+              contentPosition="top"
               transition={120}
             />
             <View style={styles.heroOverlay} />
-            <View style={styles.heroCopy}>
-              <Text style={styles.heroTitle}>{breed.name}</Text>
-              <Text style={styles.heroSubtitle}>
+            <View style={[styles.heroCopy, isTablet && styles.heroCopyTablet]}>
+              <Text style={[styles.heroTitle, isTablet && styles.heroTitleTablet]}>{breed.name}</Text>
+              <Text style={[styles.heroSubtitle, isTablet && styles.heroSubtitleTablet]}>
                 {breed.origin} · {breed.temperament.join(" · ")}
               </Text>
             </View>
@@ -111,6 +115,7 @@ export default function BreedDetailsScreen() {
             title="Pelage"
             icon={<PawPrint color="#111" size={18} />}
             testID="breedSectionCoat"
+            style={isTablet ? styles.sectionTablet : undefined}
           >
             <View style={styles.pillRow}>
               <View style={styles.pill}>
@@ -127,6 +132,7 @@ export default function BreedDetailsScreen() {
             title="Soins & habitudes"
             icon={<HeartPulse color="#111" size={18} />}
             testID="breedSectionCare"
+            style={isTablet ? styles.sectionTablet : undefined}
           >
             <Text style={styles.subheading}>Soins</Text>
             <BulletList items={breed.care.grooming} testID="breedCareGrooming" />
@@ -140,6 +146,7 @@ export default function BreedDetailsScreen() {
             title="Santé"
             icon={<ShieldAlert color="#111" size={18} />}
             testID="breedSectionHealth"
+            style={isTablet ? styles.sectionTablet : undefined}
           >
             <Text style={styles.subheading}>Maladies fréquentes</Text>
             <BulletList items={breed.health.common} testID="breedHealthCommon" />
@@ -158,6 +165,7 @@ export default function BreedDetailsScreen() {
             title="Alimentation"
             icon={<Salad color="#111" size={18} />}
             testID="breedSectionDiet"
+            style={isTablet ? styles.sectionTablet : undefined}
           >
             <Text style={styles.subheading}>Recommandée</Text>
             <BulletList
@@ -174,6 +182,7 @@ export default function BreedDetailsScreen() {
             title="Élevages"
             icon={<Globe color="#111" size={18} />}
             testID="breedSectionBreeders"
+            style={isTablet ? styles.sectionTablet : undefined}
           >
              <Text style={styles.breedersText}>
                Trouvez des éleveurs certifiés de {breed.name} dans le monde entier.
@@ -254,6 +263,27 @@ const styles = StyleSheet.create({
     marginTop: 6,
     color: "rgba(255,255,255,0.85)",
     lineHeight: 19,
+  },
+  heroTablet: {
+    height: 420,
+    margin: 24,
+    borderRadius: 28,
+  },
+  heroCopyTablet: {
+    left: 24,
+    right: 24,
+    bottom: 24,
+  },
+  heroTitleTablet: {
+    fontSize: 36,
+  },
+  heroSubtitleTablet: {
+    fontSize: 16,
+    lineHeight: 22,
+  },
+  sectionTablet: {
+    marginHorizontal: 24,
+    padding: 20,
   },
   section: {
     marginHorizontal: 16,
