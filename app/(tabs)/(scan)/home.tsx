@@ -4,7 +4,7 @@ import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Haptics from "expo-haptics";
 import * as ImagePicker from "expo-image-picker";
-import { Camera, Sparkles, Upload, Info, Crown } from "lucide-react-native";
+import { Camera, Sparkles, Upload, Info, Crown, Video } from "lucide-react-native";
 import {
   Alert,
   Platform,
@@ -109,6 +109,20 @@ export default function ScanHomeScreen() {
     }
   }, [t, setImage]);
 
+  const openLiveCamera = useCallback(async () => {
+    try {
+      await Haptics.selectionAsync();
+    } catch {}
+    if (Platform.OS === "web") {
+      Alert.alert(
+        t('scan.notAvailableWeb'),
+        t('scan.cameraNotAvailableWeb'),
+      );
+      return;
+    }
+    router.push("/(tabs)/(scan)/camera" as any);
+  }, [t]);
+
   const onAbout = useCallback(() => {
     router.push("/modal");
   }, []);
@@ -182,6 +196,22 @@ export default function ScanHomeScreen() {
             <Text style={styles.actionSubtitle}>{t("scan.gallery")}</Text>
           </Pressable>
         </View>
+
+        <Pressable
+          onPress={openLiveCamera}
+          style={({ pressed }) => [
+            styles.liveCameraCard,
+            pressed && { transform: [{ scale: 0.98 }] },
+          ]}
+        >
+          <View style={styles.liveCameraIcon}>
+            <Video color={Colors.primary} size={20} />
+          </View>
+          <View style={styles.liveCameraText}>
+            <Text style={styles.liveCameraTitle}>{t("scan.liveCamera") || "Caméra en direct"}</Text>
+            <Text style={styles.liveCameraSubtitle}>{t("scan.liveCameraDesc") || "Scanner en temps réel"}</Text>
+          </View>
+        </Pressable>
 
         <View style={styles.bentoSection}>
           <View style={styles.bentoLarge}>
@@ -397,5 +427,37 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: "600",
     lineHeight: 18,
+  },
+  liveCameraCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: Colors.backgroundSecondary,
+    borderRadius: 20,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    gap: 14,
+  },
+  liveCameraIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: 14,
+    backgroundColor: "rgba(212, 160, 92, 0.12)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  liveCameraText: {
+    flex: 1,
+    gap: 2,
+  },
+  liveCameraTitle: {
+    color: Colors.ivory,
+    fontSize: 15,
+    fontWeight: "700",
+  },
+  liveCameraSubtitle: {
+    color: Colors.textMuted,
+    fontSize: 12,
+    fontWeight: "500",
   },
 });

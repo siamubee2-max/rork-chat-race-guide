@@ -42,6 +42,12 @@ export default {
     cameraNotAvailableWeb: "Camera is not available on the web. Use 'Choose a photo'.",
     error: "Error",
     imageProcessingError: "Unable to process the image",
+    liveCamera: "Live Camera",
+    liveCameraDesc: "Real-time scanning",
+    shareResult: "Share result",
+    retry: "Retry",
+    noImageProvided: "No image provided",
+    analysisError: "Error during analysis",
   },
   breeds: {
     title: "Breeds",

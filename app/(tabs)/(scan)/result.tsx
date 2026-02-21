@@ -3,20 +3,24 @@ import { router } from "expo-router";
 import { Image } from "expo-image";
 import * as Haptics from "expo-haptics";
 import { generateText } from "@rork-ai/toolkit-sdk";
-import { Cat, ChevronRight, Scan, Sparkles, Search, Eye } from "lucide-react-native";
+import { Cat, ChevronRight, Scan, Sparkles, Search, Eye, Share2 } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { Colors } from "@/constants/colors";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
+  Alert,
   Animated,
   Easing,
   FlatList,
+  Platform,
   Pressable,
   StyleSheet,
   Text,
   View,
   type ListRenderItem,
 } from "react-native";
+import { Paths } from "expo-file-system";
+import { File as ExpoFile } from "expo-file-system";
 
 import { useScanImage } from "@/context/scan-image";
 import { BREEDS, type BreedId } from "@/constants/breeds";
@@ -662,8 +666,66 @@ Race: Persan | Confiance: Faible | Raison: Pelage long et épais visible.`;
       console.log("Navigating to breed details:", selectedId);
     }
     
-    router.push(`/(breeds)/${selectedId}`);
+    router.push(`/(breeds)/${selectedId}` as any);
   }, [selectedId]);
+
+  const onShare = useCallback(async () => {
+    try {
+      await Haptics.selectionAsync();
+    } catch {}
+
+    if (Platform.OS === "web") {
+      const text = candidates
+        .map((c) => `${c.name} (${c.confidenceLabel}): ${c.why}`)
+        .join("\n");
+      try {
+        if (navigator.share) {
+          await navigator.share({
+            title: "Résultat du scan - Purrly",
+            text: `Mon chat a été identifié !\n\n${text}`,
+          });
+        } else {
+          await navigator.clipboard.writeText(text);
+          Alert.alert("Copié", "Le résultat a été copié dans le presse-papiers.");
+        }
+      } catch (err) {
+        console.log("Web share error:", err);
+      }
+      return;
+    }
+
+    try {
+      const Sharing = require("expo-sharing");
+      const isAvailable = await Sharing.isAvailableAsync();
+      if (!isAvailable) {
+        Alert.alert("Partage", "Le partage n'est pas disponible sur cet appareil.");
+        return;
+      }
+
+      if (imageData?.uri) {
+        const cacheDir = Paths.cache;
+        const fileUri = `${cacheDir.uri}/scan-result.jpg`;
+        try {
+          const sourceFile = new ExpoFile(imageData.uri);
+          const destFile = new ExpoFile(fileUri);
+          sourceFile.copy(destFile);
+          await Sharing.shareAsync(fileUri, {
+            mimeType: "image/jpeg",
+            dialogTitle: "Partager le résultat du scan",
+          });
+        } catch (copyErr) {
+          console.log("Copy failed, trying direct share:", copyErr);
+          await Sharing.shareAsync(imageData.uri, {
+            mimeType: "image/jpeg",
+            dialogTitle: "Partager le résultat du scan",
+          });
+        }
+      }
+    } catch (err) {
+      console.error("Share error:", err);
+      Alert.alert("Erreur", "Impossible de partager le résultat.");
+    }
+  }, [candidates, imageData]);
 
   const selected = candidates.find((c) => c.id === selectedId) ?? null;
 
@@ -749,7 +811,19 @@ Race: Persan | Confiance: Faible | Raison: Pelage long et épais visible.`;
       ) : (
         <>
           <View style={styles.header}>
-            <Text style={styles.title}>Races identifiées</Text>
+            <View style={styles.headerRow}>
+              <Text style={styles.title}>Races identifiées</Text>
+              <Pressable
+                onPress={onShare}
+                style={({ pressed }) => [
+                  styles.shareBtn,
+                  pressed && { opacity: 0.7 },
+                ]}
+                testID="scanShareBtn"
+              >
+                <Share2 color="#111" size={18} />
+              </Pressable>
+            </View>
             <Text style={styles.subtitle}>
               Sélectionnez la race qui correspond le mieux pour voir sa fiche
               détaillée.
@@ -817,6 +891,19 @@ const styles = StyleSheet.create({
   header: {
     padding: 16,
     paddingBottom: 8,
+  },
+  headerRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  shareBtn: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "rgba(0,0,0,0.06)",
+    alignItems: "center",
+    justifyContent: "center",
   },
   title: {
     fontSize: 22,

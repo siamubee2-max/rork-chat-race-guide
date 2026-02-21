@@ -15,6 +15,14 @@ export default function ScanStackLayout() {
     >
       <Stack.Screen name="home" options={{ headerShown: false }} />
       <Stack.Screen
+        name="camera"
+        options={{
+          headerShown: false,
+          presentation: "fullScreenModal",
+          animation: "slide_from_bottom",
+        }}
+      />
+      <Stack.Screen
         name="result"
         options={{
           headerTitle: t("scan.result"),
