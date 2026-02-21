@@ -16,7 +16,34 @@ import { router } from "expo-router";
 // NOUVELLE STRATÉGIE PRICING - LEADER DU MARCHÉ
 // ===================================
 
-const SUBSCRIPTION_TIERS = {
+interface SubscriptionTier {
+  id: string;
+  name: string;
+  nameTranslation: string;
+  monthlyPrice: number;
+  yearlyPrice: number | null;
+  originalPrice?: number;
+  features: string[];
+  limits?: {
+    scans: number;
+    aiQuestions: number;
+    communityPosts: number;
+    emergencyPosters: number;
+    gamificationLevel: number;
+  };
+  savings?: string;
+  popular?: boolean;
+  bestValue?: boolean;
+  urgent?: boolean;
+  target?: string;
+  lifetimeDiscount?: boolean;
+  limited?: number;
+  remaining?: number;
+  color: string;
+  badge: string | null;
+}
+
+const SUBSCRIPTION_TIERS: Record<string, SubscriptionTier> = {
   free: {
     id: "free",
     name: "Free",
@@ -200,7 +227,7 @@ export default function SubscriptionScreen() {
   };
 
   const renderPricingCard = (
-    tier: keyof typeof SUBSCRIPTION_TIERS,
+    tier: string,
     index: number
   ) => {
     const plan = SUBSCRIPTION_TIERS[tier];

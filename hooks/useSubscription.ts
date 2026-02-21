@@ -25,21 +25,21 @@ export interface SubscriptionStatus {
 }
 
 export function useSubscription() {
-  const { user } = useAuth();
+  const { currentUser } = useAuth();
   const [subscription, setSubscription] = useState<SubscriptionStatus | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (user) {
+    if (currentUser) {
       fetchSubscription();
     }
-  }, [user]);
+  }, [currentUser]);
 
   const fetchSubscription = async () => {
     setLoading(true);
     try {
       // TODO: Remplacer par votre API
-      const response = await fetch(`/api/subscriptions/${user.id}`);
+      const response = await fetch(`/api/subscriptions/${currentUser?.id}`);
       const data = await response.json();
       setSubscription(data);
     } catch (error) {
@@ -52,7 +52,7 @@ export function useSubscription() {
   const canUseFeature = (feature: string): boolean => {
     if (!subscription) return false;
     
-    const current = subscription.usage[feature] || 0;
+    const current = (subscription.usage as Record<string, number>)[feature] || 0;
     return !hasReachedLimit(subscription.tier, feature, current);
   };
 
@@ -65,8 +65,9 @@ export function useSubscription() {
       return { canUse: false, remaining: 0, limit: 0 };
     }
 
-    const limit = SUBSCRIPTION_CONFIG.limits[subscription.tier][feature];
-    const current = subscription.usage[feature] || 0;
+    const tierLimits = SUBSCRIPTION_CONFIG.limits[subscription.tier] as Record<string, number | boolean | undefined>;
+    const limit = tierLimits[feature] as number;
+    const current = (subscription.usage as Record<string, number>)[feature] || 0;
     
     if (limit === -1) {
       return { canUse: true, remaining: -1, limit: -1 }; // illimité
@@ -100,7 +101,7 @@ export function useSubscription() {
 
     try {
       // TODO: Remplacer par votre API
-      await fetch(`/api/subscriptions/${user.id}/usage`, {
+      await fetch(`/api/subscriptions/${currentUser?.id}/usage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ feature, amount }),
@@ -111,7 +112,7 @@ export function useSubscription() {
         ...prev!,
         usage: {
           ...prev!.usage,
-          [feature]: (prev!.usage[feature] || 0) + amount,
+          [feature]: ((prev!.usage as Record<string, number>)[feature] || 0) + amount,
         },
       }));
     } catch (error) {

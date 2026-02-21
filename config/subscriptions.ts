@@ -151,12 +151,13 @@ export function hasReachedLimit(
   feature: string,
   current: number
 ): boolean {
-  const limit = SUBSCRIPTION_CONFIG.limits[subscription]?.[feature];
+  const limits = SUBSCRIPTION_CONFIG.limits as Record<string, Record<string, number | boolean | undefined>>;
+  const limit = limits[subscription]?.[feature];
   
   if (limit === -1) return false; // illimité
   if (limit === undefined) return true; // feature non disponible
   
-  return current >= limit;
+  return current >= (limit as number);
 }
 
 // Helper pour obtenir prix affiché
@@ -164,11 +165,12 @@ export function getDisplayPrice(
   productId: string,
   locale: string = 'fr-FR'
 ): string {
-  const product = SUBSCRIPTION_CONFIG.products[productId];
-  if (!product || product.price === 0) return 'Gratuit';
+  const products = SUBSCRIPTION_CONFIG.products as Record<string, { price?: number; currency?: string; [key: string]: unknown }>;
+  const product = products[productId];
+  if (!product || !product.price) return 'Gratuit';
   
   return new Intl.NumberFormat(locale, {
     style: 'currency',
-    currency: product.currency,
+    currency: product.currency ?? 'USD',
   }).format(product.price);
 }
