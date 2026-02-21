@@ -4,7 +4,7 @@ import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Haptics from "expo-haptics";
 import * as ImagePicker from "expo-image-picker";
-import { Camera, Sparkles, Upload, Info, Crown, Video } from "lucide-react-native";
+import { Sparkles, Upload, Info, Crown, Video } from "lucide-react-native";
 import {
   Alert,
   Platform,
@@ -66,48 +66,7 @@ export default function ScanHomeScreen() {
     }
   }, [t, setImage]);
 
-  const takePhoto = useCallback(async () => {
-    try {
-      await Haptics.selectionAsync();
-    } catch {}
 
-    if (Platform.OS === "web") {
-      Alert.alert(
-        t('scan.notAvailableWeb'),
-        t('scan.cameraNotAvailableWeb'),
-      );
-      return;
-    }
-
-    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-
-    if (!permissionResult.granted) {
-      Alert.alert(
-        t('scan.permissionDenied'),
-        t('scan.cameraPermissionText'),
-      );
-      return;
-    }
-
-    const result = await ImagePicker.launchCameraAsync({
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 0.4,
-      base64: true,
-      exif: false,
-    });
-
-    if (!result.canceled && result.assets[0]) {
-      const asset = result.assets[0];
-      if (asset.base64) {
-        console.log('Setting image from camera, base64 length:', asset.base64.length);
-        setImage(asset.uri, asset.base64);
-        router.push("/(tabs)/(scan)/result" as any);
-      } else {
-        Alert.alert(t('common.error'), t('scan.imageProcessingError'));
-      }
-    }
-  }, [t, setImage]);
 
   const openLiveCamera = useCallback(async () => {
     try {
@@ -167,7 +126,7 @@ export default function ScanHomeScreen() {
       <View style={styles.content}>
         <View style={styles.mainActions}>
           <Pressable
-            onPress={takePhoto}
+            onPress={openLiveCamera}
             style={({ pressed }) => [
               styles.actionCard,
               styles.primaryAction,
@@ -175,10 +134,10 @@ export default function ScanHomeScreen() {
             ]}
           >
             <View style={styles.actionIconCircle}>
-              <Camera color="#0C0A09" size={28} />
+              <Video color="#0C0A09" size={28} />
             </View>
-            <Text style={styles.actionTitleLight}>{t("scan.takePhoto")}</Text>
-            <Text style={styles.actionSubtitleLight}>{t("scan.instant")}</Text>
+            <Text style={styles.actionTitleLight}>{t("scan.liveCamera") || "Caméra en direct"}</Text>
+            <Text style={styles.actionSubtitleLight}>{t("scan.liveCameraDesc") || "Scanner en temps réel"}</Text>
           </Pressable>
 
           <Pressable
@@ -196,22 +155,6 @@ export default function ScanHomeScreen() {
             <Text style={styles.actionSubtitle}>{t("scan.gallery")}</Text>
           </Pressable>
         </View>
-
-        <Pressable
-          onPress={openLiveCamera}
-          style={({ pressed }) => [
-            styles.liveCameraCard,
-            pressed && { transform: [{ scale: 0.98 }] },
-          ]}
-        >
-          <View style={styles.liveCameraIcon}>
-            <Video color={Colors.primary} size={20} />
-          </View>
-          <View style={styles.liveCameraText}>
-            <Text style={styles.liveCameraTitle}>{t("scan.liveCamera") || "Caméra en direct"}</Text>
-            <Text style={styles.liveCameraSubtitle}>{t("scan.liveCameraDesc") || "Scanner en temps réel"}</Text>
-          </View>
-        </Pressable>
 
         <View style={styles.bentoSection}>
           <View style={styles.bentoLarge}>
@@ -428,36 +371,5 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     lineHeight: 18,
   },
-  liveCameraCard: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: Colors.backgroundSecondary,
-    borderRadius: 20,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: Colors.border,
-    gap: 14,
-  },
-  liveCameraIcon: {
-    width: 44,
-    height: 44,
-    borderRadius: 14,
-    backgroundColor: "rgba(212, 160, 92, 0.12)",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  liveCameraText: {
-    flex: 1,
-    gap: 2,
-  },
-  liveCameraTitle: {
-    color: Colors.ivory,
-    fontSize: 15,
-    fontWeight: "700",
-  },
-  liveCameraSubtitle: {
-    color: Colors.textMuted,
-    fontSize: 12,
-    fontWeight: "500",
-  },
+
 });
