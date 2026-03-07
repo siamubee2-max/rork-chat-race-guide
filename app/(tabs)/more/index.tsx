@@ -19,6 +19,8 @@ import {
   FileText,
   HelpCircle,
   Heart,
+  Trash2,
+  LogOut,
 } from "lucide-react-native";
 import {
   ScrollView,
@@ -45,7 +47,7 @@ interface MenuItem {
 }
 
 export default function MoreScreen() {
-  const { currentUser } = useAuth();
+  const { currentUser, deleteAccount, logout } = useAuth();
   const { t } = useTranslation();
   const { 
     notificationsEnabled, 
@@ -67,6 +69,44 @@ export default function MoreScreen() {
         console.error(`Navigation fallback failed:`, navError);
       }
     }
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      await Haptics.selectionAsync();
+    } catch {}
+
+    Alert.alert(
+      t("more.deleteAccountTitle"),
+      t("more.deleteAccountMessage"),
+      [
+        {
+          text: t("more.deleteAccountCancel"),
+          style: "cancel",
+        },
+        {
+          text: t("more.deleteAccountConfirm"),
+          style: "destructive",
+          onPress: async () => {
+            const result = await deleteAccount();
+            if (result.success) {
+              Alert.alert("", t("more.deleteAccountSuccess"));
+              router.replace("/");
+            } else {
+              Alert.alert("", t("more.deleteAccountError"));
+            }
+          },
+        },
+      ]
+    );
+  };
+
+  const handleLogout = async () => {
+    try {
+      await Haptics.selectionAsync();
+    } catch {}
+    await logout();
+    router.replace("/");
   };
 
   const handleToggleNotifications = async (value: boolean) => {
@@ -314,6 +354,44 @@ export default function MoreScreen() {
                 thumbColor={notificationsEnabled ? "#fff" : "#f4f3f4"}
               />
             </View>
+          </View>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>{t("more.accountSection")}</Text>
+          <View style={styles.sectionContent}>
+            <Pressable
+              onPress={handleLogout}
+              style={({ pressed }) => [
+                styles.menuItem,
+                pressed && { opacity: 0.7, transform: [{ scale: 0.98 }] },
+              ]}
+            >
+              <View style={[styles.menuIcon, { backgroundColor: "rgba(158, 158, 158, 0.15)" }]}>
+                <LogOut color={Colors.textMuted} size={22} />
+              </View>
+              <View style={styles.menuContent}>
+                <Text style={styles.menuTitle}>{t("auth.logout") || "Se déconnecter"}</Text>
+              </View>
+              <ChevronRight color={Colors.textMuted} size={20} />
+            </Pressable>
+            <Pressable
+              onPress={handleDeleteAccount}
+              style={({ pressed }) => [
+                styles.menuItem,
+                { borderBottomWidth: 0 },
+                pressed && { opacity: 0.7, transform: [{ scale: 0.98 }] },
+              ]}
+            >
+              <View style={[styles.menuIcon, { backgroundColor: "rgba(212, 91, 91, 0.15)" }]}>
+                <Trash2 color="#D45B5B" size={22} />
+              </View>
+              <View style={styles.menuContent}>
+                <Text style={[styles.menuTitle, { color: "#D45B5B" }]}>{t("more.deleteAccount")}</Text>
+                <Text style={styles.menuSubtitle}>{t("more.deleteAccountSubtitle")}</Text>
+              </View>
+              <ChevronRight color="#D45B5B" size={20} />
+            </Pressable>
           </View>
         </View>
 
