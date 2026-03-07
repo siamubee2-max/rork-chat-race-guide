@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   Pressable,
-  Dimensions,
 } from "react-native";
 import { Lock, Crown } from "lucide-react-native";
 import { router } from "expo-router";
@@ -68,6 +67,7 @@ const styles = StyleSheet.create({
   contentPreview: {
     flex: 1,
     opacity: 0.3,
+    minHeight: 0,
   },
   overlay: {
     position: 'absolute',

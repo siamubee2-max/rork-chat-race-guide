@@ -2,9 +2,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useEffect } from "react";
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useTranslation } from "react-i18next";
+import Purchases from "react-native-purchases";
 
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { CatsContext } from "@/context/cats";
@@ -24,7 +25,24 @@ import { UserLocationProvider } from "@/context/user-location";
 import { NotificationsContext } from "@/context/notifications";
 import '@/i18n/config';
 
-SplashScreen.preventAutoHideAsync();
+void SplashScreen.preventAutoHideAsync();
+
+function getRCApiKey() {
+  if (__DEV__ || Platform.OS === "web") return process.env.EXPO_PUBLIC_REVENUECAT_TEST_API_KEY;
+  return Platform.select({
+    ios: process.env.EXPO_PUBLIC_REVENUECAT_IOS_API_KEY,
+    android: process.env.EXPO_PUBLIC_REVENUECAT_ANDROID_API_KEY,
+    default: process.env.EXPO_PUBLIC_REVENUECAT_TEST_API_KEY,
+  });
+}
+
+const rcKey = getRCApiKey();
+if (rcKey) {
+  Purchases.configure({ apiKey: rcKey });
+  console.log("[RevenueCat] Configured");
+} else {
+  console.warn("[RevenueCat] No API key found");
+}
 
 const queryClient = new QueryClient();
 
@@ -61,7 +79,7 @@ function RootLayoutNav() {
 
 export default function RootLayout() {
   useEffect(() => {
-    (async () => {
+    void (async () => {
       try {
         await SplashScreen.hideAsync();
       } catch (e) {

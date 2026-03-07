@@ -258,23 +258,14 @@ ${messageText}`
   return (
     <PremiumGate>
       <KeyboardAvoidingView
-      style={[
-        styles.container,
-        !isTablet && styles.containerMobile,
-      ]}
+      style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : undefined}
       keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
     >
       <ScrollView
         ref={scrollViewRef}
-        style={[
-          styles.messagesContainer,
-          !isTablet && styles.messagesContainerMobile,
-        ]}
-        contentContainerStyle={[
-          styles.messagesContent,
-          !isTablet && styles.messagesContentMobile,
-        ]}
+        style={styles.messagesContainer}
+        contentContainerStyle={styles.messagesContent}
         onContentSizeChange={() =>
           scrollViewRef.current?.scrollToEnd({ animated: true })
         }

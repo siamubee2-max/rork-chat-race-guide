@@ -9,6 +9,7 @@ import {
   Alert,
   Platform,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -88,6 +89,12 @@ export default function ScanHomeScreen() {
 
   return (
     <View style={styles.screen} testID="scanScreen">
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+        bounces={true}
+      >
       <View style={[styles.hero, { height: heroH }]} testID="scanHero">
         <Image
           source={{ uri: heroImageUri }}
@@ -170,6 +177,7 @@ export default function ScanHomeScreen() {
           </View>
         </View>
       </View>
+      </ScrollView>
     </View>
   );
 }
@@ -178,6 +186,13 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: Colors.background,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    paddingBottom: 40,
   },
   hero: {
     position: "relative",
