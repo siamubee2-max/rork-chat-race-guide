@@ -1,46 +1,26 @@
-export type PlanId = 'free' | 'premium' | 'family' | 'pro' | 'founder';
-export type ProductId = 'free' | 'premium_monthly' | 'premium_yearly' | 'family_monthly' | 'family_yearly' | 'pro_monthly' | 'pro_yearly' | 'founder';
-
-export interface PlanLimits {
-  scans: number;
-  aiQuestions: number;
-  communityPosts: number;
-  emergencyPosters: number;
-  gamificationLevel: number;
-  pets: number;
-  accounts?: number;
-  apiAccess?: boolean;
-  businessTools?: boolean;
-  founderBadge?: boolean;
-}
-
-export interface ProductConfig {
-  id: string;
-  revenueCatId: string | null;
-  stripeId: string | null;
-  price?: number;
-  currency?: string;
-  interval?: string;
-  savings?: number;
-  lifetime?: boolean;
-  limited?: number;
-}
+/**
+ * Configuration des abonnements Purrly
+ * Compatible avec RevenueCat, Stripe, ou tout autre système
+ */
 
 export const SUBSCRIPTION_CONFIG = {
+  // IDs produits (à créer dans votre dashboard Stripe/RevenueCat)
   products: {
     free: {
       id: 'free',
-      revenueCatId: null,
+      revenueCatId: null, // Pas besoin pour plan gratuit
       stripeId: null,
     },
+    
     premium_monthly: {
       id: 'premium_monthly',
-      revenueCatId: 'premium_monthly',
-      stripeId: 'price_premium_monthly',
+      revenueCatId: 'premium_monthly', // À créer dans RevenueCat
+      stripeId: 'price_premium_monthly', // À créer dans Stripe
       price: 14.99,
       currency: 'USD',
       interval: 'month',
     },
+    
     premium_yearly: {
       id: 'premium_yearly',
       revenueCatId: 'premium_yearly',
@@ -48,8 +28,9 @@ export const SUBSCRIPTION_CONFIG = {
       price: 149.99,
       currency: 'USD',
       interval: 'year',
-      savings: 29.89,
+      savings: 29.89, // vs monthly × 12
     },
+    
     family_monthly: {
       id: 'family_monthly',
       revenueCatId: 'family_monthly',
@@ -58,6 +39,7 @@ export const SUBSCRIPTION_CONFIG = {
       currency: 'USD',
       interval: 'month',
     },
+    
     family_yearly: {
       id: 'family_yearly',
       revenueCatId: 'family_yearly',
@@ -67,6 +49,7 @@ export const SUBSCRIPTION_CONFIG = {
       interval: 'year',
       savings: 59.89,
     },
+    
     pro_monthly: {
       id: 'pro_monthly',
       revenueCatId: 'pro_monthly',
@@ -75,6 +58,7 @@ export const SUBSCRIPTION_CONFIG = {
       currency: 'USD',
       interval: 'month',
     },
+    
     pro_yearly: {
       id: 'pro_yearly',
       revenueCatId: 'pro_yearly',
@@ -84,6 +68,7 @@ export const SUBSCRIPTION_CONFIG = {
       interval: 'year',
       savings: 99.89,
     },
+    
     founder: {
       id: 'founder',
       revenueCatId: 'founder_lifetime',
@@ -94,8 +79,9 @@ export const SUBSCRIPTION_CONFIG = {
       lifetime: true,
       limited: 1000,
     },
-  } satisfies Record<string, ProductConfig>,
+  },
 
+  // Limites par plan
   limits: {
     free: {
       scans: 10,
@@ -106,7 +92,7 @@ export const SUBSCRIPTION_CONFIG = {
       pets: 1,
     },
     premium: {
-      scans: -1,
+      scans: -1, // illimité
       aiQuestions: -1,
       communityPosts: -1,
       emergencyPosters: 5,
@@ -142,21 +128,24 @@ export const SUBSCRIPTION_CONFIG = {
       pets: 1,
       founderBadge: true,
     },
-  } satisfies Record<PlanId, PlanLimits>,
-
-  trial: {
-    enabled: true,
-    duration: 14,
-    requiresCreditCard: false,
   },
 
+  // Configuration essai gratuit
+  trial: {
+    enabled: true,
+    duration: 14, // jours
+    requiresCreditCard: false, // Pas de CB pour trial
+  },
+
+  // Configuration remboursement
   refund: {
     enabled: true,
-    duration: 30,
+    duration: 30, // jours
     policy: 'https://purrly.app/refund-policy',
   },
 };
 
+// Helper pour vérifier si user a atteint limite
 export function hasReachedLimit(
   subscription: string,
   feature: string,
@@ -164,21 +153,22 @@ export function hasReachedLimit(
 ): boolean {
   const limits = SUBSCRIPTION_CONFIG.limits as Record<string, Record<string, number | boolean | undefined>>;
   const limit = limits[subscription]?.[feature];
-
-  if (limit === -1) return false;
-  if (limit === undefined) return true;
-
+  
+  if (limit === -1) return false; // illimité
+  if (limit === undefined) return true; // feature non disponible
+  
   return current >= (limit as number);
 }
 
+// Helper pour obtenir prix affiché
 export function getDisplayPrice(
   productId: string,
   locale: string = 'fr-FR'
 ): string {
-  const products = SUBSCRIPTION_CONFIG.products as Record<string, ProductConfig>;
+  const products = SUBSCRIPTION_CONFIG.products as Record<string, { price?: number; currency?: string; [key: string]: unknown }>;
   const product = products[productId];
   if (!product || !product.price) return 'Gratuit';
-
+  
   return new Intl.NumberFormat(locale, {
     style: 'currency',
     currency: product.currency ?? 'USD',

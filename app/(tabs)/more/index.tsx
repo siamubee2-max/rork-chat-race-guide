@@ -19,8 +19,6 @@ import {
   FileText,
   HelpCircle,
   Heart,
-  LogOut,
-  Trash2,
 } from "lucide-react-native";
 import {
   ScrollView,
@@ -47,7 +45,7 @@ interface MenuItem {
 }
 
 export default function MoreScreen() {
-  const { currentUser, logout, deleteAccount, isAuthenticated } = useAuth();
+  const { currentUser } = useAuth();
   const { t } = useTranslation();
   const { 
     notificationsEnabled, 
@@ -274,7 +272,6 @@ export default function MoreScreen() {
         style={styles.scroll}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
-        contentInsetAdjustmentBehavior="automatic"
       >
         <View style={styles.header}>
           <View style={styles.profileCard}>
@@ -319,86 +316,6 @@ export default function MoreScreen() {
             </View>
           </View>
         </View>
-
-        {isAuthenticated && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>{t("more.account") || "Compte"}</Text>
-            <View style={styles.sectionContent}>
-              <Pressable
-                onPress={() => {
-                  Alert.alert(
-                    t("more.signOutTitle") || "Se déconnecter",
-                    t("more.signOutMessage") || "Êtes-vous sûr de vouloir vous déconnecter ?",
-                    [
-                      { text: t("common.cancel") || "Annuler", style: "cancel" },
-                      {
-                        text: t("more.signOut") || "Se déconnecter",
-                        onPress: async () => {
-                          await logout();
-                          router.replace("/" as any);
-                        },
-                      },
-                    ]
-                  );
-                }}
-                style={({ pressed }) => [
-                  styles.menuItem,
-                  pressed && { opacity: 0.7, transform: [{ scale: 0.98 }] },
-                ]}
-              >
-                <View style={[styles.menuIcon, { backgroundColor: "rgba(232, 156, 63, 0.15)" }]}>
-                  <LogOut color="#E89C3F" size={22} />
-                </View>
-                <View style={styles.menuContent}>
-                  <Text style={styles.menuTitle}>{t("more.signOut") || "Se déconnecter"}</Text>
-                  <Text style={styles.menuSubtitle}>{t("more.signOutDesc") || "Déconnexion de votre compte"}</Text>
-                </View>
-                <ChevronRight color={Colors.textMuted} size={20} />
-              </Pressable>
-
-              <Pressable
-                onPress={() => {
-                  Alert.alert(
-                    t("more.deleteAccountTitle") || "Supprimer le compte",
-                    t("more.deleteAccountMessage") || "Cette action est irréversible. Toutes vos données seront définitivement supprimées. Êtes-vous sûr ?",
-                    [
-                      { text: t("common.cancel") || "Annuler", style: "cancel" },
-                      {
-                        text: t("more.deleteAccountConfirm") || "Supprimer",
-                        style: "destructive",
-                        onPress: async () => {
-                          const result = await deleteAccount();
-                          if (result.success) {
-                            router.replace("/" as any);
-                          } else {
-                            Alert.alert(
-                              t("common.error") || "Erreur",
-                              result.error || "Une erreur est survenue"
-                            );
-                          }
-                        },
-                      },
-                    ]
-                  );
-                }}
-                style={({ pressed }) => [
-                  styles.menuItem,
-                  { borderBottomWidth: 0 },
-                  pressed && { opacity: 0.7, transform: [{ scale: 0.98 }] },
-                ]}
-              >
-                <View style={[styles.menuIcon, { backgroundColor: "rgba(212, 91, 91, 0.15)" }]}>
-                  <Trash2 color="#D45B5B" size={22} />
-                </View>
-                <View style={styles.menuContent}>
-                  <Text style={[styles.menuTitle, { color: "#D45B5B" }]}>{t("more.deleteAccount") || "Supprimer le compte"}</Text>
-                  <Text style={styles.menuSubtitle}>{t("more.deleteAccountDesc") || "Suppression définitive de toutes vos données"}</Text>
-                </View>
-                <ChevronRight color={Colors.textMuted} size={20} />
-              </Pressable>
-            </View>
-          </View>
-        )}
 
         <View style={styles.footer}>
           <Text style={styles.footerText}>Purrly v1.0.0</Text>

@@ -141,7 +141,6 @@ export default function BreedsHomeScreen() {
         columnWrapperStyle={styles.row}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
-        contentInsetAdjustmentBehavior="automatic"
         testID="breedsList"
         removeClippedSubviews={true}
         maxToRenderPerBatch={10}

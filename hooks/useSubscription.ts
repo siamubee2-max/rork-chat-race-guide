@@ -1,10 +1,10 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { Alert } from 'react-native';
-import { SUBSCRIPTION_CONFIG, hasReachedLimit, type PlanId } from '@/config/subscriptions';
+import { SUBSCRIPTION_CONFIG, hasReachedLimit } from '@/config/subscriptions';
 import { useAuth } from '@/context/auth';
 
 export interface SubscriptionStatus {
-  tier: PlanId;
+  tier: 'free' | 'premium' | 'family' | 'pro' | 'founder';
   isActive: boolean;
   expiresAt?: Date;
   canceledAt?: Date;
@@ -24,16 +24,21 @@ export interface SubscriptionStatus {
   };
 }
 
-type UsageKey = keyof SubscriptionStatus['usage'];
-
 export function useSubscription() {
   const { currentUser } = useAuth();
   const [subscription, setSubscription] = useState<SubscriptionStatus | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchSubscription = useCallback(async () => {
+  useEffect(() => {
+    if (currentUser) {
+      fetchSubscription();
+    }
+  }, [currentUser]);
+
+  const fetchSubscription = async () => {
     setLoading(true);
     try {
+      // TODO: Remplacer par votre API
       const response = await fetch(`/api/subscriptions/${currentUser?.id}`);
       const data = await response.json();
       setSubscription(data);
@@ -42,21 +47,16 @@ export function useSubscription() {
     } finally {
       setLoading(false);
     }
-  }, [currentUser]);
+  };
 
-  useEffect(() => {
-    if (currentUser) {
-      void fetchSubscription();
-    }
-  }, [currentUser, fetchSubscription]);
-
-  const canUseFeature = useCallback((feature: UsageKey): boolean => {
+  const canUseFeature = (feature: string): boolean => {
     if (!subscription) return false;
-    const current = subscription.usage[feature] ?? 0;
+    
+    const current = (subscription.usage as Record<string, number>)[feature] || 0;
     return !hasReachedLimit(subscription.tier, feature, current);
-  }, [subscription]);
+  };
 
-  const checkLimit = useCallback((feature: UsageKey): {
+  const checkLimit = (feature: string): {
     canUse: boolean;
     remaining: number;
     limit: number;
@@ -66,11 +66,11 @@ export function useSubscription() {
     }
 
     const tierLimits = SUBSCRIPTION_CONFIG.limits[subscription.tier] as Record<string, number | boolean | undefined>;
-    const limit = (tierLimits[feature] as number) ?? 0;
-    const current = subscription.usage[feature] ?? 0;
-
+    const limit = tierLimits[feature] as number;
+    const current = (subscription.usage as Record<string, number>)[feature] || 0;
+    
     if (limit === -1) {
-      return { canUse: true, remaining: -1, limit: -1 };
+      return { canUse: true, remaining: -1, limit: -1 }; // illimité
     }
 
     return {
@@ -78,12 +78,12 @@ export function useSubscription() {
       remaining: Math.max(0, limit - current),
       limit,
     };
-  }, [subscription]);
+  };
 
-  const showUpgradeAlert = useCallback((_feature: UsageKey) => {
+  const showUpgradeAlert = (feature: string) => {
     Alert.alert(
       '🔒 Limite atteinte',
-      'Vous avez atteint la limite de votre plan gratuit. Passez à Premium pour un accès illimité !',
+      `Vous avez atteint la limite de votre plan gratuit. Passez à Premium pour un accès illimité !`,
       [
         { text: 'Plus tard', style: 'cancel' },
         {
@@ -94,32 +94,31 @@ export function useSubscription() {
         },
       ]
     );
-  }, []);
+  };
 
-  const incrementUsage = useCallback(async (feature: UsageKey, amount: number = 1) => {
+  const incrementUsage = async (feature: string, amount: number = 1) => {
     if (!subscription) return;
 
     try {
+      // TODO: Remplacer par votre API
       await fetch(`/api/subscriptions/${currentUser?.id}/usage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ feature, amount }),
       });
 
-      setSubscription((prev) => {
-        if (!prev) return prev;
-        return {
-          ...prev,
-          usage: {
-            ...prev.usage,
-            [feature]: (prev.usage[feature] ?? 0) + amount,
-          },
-        };
-      });
+      // Mettre à jour localement
+      setSubscription((prev) => ({
+        ...prev!,
+        usage: {
+          ...prev!.usage,
+          [feature]: ((prev!.usage as Record<string, number>)[feature] || 0) + amount,
+        },
+      }));
     } catch (error) {
       console.error('Error incrementing usage:', error);
     }
-  }, [subscription, currentUser]);
+  };
 
   return {
     subscription,

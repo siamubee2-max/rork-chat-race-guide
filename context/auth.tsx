@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import createContextHook from "@nkzw/create-context-hook";
 
 export type SubscriptionTier = 'free' | 'premium' | 'premium_plus';
@@ -20,13 +20,16 @@ interface StoredUser extends User {
 const STORAGE_USERS = "users";
 const STORAGE_CURRENT_USER = "current_user";
 
+// Fonction de hash simple pour les mots de passe
+// NOTE: En production, utiliser un vrai système d'authentification avec backend et bcrypt
 const hashPassword = (password: string, email: string): string => {
+  // Hash simple basé sur le mot de passe et l'email comme salt
   let hash = 0;
   const str = password + email.toLowerCase();
   for (let i = 0; i < str.length; i++) {
     const char = str.charCodeAt(i);
     hash = ((hash << 5) - hash) + char;
-    hash = hash & hash;
+    hash = hash & hash; // Convert to 32bit integer
   }
   return Math.abs(hash).toString(36);
 };
@@ -36,7 +39,7 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    void loadCurrentUser();
+    loadCurrentUser();
   }, []);
 
   const loadCurrentUser = async () => {
@@ -54,7 +57,7 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
     }
   };
 
-  const signup = useCallback(async (email: string, password: string, name: string): Promise<{ success: boolean; error?: string }> => {
+  const signup = async (email: string, password: string, name: string): Promise<{ success: boolean; error?: string }> => {
     try {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
@@ -71,7 +74,7 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
       const newUser: StoredUser = {
         id: Date.now().toString(),
         email,
-        password: hashPassword(password, email),
+        password: hashPassword(password, email), // Stocker le hash au lieu du mot de passe en clair
         name,
         createdAt: new Date().toISOString(),
         subscriptionTier: 'free',
@@ -99,9 +102,9 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
       }
       return { success: false, error: "Erreur lors de l'inscription" };
     }
-  }, []);
+  };
 
-  const login = useCallback(async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
+  const login = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
     try {
       const usersData = await AsyncStorage.getItem(STORAGE_USERS);
       const users: StoredUser[] = usersData ? JSON.parse(usersData) : [];
@@ -134,9 +137,9 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
       }
       return { success: false, error: "Erreur lors de la connexion" };
     }
-  }, []);
+  };
 
-  const logout = useCallback(async () => {
+  const logout = async () => {
     try {
       await AsyncStorage.removeItem(STORAGE_CURRENT_USER);
       setCurrentUser(null);
@@ -145,34 +148,9 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
         console.error("Error logging out:", error);
       }
     }
-  }, []);
+  };
 
-  const deleteAccount = useCallback(async (): Promise<{ success: boolean; error?: string }> => {
-    try {
-      const userData = await AsyncStorage.getItem(STORAGE_CURRENT_USER);
-      if (!userData) {
-        return { success: false, error: "Aucun utilisateur connecté" };
-      }
-      const user: User = JSON.parse(userData);
-
-      const usersData = await AsyncStorage.getItem(STORAGE_USERS);
-      const users: StoredUser[] = usersData ? JSON.parse(usersData) : [];
-      const filteredUsers = users.filter((u) => u.id !== user.id);
-
-      await AsyncStorage.setItem(STORAGE_USERS, JSON.stringify(filteredUsers));
-      await AsyncStorage.removeItem(STORAGE_CURRENT_USER);
-      setCurrentUser(null);
-
-      return { success: true };
-    } catch (error) {
-      if (__DEV__) {
-        console.error("Error deleting account:", error);
-      }
-      return { success: false, error: "Erreur lors de la suppression du compte" };
-    }
-  }, []);
-
-  const getRegisteredEmails = useCallback(async (): Promise<string[]> => {
+  const getRegisteredEmails = async (): Promise<string[]> => {
     try {
       const usersData = await AsyncStorage.getItem(STORAGE_USERS);
       const users: StoredUser[] = usersData ? JSON.parse(usersData) : [];
@@ -183,9 +161,9 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
       }
       return [];
     }
-  }, []);
+  };
 
-  const getUserByEmail = useCallback(async (email: string): Promise<{ name: string; password: string } | null> => {
+  const getUserByEmail = async (email: string): Promise<{ name: string; password: string } | null> => {
     try {
       const usersData = await AsyncStorage.getItem(STORAGE_USERS);
       const users: StoredUser[] = usersData ? JSON.parse(usersData) : [];
@@ -197,17 +175,15 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
       }
       return null;
     }
-  }, []);
+  };
 
-  const updateSubscription = useCallback(async (tier: SubscriptionTier, customExpiry?: number) => {
+  const updateSubscription = async (tier: SubscriptionTier, customExpiry?: number) => {
     try {
-      const userData = await AsyncStorage.getItem(STORAGE_CURRENT_USER);
-      if (!userData) return;
-      const current: User = JSON.parse(userData);
+      if (!currentUser) return;
 
       const usersData = await AsyncStorage.getItem(STORAGE_USERS);
       const users: StoredUser[] = usersData ? JSON.parse(usersData) : [];
-      const userIndex = users.findIndex((u) => u.id === current.id);
+      const userIndex = users.findIndex((u) => u.id === currentUser.id);
 
       if (userIndex === -1) return;
 
@@ -223,7 +199,7 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
       await AsyncStorage.setItem(STORAGE_USERS, JSON.stringify(users));
 
       const updatedUser: User = {
-        ...current,
+        ...currentUser,
         subscriptionTier: tier,
         subscriptionExpiry: expiry,
       };
@@ -235,18 +211,17 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
         console.error("Error updating subscription:", error);
       }
     }
-  }, []);
+  };
 
-  return useMemo(() => ({
+  return {
     currentUser,
     isLoading,
     isAuthenticated: !!currentUser,
     signup,
     login,
     logout,
-    deleteAccount,
     getRegisteredEmails,
     getUserByEmail,
     updateSubscription,
-  }), [currentUser, isLoading, signup, login, logout, deleteAccount, getRegisteredEmails, getUserByEmail, updateSubscription]);
+  };
 });
