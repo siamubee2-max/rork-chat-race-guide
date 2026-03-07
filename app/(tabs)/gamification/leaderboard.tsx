@@ -130,12 +130,11 @@ export default function LeaderboardScreen() {
             const order = [1, 0, 2];
             const actualEntry = MOCK_LEADERBOARD[order[index]];
             const heights = [100, 130, 80];
-            const positions = ["left", "center", "right"] as const;
             
             return (
               <View
                 key={actualEntry.id}
-                style={[styles.podiumItem, styles[`podium${positions[index].charAt(0).toUpperCase() + positions[index].slice(1)}` as keyof typeof styles]]}
+                style={[styles.podiumItem, index === 0 ? styles.podiumLeft : index === 1 ? styles.podiumCenter : styles.podiumRight]}
               >
                 <View style={styles.podiumAvatarContainer}>
                   {actualEntry.avatarUrl ? (
