@@ -25,7 +25,7 @@
                                         "audio"
                             ],
                             "NSPhotoLibraryUsageDescription": "Allow $(PRODUCT_NAME) to access your photos",
-                            "NSCameraUsageDescription": "Allow $(PRODUCT_NAME) to access your camera",
+                                        "NSCameraUsageDescription": "Purrly uses your camera to take photos of your cat for their health journal and to identify cat breeds using the AI breed scanner.",
                             "NSMicrophoneUsageDescription": "Allow $(PRODUCT_NAME) to access your microphone"
                   }
           },
