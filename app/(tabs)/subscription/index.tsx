@@ -215,7 +215,7 @@ export default function SubscriptionScreen() {
 
       // Rediriger vers l'app
       router.push("/(tabs)/(scan)" as any);
-    } catch (error) {
+    } catch {
       Alert.alert(
         "Erreur",
         "Une erreur est survenue. Veuillez réessayer.",
@@ -228,7 +228,7 @@ export default function SubscriptionScreen() {
 
   const renderPricingCard = (
     tier: string,
-    index: number
+    _index: number
   ) => {
     const plan = SUBSCRIPTION_TIERS[tier];
     const price =
@@ -370,7 +370,7 @@ export default function SubscriptionScreen() {
   };
 
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false} contentInsetAdjustmentBehavior="automatic">
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.title}>Choisissez votre plan</Text>

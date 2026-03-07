@@ -77,7 +77,7 @@ export default function CommunityScreen() {
       return;
     }
     if (Platform.OS !== "web") {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     }
     await likePost(postId);
   };
@@ -370,6 +370,7 @@ export default function CommunityScreen() {
           ]}
           ListEmptyComponent={FeedEmptyState}
           showsVerticalScrollIndicator={false}
+          contentInsetAdjustmentBehavior="automatic"
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
@@ -391,6 +392,7 @@ export default function CommunityScreen() {
           ]}
           ListEmptyComponent={EventsEmptyState}
           showsVerticalScrollIndicator={false}
+          contentInsetAdjustmentBehavior="automatic"
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
@@ -412,6 +414,7 @@ export default function CommunityScreen() {
           ]}
           ListEmptyComponent={MessagesEmptyState}
           showsVerticalScrollIndicator={false}
+          contentInsetAdjustmentBehavior="automatic"
         />
       )}
 
