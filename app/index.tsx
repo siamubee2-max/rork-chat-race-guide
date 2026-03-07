@@ -11,8 +11,7 @@ import { useLanguage } from "@/context/language";
 import { catQuotes } from "@/constants/quotes";
 import { Colors } from "@/constants/colors";
 
-const heroUri =
-  "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=1400&q=80";
+const logoUri = require("@/assets/images/purrly-logo.png");
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -78,7 +77,10 @@ export default function Index() {
         showsVerticalScrollIndicator={false}
       >
       <View style={styles.hero} testID="indexHero">
-        <Image source={{ uri: heroUri }} style={styles.heroImg} contentFit="cover" />
+        <View style={styles.heroBg} />
+        <View style={styles.logoContainer}>
+          <Image source={logoUri} style={styles.logoImg} contentFit="contain" />
+        </View>
         <LinearGradient
           colors={["transparent", "rgba(12,10,9,0.4)", "#0C0A09"]}
           locations={[0, 0.4, 0.9]}
@@ -169,8 +171,23 @@ const styles = StyleSheet.create({
     width: "100%",
     position: "relative",
   },
-  heroImg: {
+  heroBg: {
     ...StyleSheet.absoluteFillObject,
+    backgroundColor: '#0C0A09',
+  },
+  logoContainer: {
+    position: 'absolute',
+    top: 60,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: SCREEN_HEIGHT * 0.3,
+  },
+  logoImg: {
+    width: 180,
+    height: 180,
+    borderRadius: 30,
   },
   heroGrad: {
     ...StyleSheet.absoluteFillObject,
