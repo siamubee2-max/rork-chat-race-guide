@@ -11,6 +11,12 @@ export default {
     success: "Success",
     about: "About",
     notFound: "Not Found",
+    unknownError: "Unknown error",
+  },
+  errorBoundary: {
+    title: "Oops, something went wrong",
+    message: "The app encountered an unexpected problem. Please try again.",
+    retry: "Retry",
   },
   index: {
     title: "CatID",

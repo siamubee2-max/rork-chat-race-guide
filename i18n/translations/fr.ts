@@ -11,6 +11,12 @@ export default {
     success: "Succès",
     about: "À propos",
     notFound: "Introuvable",
+    unknownError: "Erreur inconnue",
+  },
+  errorBoundary: {
+    title: "Oups, une erreur est survenue",
+    message: "L'application a rencontré un problème inattendu. Veuillez réessayer.",
+    retry: "Réessayer",
   },
   index: {
     title: "CatID",

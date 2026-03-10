@@ -1,21 +1,25 @@
 import createContextHook from "@nkzw/create-context-hook";
 import * as Notifications from "expo-notifications";
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback, useMemo } from "react";
 import { Platform } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 
 const NOTIFICATIONS_ENABLED_KEY = "notifications_enabled";
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-    shouldShowBanner: true,
-    shouldShowList: true,
-  }),
-});
+try {
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: true,
+      shouldShowBanner: true,
+      shouldShowList: true,
+    }),
+  });
+} catch (e) {
+  console.log("[Notifications] setNotificationHandler error:", e);
+}
 
 export type ScheduledNotification = {
   id: string;
@@ -34,8 +38,8 @@ export const [NotificationsContext, useNotifications] = createContextHook(() => 
   const router = useRouter();
 
   useEffect(() => {
-    loadNotificationSettings();
-    checkPermissions();
+    void loadNotificationSettings();
+    void checkPermissions();
 
     notificationListener.current = Notifications.addNotificationReceivedListener((notification) => {
       console.log("[Notifications] Notification received:", notification);
@@ -268,7 +272,7 @@ export const [NotificationsContext, useNotifications] = createContextHook(() => 
     }
   }, []);
 
-  return {
+  return useMemo(() => ({
     expoPushToken,
     notificationsEnabled,
     permissionStatus,
@@ -280,5 +284,17 @@ export const [NotificationsContext, useNotifications] = createContextHook(() => 
     getScheduledNotifications,
     sendInstantNotification,
     setBadgeCount,
-  };
+  }), [
+    expoPushToken,
+    notificationsEnabled,
+    permissionStatus,
+    requestPermissions,
+    disableNotifications,
+    scheduleReminderNotification,
+    cancelNotification,
+    cancelAllNotifications,
+    getScheduledNotifications,
+    sendInstantNotification,
+    setBadgeCount,
+  ]);
 });

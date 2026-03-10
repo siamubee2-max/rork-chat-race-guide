@@ -25,7 +25,11 @@ import { UserLocationProvider } from "@/context/user-location";
 import { NotificationsContext } from "@/context/notifications";
 import '@/i18n/config';
 
-void SplashScreen.preventAutoHideAsync();
+try {
+  void SplashScreen.preventAutoHideAsync();
+} catch (e) {
+  console.log("[RootLayout] preventAutoHideAsync error", e);
+}
 
 function getRCApiKey() {
   if (__DEV__ || Platform.OS === "web") return process.env.EXPO_PUBLIC_REVENUECAT_TEST_API_KEY;
@@ -36,12 +40,16 @@ function getRCApiKey() {
   });
 }
 
-const rcKey = getRCApiKey();
-if (rcKey) {
-  Purchases.configure({ apiKey: rcKey });
-  console.log("[RevenueCat] Configured");
-} else {
-  console.warn("[RevenueCat] No API key found");
+try {
+  const rcKey = getRCApiKey();
+  if (rcKey && Platform.OS !== "web") {
+    Purchases.configure({ apiKey: rcKey });
+    console.log("[RevenueCat] Configured");
+  } else {
+    console.log("[RevenueCat] Skipped (web or no key)");
+  }
+} catch (e) {
+  console.warn("[RevenueCat] Configure error:", e);
 }
 
 const queryClient = new QueryClient();
@@ -50,7 +58,7 @@ function useRevenueCatSync() {
   const { currentUser, updateSubscription } = useAuth();
 
   useEffect(() => {
-    if (!currentUser) return;
+    if (!currentUser || Platform.OS === "web") return;
 
     const syncEntitlements = async () => {
       try {
