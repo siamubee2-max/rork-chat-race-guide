@@ -17,6 +17,7 @@ import {
   StyleSheet,
   Text,
   View,
+  useWindowDimensions,
   type ListRenderItem,
 } from "react-native";
 import { Paths } from "expo-file-system";
@@ -481,6 +482,9 @@ export default function ScanResultScreen() {
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const insets = useSafeAreaInsets();
+  const { width: screenWidth } = useWindowDimensions();
+  const isTablet = screenWidth >= 768;
+  const contentMaxWidth = isTablet ? 600 : undefined;
 
   useEffect(() => {
     if (__DEV__) {
@@ -639,7 +643,7 @@ Race: Persan | Confiance: Faible | Raison: Pelage long et épais visible.`;
       }
     };
 
-    analyzeImage();
+    void analyzeImage();
 
     return () => {
       isMounted = false;
@@ -784,7 +788,7 @@ Race: Persan | Confiance: Faible | Raison: Pelage long et épais visible.`;
   return (
     <View style={styles.screen} testID="scanResultScreen">
       {imageData?.uri && (
-        <View style={styles.imageContainer}>
+        <View style={[styles.imageContainer, isTablet && { maxWidth: contentMaxWidth, alignSelf: 'center' as const, width: '100%', borderRadius: 16, overflow: 'hidden' as const, marginTop: 16 }]}>
           <Image
             source={{ uri: imageData.uri }}
             style={styles.image}
@@ -810,7 +814,7 @@ Race: Persan | Confiance: Faible | Raison: Pelage long et épais visible.`;
         </View>
       ) : (
         <>
-          <View style={styles.header}>
+          <View style={[styles.header, isTablet && { maxWidth: contentMaxWidth, alignSelf: 'center' as const, width: '100%' }]}>
             <View style={styles.headerRow}>
               <Text style={styles.title}>Races identifiées</Text>
               <Pressable
@@ -834,12 +838,12 @@ Race: Persan | Confiance: Faible | Raison: Pelage long et épais visible.`;
             data={candidates}
             keyExtractor={(item) => item.id}
             renderItem={renderItem}
-            contentContainerStyle={styles.listContent}
+            contentContainerStyle={[styles.listContent, isTablet && { maxWidth: contentMaxWidth, alignSelf: 'center' as const, width: '100%' }]}
             testID="scanCandidatesList"
             style={styles.list}
           />
 
-          <View style={[styles.footer, { paddingBottom: insets.bottom + 16 }]}>
+          <View style={[styles.footer, { paddingBottom: insets.bottom + 16 }, isTablet && { maxWidth: contentMaxWidth, alignSelf: 'center' as const, width: '100%' }]}>
             <Pressable
               onPress={onOpenSheet}
               disabled={!selected}

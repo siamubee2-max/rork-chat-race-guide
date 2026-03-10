@@ -3,7 +3,7 @@ import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "expo-image";
 import { BookOpen, Crown, ScanLine, Sparkles } from "lucide-react-native";
-import { Animated, Dimensions, Platform, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Animated, Platform, Pressable, ScrollView, StyleSheet, Text, View, useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth";
@@ -13,11 +13,11 @@ import { Colors } from "@/constants/colors";
 
 const logoUri = require("@/assets/images/purrly-logo.png");
 
-const { height: SCREEN_HEIGHT } = Dimensions.get('window');
-
 export default function Index() {
   useTranslation();
   const { isAuthenticated, isLoading } = useAuth();
+  const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = useWindowDimensions();
+  const isTablet = SCREEN_WIDTH >= 768;
   const { hasSelectedLanguage, isLoading: isLanguageLoading } = useLanguage();
   const insets = useSafeAreaInsets();
 
@@ -69,17 +69,23 @@ export default function Index() {
     return <View style={styles.screen} />;
   }
 
+  const heroHeight = Math.max(SCREEN_HEIGHT * 0.65, 500);
+  const logoSize = isTablet ? 240 : 180;
+  const titleSize = isTablet ? Math.min(52, SCREEN_HEIGHT * 0.05) : Math.min(42, SCREEN_HEIGHT * 0.05);
+  const titleLineHeight = isTablet ? Math.min(58, SCREEN_HEIGHT * 0.056) : Math.min(48, SCREEN_HEIGHT * 0.056);
+  const contentMaxWidth = isTablet ? 680 : undefined;
+
   return (
     <View style={styles.screen} testID="indexScreen">
       <ScrollView 
         style={styles.scrollView}
-        contentContainerStyle={{ paddingBottom: insets.bottom + 40 }}
+        contentContainerStyle={{ paddingBottom: insets.bottom + 40, alignItems: isTablet ? 'center' as const : undefined }}
         showsVerticalScrollIndicator={false}
       >
-      <View style={styles.hero} testID="indexHero">
+      <View style={[styles.hero, { height: heroHeight, maxWidth: isTablet ? 900 : undefined, alignSelf: isTablet ? 'center' as const : undefined, width: '100%' }]} testID="indexHero">
         <View style={styles.heroBg} />
-        <View style={styles.logoContainer}>
-          <Image source={logoUri} style={styles.logoImg} contentFit="contain" />
+        <View style={[styles.logoContainer, { height: SCREEN_HEIGHT * 0.3 }]}>
+          <Image source={logoUri} style={[styles.logoImg, { width: logoSize, height: logoSize }]} contentFit="contain" />
         </View>
         <LinearGradient
           colors={["transparent", "rgba(12,10,9,0.4)", "#0C0A09"]}
@@ -98,7 +104,7 @@ export default function Index() {
             </View>
           </View>
           <Text style={styles.preTitle}>L&apos;ART DE LA GÉNÉTIQUE</Text>
-          <Text style={styles.title}>Le prestige dans chaque regard</Text>
+          <Text style={[styles.title, { fontSize: titleSize, lineHeight: titleLineHeight }]}>Le prestige dans chaque regard</Text>
           <Text style={styles.subtitle}>
             Découvrez l&apos;élégance pure à travers notre intelligence artificielle dédiée à l&apos;univers félin.
           </Text>
@@ -128,7 +134,7 @@ export default function Index() {
         </Animated.View>
       </View>
 
-      <Animated.View style={[styles.content, { opacity: fadeAnim }]}>
+      <Animated.View style={[styles.content, { opacity: fadeAnim, maxWidth: contentMaxWidth, width: isTablet ? '100%' : undefined }]}>
         <View style={styles.quoteSection}>
           <Text style={styles.quoteSymbol}>&ldquo;</Text>
           <Text style={styles.quoteText}>{randomQuote}</Text>
@@ -167,7 +173,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   hero: {
-    height: Math.max(SCREEN_HEIGHT * 0.65, 500),
     width: "100%",
     position: "relative",
   },
@@ -182,11 +187,8 @@ const styles = StyleSheet.create({
     right: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    height: SCREEN_HEIGHT * 0.3,
   },
   logoImg: {
-    width: 180,
-    height: 180,
     borderRadius: 30,
   },
   heroGrad: {
@@ -245,9 +247,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: Colors.ivory,
-    fontSize: Math.min(42, SCREEN_HEIGHT * 0.05),
     fontWeight: "900",
-    lineHeight: Math.min(48, SCREEN_HEIGHT * 0.056),
     letterSpacing: -1,
   },
   subtitle: {

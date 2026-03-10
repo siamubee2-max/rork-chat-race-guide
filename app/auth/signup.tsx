@@ -9,6 +9,7 @@ import {
   Platform,
   ScrollView,
   Alert,
+  useWindowDimensions,
 } from "react-native";
 import { router } from "expo-router";
 import { UserPlus } from "lucide-react-native";
@@ -20,6 +21,8 @@ export default function SignupScreen() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { width } = useWindowDimensions();
+  const isTablet = width >= 768;
 
   const handleSignup = async () => {
     if (!email.trim() || !password.trim() || !name.trim()) {
@@ -59,7 +62,7 @@ export default function SignupScreen() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <ScrollView
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={[styles.scrollContent, isTablet && styles.scrollContentTablet]}
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.header}>
@@ -149,6 +152,11 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     padding: 24,
     justifyContent: "center",
+  },
+  scrollContentTablet: {
+    maxWidth: 480,
+    alignSelf: "center" as const,
+    width: "100%",
   },
   header: {
     alignItems: "center",

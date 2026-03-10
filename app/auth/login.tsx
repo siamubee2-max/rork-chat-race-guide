@@ -9,6 +9,7 @@ import {
   Platform,
   ScrollView,
   Alert,
+  useWindowDimensions,
 } from "react-native";
 import { router } from "expo-router";
 import { LogIn, Cat } from "lucide-react-native";
@@ -20,6 +21,8 @@ export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { width } = useWindowDimensions();
+  const isTablet = width >= 768;
 
   const handleLogin = async () => {
     if (!email.trim() || !password.trim()) {
@@ -52,7 +55,7 @@ export default function LoginScreen() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <ScrollView
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={[styles.scrollContent, isTablet && styles.scrollContentTablet]}
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.header}>
@@ -137,6 +140,11 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     padding: 24,
     justifyContent: "center",
+  },
+  scrollContentTablet: {
+    maxWidth: 480,
+    alignSelf: "center" as const,
+    width: "100%",
   },
   header: {
     alignItems: "center",

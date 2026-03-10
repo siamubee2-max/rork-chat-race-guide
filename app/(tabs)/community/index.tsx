@@ -19,6 +19,7 @@ import {
   View,
   RefreshControl,
   Platform,
+  useWindowDimensions,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as Haptics from "expo-haptics";
@@ -38,6 +39,9 @@ export default function CommunityScreen() {
   const [activeTab, setActiveTab] = useState<TabType>("feed");
   const [refreshing, setRefreshing] = useState(false);
   const { t, i18n } = useTranslation();
+  const { width } = useWindowDimensions();
+  const isTablet = width >= 768;
+  const postMaxWidth = isTablet ? 600 : undefined;
 
   const conversations = getUserConversations();
 
@@ -77,7 +81,7 @@ export default function CommunityScreen() {
       return;
     }
     if (Platform.OS !== "web") {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     }
     await likePost(postId);
   };
@@ -109,7 +113,7 @@ export default function CommunityScreen() {
     const liked = isPostLiked(item.id);
 
     return (
-      <View style={styles.postCard}>
+      <View style={[styles.postCard, isTablet && { maxWidth: postMaxWidth, alignSelf: 'center' as const, width: '100%', borderRadius: 16, marginVertical: 8, overflow: 'hidden' as const }]}>
         <View style={styles.postHeader}>
           <Pressable 
             style={styles.postUser}
@@ -196,7 +200,7 @@ export default function CommunityScreen() {
 
     return (
       <Pressable 
-        style={styles.eventCard}
+        style={[styles.eventCard, isTablet && { maxWidth: postMaxWidth, alignSelf: 'center' as const, width: '100%' }]}
         onPress={() => router.push(`/(tabs)/community/event/${item.id}` as any)}
       >
         {item.imageUrl && (
@@ -242,7 +246,7 @@ export default function CommunityScreen() {
 
     return (
       <Pressable 
-        style={styles.conversationCard}
+        style={[styles.conversationCard, isTablet && { maxWidth: postMaxWidth, alignSelf: 'center' as const, width: '100%' }]}
         onPress={() => router.push(`/(tabs)/community/chat/${item.id}` as any)}
       >
         <View style={styles.conversationAvatar}>
