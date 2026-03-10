@@ -5,7 +5,8 @@
       "premium": "Premium",
       "family": "Family",
       "pro": "Pro",
-      "founder": "Founder"
+      "founder": "Founder",
+      "__deprecated_founder": true
     },
     "features": {
       "scans": "10 scans/month",
@@ -44,10 +45,7 @@
       "businessTools": "Business tools (CRM, invoicing)",
       "dedicatedSupport": "Dedicated phone support",
       "marketplacePriority": "Marketplace priority",
-      "founderPrice": "9.99 $ price LOCKED FOR LIFE",
-      "founderBadge": "Exclusive Founding Member badge",
-      "earlyAccess": "Priority access all features",
-      "founderPerks": "Exclusive future perks"
+      "earlyAccess": "Priority access all features"
     },
     "loginRequired": "Login required",
     "loginRequiredDesc": "You must be logged in to subscribe.",
@@ -67,8 +65,8 @@
       "a1": "Yes! You can upgrade or downgrade at any time.",
       "q2": "Is there a commitment?",
       "a2": "No. Cancel anytime with 1 click. 30-day money-back guarantee.",
-      "q3": "Is the Founder offer really for life?",
-      "a3": "Yes! The 9.99 $/month price is LOCKED FOR LIFE for the first 1000. After that, it will be 14.99 $."
+      "q3": "Can I share my subscription?",
+      "a3": "Yes! With the Family plan, you can share your subscription with up to 5 family members."
     },
     "trust": {
       "noCommitment": "No commitment",

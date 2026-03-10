@@ -27,7 +27,10 @@ export default function ScanHomeScreen() {
   const { t } = useTranslation();
   const { width } = useWindowDimensions();
   const insets = useSafeAreaInsets();
-  const heroH = Math.max(260, Math.min(360, Math.round(width * 0.75))) + insets.top;
+  const isTablet = width >= 768;
+  const heroH = isTablet 
+    ? Math.max(380, Math.min(500, Math.round(width * 0.5))) + insets.top
+    : Math.max(260, Math.min(360, Math.round(width * 0.75))) + insets.top;
   const { setImage } = useScanImage();
 
   const pickImage = useCallback(async () => {
@@ -100,6 +103,7 @@ export default function ScanHomeScreen() {
           source={{ uri: heroImageUri }}
           style={styles.heroImage}
           contentFit="cover"
+          contentPosition={isTablet ? { top: 0, left: '50%' } : "center"}
           cachePolicy="memory-disk"
           transition={300}
         />
@@ -129,7 +133,7 @@ export default function ScanHomeScreen() {
         </View>
       </View>
 
-      <View style={styles.content}>
+      <View style={[styles.content, isTablet && { maxWidth: 700, alignSelf: 'center' as const, width: '100%' }]}>
         <View style={styles.mainActions}>
           <Pressable
             onPress={openLiveCamera}
@@ -268,7 +272,7 @@ const styles = StyleSheet.create({
   mainActions: {
     flexDirection: "row",
     gap: 16,
-    height: 180,
+    minHeight: 180,
   },
   actionCard: {
     flex: 1,

@@ -5,7 +5,8 @@
       "premium": "Premium",
       "family": "Family",
       "pro": "Pro",
-      "founder": "Fondateur"
+      "founder": "Fondateur",
+      "__deprecated_founder": true
     },
     "features": {
       "scans": "10 scans/mois",
@@ -44,10 +45,7 @@
       "businessTools": "Outils business (CRM, facturation)",
       "dedicatedSupport": "Support dédié téléphone",
       "marketplacePriority": "Marketplace prioritaire",
-      "founderPrice": "Prix 9,99 $ À VIE verrouillé",
-      "founderBadge": "Badge Founding Member exclusif",
-      "earlyAccess": "Accès priorité toutes features",
-      "founderPerks": "Avantages exclusifs futurs"
+      "earlyAccess": "Accès priorité toutes features"
     },
     "loginRequired": "Connexion requise",
     "loginRequiredDesc": "Vous devez être connecté pour souscrire à un abonnement.",
@@ -67,8 +65,8 @@
       "a1": "Oui ! Vous pouvez passer à un plan supérieur ou inférieur à tout moment.",
       "q2": "Y a-t-il un engagement ?",
       "a2": "Non. Vous pouvez annuler à tout moment en 1 clic. Remboursement sous 30 jours garanti.",
-      "q3": "L'offre Founder est-elle vraiment à vie ?",
-      "a3": "Oui ! Le prix de 9,99 $/mois est verrouillé à VIE pour les 1000 premiers. Ensuite, ce sera 14,99 $."
+      "q3": "Puis-je partager mon abonnement ?",
+      "a3": "Oui ! Avec le plan Family, vous pouvez partager votre abonnement avec jusqu'à 5 membres de votre famille."
     },
     "trust": {
       "noCommitment": "Sans engagement",

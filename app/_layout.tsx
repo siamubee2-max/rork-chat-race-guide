@@ -42,11 +42,11 @@ function getRCApiKey() {
 
 try {
   const rcKey = getRCApiKey();
-  if (rcKey && Platform.OS !== "web") {
+  if (rcKey) {
     Purchases.configure({ apiKey: rcKey });
-    console.log("[RevenueCat] Configured");
+    console.log("[RevenueCat] Configured with key for platform:", Platform.OS);
   } else {
-    console.log("[RevenueCat] Skipped (web or no key)");
+    console.log("[RevenueCat] Skipped (no key)");
   }
 } catch (e) {
   console.warn("[RevenueCat] Configure error:", e);
