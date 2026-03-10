@@ -69,16 +69,7 @@ export const SUBSCRIPTION_CONFIG = {
       savings: 99.89,
     },
     
-    founder: {
-      id: 'founder',
-      revenueCatId: 'founder_lifetime',
-      stripeId: 'price_founder_lifetime',
-      price: 9.99,
-      currency: 'USD',
-      interval: 'month',
-      lifetime: true,
-      limited: 1000,
-    },
+
   },
 
   // Limites par plan
@@ -119,15 +110,7 @@ export const SUBSCRIPTION_CONFIG = {
       apiAccess: true,
       businessTools: true,
     },
-    founder: {
-      scans: -1,
-      aiQuestions: -1,
-      communityPosts: -1,
-      emergencyPosters: 5,
-      gamificationLevel: -1,
-      pets: 1,
-      founderBadge: true,
-    },
+
   },
 
   // Configuration essai gratuit
@@ -141,7 +124,7 @@ export const SUBSCRIPTION_CONFIG = {
   refund: {
     enabled: true,
     duration: 30, // jours
-    policy: 'https://purrly.app/refund-policy',
+    policy: '/(tabs)/more/terms',
   },
 };
 

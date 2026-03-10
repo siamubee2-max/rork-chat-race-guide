@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Alert } from 'react-native';
 import { SUBSCRIPTION_CONFIG, hasReachedLimit } from '@/config/subscriptions';
 import { useAuth } from '@/context/auth';
 
 export interface SubscriptionStatus {
-  tier: 'free' | 'premium' | 'family' | 'pro' | 'founder';
+  tier: 'free' | 'premium' | 'family' | 'pro';
   isActive: boolean;
   expiresAt?: Date;
   canceledAt?: Date;
@@ -29,13 +29,7 @@ export function useSubscription() {
   const [subscription, setSubscription] = useState<SubscriptionStatus | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (currentUser) {
-      fetchSubscription();
-    }
-  }, [currentUser]);
-
-  const fetchSubscription = async () => {
+  const fetchSubscription = useCallback(async () => {
     setLoading(true);
     try {
       // TODO: Remplacer par votre API
@@ -47,7 +41,7 @@ export function useSubscription() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentUser?.id]);
 
   const canUseFeature = (feature: string): boolean => {
     if (!subscription) return false;
@@ -80,7 +74,7 @@ export function useSubscription() {
     };
   };
 
-  const showUpgradeAlert = (feature: string) => {
+  const showUpgradeAlert = (_feature: string) => {
     Alert.alert(
       '🔒 Limite atteinte',
       `Vous avez atteint la limite de votre plan gratuit. Passez à Premium pour un accès illimité !`,
@@ -119,6 +113,12 @@ export function useSubscription() {
       console.error('Error incrementing usage:', error);
     }
   };
+
+  useEffect(() => {
+    if (currentUser) {
+      void fetchSubscription();
+    }
+  }, [currentUser, fetchSubscription]);
 
   return {
     subscription,

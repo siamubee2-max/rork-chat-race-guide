@@ -8,7 +8,7 @@ import {
   Alert,
   ActivityIndicator,
 } from "react-native";
-import { Check, Crown, RefreshCw, Sparkles, Star, Users, Briefcase, Gem } from "lucide-react-native";
+import { Check, Crown, RefreshCw, Sparkles, Star, Users, Briefcase, Gem, ExternalLink } from "lucide-react-native";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/context/auth";
 import { router } from "expo-router";
@@ -455,9 +455,17 @@ export default function SubscriptionScreen() {
           renouvelle automatiquement sauf annulation au moins 24h avant la fin de la période en cours. Vous pouvez gérer
           vos abonnements dans les réglages de votre appareil.
         </Text>
-        <Text style={[styles.legalText, { marginTop: 8 }]}>
-          Conditions d'utilisation · Politique de confidentialité
-        </Text>
+        <View style={styles.legalLinks}>
+          <Pressable onPress={() => router.push('/(tabs)/more/terms' as any)} style={styles.legalLink}>
+            <ExternalLink size={12} color="#94a3b8" />
+            <Text style={styles.legalLinkText}>Conditions d'utilisation</Text>
+          </Pressable>
+          <Text style={styles.legalSeparator}>·</Text>
+          <Pressable onPress={() => router.push('/(tabs)/more/privacy' as any)} style={styles.legalLink}>
+            <ExternalLink size={12} color="#94a3b8" />
+            <Text style={styles.legalLinkText}>Politique de confidentialité</Text>
+          </Pressable>
+        </View>
       </View>
 
       <View style={{ height: 60 }} />
@@ -665,5 +673,27 @@ const styles = StyleSheet.create({
     color: "#64748b",
     textAlign: "center",
     lineHeight: 16,
+  },
+  legalLinks: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 8,
+    gap: 6,
+  },
+  legalLink: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    paddingVertical: 4,
+  },
+  legalLinkText: {
+    fontSize: 12,
+    color: "#94a3b8",
+    textDecorationLine: "underline",
+  },
+  legalSeparator: {
+    fontSize: 12,
+    color: "#64748b",
   },
 });
