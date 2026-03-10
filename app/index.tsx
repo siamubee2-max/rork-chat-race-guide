@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     position: 'absolute',
-    top: 60,
+    top: 30,
     left: 0,
     right: 0,
     alignItems: 'center',
