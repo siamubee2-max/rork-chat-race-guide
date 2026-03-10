@@ -99,7 +99,7 @@ export default function BreedDetailsScreen() {
               source={{ uri: breed.imageUri }}
               style={styles.heroImage}
               contentFit="cover"
-              contentPosition="top"
+              contentPosition={isTablet ? "center" : "top"}
               transition={120}
             />
             <View style={styles.heroOverlay} />
@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
     lineHeight: 19,
   },
   heroTablet: {
-    height: 420,
+    height: 520,
     margin: 24,
     borderRadius: 28,
   },
