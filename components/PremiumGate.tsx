@@ -20,6 +20,7 @@ export function PremiumGate({ children }: PremiumGateProps) {
   const { t } = useTranslation();
   
   const isPremium = currentUser?.subscriptionTier === 'premium' || currentUser?.subscriptionTier === 'premium_plus';
+  console.log('[PremiumGate] User tier:', currentUser?.subscriptionTier, 'isPremium:', isPremium);
 
   if (isPremium) {
     return <>{children}</>;
@@ -56,6 +57,7 @@ export function PremiumGate({ children }: PremiumGateProps) {
 export function usePremiumAccess() {
   const { currentUser } = useAuth();
   const isPremium = currentUser?.subscriptionTier === 'premium' || currentUser?.subscriptionTier === 'premium_plus';
+  console.log('[usePremiumAccess] User tier:', currentUser?.subscriptionTier, 'isPremium:', isPremium);
   return { isPremium, subscriptionTier: currentUser?.subscriptionTier };
 }
 

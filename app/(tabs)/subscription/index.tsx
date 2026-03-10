@@ -16,6 +16,7 @@ import Purchases, {
 import { useAuth } from "@/context/auth";
 import { router } from "expo-router";
 import { Colors } from "@/constants/colors";
+import type { CustomerInfo } from "react-native-purchases";
 
 const PACKAGE_META: Record<string, { name: string; color: string; badge: string | null; features: string[]; target?: string }> = {
   monthly: {
@@ -90,7 +91,7 @@ const PACKAGE_META: Record<string, { name: string; color: string; badge: string 
 };
 
 export default function SubscriptionScreen() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, updateSubscription } = useAuth();
   const queryClient = useQueryClient();
   const [purchasingPkgId, setPurchasingPkgId] = useState<string | null>(null);
 
@@ -113,8 +114,24 @@ export default function SubscriptionScreen() {
       console.log("[Subscription] Purchase result:", JSON.stringify(result));
       return result;
     },
-    onSuccess: () => {
+    onSuccess: async (result) => {
       console.log("[Subscription] Purchase successful");
+      const customerInfo: CustomerInfo = result.customerInfo;
+      const activeEntitlements = customerInfo.entitlements.active;
+      console.log("[Subscription] Active entitlements:", JSON.stringify(Object.keys(activeEntitlements)));
+
+      if (activeEntitlements["premium"]) {
+        const productId = activeEntitlements["premium"].productIdentifier;
+        console.log("[Subscription] Activating premium for product:", productId);
+        let tier: 'premium' | 'premium_plus' = 'premium';
+        if (productId.includes('family') || productId.includes('pro')) {
+          tier = 'premium_plus';
+        }
+        const expirationDate = activeEntitlements["premium"].expirationDate;
+        const expiry = expirationDate ? new Date(expirationDate).getTime() : undefined;
+        await updateSubscription(tier, expiry);
+      }
+
       void queryClient.invalidateQueries({ queryKey: ["rc-offerings"] });
       void queryClient.invalidateQueries({ queryKey: ["rc-customer-info"] });
       setPurchasingPkgId(null);
@@ -146,9 +163,20 @@ export default function SubscriptionScreen() {
       console.log("[Subscription] Restore result:", JSON.stringify(customerInfo.entitlements.active));
       return customerInfo;
     },
-    onSuccess: (customerInfo) => {
-      const hasActive = Object.keys(customerInfo.entitlements.active).length > 0;
+    onSuccess: async (customerInfo) => {
+      const activeEntitlements = customerInfo.entitlements.active;
+      const hasActive = Object.keys(activeEntitlements).length > 0;
       if (hasActive) {
+        if (activeEntitlements["premium"]) {
+          const productId = activeEntitlements["premium"].productIdentifier;
+          let tier: 'premium' | 'premium_plus' = 'premium';
+          if (productId.includes('family') || productId.includes('pro')) {
+            tier = 'premium_plus';
+          }
+          const expirationDate = activeEntitlements["premium"].expirationDate;
+          const expiry = expirationDate ? new Date(expirationDate).getTime() : undefined;
+          await updateSubscription(tier, expiry);
+        }
         void queryClient.invalidateQueries({ queryKey: ["rc-offerings"] });
         void queryClient.invalidateQueries({ queryKey: ["rc-customer-info"] });
         Alert.alert(
