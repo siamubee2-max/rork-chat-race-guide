@@ -9,6 +9,7 @@ import {
   Text,
   View,
   Platform,
+  Dimensions,
   type ListRenderItem,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -19,7 +20,10 @@ import { getBreedById } from "@/constants/breeds";
 import { Colors } from "@/constants/colors";
 import { PremiumGate } from "@/components/PremiumGate";
 
-const CARD_HEIGHT = 88; // 60 (avatar) + 14*2 (padding) + gap
+const { width: SCREEN_WIDTH } = Dimensions.get("window");
+const IS_TABLET = SCREEN_WIDTH >= 768;
+const AVATAR_SIZE = IS_TABLET ? 100 : 60;
+const CARD_HEIGHT = IS_TABLET ? 128 : 88;
 const CARD_MARGIN = 14;
 
 export default function CatsListScreen() {
@@ -194,9 +198,9 @@ const styles = StyleSheet.create({
     gap: 14,
   },
   avatar: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: AVATAR_SIZE,
+    height: AVATAR_SIZE,
+    borderRadius: AVATAR_SIZE / 2,
     backgroundColor: Colors.backgroundSecondary,
     alignItems: "center",
     justifyContent: "center",
@@ -212,13 +216,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   name: {
-    fontSize: 17,
+    fontSize: IS_TABLET ? 20 : 17,
     fontWeight: "700",
     color: Colors.text,
   },
   details: {
     marginTop: 2,
-    fontSize: 14,
+    fontSize: IS_TABLET ? 16 : 14,
     color: Colors.textSecondary,
   },
   chipText: {

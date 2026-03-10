@@ -8,12 +8,18 @@ import { useCats, MedicalRecordType } from "@/context/cats";
 import { useAuth } from "@/context/auth";
 import { getBreedById } from "@/constants/breeds";
 
+const SCREEN_WIDTH = Dimensions.get("window").width;
+const IS_TABLET = SCREEN_WIDTH >= 768;
+const AVATAR_SIZE = IS_TABLET ? 160 : 80;
+const GALLERY_THUMB = IS_TABLET ? 180 : 110;
+
 export default function CatDetailsScreen() {
   const { t } = useTranslation();
   const { catId } = useLocalSearchParams<{ catId: string }>();
   const { cats } = useCats();
   const { currentUser } = useAuth();
   const navigation = useNavigation();
+
   
   const cat = cats.find((c) => c.id === catId);
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState<number | null>(null);
@@ -310,17 +316,17 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: "#fff",
-    padding: 20,
+    padding: IS_TABLET ? 28 : 20,
     flexDirection: "row",
     alignItems: "center",
-    gap: 16,
+    gap: IS_TABLET ? 24 : 16,
     borderBottomWidth: 1,
     borderBottomColor: "rgba(0,0,0,0.05)",
   },
   avatarContainer: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+    width: AVATAR_SIZE,
+    height: AVATAR_SIZE,
+    borderRadius: AVATAR_SIZE / 2,
     overflow: "hidden",
     backgroundColor: "#F0F0F0",
     borderWidth: 1,
@@ -339,7 +345,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   breedName: {
-    fontSize: 18,
+    fontSize: IS_TABLET ? 22 : 18,
     fontWeight: "700",
     color: "#111",
     marginBottom: 4,
@@ -353,15 +359,15 @@ const styles = StyleSheet.create({
     color: "#E91E63",
   },
   chipText: {
-    fontSize: 14,
+    fontSize: IS_TABLET ? 16 : 14,
     color: "#666",
     fontFamily: Platform.OS === "ios" ? "Courier" : "monospace",
     marginBottom: 6,
   },
   notes: {
-    fontSize: 14,
+    fontSize: IS_TABLET ? 16 : 14,
     color: "#444",
-    lineHeight: 20,
+    lineHeight: IS_TABLET ? 24 : 20,
   },
   sectionHeader: {
     flexDirection: "row",
@@ -543,9 +549,9 @@ const styles = StyleSheet.create({
     overflow: "hidden" as const,
   },
   galleryThumbnail: {
-    width: 110,
-    height: 110,
-    borderRadius: 12,
+    width: GALLERY_THUMB,
+    height: GALLERY_THUMB,
+    borderRadius: IS_TABLET ? 16 : 12,
   },
   modalOverlay: {
     flex: 1,
@@ -569,8 +575,8 @@ const styles = StyleSheet.create({
     width: "100%" as const,
   },
   fullImage: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height * 0.7,
+    width: "100%" as const,
+    height: "70%" as const,
   },
   modalNav: {
     flexDirection: "row" as const,
