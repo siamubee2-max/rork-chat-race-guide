@@ -61,15 +61,16 @@ function useRevenueCatSync() {
 
         if (activeEntitlements["premium"]) {
           const productId = activeEntitlements["premium"].productIdentifier;
+          const lower = productId.toLowerCase();
           let tier: 'premium' | 'premium_plus' = 'premium';
-          if (productId.includes('family') || productId.includes('pro')) {
+          if (lower.includes('family') || lower.includes('pro')) {
             tier = 'premium_plus';
           }
           const expirationDate = activeEntitlements["premium"].expirationDate;
           const expiry = expirationDate ? new Date(expirationDate).getTime() : undefined;
 
           if (currentUser.subscriptionTier === 'free' || currentUser.subscriptionTier !== tier) {
-            console.log("[RevenueCat] Updating local subscription to:", tier);
+            console.log("[RevenueCat] Updating local subscription to:", tier, "from product:", productId);
             await updateSubscription(tier, expiry);
           }
         } else if (currentUser.subscriptionTier !== 'free') {

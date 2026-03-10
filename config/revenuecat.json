@@ -1,115 +1,119 @@
 {
   "revenuecat": {
     "app_name": "Purrly",
-    "products": {
-      "free": {
-        "identifier": "purrly_free",
-        "display_name": "Free",
-        "price": 0,
-        "currency": "EUR",
-        "type": "free",
-        "description": "Découverte - 10 scans/mois + 15 questions IA"
+    "apps": {
+      "ios": {
+        "id": "app9e2825fcfe",
+        "bundle_id": "app.rork.chat-race-guide"
       },
+      "android": {
+        "id": "appfccd6c1e18",
+        "package_name": "app.rork.chat_race_guide"
+      },
+      "test_store": {
+        "id": "appa7d06b6693"
+      }
+    },
+    "products": {
       "premium_monthly": {
-        "identifier": "purrly_premium_monthly",
-        "display_name": "Premium Monthly",
+        "display_name": "Premium Mensuel",
         "price": 14.99,
         "currency": "EUR",
         "type": "subscription",
         "period": "monthly",
-        "description": "Illimité + Sans pub"
+        "rc_package_key": "monthly",
+        "identifiers": {
+          "ios": "premium_monthly",
+          "android": "premium_monthly:premium-monthly",
+          "test_store": "premium_monthly"
+        }
       },
       "premium_yearly": {
-        "identifier": "purrly_premium_yearly",
-        "display_name": "Premium Yearly",
+        "display_name": "Premium Annuel",
         "price": 149.99,
         "currency": "EUR",
         "type": "subscription",
         "period": "yearly",
+        "rc_package_key": "$rc_annual",
         "savings": "17%",
-        "description": "Illimité + Sans pub (économie 17%)"
+        "identifiers": {
+          "ios": "com.purrly.premium.yearly",
+          "android": "premium_yearly:premium-yearly",
+          "test_store": "premium_yearly"
+        }
       },
       "family_monthly": {
-        "identifier": "purrly_family_monthly",
-        "display_name": "Family Monthly",
+        "display_name": "Family Mensuel",
         "price": 24.99,
         "currency": "EUR",
         "type": "subscription",
         "period": "monthly",
-        "description": "5 animaux + 5 comptes familiaux"
+        "rc_package_key": "family_monthly",
+        "identifiers": {
+          "ios": "com.purrly.family.monthly",
+          "android": "family_monthly:family-monthly",
+          "test_store": "family_monthly"
+        }
       },
       "family_yearly": {
-        "identifier": "purrly_family_yearly",
-        "display_name": "Family Yearly",
+        "display_name": "Family Annuel",
         "price": 239.99,
         "currency": "EUR",
         "type": "subscription",
         "period": "yearly",
+        "rc_package_key": "family_yearly",
         "savings": "20%",
-        "description": "5 animaux + 5 comptes familiaux (économie 20%)"
+        "identifiers": {
+          "ios": "com.purrly.family.yearly",
+          "android": "family_yearly:family-yearly",
+          "test_store": "family_yearly"
+        }
       },
       "pro_monthly": {
-        "identifier": "purrly_pro_monthly",
-        "display_name": "Pro Monthly",
+        "display_name": "Pro Mensuel",
         "price": 49.99,
         "currency": "EUR",
         "type": "subscription",
         "period": "monthly",
-        "description": "Outils business pour éleveurs et vétérinaires"
+        "rc_package_key": "pro_monthly",
+        "identifiers": {
+          "ios": "com.purrly.pro.monthly",
+          "android": "pro_monthly:pro-monthly",
+          "test_store": "pro_monthly"
+        }
       },
       "pro_yearly": {
-        "identifier": "purrly_pro_yearly",
-        "display_name": "Pro Yearly",
+        "display_name": "Pro Annuel",
         "price": 499.99,
         "currency": "EUR",
         "type": "subscription",
         "period": "yearly",
+        "rc_package_key": "pro_yearly",
         "savings": "17%",
-        "description": "Outils business pour éleveurs et vétérinaires (économie 17%)"
-      },
-      "founder": {
-        "identifier": "purrly_founder_lifetime",
-        "display_name": "Founder",
-        "price": 9.99,
-        "currency": "EUR",
-        "type": "lifetime",
-        "limit": 1000,
-        "description": "Accès complet À VIE - Limité aux 1000 premiers"
+        "identifiers": {
+          "ios": "com.purrly.pro.yearly",
+          "android": "pro_yearly:pro-yearly",
+          "test_store": "pro_yearly"
+        }
       }
     },
     "entitlements": {
       "premium": {
-        "products": [
-          "purrly_premium_monthly",
-          "purrly_premium_yearly",
-          "purrly_founder_lifetime"
-        ]
-      },
-      "family": {
-        "products": [
-          "purrly_family_monthly",
-          "purrly_family_yearly"
-        ]
-      },
-      "pro": {
-        "products": [
-          "purrly_pro_monthly",
-          "purrly_pro_yearly"
-        ]
+        "display_name": "Premium Access",
+        "id": "entl623f39d961",
+        "products": "all"
       }
     },
     "offerings": {
       "default": {
-        "identifier": "default",
+        "id": "ofrng7afe17be65",
         "packages": [
-          "purrly_free",
-          "purrly_premium_monthly",
-          "purrly_premium_yearly",
-          "purrly_family_monthly",
-          "purrly_family_yearly",
-          "purrly_pro_monthly",
-          "purrly_pro_yearly",
-          "purrly_founder_lifetime"
+          "monthly",
+          "$rc_annual",
+          "family_monthly",
+          "family_yearly",
+          "pro_monthly",
+          "pro_yearly"
         ]
       }
     }
