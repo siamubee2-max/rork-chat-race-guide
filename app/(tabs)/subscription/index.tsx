@@ -173,103 +173,6 @@ const LOCAL_PLANS: LocalPlan[] = [
   },
 ];
 
-const PACKAGE_META: Record<string, { name: string; color: string; badge: string | null; features: string[]; target?: string }> = {
-  monthly: {
-    name: "Premium",
-    color: "#8b5cf6",
-    badge: "⭐ PLUS POPULAIRE",
-    features: [
-      "Scans ILLIMITÉS",
-      "Assistant IA ILLIMITÉ",
-      "Communauté illimitée",
-      "5 designs posters premium",
-      "Gamification complète",
-      "Guides pratiques avancés",
-      "SANS PUBLICITÉ",
-      "Support prioritaire < 2h",
-      "Badge Premium communauté",
-    ],
-  },
-  "$rc_annual": {
-    name: "Premium Annuel",
-    color: "#8b5cf6",
-    badge: "💰 MEILLEURE OFFRE",
-    features: [
-      "Tout Premium inclus",
-      "Économisez ~17% vs mensuel",
-      "Scans ILLIMITÉS",
-      "Assistant IA ILLIMITÉ",
-      "SANS PUBLICITÉ",
-      "Support prioritaire",
-    ],
-  },
-  family_monthly: {
-    name: "Family",
-    color: "#ec4899",
-    badge: "💎 FAMILLE",
-    features: [
-      "Tout Premium +",
-      "Jusqu'à 5 animaux",
-      "Partage familial (5 comptes)",
-      "Posters illimités",
-      "Rappels vaccination auto",
-      "Carnet de santé multi-animaux",
-      "Export données PDF",
-    ],
-  },
-  family_yearly: {
-    name: "Family Annuel",
-    color: "#ec4899",
-    badge: "💎 FAMILLE - MEILLEUR PRIX",
-    features: [
-      "Tout Family inclus",
-      "Économisez ~20% vs mensuel",
-      "Partage familial (5 comptes)",
-      "Posters illimités",
-    ],
-  },
-  pro_monthly: {
-    name: "Pro",
-    color: "#f59e0b",
-    badge: "💼 PROFESSIONNEL",
-    target: "Éleveurs, Vétérinaires, Pros",
-    features: [
-      "Tout Family +",
-      "Gestion multi-portées",
-      "Profil professionnel vérifié",
-      "Badge Expert certifié",
-      "Analytics avancés",
-      "Outils business",
-      "Support dédié",
-    ],
-  },
-  pro_yearly: {
-    name: "Pro Annuel",
-    color: "#f59e0b",
-    badge: "💼 PRO - MEILLEUR PRIX",
-    target: "Éleveurs, Vétérinaires, Pros",
-    features: [
-      "Tout Pro inclus",
-      "Économisez ~17% vs mensuel",
-      "Analytics avancés",
-      "Support dédié",
-    ],
-  },
-  founder_lifetime: {
-    name: "Fondateur",
-    color: "#D4A05C",
-    badge: "🏆 ÉDITION LIMITÉE",
-    features: [
-      "Accès Premium complet À VIE",
-      "Badge Fondateur exclusif",
-      "Limité aux 1000 premiers",
-      "Scans ILLIMITÉS",
-      "Assistant IA ILLIMITÉ",
-      "SANS PUBLICITÉ",
-    ],
-  },
-};
-
 const IconMap = {
   star: Star,
   users: Users,
@@ -280,7 +183,6 @@ const IconMap = {
 export default function SubscriptionScreen() {
   const { isAuthenticated, updateSubscription } = useAuth();
   const queryClient = useQueryClient();
-  const [purchasingPkgId, setPurchasingPkgId] = useState<string | null>(null);
   const [purchasingLocalId, setPurchasingLocalId] = useState<string | null>(null);
 
   const isNative = Platform.OS === "ios" || Platform.OS === "android";
@@ -301,55 +203,6 @@ export default function SubscriptionScreen() {
     retry: 2,
     staleTime: 1000 * 60 * 5,
     enabled: rcAvailable,
-  });
-
-  const purchaseMutation = useMutation({
-    mutationFn: async (pkg: any) => {
-      console.log("[Subscription] Purchasing package:", pkg.identifier, pkg.product.identifier);
-      const result = await Purchases.purchasePackage(pkg);
-      console.log("[Subscription] Purchase result:", JSON.stringify(result));
-      return result;
-    },
-    onSuccess: async (result: any) => {
-      console.log("[Subscription] Purchase successful");
-      const customerInfo = result.customerInfo;
-      const activeEntitlements = customerInfo.entitlements.active;
-      console.log("[Subscription] Active entitlements:", JSON.stringify(Object.keys(activeEntitlements)));
-
-      if (activeEntitlements["premium"]) {
-        const productId = activeEntitlements["premium"].productIdentifier;
-        console.log("[Subscription] Activating premium for product:", productId);
-        let tier: 'premium' | 'premium_plus' = 'premium';
-        if (productId.includes('family') || productId.includes('pro')) {
-          tier = 'premium_plus';
-        }
-        const expirationDate = activeEntitlements["premium"].expirationDate;
-        const expiry = expirationDate ? new Date(expirationDate).getTime() : undefined;
-        await updateSubscription(tier, expiry);
-      }
-
-      void queryClient.invalidateQueries({ queryKey: ["rc-offerings"] });
-      void queryClient.invalidateQueries({ queryKey: ["rc-customer-info"] });
-      setPurchasingPkgId(null);
-      Alert.alert(
-        "🎉 Bienvenue !",
-        "Votre abonnement est maintenant actif. Profitez de toutes les fonctionnalités !",
-        [{ text: "OK", onPress: () => router.push("/(tabs)/(scan)" as any) }]
-      );
-    },
-    onError: (error: any) => {
-      setPurchasingPkgId(null);
-      if (error?.userCancelled) {
-        console.log("[Subscription] User cancelled purchase");
-        return;
-      }
-      console.error("[Subscription] Purchase error:", error);
-      Alert.alert(
-        "Erreur",
-        error?.message || "Une erreur est survenue lors de l'achat. Veuillez réessayer.",
-        [{ text: "OK" }]
-      );
-    },
   });
 
   const restoreMutation = useMutation({
@@ -394,23 +247,6 @@ export default function SubscriptionScreen() {
       Alert.alert("Erreur", "Impossible de restaurer les achats. Veuillez réessayer.");
     },
   });
-
-  const handleSubscribeRC = useCallback(async (pkg: any) => {
-    if (!isAuthenticated) {
-      Alert.alert(
-        "Connexion requise",
-        "Veuillez vous connecter pour souscrire à un plan.",
-        [
-          { text: "Annuler", style: "cancel" },
-          { text: "Se connecter", onPress: () => router.push("/auth/login" as any) },
-        ]
-      );
-      return;
-    }
-
-    setPurchasingPkgId(pkg.identifier);
-    purchaseMutation.mutate(pkg);
-  }, [isAuthenticated, purchaseMutation]);
 
   const handleSubscribeLocal = useCallback(async (plan: LocalPlan) => {
     if (!isAuthenticated) {
@@ -491,85 +327,26 @@ export default function SubscriptionScreen() {
   }, [isAuthenticated, rcAvailable, updateSubscription, queryClient]);
 
   const offering = offeringsQuery.data?.current;
-  const hasRCPackages = offering && offering.availablePackages && offering.availablePackages.length > 0;
+  const rcPackages = offering?.availablePackages || [];
 
-  const renderRCPackageCard = useCallback((pkg: any) => {
-    const meta = PACKAGE_META[pkg.identifier] || {
-      name: pkg.product.title || pkg.identifier,
-      color: Colors.primary,
-      badge: null,
-      features: [],
-    };
-
-    const isProcessing = purchasingPkgId === pkg.identifier;
-    const isHighlighted = !!meta.badge;
-    const priceString = pkg.product.priceString;
-    const period = pkg.packageType === "ANNUAL" ? "/an" : "/mois";
-
-    return (
-      <View
-        key={pkg.identifier}
-        style={[
-          styles.pricingCard,
-          isHighlighted && styles.pricingCardHighlighted,
-          { borderColor: meta.color },
-        ]}
-      >
-        {meta.badge && (
-          <View style={[styles.badge, { backgroundColor: meta.color }]}>
-            <Text style={styles.badgeText}>{meta.badge}</Text>
-          </View>
-        )}
-
-        <View style={styles.cardHeader}>
-          <Text style={styles.planName}>{meta.name}</Text>
-          {meta.target && <Text style={styles.planTarget}>{meta.target}</Text>}
-        </View>
-
-        <View style={styles.priceContainer}>
-          <Text style={styles.price}>{priceString}</Text>
-          <Text style={styles.pricePeriod}>{period}</Text>
-        </View>
-
-        <View style={styles.featuresContainer}>
-          {meta.features.map((feature, idx) => (
-            <View key={idx} style={styles.featureRow}>
-              <Check size={16} color={meta.color} />
-              <Text style={styles.featureText}>{feature}</Text>
-            </View>
-          ))}
-        </View>
-
-        <Pressable
-          style={[
-            styles.ctaButton,
-            { backgroundColor: meta.color },
-            isProcessing && { opacity: 0.7 },
-          ]}
-          onPress={() => handleSubscribeRC(pkg)}
-          disabled={isProcessing || purchaseMutation.isPending}
-        >
-          {isProcessing ? (
-            <ActivityIndicator color="#fff" />
-          ) : (
-            <>
-              <Crown size={20} color="#fff" />
-              <Text style={styles.ctaText}>Choisir ce plan</Text>
-            </>
-          )}
-        </Pressable>
-
-        <Text style={styles.trialText}>
-          Essai gratuit · Annulation à tout moment
-        </Text>
-      </View>
-    );
-  }, [purchasingPkgId, purchaseMutation.isPending, handleSubscribeRC]);
+  const findRCPackageForPlan = useCallback((planId: string) => {
+    if (!rcPackages.length) return null;
+    return rcPackages.find((p: any) =>
+      p.product?.identifier?.includes(planId) ||
+      p.identifier?.includes(planId)
+    ) || null;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [offeringsQuery.data]);
 
   const renderLocalPlanCard = useCallback((plan: LocalPlan) => {
     const isProcessing = purchasingLocalId === plan.id;
     const isHighlighted = !!plan.badge;
     const PlanIcon = IconMap[plan.icon];
+    const matchingRCPkg = findRCPackageForPlan(plan.id);
+    const displayPrice = matchingRCPkg ? matchingRCPkg.product.priceString : plan.price;
+    const displayPeriod = matchingRCPkg
+      ? (matchingRCPkg.packageType === "ANNUAL" ? "/an" : "/mois")
+      : plan.period;
 
     return (
       <View
@@ -595,8 +372,8 @@ export default function SubscriptionScreen() {
         </View>
 
         <View style={styles.priceContainer}>
-          <Text style={styles.price}>{plan.price}</Text>
-          <Text style={styles.pricePeriod}>{plan.period}</Text>
+          <Text style={styles.price}>{displayPrice}</Text>
+          <Text style={styles.pricePeriod}>{displayPeriod}</Text>
         </View>
 
         {plan.savings && (
@@ -638,7 +415,7 @@ export default function SubscriptionScreen() {
         </Text>
       </View>
     );
-  }, [purchasingLocalId, handleSubscribeLocal]);
+  }, [purchasingLocalId, handleSubscribeLocal, findRCPackageForPlan]);
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -659,16 +436,10 @@ export default function SubscriptionScreen() {
         </View>
       )}
 
-      {hasRCPackages ? (
+      {!offeringsQuery.isLoading && (
         <View style={styles.packagesContainer}>
-          {offering.availablePackages.map((pkg: any) => renderRCPackageCard(pkg))}
+          {LOCAL_PLANS.map((plan) => renderLocalPlanCard(plan))}
         </View>
-      ) : (
-        !offeringsQuery.isLoading && (
-          <View style={styles.packagesContainer}>
-            {LOCAL_PLANS.map((plan) => renderLocalPlanCard(plan))}
-          </View>
-        )
       )}
 
       {rcAvailable && (
