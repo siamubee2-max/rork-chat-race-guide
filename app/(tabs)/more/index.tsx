@@ -21,6 +21,7 @@ import {
   Heart,
   Trash2,
   LogOut,
+  Info,
 } from "lucide-react-native";
 import {
   ScrollView,
@@ -274,6 +275,14 @@ export default function MoreScreen() {
           subtitle: t("legal.faqSubtitle"),
           route: "/(tabs)/more/faq",
           color: "rgba(196, 163, 90, 0.15)",
+        },
+        {
+          id: "about",
+          icon: <Info color="#6B8AE0" size={22} />,
+          title: t("legal.aboutTitle"),
+          subtitle: t("legal.aboutSubtitle"),
+          route: "/(tabs)/more/about",
+          color: "rgba(107, 138, 224, 0.15)",
         },
       ],
     },

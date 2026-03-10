@@ -28,6 +28,7 @@ export default function MoreLayout() {
       <Stack.Screen name="privacy" />
       <Stack.Screen name="terms" />
       <Stack.Screen name="faq" />
+      <Stack.Screen name="about" />
     </Stack>
   );
 }
