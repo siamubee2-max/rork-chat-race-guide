@@ -99,7 +99,7 @@ export default function BreedDetailsScreen() {
               source={{ uri: breed.imageUri }}
               style={styles.heroImage}
               contentFit="cover"
-              contentPosition="top center"
+              contentPosition={{ top: -20, left: '50%' }}
               transition={120}
             />
             <View style={styles.heroOverlay} />
