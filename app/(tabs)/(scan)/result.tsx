@@ -685,7 +685,7 @@ Race: Persan | Confiance: Faible | Raison: Pelage long et épais visible.`;
       try {
         if (navigator.share) {
           await navigator.share({
-            title: "Résultat du scan - Purrly",
+            title: "Résultat du scan - Barkly",
             text: `Mon chat a été identifié !\n\n${text}`,
           });
         } else {

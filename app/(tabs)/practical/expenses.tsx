@@ -184,7 +184,7 @@ export default function ExpensesScreen() {
             <View style={styles.emptyState}>
               <Text style={styles.emptyText}>Aucune dépense enregistrée</Text>
               <Text style={styles.emptySubtext}>
-                Commencez à suivre vos dépenses pour votre chat
+                Commencez à suivre vos dépenses pour votre chien
               </Text>
             </View>
           )}

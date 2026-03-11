@@ -8,10 +8,10 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth";
 import { useLanguage } from "@/context/language";
-import { catQuotes } from "@/constants/quotes";
+import { catQuotes as dogQuotes } from "@/constants/quotes";
 import { Colors } from "@/constants/colors";
 
-const logoUri = require("@/assets/images/purrly-logo.png");
+const logoUri = require("@/assets/images/barkly-logo.png");
 
 export default function Index() {
   useTranslation();
@@ -22,7 +22,7 @@ export default function Index() {
   const insets = useSafeAreaInsets();
 
   const randomQuote = useMemo(
-    () => catQuotes[Math.floor(Math.random() * catQuotes.length)],
+    () => dogQuotes[Math.floor(Math.random() * dogQuotes.length)],
     []
   );
 
@@ -97,16 +97,16 @@ export default function Index() {
           <View style={styles.header}>
             <View style={styles.brandPill}>
               <Crown color={Colors.primary} size={18} />
-              <Text style={styles.brandText}>PURRLY</Text>
+              <Text style={styles.brandText}>BARKLY</Text>
             </View>
             <View style={styles.premiumPill}>
               <Text style={styles.premiumText}>COLLECTION</Text>
             </View>
           </View>
-          <Text style={styles.preTitle}>L&apos;ART DE LA GÉNÉTIQUE</Text>
-          <Text style={[styles.title, { fontSize: titleSize, lineHeight: titleLineHeight }]}>Le prestige dans chaque regard</Text>
+          <Text style={styles.preTitle}>L&apos;AMI FIDÈLE DE L&apos;HOMME</Text>
+          <Text style={[styles.title, { fontSize: titleSize, lineHeight: titleLineHeight }]}>La passion dans chaque regard</Text>
           <Text style={styles.subtitle}>
-            Découvrez l&apos;élégance pure à travers notre intelligence artificielle dédiée à l&apos;univers félin.
+            Découvrez la race de votre chien grâce à notre intelligence artificielle dédiée à l&apos;univers canin.
           </Text>
           
           <View style={styles.ctaContainer}>
@@ -144,7 +144,7 @@ export default function Index() {
           <View style={[styles.bentoItem, styles.bentoItemLarge]}>
             <Sparkles color={Colors.primary} size={24} />
             <Text style={styles.bentoTitle}>IA de Précision</Text>
-            <Text style={styles.bentoDesc}>Une analyse biométrique raffinée pour identifier plus de 200 races avec une exactitude absolue.</Text>
+            <Text style={styles.bentoDesc}>Une analyse biométrique raffinée pour identifier plus de 300 races de chiens avec une exactitude absolue.</Text>
           </View>
           
           <View style={styles.bentoRow}>

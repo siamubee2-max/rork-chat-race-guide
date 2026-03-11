@@ -121,7 +121,7 @@ export default function NewEventScreen() {
           <Text style={styles.label}>Titre *</Text>
           <TextInput
             style={styles.input}
-            placeholder="Ex: Rencontre des félins parisiens"
+            placeholder="Ex: Rencontre des chiens parisiens"
             placeholderTextColor={Colors.textMuted}
             value={title}
             onChangeText={setTitle}

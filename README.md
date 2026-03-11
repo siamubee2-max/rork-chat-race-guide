@@ -1,4 +1,4 @@
-# 🐾 Purrly - La Super-App N°1 pour Animaux
+# 🐾 Barkly - La Super-App N°1 pour Animaux
 
 > Remplacez 6 applications par une seule plateforme tout-en-un propulsée par l'IA
 
@@ -20,12 +20,12 @@ Acheter séparément : **450 $/an**
 - Vétérinaires : 60 $
 - Urgences : 120 $
 
-**Purrly Premium : 149 $/an**
+**Barkly Premium : 149 $/an**
 = Économie de **301 $ (67%)**
 
 ## 🚀 Features
 
-- 🔍 **Scanner IA** : 400+ races chiens & chats
+- 🔍 **Scanner IA** : 400+ races chiens & chiens
 - 🤖 **Assistant véto** : GPT-4 spécialisé animaux
 - 👥 **Communauté** : 50k+ propriétaires
 - 🚨 **Urgences** : Alertes géolocalisées + posters
@@ -50,4 +50,4 @@ npm start
 
 ---
 
-Made with ❤️ by Purrly Team
+Made with ❤️ by Barkly Team

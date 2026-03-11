@@ -17,7 +17,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
 
 import { useSocial } from "@/context/social";
-import { useCats } from "@/context/cats";
+import { useCats } from "@/context/dogs";
 import { Colors } from "@/constants/colors";
 
 const SAMPLE_IMAGES = [
@@ -110,7 +110,7 @@ export default function NewPostScreen() {
             <View style={styles.imagePlaceholder}>
               <ImageIcon size={48} color={Colors.textMuted} />
               <Text style={styles.imagePlaceholderText}>
-                Ajouter une photo de votre chat
+                Ajouter une photo de votre chien
               </Text>
               <View style={styles.imageButtons}>
                 <Pressable style={styles.imageBtn} onPress={pickImage}>
@@ -131,7 +131,7 @@ export default function NewPostScreen() {
           <Text style={styles.label}>Légende</Text>
           <TextInput
             style={styles.captionInput}
-            placeholder="Décrivez ce moment avec votre chat..."
+            placeholder="Décrivez ce moment avec votre chien..."
             placeholderTextColor={Colors.textMuted}
             value={caption}
             onChangeText={setCaption}

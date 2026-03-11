@@ -13,7 +13,7 @@ import {
   Plus,
   Heart
 } from "lucide-react-native";
-import { useCats } from "@/context/cats";
+import { useCats } from "@/context/dogs";
 import { useAuth } from "@/context/auth";
 
 export default function HealthDashboardScreen() {
@@ -75,7 +75,7 @@ export default function HealthDashboardScreen() {
         alerts.push({ type: "vomiting", message: "Vomissements signalés", severity: "high" });
       }
       if (recentLog.litter === "diarrhea" || recentLog.litter === "blood") {
-        alerts.push({ type: "litter", message: "Problème de litière signalé", severity: "high" });
+        alerts.push({ type: "litter", message: "Problème de besoins signalé", severity: "high" });
       }
       if (recentLog.energy === "lethargic") {
         alerts.push({ type: "energy", message: "Léthargie observée", severity: "medium" });

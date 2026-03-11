@@ -16,7 +16,7 @@ import { Share2 } from "lucide-react-native";
 import { captureRef } from "react-native-view-shot";
 
 import { useEmergency, type EmergencyType } from "@/context/emergency";
-import { useCats } from "@/context/cats";
+import { useCats } from "@/context/dogs";
 
 const EMERGENCY_TYPES: { value: EmergencyType; label: string; color: string }[] = [
   { value: "lost", label: "Chat perdu", color: "#FF6B6B" },
@@ -54,7 +54,7 @@ export default function CreateEmergencyScreen() {
 
   const handleCreateAlert = async () => {
     if (!catName.trim()) {
-      Alert.alert("Erreur", "Veuillez entrer le nom du chat");
+      Alert.alert("Erreur", "Veuillez entrer le nom du chien");
       return;
     }
     if (!location.trim()) {
@@ -235,7 +235,7 @@ export default function CreateEmergencyScreen() {
           ))}
         </View>
 
-        <Text style={styles.sectionTitle}>Sélectionner un chat (optionnel)</Text>
+        <Text style={styles.sectionTitle}>Sélectionner un chien (optionnel)</Text>
         <View style={styles.catsGrid}>
           {cats.map((cat) => (
             <Pressable
@@ -258,9 +258,9 @@ export default function CreateEmergencyScreen() {
           ))}
         </View>
 
-        <Text style={styles.sectionTitle}>Informations du chat</Text>
+        <Text style={styles.sectionTitle}>Informations du chien</Text>
         
-        <Text style={styles.label}>Nom du chat *</Text>
+        <Text style={styles.label}>Nom du chien *</Text>
         <TextInput
           style={styles.input}
           value={catName}

@@ -4,7 +4,7 @@ import { useLocalSearchParams, router, useNavigation } from "expo-router";
 import { Image } from "expo-image";
 import { Cat, Plus, Calendar, Syringe, Stethoscope, Pill, HeartPulse, ChevronRight, Heart, Bug, Activity, Images, X } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
-import { useCats, MedicalRecordType } from "@/context/cats";
+import { useCats, MedicalRecordType } from "@/context/dogs";
 import { useAuth } from "@/context/auth";
 import { getBreedById } from "@/constants/breeds";
 

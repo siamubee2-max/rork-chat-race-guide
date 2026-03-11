@@ -1,6 +1,6 @@
 {
   "revenuecat": {
-    "app_name": "Purrly",
+    "app_name": "Barkly",
     "apps": {
       "ios": {
         "id": "app9e2825fcfe",
@@ -37,7 +37,7 @@
         "rc_package_key": "$rc_annual",
         "savings": "17%",
         "identifiers": {
-          "ios": "com.purrly.premium.yearly",
+          "ios": "com.barkly.premium.yearly",
           "android": "premium_yearly:premium-yearly",
           "test_store": "premium_yearly"
         }
@@ -50,7 +50,7 @@
         "period": "monthly",
         "rc_package_key": "family_monthly",
         "identifiers": {
-          "ios": "com.purrly.family.monthly",
+          "ios": "com.barkly.family.monthly",
           "android": "family_monthly:family-monthly",
           "test_store": "family_monthly"
         }
@@ -64,7 +64,7 @@
         "rc_package_key": "family_yearly",
         "savings": "20%",
         "identifiers": {
-          "ios": "com.purrly.family.yearly",
+          "ios": "com.barkly.family.yearly",
           "android": "family_yearly:family-yearly",
           "test_store": "family_yearly"
         }
@@ -77,7 +77,7 @@
         "period": "monthly",
         "rc_package_key": "pro_monthly",
         "identifiers": {
-          "ios": "com.purrly.pro.monthly",
+          "ios": "com.barkly.pro.monthly",
           "android": "pro_monthly:pro-monthly",
           "test_store": "pro_monthly"
         }
@@ -91,7 +91,7 @@
         "rc_package_key": "pro_yearly",
         "savings": "17%",
         "identifiers": {
-          "ios": "com.purrly.pro.yearly",
+          "ios": "com.barkly.pro.yearly",
           "android": "pro_yearly:pro-yearly",
           "test_store": "pro_yearly"
         }

@@ -19,7 +19,7 @@ import * as Haptics from "expo-haptics";
 import { z } from "zod";
 import { useTranslation } from "react-i18next";
 import { Colors } from "@/constants/colors";
-import { useCats } from "@/context/cats";
+import { useCats } from "@/context/dogs";
 import { PremiumGate } from "@/components/PremiumGate";
 import { useReminders } from "@/context/reminders";
 
@@ -49,11 +49,11 @@ export default function AssistantScreen() {
   ];
 
   const catsContext = cats.length > 0
-    ? `L'utilisateur a ${cats.length} chat(s): ${cats.map(c => {
+    ? `L'utilisateur a ${cats.length} chien(s): ${cats.map(c => {
         const age = c.birthDate ? calculateAge(c.birthDate) : "âge inconnu";
         return `${c.name} (${age})`;
       }).join(", ")}.`
-    : "L'utilisateur n'a pas encore enregistré de chats.";
+    : "L'utilisateur n'a pas encore enregistré de chiens.";
 
   const { messages, error, sendMessage, setMessages } = useRorkAgent({
     tools: {
@@ -143,7 +143,7 @@ export default function AssistantScreen() {
 
     const isFirstUserMessage = messages.length === 0;
     const fullMessage = isFirstUserMessage
-      ? `[Contexte: Tu es Purrly, un assistant IA spécialisé dans les chats. ${catsContext} Tu peux créer des rappels et consulter les infos des chats. Réponds de manière concise et amicale en français.]
+      ? `[Contexte: Tu es Barkly, un assistant IA spécialisé dans les chiens. ${catsContext} Tu peux créer des rappels et consulter les infos des chiens. Réponds de manière concise et amicale en français.]
 
 ${messageText}`
       : messageText;
@@ -279,7 +279,7 @@ ${messageText}`
                 <Sparkles color={Colors.primary} size={32} />
               </View>
             </View>
-            <Text style={styles.emptyTitle}>Purrly AI</Text>
+            <Text style={styles.emptyTitle}>Barkly AI</Text>
             <Text style={styles.emptySubtitle}>Votre assistant félin intelligent</Text>
             
             {cats.length > 0 && (

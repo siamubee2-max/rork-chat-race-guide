@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { generateObject, generateText } from "@rork-ai/toolkit-sdk";
 import { z } from "zod";
-import { useCats, CatProfile } from "./cats";
+import { useCats, CatProfile } from "./dogs";
 
 export type HealthInsight = {
   id: string;

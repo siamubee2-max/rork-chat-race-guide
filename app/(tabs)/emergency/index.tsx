@@ -413,7 +413,7 @@ const { alerts, updateAlert, deleteAlert } = useEmergency();
       message += `\n📧 Email: ${alert.contactEmail}`;
     }
     
-    message += `\n\n⚠️ Merci de partager pour aider à retrouver ce chat !`;
+    message += `\n\n⚠️ Merci de partager pour aider à retrouver ce chien !`;
 
     try {
       if (Platform.OS === 'web') {
@@ -664,7 +664,7 @@ const { alerts, updateAlert, deleteAlert } = useEmergency();
       </View>
       <Text style={styles.emptyTitle}>Aucune alerte active</Text>
       <Text style={styles.emptyText}>
-        Créez une alerte d&apos;urgence si votre chat est perdu, blessé, ou si vous avez trouvé un chat
+        Créez une alerte d&apos;urgence si votre chien est perdu, blessé, ou si vous avez trouvé un chien
       </Text>
       <Pressable onPress={onCreateAlert} style={styles.emptyBtn}>
         <Plus color="#fff" size={20} />

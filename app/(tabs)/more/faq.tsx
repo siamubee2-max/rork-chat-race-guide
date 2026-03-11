@@ -102,7 +102,7 @@ export default function FaqScreen() {
     try {
       await Haptics.selectionAsync();
     } catch {}
-    void Linking.openURL("mailto:support@purrly.app");
+    void Linking.openURL("mailto:support@barkly.app");
   }, []);
 
   return (
@@ -154,7 +154,7 @@ export default function FaqScreen() {
           >
             <Mail color="#fff" size={18} />
             <Text style={styles.contactButtonText}>
-              support@purrly.app
+              support@barkly.app
             </Text>
           </Pressable>
         </View>

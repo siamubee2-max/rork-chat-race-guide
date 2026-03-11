@@ -214,7 +214,7 @@ export default function RemindersScreen() {
             </View>
             <Text style={styles.emptyTitle}>Aucun rappel</Text>
             <Text style={styles.emptyText}>
-              Créez des rappels pour ne jamais oublier les vaccins, médicaments ou rendez-vous de votre chat
+              Créez des rappels pour ne jamais oublier les vaccins, médicaments ou rendez-vous de votre chien
             </Text>
           </View>
         )}

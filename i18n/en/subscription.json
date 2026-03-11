@@ -50,13 +50,13 @@
     "loginRequired": "Login required",
     "loginRequiredDesc": "You must be logged in to subscribe.",
     "comparison": {
-      "title": "Buy separately vs Purrly",
+      "title": "Buy separately vs Barkly",
       "breedScanner": "Breed scanner",
       "aiAssistant": "AI assistant",
       "vetsDirectory": "Vets directory",
       "emergencies": "Emergencies",
       "total": "TOTAL elsewhere",
-      "purrlyPremium": "Purrly Premium",
+      "barklyPremium": "Barkly Premium",
       "savings": "Save {amount} per year ({percent}%)"
     },
     "faq": {

@@ -25,7 +25,7 @@ import {
 } from "lucide-react-native";
 import * as Haptics from "expo-haptics";
 import { Colors } from "@/constants/colors";
-import { useCats } from "@/context/cats";
+import { useCats } from "@/context/dogs";
 import { useAI, HealthInsight } from "@/context/ai";
 
 const INSIGHT_ICONS = {
@@ -165,9 +165,9 @@ export default function InsightsScreen() {
         <View style={styles.emptyIconContainer}>
           <Brain color={Colors.primary} size={48} />
         </View>
-        <Text style={styles.emptyTitle}>Aucun chat enregistré</Text>
+        <Text style={styles.emptyTitle}>Aucun chien enregistré</Text>
         <Text style={styles.emptyText}>
-          Ajoutez un chat pour recevoir des analyses IA personnalisées sur sa santé et son comportement.
+          Ajoutez un chien pour recevoir des analyses IA personnalisées sur sa santé et son comportement.
         </Text>
       </View>
     );
@@ -192,7 +192,7 @@ export default function InsightsScreen() {
         <View style={styles.headerText}>
           <Text style={styles.headerTitle}>Analyses IA</Text>
           <Text style={styles.headerSubtitle}>
-            Insights personnalisés pour vos chats
+            Insights personnalisés pour vos chiens
           </Text>
         </View>
       </View>
@@ -286,7 +286,7 @@ export default function InsightsScreen() {
           <Lightbulb color={Colors.textMuted} size={32} />
           <Text style={styles.noInsightsTitle}>Aucune analyse</Text>
           <Text style={styles.noInsightsText}>
-            Appuyez sur le bouton pour générer des insights IA basés sur les données de {selectedCat?.name || "votre chat"}.
+            Appuyez sur le bouton pour générer des insights IA basés sur les données de {selectedCat?.name || "votre chien"}.
           </Text>
         </View>
       )}

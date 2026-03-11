@@ -409,7 +409,7 @@ export default function SubscriptionScreen() {
           <Sparkles size={28} color={Colors.primary} />
         </View>
         <Text style={styles.title}>Choisissez votre plan</Text>
-        <Text style={styles.subtitle}>Débloquez toutes les fonctionnalités de Purrly</Text>
+        <Text style={styles.subtitle}>Débloquez toutes les fonctionnalités de Barkly</Text>
       </View>
 
       {rcAvailable && offeringsQuery.isLoading && (

@@ -77,12 +77,12 @@ export default function AboutScreen() {
         >
           <View style={styles.logoContainer}>
             <Image
-              source={require("@/assets/images/purrly-logo.png")}
+              source={require("@/assets/images/barkly-logo.png")}
               style={styles.logo}
               resizeMode="contain"
             />
           </View>
-          <Text style={styles.appName}>Purrly</Text>
+          <Text style={styles.appName}>Barkly</Text>
           <Text style={styles.tagline}>{t("legal.about.tagline")}</Text>
           <View style={styles.versionBadge}>
             <Text style={styles.versionText}>{t("legal.about.version")}</Text>

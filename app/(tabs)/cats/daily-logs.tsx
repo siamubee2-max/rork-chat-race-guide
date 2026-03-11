@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useCallback } from "react";
 import { View, Text, StyleSheet, ScrollView, Pressable } from "react-native";
 import { useLocalSearchParams, router, useNavigation } from "expo-router";
 import { Plus, Calendar, UtensilsCrossed, Droplets, Activity, Trash, AlertTriangle } from "lucide-react-native";
-import { useCats } from "@/context/cats";
+import { useCats } from "@/context/dogs";
 
 export default function DailyLogsScreen() {
   const { catId } = useLocalSearchParams<{ catId: string }>();

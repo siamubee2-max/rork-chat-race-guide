@@ -25,7 +25,7 @@ import {
 } from "lucide-react-native";
 import { Colors } from "@/constants/colors";
 import { useReminders, type ReminderType, type ReminderFrequency } from "@/context/reminders";
-import { useCats } from "@/context/cats";
+import { useCats } from "@/context/dogs";
 
 const REMINDER_TYPES: { type: ReminderType; label: string; icon: typeof Bell; color: string }[] = [
   { type: "vaccine", label: "Vaccin", icon: Syringe, color: "#4CAF50" },

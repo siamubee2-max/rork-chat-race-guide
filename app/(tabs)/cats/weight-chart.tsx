@@ -2,7 +2,7 @@ import React, { useMemo, useLayoutEffect, useCallback } from "react";
 import { View, Text, StyleSheet, ScrollView, Pressable, Dimensions } from "react-native";
 import { useLocalSearchParams, router, useNavigation } from "expo-router";
 import { TrendingUp, TrendingDown, Plus, Edit3 } from "lucide-react-native";
-import { useCats } from "@/context/cats";
+import { useCats } from "@/context/dogs";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const CHART_WIDTH = SCREEN_WIDTH - 60;

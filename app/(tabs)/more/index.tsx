@@ -228,7 +228,7 @@ export default function MoreScreen() {
         {
           id: "subscription",
           icon: <Crown color="#D4775C" size={22} />,
-          title: t("more.purrlyPremium"),
+          title: t("more.barklyPremium"),
           subtitle: t("more.unlimitedAccess"),
           route: "/(tabs)/subscription",
           color: "rgba(212, 119, 92, 0.15)",
@@ -405,7 +405,7 @@ export default function MoreScreen() {
         </View>
 
         <View style={styles.footer}>
-          <Text style={styles.footerText}>Purrly v1.0.0</Text>
+          <Text style={styles.footerText}>Barkly v1.0.0</Text>
           <Text style={styles.footerSubtext}>
             {t("more.madeWithLove")}
           </Text>

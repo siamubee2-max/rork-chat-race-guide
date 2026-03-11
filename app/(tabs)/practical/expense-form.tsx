@@ -27,7 +27,7 @@ import {
 } from "lucide-react-native";
 import { Colors } from "@/constants/colors";
 import { useExpenses, type ExpenseCategory } from "@/context/expenses";
-import { useCats } from "@/context/cats";
+import { useCats } from "@/context/dogs";
 
 const CATEGORIES: { value: ExpenseCategory; label: string; icon: typeof ShoppingBag; color: string }[] = [
   { value: "food", label: "Nourriture", icon: ShoppingBag, color: "#4CAF50" },

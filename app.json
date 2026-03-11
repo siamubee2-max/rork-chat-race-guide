@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Purrly",
+    "name": "Barkly",
     "slug": "chat-race-guide",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -25,7 +25,7 @@
           "audio"
         ],
         "NSPhotoLibraryUsageDescription": "Allow $(PRODUCT_NAME) to access your photos",
-        "NSCameraUsageDescription": "Purrly uses your camera to take photos of your cat for their health journal and to identify cat breeds using the AI breed scanner.",
+        "NSCameraUsageDescription": "Barkly uses your camera to take photos of your dog for their health journal and to identify dog breeds using the AI breed scanner.",
         "NSMicrophoneUsageDescription": "Allow $(PRODUCT_NAME) to access your microphone"
       }
     },

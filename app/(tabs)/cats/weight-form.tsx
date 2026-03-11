@@ -13,7 +13,7 @@ import {
 import { router, useLocalSearchParams, useNavigation } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Save, Trash2, Calendar as CalendarIcon } from "lucide-react-native";
-import { useCats, type WeightEntry } from "@/context/cats";
+import { useCats, type WeightEntry } from "@/context/dogs";
 import { generateUUID } from "@/utils/polyfills";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth";

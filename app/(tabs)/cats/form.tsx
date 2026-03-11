@@ -17,7 +17,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 
-import { useCats, CatPhoto } from "@/context/cats";
+import { useCats, CatPhoto } from "@/context/dogs";
 import { BREEDS } from "@/constants/breeds";
 import { generateUUID } from "@/utils/polyfills";
 
@@ -134,7 +134,7 @@ export default function CatFormScreen() {
     if (!catId) return;
     Alert.alert(
       "Supprimer",
-      "Êtes-vous sûr de vouloir supprimer ce chat ?",
+      "Êtes-vous sûr de vouloir supprimer ce chien ?",
       [
         { text: "Annuler", style: "cancel" },
         {
@@ -302,7 +302,7 @@ export default function CatFormScreen() {
               <Pressable onPress={onAddGalleryPhoto} style={styles.emptyGallery}>
                 <Images size={32} color="#999" />
                 <Text style={styles.emptyGalleryText}>Ajouter des photos à la galerie</Text>
-                <Text style={styles.emptyGallerySubtext}>Capturez les meilleurs moments de votre chat</Text>
+                <Text style={styles.emptyGallerySubtext}>Capturez les meilleurs moments de votre chien</Text>
               </Pressable>
             ) : (
               <ScrollView 

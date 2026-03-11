@@ -22,7 +22,7 @@ import {
 } from "lucide-react-native";
 import * as Haptics from "expo-haptics";
 import { Colors } from "@/constants/colors";
-import { useCats } from "@/context/cats";
+import { useCats } from "@/context/dogs";
 import { useAI, BehaviorPattern } from "@/context/ai";
 
 const SENTIMENT_CONFIG = {
@@ -148,9 +148,9 @@ export default function BehaviorScreen() {
         <View style={styles.emptyIconContainer}>
           <Activity color={Colors.primary} size={48} />
         </View>
-        <Text style={styles.emptyTitle}>Aucun chat enregistré</Text>
+        <Text style={styles.emptyTitle}>Aucun chien enregistré</Text>
         <Text style={styles.emptyText}>
-          Ajoutez un chat et enregistrez ses journaux quotidiens pour analyser son comportement.
+          Ajoutez un chien et enregistrez ses journaux quotidiens pour analyser son comportement.
         </Text>
       </View>
     );
@@ -294,7 +294,7 @@ export default function BehaviorScreen() {
         <View style={styles.infoContent}>
           <Text style={styles.infoTitle}>Comment ça fonctionne ?</Text>
           <Text style={styles.infoText}>
-            Notre IA analyse vos journaux quotidiens pour identifier des patterns récurrents dans le comportement de votre chat : habitudes alimentaires, niveau d&apos;énergie, comportements inhabituels...
+            Notre IA analyse vos journaux quotidiens pour identifier des patterns récurrents dans le comportement de votre chien : habitudes alimentaires, niveau d&apos;énergie, comportements inhabituels...
           </Text>
         </View>
       </View>

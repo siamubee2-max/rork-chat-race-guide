@@ -14,7 +14,7 @@ import { router, useLocalSearchParams, useNavigation } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Save, Calendar as CalendarIcon, UtensilsCrossed, Droplets, Activity, Trash } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
-import { useCats, type DailyLog } from "@/context/cats";
+import { useCats, type DailyLog } from "@/context/dogs";
 import { generateUUID } from "@/utils/polyfills";
 import { useAuth } from "@/context/auth";
 

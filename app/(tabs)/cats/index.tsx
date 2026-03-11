@@ -15,7 +15,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 
-import { useCats, type CatProfile } from "@/context/cats";
+import { useCats, type CatProfile } from "@/context/dogs";
 import { getBreedById } from "@/constants/breeds";
 import { Colors } from "@/constants/colors";
 import { PremiumGate } from "@/components/PremiumGate";

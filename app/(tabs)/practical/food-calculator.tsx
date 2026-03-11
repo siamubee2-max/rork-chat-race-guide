@@ -75,12 +75,12 @@ export default function FoodCalculatorScreen() {
         </View>
         <Text style={styles.headerTitle}>Calculateur de portions</Text>
         <Text style={styles.headerSubtitle}>
-          Estimez les besoins nutritionnels quotidiens de votre chat
+          Estimez les besoins nutritionnels quotidiens de votre chien
         </Text>
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Poids du chat (kg)</Text>
+        <Text style={styles.sectionTitle}>Poids du chien (kg)</Text>
         <View style={styles.weightInputContainer}>
           <TextInput
             style={styles.weightInput}
@@ -177,7 +177,7 @@ export default function FoodCalculatorScreen() {
             <Info size={18} color={Colors.info} />
             <Text style={styles.infoText}>
               Ces valeurs sont des estimations. Consultez votre vétérinaire pour des recommandations personnalisées, 
-              surtout si votre chat a des besoins spécifiques.
+              surtout si votre chien a des besoins spécifiques.
             </Text>
           </View>
         </View>

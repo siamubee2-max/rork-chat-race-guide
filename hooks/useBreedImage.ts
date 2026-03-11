@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getVerifiedBreedImage, getBreedImage, VERIFIED_BREED_IMAGES } from "@/services/catApi";
+import { getVerifiedBreedImage, getBreedImage, VERIFIED_BREED_IMAGES } from "@/services/dogApi";
 
 /**
  * Hook to get a verified breed image

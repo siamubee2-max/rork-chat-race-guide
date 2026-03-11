@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import Purchases from "react-native-purchases";
 
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import { CatsContext } from "@/context/cats";
+import { CatsContext } from "@/context/dogs";
 import { DiscussionsProvider } from "@/context/discussions";
 import { AuthProvider, useAuth } from "@/context/auth";
 import { EmergencyContext } from "@/context/emergency";

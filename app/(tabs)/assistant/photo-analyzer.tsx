@@ -27,7 +27,7 @@ import * as ImagePicker from "expo-image-picker";
 import * as Haptics from "expo-haptics";
 import * as FileSystem from "expo-file-system";
 import { Colors } from "@/constants/colors";
-import { useCats } from "@/context/cats";
+import { useCats } from "@/context/dogs";
 import { useAI, PhotoAnalysis } from "@/context/ai";
 
 export default function PhotoAnalyzerScreen() {
@@ -181,7 +181,7 @@ export default function PhotoAnalyzerScreen() {
 
       {cats.length > 1 && (
         <View style={styles.catSelectorContainer}>
-          <Text style={styles.catSelectorLabel}>Associer à un chat (optionnel)</Text>
+          <Text style={styles.catSelectorLabel}>Associer à un chien (optionnel)</Text>
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}

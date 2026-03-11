@@ -36,7 +36,7 @@ const INITIAL_CHECKLIST: ChecklistSection[] = [
     icon: FileText,
     color: "#2196F3",
     items: [
-      { id: "passport", label: "Passeport européen du chat", checked: false },
+      { id: "passport", label: "Passeport européen du chien", checked: false },
       { id: "vaccination", label: "Carnet de vaccination à jour", checked: false },
       { id: "chip", label: "Certificat de puce électronique", checked: false },
       { id: "health_cert", label: "Certificat sanitaire (si hors UE)", checked: false },
@@ -105,7 +105,7 @@ const INITIAL_CHECKLIST: ChecklistSection[] = [
       { id: "pheromones", label: "Spray/diffuseur Feliway", checked: false },
       { id: "calming", label: "Complément calmant naturel", checked: false },
       { id: "familiar_smell", label: "Vêtement avec votre odeur", checked: false },
-      { id: "photo", label: "Photo récente du chat", checked: false },
+      { id: "photo", label: "Photo récente du chien", checked: false },
       { id: "contact_vet", label: "Coordonnées vétérinaire sur place", checked: false },
     ],
   },
@@ -180,7 +180,7 @@ export default function TravelScreen() {
         </View>
         <Text style={styles.headerTitle}>Checklist voyage</Text>
         <Text style={styles.headerSubtitle}>
-          Préparez sereinement vos déplacements avec votre chat
+          Préparez sereinement vos déplacements avec votre chien
         </Text>
       </View>
 
@@ -246,7 +246,7 @@ export default function TravelScreen() {
 
       <View style={styles.tipsCard}>
         <Text style={styles.tipsTitle}>✈️ Conseils voyage</Text>
-        <Text style={styles.tipItem}>• Habituez votre chat à sa caisse plusieurs jours avant</Text>
+        <Text style={styles.tipItem}>• Habituez votre chien à sa caisse plusieurs jours avant</Text>
         <Text style={styles.tipItem}>• Évitez de nourrir 4h avant un long trajet</Text>
         <Text style={styles.tipItem}>• Faites des pauses toutes les 2h en voiture</Text>
         <Text style={styles.tipItem}>• Gardez la caisse à l&apos;ombre et ventilée</Text>

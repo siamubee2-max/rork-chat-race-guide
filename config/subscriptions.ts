@@ -1,5 +1,5 @@
 /**
- * Configuration des abonnements Purrly
+ * Configuration des abonnements Barkly
  * Compatible avec RevenueCat, Stripe, ou tout autre système
  */
 
