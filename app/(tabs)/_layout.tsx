@@ -2,10 +2,13 @@ import React from "react";
 import { Tabs } from "expo-router";
 import { Home, Heart, Users, Sparkles, Grid3x3 } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
+import { useWindowDimensions } from "react-native";
 import { Colors } from "@/constants/colors";
 
 export default function TabLayout() {
   const { t } = useTranslation();
+  const { width } = useWindowDimensions();
+  const isTablet = width >= 768;
 
   return (
     <Tabs
@@ -17,13 +20,10 @@ export default function TabLayout() {
           backgroundColor: Colors.tabBackground,
           borderTopWidth: 1,
           borderTopColor: Colors.border,
-          paddingTop: 12,
-          paddingBottom: 8,
-          height: 80,
         },
         tabBarHideOnKeyboard: true,
         tabBarLabelStyle: {
-          fontSize: 11,
+          fontSize: isTablet ? 13 : 11,
           fontWeight: "600",
         },
       }}

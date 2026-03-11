@@ -7,6 +7,7 @@ import {
   Pressable,
   Alert,
   ActivityIndicator,
+  useWindowDimensions,
 } from "react-native";
 import { Check, Crown, RefreshCw, Sparkles, Star, Users, Briefcase, Gem, ExternalLink } from "lucide-react-native";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -180,6 +181,9 @@ export default function SubscriptionScreen() {
   const { isAuthenticated, updateSubscription } = useAuth();
   const queryClient = useQueryClient();
   const [purchasingLocalId, setPurchasingLocalId] = useState<string | null>(null);
+  const { width: screenWidth } = useWindowDimensions();
+  const isTablet = screenWidth >= 768;
+  const contentMaxWidth = isTablet ? 680 : undefined;
 
   const rcAvailable = Purchases != null;
 
@@ -403,8 +407,8 @@ export default function SubscriptionScreen() {
   );
 
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <View style={styles.header}>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false} contentContainerStyle={isTablet ? { alignItems: 'center' as const } : undefined}>
+      <View style={[styles.header, isTablet && { maxWidth: contentMaxWidth, width: '100%' }]}>
         <View style={styles.headerIcon}>
           <Sparkles size={28} color={Colors.primary} />
         </View>
@@ -429,7 +433,7 @@ export default function SubscriptionScreen() {
       )}
 
       {!offeringsQuery.isLoading && (
-        <View style={styles.packagesContainer}>{LOCAL_PLANS.map((plan) => renderPlanCard(plan))}</View>
+        <View style={[styles.packagesContainer, isTablet && { maxWidth: contentMaxWidth, width: '100%' }]}>{LOCAL_PLANS.map((plan) => renderPlanCard(plan))}</View>
       )}
 
       {rcAvailable && (
@@ -449,7 +453,7 @@ export default function SubscriptionScreen() {
         </Pressable>
       )}
 
-      <View style={styles.legalContainer}>
+      <View style={[styles.legalContainer, isTablet && { maxWidth: contentMaxWidth, width: '100%' }]}>
         <Text style={styles.legalText}>
           Le paiement sera débité sur votre compte Apple/Google Play à la confirmation de l'achat. L'abonnement se
           renouvelle automatiquement sauf annulation au moins 24h avant la fin de la période en cours. Vous pouvez gérer

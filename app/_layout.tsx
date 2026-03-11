@@ -5,9 +5,14 @@ import React, { useEffect } from "react";
 import { Platform, StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useTranslation } from "react-i18next";
-import Purchases from "react-native-purchases";
-
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+
+let Purchases: any = null;
+try {
+  Purchases = require("react-native-purchases").default;
+} catch {
+  console.log("[RootLayout] react-native-purchases not available");
+}
 import { CatsContext } from "@/context/cats";
 import { DiscussionsProvider } from "@/context/discussions";
 import { AuthProvider, useAuth } from "@/context/auth";
@@ -41,12 +46,16 @@ function getRCApiKey() {
 }
 
 try {
-  const rcKey = getRCApiKey();
-  if (rcKey) {
-    Purchases.configure({ apiKey: rcKey });
-    console.log("[RevenueCat] Configured with key for platform:", Platform.OS);
+  if (Purchases) {
+    const rcKey = getRCApiKey();
+    if (rcKey) {
+      Purchases.configure({ apiKey: rcKey });
+      console.log("[RevenueCat] Configured with key for platform:", Platform.OS);
+    } else {
+      console.log("[RevenueCat] Skipped (no key)");
+    }
   } else {
-    console.log("[RevenueCat] Skipped (no key)");
+    console.log("[RevenueCat] Module not available, skipping configuration");
   }
 } catch (e) {
   console.warn("[RevenueCat] Configure error:", e);
@@ -58,7 +67,7 @@ function useRevenueCatSync() {
   const { currentUser, updateSubscription } = useAuth();
 
   useEffect(() => {
-    if (!currentUser || Platform.OS === "web") return;
+    if (!currentUser || Platform.OS === "web" || !Purchases) return;
 
     const syncEntitlements = async () => {
       try {

@@ -32,6 +32,7 @@ import {
   Switch,
   Platform,
   Alert,
+  useWindowDimensions,
 } from "react-native";
 import { Colors } from "@/constants/colors";
 import { useAuth } from "@/context/auth";
@@ -50,6 +51,9 @@ interface MenuItem {
 export default function MoreScreen() {
   const { currentUser, deleteAccount, logout } = useAuth();
   const { t } = useTranslation();
+  const { width: screenWidth } = useWindowDimensions();
+  const isTablet = screenWidth >= 768;
+  const contentMaxWidth = isTablet ? 680 : undefined;
   const { 
     notificationsEnabled, 
     requestPermissions, 
@@ -319,10 +323,10 @@ export default function MoreScreen() {
     <View style={styles.screen}>
       <ScrollView
         style={styles.scroll}
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={[styles.scrollContent, isTablet && { alignItems: 'center' as const }]}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.header}>
+        <View style={[styles.header, isTablet && { maxWidth: contentMaxWidth, width: '100%' }]}>
           <View style={styles.profileCard}>
             <View style={styles.profileIcon}>
               <Zap color="#fff" size={24} />
@@ -337,7 +341,7 @@ export default function MoreScreen() {
         </View>
 
         {menuSections.map((section) => (
-          <View key={section.title} style={styles.section}>
+          <View key={section.title} style={[styles.section, isTablet && { maxWidth: contentMaxWidth, width: '100%' }]}>
             <Text style={styles.sectionTitle}>{section.title}</Text>
             <View style={styles.sectionContent}>
               {section.items.map(renderMenuItem)}
@@ -345,7 +349,7 @@ export default function MoreScreen() {
           </View>
         ))}
 
-        <View style={styles.section}>
+        <View style={[styles.section, isTablet && { maxWidth: contentMaxWidth, width: '100%' }]}>
           <Text style={styles.sectionTitle}>{t("notifications.settingsTitle")}</Text>
           <View style={styles.sectionContent}>
             <View style={styles.menuItem}>
@@ -366,7 +370,7 @@ export default function MoreScreen() {
           </View>
         </View>
 
-        <View style={styles.section}>
+        <View style={[styles.section, isTablet && { maxWidth: contentMaxWidth, width: '100%' }]}>
           <Text style={styles.sectionTitle}>{t("more.accountSection")}</Text>
           <View style={styles.sectionContent}>
             <Pressable

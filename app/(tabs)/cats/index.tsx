@@ -20,8 +20,8 @@ import { getBreedById } from "@/constants/breeds";
 import { Colors } from "@/constants/colors";
 import { PremiumGate } from "@/components/PremiumGate";
 
-const { width: SCREEN_WIDTH } = Dimensions.get("window");
-const IS_TABLET = SCREEN_WIDTH >= 768;
+const { width: INITIAL_WIDTH } = Dimensions.get("window");
+const IS_TABLET = INITIAL_WIDTH >= 768;
 const AVATAR_SIZE = IS_TABLET ? 100 : 60;
 const CARD_HEIGHT = IS_TABLET ? 128 : 88;
 const CARD_MARGIN = 14;
@@ -136,7 +136,7 @@ export default function CatsListScreen() {
         keyExtractor={keyExtractor}
         renderItem={renderItem}
         getItemLayout={cats.length > 0 ? getItemLayout : undefined}
-        contentContainerStyle={listContentStyle}
+        contentContainerStyle={[listContentStyle, IS_TABLET && { maxWidth: 680, alignSelf: 'center' as const, width: '100%' }]}
         ListEmptyComponent={EmptyState}
         contentInsetAdjustmentBehavior="automatic"
         removeClippedSubviews={true}
