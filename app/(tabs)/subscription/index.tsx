@@ -251,14 +251,34 @@ export default function SubscriptionScreen() {
 
   const findRCPackageForPlan = useCallback(
     (plan: LocalPlan) => {
-      if (!rcPackages.length) return null;
+      if (!rcPackages.length) {
+        console.log("[Subscription] No RC packages available for plan:", plan.id);
+        return null;
+      }
       const targetKey = plan.rcPackageKey;
-      const match = rcPackages.find((p: any) => p.identifier === targetKey);
+      let match = rcPackages.find((p: any) => p.identifier === targetKey);
       if (match) {
         console.log("[Subscription] Matched plan", plan.id, "-> RC package", match.identifier, "product:", match.product?.identifier);
         return match;
       }
-      console.log("[Subscription] No RC match for plan", plan.id, "with key", targetKey);
+      match = rcPackages.find((p: any) =>
+        p.product?.identifier?.toLowerCase() === plan.id.toLowerCase() ||
+        p.product?.identifier?.toLowerCase()?.includes(plan.id.toLowerCase())
+      );
+      if (match) {
+        console.log("[Subscription] Matched plan by product ID", plan.id, "-> RC package", match.identifier, "product:", match.product?.identifier);
+        return match;
+      }
+      match = rcPackages.find((p: any) => {
+        const pkgId = (p.identifier || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+        const planKey = plan.id.toLowerCase().replace(/[^a-z0-9]/g, "");
+        return pkgId.includes(planKey) || planKey.includes(pkgId);
+      });
+      if (match) {
+        console.log("[Subscription] Fuzzy matched plan", plan.id, "-> RC package", match.identifier, "product:", match.product?.identifier);
+        return match;
+      }
+      console.log("[Subscription] No RC match for plan", plan.id, "with key", targetKey, "available packages:", rcPackages.map((p: any) => p.identifier).join(", "));
       return null;
     },
     [rcPackages]
@@ -288,9 +308,47 @@ export default function SubscriptionScreen() {
         const matchingPkg = findRCPackageForPlan(plan);
 
         if (!matchingPkg) {
-          console.error("[Subscription] No RC package found for plan:", plan.id);
-          Alert.alert("Erreur", "Ce plan n'est pas disponible actuellement. Veuillez réessayer plus tard.");
-          return;
+          console.warn("[Subscription] No RC package found for plan:", plan.id, "- attempting to refetch offerings");
+          try {
+            await offeringsQuery.refetch();
+            const refreshedPackages = offeringsQuery.data?.current?.availablePackages || [];
+            const retryMatch = refreshedPackages.find((p: any) =>
+              p.identifier === plan.rcPackageKey ||
+              p.product?.identifier?.toLowerCase()?.includes(plan.id.toLowerCase())
+            );
+            if (!retryMatch) {
+              console.error("[Subscription] Still no RC package after refetch for plan:", plan.id);
+              Alert.alert("Erreur", "Ce plan n'est pas disponible actuellement. Veuillez réessayer plus tard.");
+              return;
+            }
+            console.log("[Subscription] Found package after refetch:", retryMatch.identifier);
+            const result = await Purchases.purchasePackage(retryMatch);
+            const customerInfo = result.customerInfo;
+            const activeEntitlements = customerInfo.entitlements.active;
+            if (activeEntitlements["premium"]) {
+              const productId = activeEntitlements["premium"].productIdentifier;
+              const tier = getTierFromProductId(productId);
+              const expirationDate = activeEntitlements["premium"].expirationDate;
+              const expiry = expirationDate ? new Date(expirationDate).getTime() : undefined;
+              await updateSubscription(tier, expiry);
+            } else {
+              await updateSubscription(plan.tier);
+            }
+            void queryClient.invalidateQueries({ queryKey: ["rc-offerings"] });
+            void queryClient.invalidateQueries({ queryKey: ["rc-customer-info"] });
+            Alert.alert("🎉 Bienvenue !", "Votre abonnement est maintenant actif.", [
+              { text: "OK", onPress: () => router.push("/(tabs)/(scan)" as any) },
+            ]);
+            return;
+          } catch (retryError: any) {
+            if (retryError?.userCancelled) {
+              console.log("[Subscription] User cancelled purchase on retry");
+            } else {
+              console.error("[Subscription] Retry purchase error:", retryError);
+              Alert.alert("Erreur", "Ce plan n'est pas disponible actuellement. Veuillez réessayer plus tard.");
+            }
+            return;
+          }
         }
 
         console.log("[Subscription] Purchasing RC package:", matchingPkg.identifier, "product:", matchingPkg.product?.identifier);
@@ -329,7 +387,7 @@ export default function SubscriptionScreen() {
         setPurchasingLocalId(null);
       }
     },
-    [isAuthenticated, rcAvailable, updateSubscription, queryClient, findRCPackageForPlan]
+    [isAuthenticated, rcAvailable, updateSubscription, queryClient, findRCPackageForPlan, offeringsQuery]
   );
 
   const renderPlanCard = useCallback(
