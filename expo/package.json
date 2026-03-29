@@ -6,6 +6,10 @@
     "start": "bunx rork start -p 355i9jn1mif3ki6hoexx7 --tunnel",
     "start-web": "bunx rork start -p 355i9jn1mif3ki6hoexx7 --web --tunnel",
     "start-web-dev": "DEBUG=expo* bunx rork start -p 355i9jn1mif3ki6hoexx7 --web --tunnel",
+    "build:dev:android": "eas build --profile development --platform android",
+    "build:dev:ios": "eas build --profile development --platform ios",
+    "build:dev:ios-simulator": "eas build --profile development-simulator --platform ios",
+    "build:dev:all": "eas build --profile development --platform all",
     "lint": "expo lint"
   },
   "dependencies": {
