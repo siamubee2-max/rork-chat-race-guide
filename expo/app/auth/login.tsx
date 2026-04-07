@@ -81,13 +81,23 @@ export default function LoginScreen() {
               autoCorrect={false}
               keyboardType="email-address"
               editable={!isLoading}
+              accessibilityRole="none"
+              accessibilityLabel="Adresse email"
+              accessibilityHint="Entrez votre adresse email"
             />
           </View>
 
           <View style={styles.inputGroup}>
             <View style={styles.labelRow}>
               <Text style={styles.label}>Mot de passe</Text>
-              <Pressable onPress={goToForgotPassword} disabled={isLoading}>
+              <Pressable
+                onPress={goToForgotPassword}
+                disabled={isLoading}
+                accessibilityRole="button"
+                accessibilityLabel="Mot de passe oublié"
+                accessibilityHint="Accéder à la récupération du mot de passe"
+                accessibilityState={{ disabled: isLoading }}
+              >
                 <Text style={styles.forgotLink}>Mot de passe oublié ?</Text>
               </Pressable>
             </View>
@@ -101,6 +111,9 @@ export default function LoginScreen() {
               autoCapitalize="none"
               autoCorrect={false}
               editable={!isLoading}
+              accessibilityRole="none"
+              accessibilityLabel="Mot de passe"
+              accessibilityHint="Entrez votre mot de passe"
             />
           </View>
 
@@ -112,6 +125,9 @@ export default function LoginScreen() {
               pressed && styles.buttonPressed,
               isLoading && styles.buttonDisabled,
             ]}
+            accessibilityRole="button"
+            accessibilityLabel={isLoading ? "Connexion en cours" : "Se connecter"}
+            accessibilityState={{ disabled: isLoading, busy: isLoading }}
           >
             <LogIn color="#fff" size={20} />
             <Text style={styles.buttonText}>
@@ -121,7 +137,14 @@ export default function LoginScreen() {
 
           <View style={styles.footer}>
             <Text style={styles.footerText}>Pas encore de compte ?</Text>
-            <Pressable onPress={goToSignup} disabled={isLoading}>
+            <Pressable
+              onPress={goToSignup}
+              disabled={isLoading}
+              accessibilityRole="button"
+              accessibilityLabel="S'inscrire"
+              accessibilityHint="Accéder à la page d'inscription"
+              accessibilityState={{ disabled: isLoading }}
+            >
               <Text style={styles.link}>S&apos;inscrire</Text>
             </Pressable>
           </View>

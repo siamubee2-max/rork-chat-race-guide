@@ -105,6 +105,9 @@ export function Tooltip({
           });
         }}
         style={style}
+        accessibilityRole="button"
+        accessibilityLabel={content}
+        accessibilityHint="Appuyez pour afficher l'info-bulle"
       >
         {children}
       </Pressable>

@@ -119,6 +119,8 @@ export default function ScanHomeScreen() {
               { position: 'absolute', top: insets.top + 16, right: 24 },
               pressed && { opacity: 0.7 },
             ]}
+            accessibilityRole="button"
+            accessibilityLabel={t("common.about")}
           >
             <Info color={Colors.ivory} size={20} />
           </Pressable>
@@ -142,6 +144,9 @@ export default function ScanHomeScreen() {
               styles.primaryAction,
               pressed && { transform: [{ scale: 0.98 }] },
             ]}
+            accessibilityRole="button"
+            accessibilityLabel={t("scan.liveCamera") || "Caméra en direct"}
+            accessibilityHint={t("scan.liveCameraDesc") || "Scanner en temps réel"}
           >
             <View style={styles.actionIconCircle}>
               <Video color="#0C0A09" size={28} />
@@ -157,6 +162,9 @@ export default function ScanHomeScreen() {
               styles.secondaryAction,
               pressed && { transform: [{ scale: 0.98 }] },
             ]}
+            accessibilityRole="button"
+            accessibilityLabel={t("scan.choosePhoto")}
+            accessibilityHint={t("scan.gallery")}
           >
             <View style={styles.actionIconCircleSecondary}>
               <Upload color={Colors.primary} size={24} />

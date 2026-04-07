@@ -59,6 +59,8 @@ function ErrorBoundaryContent({ message, onReset }: { message: string; onReset: 
         onPress={onReset}
         style={({ pressed }: { pressed: boolean }) => [styles.btn, pressed ? { opacity: 0.9 } : null]}
         testID="errorBoundaryRetry"
+        accessibilityRole="button"
+        accessibilityLabel={t("errorBoundary.retry")}
       >
         <Text style={styles.btnText}>{t("errorBoundary.retry")}</Text>
       </Pressable>

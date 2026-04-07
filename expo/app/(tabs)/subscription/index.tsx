@@ -439,6 +439,9 @@ export default function SubscriptionScreen() {
             style={[styles.ctaButton, { backgroundColor: plan.color }, isProcessing && { opacity: 0.7 }]}
             onPress={() => handlePurchase(plan)}
             disabled={isProcessing || purchasingLocalId !== null}
+            accessibilityRole="button"
+            accessibilityLabel={`Choisir le plan ${plan.name}`}
+            accessibilityState={{ disabled: isProcessing || purchasingLocalId !== null, busy: isProcessing }}
           >
             {isProcessing ? (
               <ActivityIndicator color="#fff" />
@@ -477,7 +480,7 @@ export default function SubscriptionScreen() {
       {offeringsQuery.isError && (
         <View style={styles.errorContainer}>
           <Text style={styles.errorText}>Impossible de charger les offres.</Text>
-          <Pressable style={styles.retryButton} onPress={() => offeringsQuery.refetch()}>
+          <Pressable style={styles.retryButton} onPress={() => offeringsQuery.refetch()} accessibilityRole="button" accessibilityLabel="Réessayer le chargement des offres">
             <Text style={styles.retryText}>Réessayer</Text>
           </Pressable>
         </View>
@@ -492,6 +495,9 @@ export default function SubscriptionScreen() {
           style={styles.restoreButton}
           onPress={() => restoreMutation.mutate()}
           disabled={restoreMutation.isPending}
+          accessibilityRole="button"
+          accessibilityLabel="Restaurer mes achats"
+          accessibilityState={{ busy: restoreMutation.isPending }}
         >
           {restoreMutation.isPending ? (
             <ActivityIndicator size="small" color={Colors.primary} />

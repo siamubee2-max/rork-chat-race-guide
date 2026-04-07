@@ -121,6 +121,8 @@ export default function NativeMap({
             style={styles.webOpenMapBtn}
             onPress={handleOpenInMaps}
             activeOpacity={0.8}
+            accessibilityRole="button"
+            accessibilityLabel="Ouvrir dans Google Maps"
           >
             <ExternalLink size={18} color="#fff" />
             <Text style={styles.webOpenMapBtnText}>Ouvrir Google Maps</Text>
@@ -138,6 +140,8 @@ export default function NativeMap({
                 style={styles.webMarkerItem}
                 onPress={() => handleMarkerPress(marker)}
                 activeOpacity={0.7}
+                accessibilityRole="button"
+                accessibilityLabel={marker.title}
               >
                 <Text style={styles.webMarkerEmoji}>{marker.emoji || "📍"}</Text>
                 <View style={styles.webMarkerInfo}>
@@ -188,6 +192,8 @@ export default function NativeMap({
           style={styles.mapControlBtn}
           onPress={handleCenterOnUser}
           activeOpacity={0.8}
+          accessibilityRole="button"
+          accessibilityLabel="Centrer sur ma position"
         >
           <Navigation size={20} color={Colors.primary} />
         </TouchableOpacity>
@@ -195,6 +201,8 @@ export default function NativeMap({
           style={styles.mapControlBtn}
           onPress={handleOpenInMaps}
           activeOpacity={0.8}
+          accessibilityRole="button"
+          accessibilityLabel="Ouvrir dans l'application Cartes"
         >
           <ExternalLink size={20} color={Colors.primary} />
         </TouchableOpacity>

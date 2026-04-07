@@ -19,6 +19,44 @@ interface StoredUser extends User {
 
 const STORAGE_USERS = "users";
 const STORAGE_CURRENT_USER = "current_user";
+const STORAGE_DEMO_SEEDED = "demo_account_seeded";
+
+// Apple App Review demo account credentials
+// Email: applereview@purrly.app
+// Password: PurrlyReview2026!
+const DEMO_ACCOUNT: StoredUser = {
+  id: "demo_apple_reviewer",
+  email: "applereview@purrly.app",
+  password: "", // Will be set via hashPassword at seed time
+  name: "Apple Reviewer",
+  createdAt: "2026-01-01T00:00:00.000Z",
+  subscriptionTier: "premium",
+  subscriptionExpiry: "2030-12-31T23:59:59.000Z",
+};
+
+async function seedDemoAccount() {
+  try {
+    const alreadySeeded = await AsyncStorage.getItem(STORAGE_DEMO_SEEDED);
+    if (alreadySeeded) return;
+
+    const usersData = await AsyncStorage.getItem(STORAGE_USERS);
+    const users: StoredUser[] = usersData ? JSON.parse(usersData) : [];
+
+    const exists = users.some((u) => u.email.toLowerCase() === DEMO_ACCOUNT.email.toLowerCase());
+    if (!exists) {
+      const demoUser: StoredUser = {
+        ...DEMO_ACCOUNT,
+        password: hashPassword("PurrlyReview2026!", DEMO_ACCOUNT.email),
+      };
+      users.push(demoUser);
+      await AsyncStorage.setItem(STORAGE_USERS, JSON.stringify(users));
+    }
+
+    await AsyncStorage.setItem(STORAGE_DEMO_SEEDED, "true");
+  } catch (error) {
+    console.log("[Auth] Demo account seeding error (non-critical):", error);
+  }
+}
 
 const hashPassword = (password: string, email: string): string => {
   let hash = 0;
@@ -38,6 +76,7 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
   useEffect(() => {
     void (async () => {
       try {
+        await seedDemoAccount();
         const userData = await AsyncStorage.getItem(STORAGE_CURRENT_USER);
         if (userData) {
           setCurrentUser(JSON.parse(userData));

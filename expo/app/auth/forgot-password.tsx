@@ -102,6 +102,9 @@ export default function ForgotPasswordScreen() {
               autoCorrect={false}
               keyboardType="email-address"
               editable={!isLoading}
+              accessibilityRole="none"
+              accessibilityLabel="Adresse email"
+              accessibilityHint="Entrez votre adresse email pour récupérer votre mot de passe"
             />
           </View>
 
@@ -113,6 +116,9 @@ export default function ForgotPasswordScreen() {
               pressed && styles.buttonPressed,
               isLoading && styles.buttonDisabled,
             ]}
+            accessibilityRole="button"
+            accessibilityLabel={isLoading ? "Recherche en cours" : "Récupérer mon mot de passe"}
+            accessibilityState={{ disabled: isLoading, busy: isLoading }}
           >
             <Text style={styles.buttonText}>
               {isLoading ? "Recherche..." : "Récupérer mon mot de passe"}
@@ -132,6 +138,9 @@ export default function ForgotPasswordScreen() {
               styles.secondaryButton,
               pressed && styles.buttonPressed,
             ]}
+            accessibilityRole="button"
+            accessibilityLabel="Voir tous les emails enregistrés"
+            accessibilityState={{ disabled: isLoading }}
           >
             <Text style={styles.secondaryButtonText}>
               Voir tous les emails enregistrés
@@ -142,6 +151,9 @@ export default function ForgotPasswordScreen() {
             onPress={() => router.back()}
             disabled={isLoading}
             style={styles.backButton}
+            accessibilityRole="button"
+            accessibilityLabel="Retour à la connexion"
+            accessibilityState={{ disabled: isLoading }}
           >
             <Text style={styles.backButtonText}>
               Retour à la connexion

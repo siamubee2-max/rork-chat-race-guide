@@ -93,6 +93,7 @@ export function Card({
         onPress={handlePress}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
+        accessibilityRole="button"
       >
         {content}
       </Pressable>

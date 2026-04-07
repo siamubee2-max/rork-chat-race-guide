@@ -50,7 +50,7 @@ export function Paywall({
         <View style={styles.container}>
           {/* Header */}
           <View style={styles.header}>
-            <Pressable onPress={onClose} style={styles.closeButton}>
+            <Pressable onPress={onClose} style={styles.closeButton} accessibilityRole="button" accessibilityLabel="Fermer">
               <X size={24} color="#6b7280" />
             </Pressable>
           </View>
@@ -122,6 +122,8 @@ export function Paywall({
                 onClose();
                 router.push('/(tabs)/subscription' as any);
               }}
+              accessibilityRole="button"
+              accessibilityLabel="Passer à Premium"
             >
               <Crown size={20} color="#fff" />
               <Text style={styles.ctaText}>
@@ -130,7 +132,7 @@ export function Paywall({
             </Pressable>
 
             {/* Secondary CTA */}
-            <Pressable style={styles.secondaryCTA} onPress={onClose}>
+            <Pressable style={styles.secondaryCTA} onPress={onClose} accessibilityRole="button" accessibilityLabel="Fermer l'offre">
               <Text style={styles.secondaryCTAText}>
                 Peut-être plus tard
               </Text>

@@ -86,6 +86,9 @@ export default function SignupScreen() {
               autoCapitalize="words"
               autoCorrect={false}
               editable={!isLoading}
+              accessibilityRole="none"
+              accessibilityLabel="Nom complet"
+              accessibilityHint="Entrez votre nom"
             />
           </View>
 
@@ -100,6 +103,9 @@ export default function SignupScreen() {
               autoCorrect={false}
               keyboardType="email-address"
               editable={!isLoading}
+              accessibilityRole="none"
+              accessibilityLabel="Adresse email"
+              accessibilityHint="Entrez votre adresse email"
             />
           </View>
 
@@ -114,6 +120,9 @@ export default function SignupScreen() {
               autoCapitalize="none"
               autoCorrect={false}
               editable={!isLoading}
+              accessibilityRole="none"
+              accessibilityLabel="Mot de passe"
+              accessibilityHint="Choisissez un mot de passe"
             />
           </View>
 
@@ -125,6 +134,9 @@ export default function SignupScreen() {
               pressed && styles.buttonPressed,
               isLoading && styles.buttonDisabled,
             ]}
+            accessibilityRole="button"
+            accessibilityLabel={isLoading ? "Inscription en cours" : "S'inscrire"}
+            accessibilityState={{ disabled: isLoading, busy: isLoading }}
           >
             <Text style={styles.buttonText}>
               {isLoading ? "Inscription..." : "S'inscrire"}
@@ -133,7 +145,14 @@ export default function SignupScreen() {
 
           <View style={styles.footer}>
             <Text style={styles.footerText}>Déjà un compte ?</Text>
-            <Pressable onPress={goToLogin} disabled={isLoading}>
+            <Pressable
+              onPress={goToLogin}
+              disabled={isLoading}
+              accessibilityRole="button"
+              accessibilityLabel="Se connecter"
+              accessibilityHint="Retourner à la page de connexion"
+              accessibilityState={{ disabled: isLoading }}
+            >
               <Text style={styles.link}>Se connecter</Text>
             </Pressable>
           </View>

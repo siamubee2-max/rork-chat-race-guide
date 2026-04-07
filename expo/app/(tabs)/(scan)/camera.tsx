@@ -33,6 +33,8 @@ function WebFallback() {
           styles.webBackBtn,
           pressed && { opacity: 0.8 },
         ]}
+        accessibilityRole="button"
+        accessibilityLabel="Retour"
       >
         <Text style={styles.webBackBtnText}>Retour</Text>
       </Pressable>
@@ -53,6 +55,8 @@ function PermissionRequest({ onRequest }: { onRequest: () => void }) {
           styles.permissionBtn,
           pressed && { opacity: 0.8 },
         ]}
+        accessibilityRole="button"
+        accessibilityLabel="Autoriser la caméra"
       >
         <Text style={styles.permissionBtnText}>Autoriser la caméra</Text>
       </Pressable>
@@ -62,6 +66,8 @@ function PermissionRequest({ onRequest }: { onRequest: () => void }) {
           styles.permissionBackBtn,
           pressed && { opacity: 0.7 },
         ]}
+        accessibilityRole="button"
+        accessibilityLabel="Retour"
       >
         <Text style={styles.permissionBackBtnText}>Retour</Text>
       </Pressable>
@@ -147,6 +153,8 @@ export default function CameraScreen() {
             styles.topBtn,
             pressed && { opacity: 0.7 },
           ]}
+          accessibilityRole="button"
+          accessibilityLabel="Fermer la caméra"
         >
           <X color="#fff" size={22} />
         </Pressable>
@@ -158,6 +166,8 @@ export default function CameraScreen() {
             flash && styles.topBtnActive,
             pressed && { opacity: 0.7 },
           ]}
+          accessibilityRole="button"
+          accessibilityLabel={flash ? "Désactiver le flash" : "Activer le flash"}
         >
           {flash ? (
             <Zap color={Colors.primary} size={20} />
@@ -190,6 +200,9 @@ export default function CameraScreen() {
               pressed && { transform: [{ scale: 0.95 }] },
             ]}
             testID="cameraShutter"
+            accessibilityRole="button"
+            accessibilityLabel="Prendre une photo"
+            accessibilityState={{ busy: isTaking }}
           >
             <View style={[
               styles.shutterInner,
@@ -205,6 +218,8 @@ export default function CameraScreen() {
               styles.flipBtn,
               pressed && { opacity: 0.7 },
             ]}
+            accessibilityRole="button"
+            accessibilityLabel="Changer de caméra"
           >
             <SwitchCamera color="#fff" size={24} />
           </Pressable>

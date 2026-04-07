@@ -41,7 +41,7 @@ export default function CatDetailsScreen() {
       navigation.setOptions({
         title: cat.name,
         headerRight: () => (
-          <Pressable onPress={onEditCat} style={({ pressed }) => ({ opacity: pressed ? 0.5 : 1 })}>
+          <Pressable onPress={onEditCat} style={({ pressed }) => ({ opacity: pressed ? 0.5 : 1 })} accessibilityRole="button" accessibilityLabel={t("common.edit")}>
             <Text style={styles.headerBtn}>{t("common.edit")}</Text>
           </Pressable>
         ),
@@ -120,7 +120,7 @@ export default function CatDetailsScreen() {
         <View style={styles.header}>
           <View style={styles.avatarContainer}>
             {cat.imageUri ? (
-              <Image source={{ uri: cat.imageUri }} style={styles.avatar} contentFit="cover" />
+              <Image source={{ uri: cat.imageUri }} style={styles.avatar} contentFit="cover" accessibilityRole="image" accessibilityLabel={`Photo de ${cat.name}`} />
             ) : (
               <View style={styles.placeholderAvatar}>
                 <Cat size={40} color="#999" />
@@ -155,12 +155,15 @@ export default function CatDetailsScreen() {
               contentContainerStyle={styles.galleryScroll}
             >
               {cat.gallery.map((photo, index) => (
-                <Pressable 
-                  key={photo.id} 
+                <Pressable
+                  key={photo.id}
                   onPress={() => setSelectedPhotoIndex(index)}
                   style={({ pressed }) => [styles.galleryItem, pressed && styles.pressed]}
+                  accessibilityRole="button"
+                  accessibilityLabel={`Photo ${index + 1} de la galerie`}
+                  accessibilityHint="Ouvre la photo en plein écran"
                 >
-                  <Image source={{ uri: photo.uri }} style={styles.galleryThumbnail} contentFit="cover" />
+                  <Image source={{ uri: photo.uri }} style={styles.galleryThumbnail} contentFit="cover" accessibilityRole="image" accessibilityLabel={`Photo de ${cat.name}`} />
                 </Pressable>
               ))}
             </ScrollView>
@@ -168,9 +171,12 @@ export default function CatDetailsScreen() {
         )}
 
         {/* Health Dashboard Card */}
-        <Pressable 
+        <Pressable
           onPress={onOpenHealthDashboard}
           style={({ pressed }) => [styles.healthDashboardCard, pressed && styles.pressed]}
+          accessibilityRole="button"
+          accessibilityLabel="Tableau de bord santé"
+          accessibilityHint="Ouvre le suivi du poids, logs quotidiens et alertes"
         >
           <View style={styles.dashboardIcon}>
             <Activity size={24} color="#007AFF" />
@@ -187,7 +193,7 @@ export default function CatDetailsScreen() {
         {/* Medical Records Section */}
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>{t("cats.healthRecord")}</Text>
-          <Pressable onPress={onAddRecord} style={styles.addBtn}>
+          <Pressable onPress={onAddRecord} style={styles.addBtn} accessibilityRole="button" accessibilityLabel={t("cats.addMedicalRecord")}>
             <Plus size={16} color="#fff" />
             <Text style={styles.addBtnText}>{t("cats.addMedicalRecord")}</Text>
           </Pressable>
@@ -203,10 +209,13 @@ export default function CatDetailsScreen() {
         ) : (
           <View style={styles.recordsList}>
             {cat.medicalRecords.map((record) => (
-              <Pressable 
-                key={record.id} 
+              <Pressable
+                key={record.id}
                 style={({ pressed }) => [styles.recordCard, pressed && styles.pressed]}
                 onPress={() => onEditRecord(record.id)}
+                accessibilityRole="button"
+                accessibilityLabel={`${record.title}, ${record.date}`}
+                accessibilityHint="Ouvre le détail de l'enregistrement médical"
               >
                 <View style={[styles.recordIcon, { backgroundColor: getRecordColor(record.type) }]}>
                   {getRecordIcon(record.type)}
@@ -248,25 +257,32 @@ export default function CatDetailsScreen() {
         onRequestClose={() => setSelectedPhotoIndex(null)}
       >
         <View style={styles.modalOverlay}>
-          <Pressable 
+          <Pressable
             style={styles.modalCloseBtn}
             onPress={() => setSelectedPhotoIndex(null)}
+            accessibilityRole="button"
+            accessibilityLabel="Fermer"
           >
             <X size={24} color="#fff" />
           </Pressable>
           
           {selectedPhotoIndex !== null && cat.gallery && cat.gallery[selectedPhotoIndex] && (
             <View style={styles.modalContent}>
-              <Image 
-                source={{ uri: cat.gallery[selectedPhotoIndex].uri }} 
-                style={styles.fullImage} 
-                contentFit="contain" 
+              <Image
+                source={{ uri: cat.gallery[selectedPhotoIndex].uri }}
+                style={styles.fullImage}
+                contentFit="contain"
+                accessibilityRole="image"
+                accessibilityLabel={`Photo ${selectedPhotoIndex + 1} de ${cat.name}`}
               />
               <View style={styles.modalNav}>
-                <Pressable 
+                <Pressable
                   onPress={() => setSelectedPhotoIndex(Math.max(0, selectedPhotoIndex - 1))}
                   style={[styles.navBtn, selectedPhotoIndex === 0 && styles.navBtnDisabled]}
                   disabled={selectedPhotoIndex === 0}
+                  accessibilityRole="button"
+                  accessibilityLabel="Photo précédente"
+                  accessibilityState={{ disabled: selectedPhotoIndex === 0 }}
                 >
                   <Text style={styles.navBtnText}>←</Text>
                 </Pressable>
