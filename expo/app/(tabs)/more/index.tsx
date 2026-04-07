@@ -300,6 +300,9 @@ export default function MoreScreen() {
         styles.menuItem,
         pressed && { opacity: 0.7, transform: [{ scale: 0.98 }] },
       ]}
+      accessibilityRole="button"
+      accessibilityLabel={item.title}
+      accessibilityHint={item.subtitle}
     >
       <View style={[styles.menuIcon, { backgroundColor: item.color }]}>
         {item.icon}
@@ -365,6 +368,9 @@ export default function MoreScreen() {
                 onValueChange={handleToggleNotifications}
                 trackColor={{ false: Colors.border, true: Colors.primary }}
                 thumbColor={notificationsEnabled ? "#fff" : "#f4f3f4"}
+                accessibilityRole="switch"
+                accessibilityLabel={t("notifications.pushNotifications")}
+                accessibilityState={{ checked: notificationsEnabled }}
               />
             </View>
           </View>
@@ -379,6 +385,8 @@ export default function MoreScreen() {
                 styles.menuItem,
                 pressed && { opacity: 0.7, transform: [{ scale: 0.98 }] },
               ]}
+              accessibilityRole="button"
+              accessibilityLabel={t("auth.logout") || "Se déconnecter"}
             >
               <View style={[styles.menuIcon, { backgroundColor: "rgba(158, 158, 158, 0.15)" }]}>
                 <LogOut color={Colors.textMuted} size={22} />
@@ -395,6 +403,9 @@ export default function MoreScreen() {
                 { borderBottomWidth: 0 },
                 pressed && { opacity: 0.7, transform: [{ scale: 0.98 }] },
               ]}
+              accessibilityRole="button"
+              accessibilityLabel={t("more.deleteAccount")}
+              accessibilityHint={t("more.deleteAccountSubtitle")}
             >
               <View style={[styles.menuIcon, { backgroundColor: "rgba(212, 91, 91, 0.15)" }]}>
                 <Trash2 color="#D45B5B" size={22} />

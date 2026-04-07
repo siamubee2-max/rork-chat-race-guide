@@ -362,7 +362,7 @@ export default function CatFormScreen() {
           { paddingBottom: insets.bottom + 16 },
         ]}
       >
-        <Pressable onPress={onSave} style={styles.saveBtn}>
+        <Pressable onPress={onSave} style={styles.saveBtn} accessibilityRole="button" accessibilityLabel={t("common.save")}>
           <Save color="#fff" size={20} />
           <Text style={styles.saveText}>{t("common.save")}</Text>
         </Pressable>

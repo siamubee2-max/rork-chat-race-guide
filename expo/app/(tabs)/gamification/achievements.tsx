@@ -124,6 +124,9 @@ export default function AchievementsScreen() {
             key={category}
             style={[styles.filterButton, filter === category && styles.filterButtonActive]}
             onPress={() => setFilter(category)}
+            accessibilityRole="button"
+            accessibilityLabel={CATEGORY_LABELS[category]}
+            accessibilityState={{ selected: filter === category }}
           >
             <Text
               style={[

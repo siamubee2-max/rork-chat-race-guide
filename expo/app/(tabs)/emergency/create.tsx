@@ -141,6 +141,8 @@ export default function CreateEmergencyScreen() {
                 source={{ uri: catImageUri }}
                 style={styles.posterImage}
                 contentFit="cover"
+                accessibilityRole="image"
+                accessibilityLabel={`Photo de ${catName}`}
               />
             ) : (
               <View style={styles.posterImagePlaceholder}>
@@ -184,6 +186,8 @@ export default function CreateEmergencyScreen() {
             <Pressable
               onPress={handleSharePoster}
               style={styles.shareButton}
+              accessibilityRole="button"
+              accessibilityLabel="Partager l'affiche"
             >
               <Share2 color="#fff" size={20} />
               <Text style={styles.shareButtonText}>Partager</Text>
@@ -192,6 +196,8 @@ export default function CreateEmergencyScreen() {
             <Pressable
               onPress={handleFinish}
               style={styles.finishButton}
+              accessibilityRole="button"
+              accessibilityLabel="Terminer"
             >
               <Text style={styles.finishButtonText}>Terminer</Text>
             </Pressable>
@@ -222,6 +228,9 @@ export default function CreateEmergencyScreen() {
                   borderColor: type.color,
                 },
               ]}
+              accessibilityRole="button"
+              accessibilityLabel={type.label}
+              accessibilityState={{ selected: selectedType === type.value }}
             >
               <Text
                 style={[
@@ -245,12 +254,17 @@ export default function CreateEmergencyScreen() {
                 styles.catCard,
                 selectedCatId === cat.id && styles.catCardActive,
               ]}
+              accessibilityRole="button"
+              accessibilityLabel={`Sélectionner ${cat.name}`}
+              accessibilityState={{ selected: selectedCatId === cat.id }}
             >
               {cat.imageUri && (
                 <Image
                   source={{ uri: cat.imageUri }}
                   style={styles.catCardImage}
                   contentFit="cover"
+                  accessibilityRole="image"
+                  accessibilityLabel={`Photo de ${cat.name}`}
                 />
               )}
               <Text style={styles.catCardName}>{cat.name}</Text>
@@ -266,6 +280,8 @@ export default function CreateEmergencyScreen() {
           value={catName}
           onChangeText={setCatName}
           placeholder="Ex: Minou"
+          accessibilityRole="text"
+          accessibilityLabel="Nom du chat"
         />
 
         <Text style={styles.label}>Race</Text>
@@ -274,6 +290,8 @@ export default function CreateEmergencyScreen() {
           value={catBreed}
           onChangeText={setCatBreed}
           placeholder="Ex: Maine Coon"
+          accessibilityRole="text"
+          accessibilityLabel="Race du chat"
         />
 
         <Text style={styles.label}>Numéro de puce</Text>
@@ -282,6 +300,8 @@ export default function CreateEmergencyScreen() {
           value={microchip}
           onChangeText={setMicrochip}
           placeholder="Ex: 250268500123456"
+          accessibilityRole="text"
+          accessibilityLabel="Numéro de puce"
         />
 
         <Text style={styles.label}>Lieu *</Text>
@@ -290,6 +310,8 @@ export default function CreateEmergencyScreen() {
           value={location}
           onChangeText={setLocation}
           placeholder="Ex: Rue de la Paix, Paris"
+          accessibilityRole="text"
+          accessibilityLabel="Lieu"
         />
 
         <Text style={styles.label}>Description</Text>
@@ -300,6 +322,8 @@ export default function CreateEmergencyScreen() {
           placeholder="Décrivez les circonstances, signes distinctifs..."
           multiline
           numberOfLines={4}
+          accessibilityRole="text"
+          accessibilityLabel="Description"
         />
 
         <Text style={styles.sectionTitle}>Contact</Text>
@@ -311,6 +335,8 @@ export default function CreateEmergencyScreen() {
           onChangeText={setContactPhone}
           placeholder="Ex: 06 12 34 56 78"
           keyboardType="phone-pad"
+          accessibilityRole="text"
+          accessibilityLabel="Téléphone de contact"
         />
 
         <Text style={styles.label}>Email</Text>
@@ -321,9 +347,11 @@ export default function CreateEmergencyScreen() {
           placeholder="Ex: email@example.com"
           keyboardType="email-address"
           autoCapitalize="none"
+          accessibilityRole="text"
+          accessibilityLabel="Email de contact"
         />
 
-        <Pressable onPress={handleCreateAlert} style={styles.createButton}>
+        <Pressable onPress={handleCreateAlert} style={styles.createButton} accessibilityRole="button" accessibilityLabel="Créer l'alerte">
           <Text style={styles.createButtonText}>Créer l&apos;alerte</Text>
         </Pressable>
       </ScrollView>

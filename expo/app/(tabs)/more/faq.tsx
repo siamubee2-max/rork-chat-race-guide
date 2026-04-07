@@ -55,6 +55,10 @@ function FaqAccordion({ item }: { item: FaqItem }) {
     <Pressable
       onPress={toggle}
       style={[styles.faqItem, expanded && styles.faqItemExpanded]}
+      accessibilityRole="button"
+      accessibilityLabel={item.question}
+      accessibilityState={{ expanded }}
+      accessibilityHint="Appuyez pour voir la réponse"
     >
       <View style={styles.faqHeader}>
         <View style={styles.faqNumberBadge}>
@@ -125,6 +129,8 @@ export default function FaqScreen() {
             value={searchQuery}
             onChangeText={setSearchQuery}
             autoCorrect={false}
+            accessibilityRole="search"
+            accessibilityLabel={t("common.search")}
           />
         </View>
 
@@ -151,6 +157,8 @@ export default function FaqScreen() {
               styles.contactButton,
               pressed && { opacity: 0.8, transform: [{ scale: 0.98 }] },
             ]}
+            accessibilityRole="button"
+            accessibilityLabel="Contacter le support par email"
           >
             <Mail color="#fff" size={18} />
             <Text style={styles.contactButtonText}>

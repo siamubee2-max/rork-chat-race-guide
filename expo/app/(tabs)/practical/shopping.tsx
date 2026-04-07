@@ -179,6 +179,8 @@ export default function ShoppingScreen() {
               placeholder="Nom de l'article..."
               placeholderTextColor={Colors.textMuted}
               autoFocus
+              accessibilityRole="text"
+              accessibilityLabel="Nom de l'article"
             />
 
             <View style={styles.formRow}>
@@ -189,6 +191,8 @@ export default function ShoppingScreen() {
                 placeholder="Qté"
                 placeholderTextColor={Colors.textMuted}
                 keyboardType="number-pad"
+                accessibilityRole="text"
+                accessibilityLabel="Quantité"
               />
               
               <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoriesScroll}>
@@ -200,6 +204,9 @@ export default function ShoppingScreen() {
                       key={key}
                       style={[styles.categoryChip, isSelected && { backgroundColor: info.color + "20", borderColor: info.color }]}
                       onPress={() => setNewItemCategory(key as ShoppingCategory)}
+                      accessibilityRole="button"
+                      accessibilityLabel={info.label}
+                      accessibilityState={{ selected: isSelected }}
                     >
                       <IconComponent size={14} color={isSelected ? info.color : Colors.textMuted} />
                     </Pressable>
@@ -217,6 +224,9 @@ export default function ShoppingScreen() {
                     newItemPriority === key && { backgroundColor: info.color + "20", borderColor: info.color },
                   ]}
                   onPress={() => setNewItemPriority(key as "low" | "medium" | "high")}
+                  accessibilityRole="button"
+                  accessibilityLabel={`Priorité: ${info.label}`}
+                  accessibilityState={{ selected: newItemPriority === key }}
                 >
                   <Text style={[styles.priorityChipText, newItemPriority === key && { color: info.color }]}>
                     {info.label}
@@ -228,6 +238,8 @@ export default function ShoppingScreen() {
             <Pressable
               style={({ pressed }) => [styles.confirmButton, pressed && { opacity: 0.9 }]}
               onPress={handleAddItem}
+              accessibilityRole="button"
+              accessibilityLabel="Confirmer l'ajout"
             >
               <Check size={18} color="#fff" />
               <Text style={styles.confirmButtonText}>Ajouter</Text>
@@ -254,11 +266,14 @@ export default function ShoppingScreen() {
             <Pressable
               style={styles.sectionHeader}
               onPress={() => setShowChecked(!showChecked)}
+              accessibilityRole="button"
+              accessibilityLabel={showChecked ? "Masquer les articles achetés" : `Afficher les articles achetés (${checkedItems.length})`}
+              accessibilityState={{ expanded: showChecked }}
             >
               <Text style={styles.sectionTitle}>Acheté ({checkedItems.length})</Text>
               <View style={styles.sectionActions}>
                 {showChecked && (
-                  <Pressable style={styles.clearButton} onPress={handleClearChecked}>
+                  <Pressable style={styles.clearButton} onPress={handleClearChecked} accessibilityRole="button" accessibilityLabel="Vider les articles cochés">
                     <Text style={styles.clearButtonText}>Vider</Text>
                   </Pressable>
                 )}

@@ -517,12 +517,12 @@ export default function SubscriptionScreen() {
           vos abonnements dans les réglages de votre appareil.
         </Text>
         <View style={styles.legalLinks}>
-          <Pressable onPress={() => router.push('/(tabs)/more/terms' as any)} style={styles.legalLink}>
+          <Pressable onPress={() => router.push('/(tabs)/more/terms' as any)} style={styles.legalLink} accessibilityRole="button" accessibilityLabel="Conditions d'utilisation">
             <ExternalLink size={12} color="#94a3b8" />
             <Text style={styles.legalLinkText}>Conditions d'utilisation</Text>
           </Pressable>
           <Text style={styles.legalSeparator}>·</Text>
-          <Pressable onPress={() => router.push('/(tabs)/more/privacy' as any)} style={styles.legalLink}>
+          <Pressable onPress={() => router.push('/(tabs)/more/privacy' as any)} style={styles.legalLink} accessibilityRole="button" accessibilityLabel="Politique de confidentialité">
             <ExternalLink size={12} color="#94a3b8" />
             <Text style={styles.legalLinkText}>Politique de confidentialité</Text>
           </Pressable>

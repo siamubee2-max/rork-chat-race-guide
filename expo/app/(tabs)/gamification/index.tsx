@@ -117,6 +117,8 @@ export default function GamificationScreen() {
       <Pressable
         style={styles.menuCard}
         onPress={() => router.push("/gamification/challenges" as any)}
+        accessibilityRole="button"
+        accessibilityLabel={`Défis du jour, ${completedDaily} sur ${dailyChallenges.length} complétés`}
       >
         <View style={styles.menuLeft}>
           <View style={[styles.menuIcon, { backgroundColor: Colors.accentMuted }]}>
@@ -148,6 +150,8 @@ export default function GamificationScreen() {
       <Pressable
         style={styles.menuCard}
         onPress={() => router.push("/gamification/challenges" as any)}
+        accessibilityRole="button"
+        accessibilityLabel={`Défis de la semaine, ${completedWeekly} sur ${weeklyChallenges.length} complétés`}
       >
         <View style={styles.menuLeft}>
           <View style={[styles.menuIcon, { backgroundColor: "rgba(122, 160, 91, 0.2)" }]}>
@@ -180,6 +184,8 @@ export default function GamificationScreen() {
       <Pressable
         style={styles.menuCard}
         onPress={() => router.push("/gamification/achievements" as any)}
+        accessibilityRole="button"
+        accessibilityLabel={`Mes Succès, ${unlockedCount} sur ${totalAchievements} débloqués`}
       >
         <View style={styles.menuLeft}>
           <View style={[styles.menuIcon, { backgroundColor: Colors.primaryMuted }]}>
@@ -198,6 +204,8 @@ export default function GamificationScreen() {
       <Pressable
         style={styles.menuCard}
         onPress={() => router.push("/gamification/leaderboard" as any)}
+        accessibilityRole="button"
+        accessibilityLabel="Classement - Voir la communauté"
       >
         <View style={styles.menuLeft}>
           <View style={[styles.menuIcon, { backgroundColor: "rgba(107, 154, 196, 0.2)" }]}>

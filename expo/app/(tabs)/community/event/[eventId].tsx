@@ -95,7 +95,7 @@ export default function EventDetailScreen() {
         showsVerticalScrollIndicator={false}
       >
         {event.imageUrl && (
-          <Image source={{ uri: event.imageUrl }} style={styles.image} />
+          <Image source={{ uri: event.imageUrl }} style={styles.image} accessibilityRole="image" accessibilityLabel={`Image de l'événement ${event.title}`} />
         )}
 
         <View style={styles.mainContent}>
@@ -107,9 +107,11 @@ export default function EventDetailScreen() {
 
           <Text style={styles.title}>{event.title}</Text>
 
-          <Pressable 
+          <Pressable
             style={styles.organizer}
             onPress={() => router.push(`/(tabs)/community/profile/${event.organizerId}` as any)}
+            accessibilityRole="button"
+            accessibilityLabel={`Organisé par ${event.organizerName}`}
           >
             <View style={styles.organizerAvatar}>
               <Text style={styles.organizerAvatarText}>

@@ -187,7 +187,7 @@ export default function TravelScreen() {
       <View style={styles.progressCard}>
         <View style={styles.progressHeader}>
           <Text style={styles.progressLabel}>Progression</Text>
-          <Pressable style={styles.resetButton} onPress={resetChecklist}>
+          <Pressable style={styles.resetButton} onPress={resetChecklist} accessibilityRole="button" accessibilityLabel="Réinitialiser la checklist">
             <RefreshCw size={16} color={Colors.textMuted} />
             <Text style={styles.resetText}>Réinitialiser</Text>
           </Pressable>
@@ -225,6 +225,9 @@ export default function TravelScreen() {
                   key={item.id}
                   style={styles.itemRow}
                   onPress={() => toggleItem(section.id, item.id)}
+                  accessibilityRole="button"
+                  accessibilityLabel={item.label}
+                  accessibilityState={{ checked: item.checked }}
                 >
                   <View
                     style={[

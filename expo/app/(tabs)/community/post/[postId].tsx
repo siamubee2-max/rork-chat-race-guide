@@ -99,9 +99,11 @@ export default function PostDetailScreen() {
   const ListHeader = () => (
     <View>
       <View style={styles.header}>
-        <Pressable 
+        <Pressable
           style={styles.userInfo}
           onPress={() => router.push(`/(tabs)/community/profile/${post.userId}` as any)}
+          accessibilityRole="button"
+          accessibilityLabel={`Profil de ${post.userName}`}
         >
           <View style={styles.avatar}>
             <Text style={styles.avatarText}>
@@ -120,10 +122,10 @@ export default function PostDetailScreen() {
         </Pressable>
       </View>
 
-      <Image source={{ uri: post.imageUrl }} style={styles.image} />
+      <Image source={{ uri: post.imageUrl }} style={styles.image} accessibilityRole="image" accessibilityLabel={`Photo publiée par ${post.userName}`} />
 
       <View style={styles.actions}>
-        <Pressable style={styles.actionBtn} onPress={handleLike}>
+        <Pressable style={styles.actionBtn} onPress={handleLike} accessibilityRole="button" accessibilityLabel={liked ? "Ne plus aimer" : "Aimer"} accessibilityState={{ selected: liked }}>
           <Heart
             size={26}
             color={liked ? Colors.heart : Colors.text}
@@ -190,11 +192,16 @@ export default function PostDetailScreen() {
           onChangeText={setCommentText}
           multiline
           maxLength={300}
+          accessibilityRole="text"
+          accessibilityLabel="Ajouter un commentaire"
         />
         <Pressable
           style={[styles.sendBtn, !commentText.trim() && styles.sendBtnDisabled]}
           onPress={handleComment}
           disabled={!commentText.trim()}
+          accessibilityRole="button"
+          accessibilityLabel="Envoyer le commentaire"
+          accessibilityState={{ disabled: !commentText.trim() }}
         >
           <Send size={20} color="#fff" />
         </Pressable>

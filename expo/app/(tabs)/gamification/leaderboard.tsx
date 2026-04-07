@@ -89,7 +89,7 @@ function LeaderboardRow({
 
       <View style={styles.avatarContainer}>
         {entry.avatarUrl ? (
-          <Image source={{ uri: entry.avatarUrl }} style={styles.avatar} />
+          <Image source={{ uri: entry.avatarUrl }} style={styles.avatar} accessibilityRole="image" accessibilityLabel={`Avatar de ${entry.username}`} />
         ) : (
           <View style={styles.avatarPlaceholder}>
             <Text style={styles.avatarText}>
@@ -144,6 +144,8 @@ export default function LeaderboardScreen() {
                         styles.podiumAvatar,
                         index === 1 && styles.podiumAvatarFirst,
                       ]}
+                      accessibilityRole="image"
+                      accessibilityLabel={`Avatar de ${actualEntry.username}`}
                     />
                   ) : (
                     <View

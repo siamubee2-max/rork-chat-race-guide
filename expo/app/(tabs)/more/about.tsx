@@ -80,6 +80,8 @@ export default function AboutScreen() {
               source={require("@/assets/images/purrly-logo.png")}
               style={styles.logo}
               resizeMode="contain"
+              accessibilityRole="image"
+              accessibilityLabel="Logo Purrly"
             />
           </View>
           <Text style={styles.appName}>Purrly</Text>
@@ -173,6 +175,8 @@ export default function AboutScreen() {
                 styles.contactRow,
                 pressed && { opacity: 0.7 },
               ]}
+              accessibilityRole="button"
+              accessibilityLabel={`Envoyer un email à ${t("legal.about.contactEmail")}`}
             >
               <View
                 style={[
@@ -196,6 +200,8 @@ export default function AboutScreen() {
                 styles.contactRow,
                 pressed && { opacity: 0.7 },
               ]}
+              accessibilityRole="button"
+              accessibilityLabel={`Visiter le site ${t("legal.about.contactWebsite")}`}
             >
               <View
                 style={[
