@@ -189,7 +189,7 @@ export default function EventDetailScreen() {
       </ScrollView>
 
       <View style={[styles.footer, { paddingBottom: insets.bottom || 20 }]}>
-        <Pressable style={styles.shareBtn}>
+        <Pressable style={styles.shareBtn} accessibilityRole="button" accessibilityLabel="Partager l'événement">
           <Share2 size={20} color={Colors.text} />
         </Pressable>
         <Pressable
@@ -200,6 +200,9 @@ export default function EventDetailScreen() {
           ]}
           onPress={handleAttend}
           disabled={isFull && !attending}
+          accessibilityRole="button"
+          accessibilityLabel={attending ? "Inscrit" : isFull ? "Complet" : "Participer"}
+          accessibilityState={{ disabled: isFull && !attending, selected: attending }}
         >
           {attending ? (
             <>
