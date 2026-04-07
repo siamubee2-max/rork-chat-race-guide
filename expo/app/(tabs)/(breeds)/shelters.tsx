@@ -61,7 +61,7 @@ export default function SheltersScreen() {
           <ScrollView contentContainerStyle={styles.listContainer}>
             {SHELTERS.map((shelter) => (
               <View key={shelter.id} style={styles.card}>
-                <Image source={{ uri: shelter.imageUri }} style={styles.webCardImage} contentFit="cover" />
+                <Image source={{ uri: shelter.imageUri }} style={styles.webCardImage} contentFit="cover" accessibilityRole="image" accessibilityLabel={`Photo du refuge ${shelter.name}`} />
                 <View style={styles.webCardContent}>
                   <View style={styles.cardHeader}>
                     <Text style={styles.cardTitle}>{shelter.name}</Text>
@@ -125,7 +125,7 @@ export default function SheltersScreen() {
           <BlurView intensity={90} tint="light" style={styles.floatingCard}>
             <View style={styles.cardContent}>
               <View style={styles.cardImageContainer}>
-                <Image source={{ uri: selectedShelter.imageUri }} style={styles.cardImage} contentFit="cover" />
+                <Image source={{ uri: selectedShelter.imageUri }} style={styles.cardImage} contentFit="cover" accessibilityRole="image" accessibilityLabel={`Photo du refuge ${selectedShelter.name}`} />
               </View>
 
               <View style={styles.cardDetails}>
@@ -135,6 +135,9 @@ export default function SheltersScreen() {
                     style={styles.closeButton}
                     onPress={() => setSelectedShelter(null)}
                     hitSlop={10}
+                    accessibilityRole="button"
+                    accessibilityLabel="Fermer"
+                    accessibilityHint="Fermer la fiche du refuge"
                   >
                     <Text style={styles.closeButtonText}>×</Text>
                   </TouchableOpacity>
@@ -155,12 +158,22 @@ export default function SheltersScreen() {
             <View style={styles.divider} />
 
             <View style={styles.actionButtons}>
-              <TouchableOpacity style={[styles.actionButton, styles.callButton]}>
+              <TouchableOpacity
+                style={[styles.actionButton, styles.callButton]}
+                accessibilityRole="button"
+                accessibilityLabel="Contacter le refuge"
+                accessibilityHint="Appeler le refuge par téléphone"
+              >
                 <Phone size={18} color="white" />
                 <Text style={styles.actionButtonText}>Contacter</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={[styles.actionButton, styles.routeButton]}>
+              <TouchableOpacity
+                style={[styles.actionButton, styles.routeButton]}
+                accessibilityRole="button"
+                accessibilityLabel="Itinéraire"
+                accessibilityHint="Obtenir l'itinéraire vers le refuge"
+              >
                 <Navigation size={18} color="white" />
                 <Text style={styles.actionButtonText}>Itinéraire</Text>
               </TouchableOpacity>

@@ -105,6 +105,9 @@ export default function ReminderFormScreen() {
                     isSelected && { backgroundColor: item.color + "20", borderColor: item.color },
                   ]}
                   onPress={() => setType(item.type)}
+                  accessibilityRole="button"
+                  accessibilityLabel={item.label}
+                  accessibilityState={{ selected: isSelected }}
                 >
                   <IconComponent size={20} color={isSelected ? item.color : Colors.textMuted} />
                   <Text style={[styles.typeLabel, isSelected && { color: item.color }]}>
@@ -124,6 +127,8 @@ export default function ReminderFormScreen() {
             onChangeText={setTitle}
             placeholder="Ex: Vaccin rage + typhus"
             placeholderTextColor={Colors.textMuted}
+            accessibilityRole="text"
+            accessibilityLabel="Titre du rappel"
           />
         </View>
 
@@ -137,6 +142,8 @@ export default function ReminderFormScreen() {
             placeholderTextColor={Colors.textMuted}
             multiline
             numberOfLines={3}
+            accessibilityRole="text"
+            accessibilityLabel="Description du rappel"
           />
         </View>
 
@@ -147,6 +154,9 @@ export default function ReminderFormScreen() {
               <Pressable
                 style={[styles.catChip, !selectedCatId && styles.catChipSelected]}
                 onPress={() => setSelectedCatId(null)}
+                accessibilityRole="button"
+                accessibilityLabel="Tous les chats"
+                accessibilityState={{ selected: !selectedCatId }}
               >
                 <Text style={[styles.catChipText, !selectedCatId && styles.catChipTextSelected]}>
                   Tous
@@ -157,6 +167,9 @@ export default function ReminderFormScreen() {
                   key={cat.id}
                   style={[styles.catChip, selectedCatId === cat.id && styles.catChipSelected]}
                   onPress={() => setSelectedCatId(cat.id)}
+                  accessibilityRole="button"
+                  accessibilityLabel={cat.name}
+                  accessibilityState={{ selected: selectedCatId === cat.id }}
                 >
                   <Text style={[styles.catChipText, selectedCatId === cat.id && styles.catChipTextSelected]}>
                     {cat.name}
@@ -169,7 +182,7 @@ export default function ReminderFormScreen() {
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Date</Text>
-          <Pressable style={styles.dateButton} onPress={() => setShowDatePicker(true)}>
+          <Pressable style={styles.dateButton} onPress={() => setShowDatePicker(true)} accessibilityRole="button" accessibilityLabel="Sélectionner la date">
             <Calendar size={20} color={Colors.primary} />
             <Text style={styles.dateText}>
               {dueDate.toLocaleDateString("fr-FR", {
@@ -202,6 +215,9 @@ export default function ReminderFormScreen() {
                 key={freq.value}
                 style={[styles.freqButton, frequency === freq.value && styles.freqButtonSelected]}
                 onPress={() => setFrequency(freq.value)}
+                accessibilityRole="button"
+                accessibilityLabel={freq.label}
+                accessibilityState={{ selected: frequency === freq.value }}
               >
                 <Text style={[styles.freqText, frequency === freq.value && styles.freqTextSelected]}>
                   {freq.label}
@@ -214,6 +230,8 @@ export default function ReminderFormScreen() {
         <Pressable
           style={({ pressed }) => [styles.saveButton, pressed && { opacity: 0.9 }]}
           onPress={handleSave}
+          accessibilityRole="button"
+          accessibilityLabel="Créer le rappel"
         >
           <Check size={20} color="#fff" />
           <Text style={styles.saveButtonText}>Créer le rappel</Text>

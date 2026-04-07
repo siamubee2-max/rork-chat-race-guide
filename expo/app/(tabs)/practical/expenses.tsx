@@ -73,6 +73,8 @@ const ExpenseCard = ({ expense, onDelete }: ExpenseCardProps) => {
         <Pressable
           style={({ pressed }) => [styles.deleteButton, pressed && { opacity: 0.7 }]}
           onPress={onDelete}
+          accessibilityRole="button"
+          accessibilityLabel={`Supprimer la dépense "${expense.title}"`}
         >
           <Trash2 size={16} color={Colors.error} />
         </Pressable>
@@ -123,6 +125,9 @@ export default function ExpensesScreen() {
               <Pressable
                 style={[styles.periodButton, selectedPeriod === "month" && styles.periodButtonActive]}
                 onPress={() => setSelectedPeriod("month")}
+                accessibilityRole="button"
+                accessibilityLabel="Ce mois"
+                accessibilityState={{ selected: selectedPeriod === "month" }}
               >
                 <Text style={[styles.periodText, selectedPeriod === "month" && styles.periodTextActive]}>
                   Ce mois
@@ -131,6 +136,9 @@ export default function ExpensesScreen() {
               <Pressable
                 style={[styles.periodButton, selectedPeriod === "year" && styles.periodButtonActive]}
                 onPress={() => setSelectedPeriod("year")}
+                accessibilityRole="button"
+                accessibilityLabel="Cette année"
+                accessibilityState={{ selected: selectedPeriod === "year" }}
               >
                 <Text style={[styles.periodText, selectedPeriod === "year" && styles.periodTextActive]}>
                   Cette année
@@ -195,6 +203,9 @@ export default function ExpensesScreen() {
         <Pressable
           style={({ pressed }) => [styles.fab, pressed && { transform: [{ scale: 0.95 }] }]}
           onPress={() => router.push("/(tabs)/practical/expense-form" as any)}
+          accessibilityRole="button"
+          accessibilityLabel="Ajouter une dépense"
+          accessibilityHint="Ouvre le formulaire de création de dépense"
         >
           <Plus size={24} color="#fff" />
         </Pressable>

@@ -85,7 +85,7 @@ export default function Index() {
       <View style={[styles.hero, { height: heroHeight, maxWidth: isTablet ? 900 : undefined, alignSelf: isTablet ? 'center' as const : undefined, width: '100%' }]} testID="indexHero">
         <View style={styles.heroBg} />
         <View style={[styles.logoContainer, { height: SCREEN_HEIGHT * 0.3 }]}>
-          <Image source={logoUri} style={[styles.logoImg, { width: logoSize, height: logoSize }]} contentFit="contain" />
+          <Image source={logoUri} style={[styles.logoImg, { width: logoSize, height: logoSize }]} contentFit="contain" accessibilityRole="image" accessibilityLabel="Logo Purrly" />
         </View>
         <LinearGradient
           colors={["transparent", "rgba(12,10,9,0.4)", "#0C0A09"]}
@@ -116,6 +116,9 @@ export default function Index() {
                 styles.primaryBtn,
                 pressed && { transform: [{ scale: 0.98 }], opacity: 0.9 },
               ]}
+              accessibilityRole="button"
+              accessibilityLabel="Reconnaître une race"
+              accessibilityHint="Scanner un chat pour identifier sa race"
             >
               <ScanLine color="#0C0A09" size={22} />
               <Text style={styles.primaryBtnText}>Reconnaître une race</Text>
@@ -127,6 +130,9 @@ export default function Index() {
                 styles.secondaryBtn,
                 pressed && { opacity: 0.8 },
               ]}
+              accessibilityRole="button"
+              accessibilityLabel="Explorer les archives"
+              accessibilityHint="Parcourir le catalogue des races de chats"
             >
               <Text style={styles.secondaryBtnText}>Explorer les archives</Text>
             </Pressable>

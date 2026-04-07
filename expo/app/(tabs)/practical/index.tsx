@@ -43,6 +43,9 @@ const FeatureCard = ({ icon, title, subtitle, badge, badgeColor, onPress, color 
       pressed && { transform: [{ scale: 0.98 }], opacity: 0.9 },
     ]}
     onPress={onPress}
+    accessibilityRole="button"
+    accessibilityLabel={title}
+    accessibilityHint={subtitle}
   >
     <View style={[styles.featureIconContainer, { backgroundColor: color + "15" }]}>
       {icon}
@@ -76,6 +79,8 @@ const QuickAction = ({ icon, label, onPress, color }: QuickActionProps) => (
       pressed && { transform: [{ scale: 0.95 }], opacity: 0.9 },
     ]}
     onPress={onPress}
+    accessibilityRole="button"
+    accessibilityLabel={label}
   >
     <View style={[styles.quickActionIcon, { backgroundColor: color + "15" }]}>
       {icon}
@@ -112,6 +117,9 @@ export default function PracticalScreen() {
         <Pressable
           style={styles.alertBanner}
           onPress={() => router.push("/(tabs)/practical/reminders" as any)}
+          accessibilityRole="button"
+          accessibilityLabel={t('practical.overdueReminders', { count: overdueCount })}
+          accessibilityHint={t('practical.tapToSeeDetails')}
         >
           <View style={styles.alertIconContainer}>
             <AlertCircle size={24} color="#fff" />

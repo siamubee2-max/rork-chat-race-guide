@@ -106,6 +106,9 @@ export default function ExpenseFormScreen() {
                     isSelected && { backgroundColor: item.color + "20", borderColor: item.color },
                   ]}
                   onPress={() => setCategory(item.value)}
+                  accessibilityRole="button"
+                  accessibilityLabel={item.label}
+                  accessibilityState={{ selected: isSelected }}
                 >
                   <IconComponent size={18} color={isSelected ? item.color : Colors.textMuted} />
                   <Text style={[styles.categoryLabel, isSelected && { color: item.color }]}>
@@ -125,6 +128,8 @@ export default function ExpenseFormScreen() {
             onChangeText={setTitle}
             placeholder="Ex: Croquettes Royal Canin"
             placeholderTextColor={Colors.textMuted}
+            accessibilityRole="text"
+            accessibilityLabel="Titre de la dépense"
           />
         </View>
 
@@ -137,6 +142,8 @@ export default function ExpenseFormScreen() {
             placeholder="0.00"
             placeholderTextColor={Colors.textMuted}
             keyboardType="decimal-pad"
+            accessibilityRole="text"
+            accessibilityLabel="Montant en euros"
           />
         </View>
 
@@ -147,6 +154,9 @@ export default function ExpenseFormScreen() {
               <Pressable
                 style={[styles.catChip, !selectedCatId && styles.catChipSelected]}
                 onPress={() => setSelectedCatId(null)}
+                accessibilityRole="button"
+                accessibilityLabel="Tous les chats"
+                accessibilityState={{ selected: !selectedCatId }}
               >
                 <Text style={[styles.catChipText, !selectedCatId && styles.catChipTextSelected]}>
                   Tous
@@ -157,6 +167,9 @@ export default function ExpenseFormScreen() {
                   key={cat.id}
                   style={[styles.catChip, selectedCatId === cat.id && styles.catChipSelected]}
                   onPress={() => setSelectedCatId(cat.id)}
+                  accessibilityRole="button"
+                  accessibilityLabel={cat.name}
+                  accessibilityState={{ selected: selectedCatId === cat.id }}
                 >
                   <Text style={[styles.catChipText, selectedCatId === cat.id && styles.catChipTextSelected]}>
                     {cat.name}
@@ -169,7 +182,7 @@ export default function ExpenseFormScreen() {
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Date</Text>
-          <Pressable style={styles.dateButton} onPress={() => setShowDatePicker(true)}>
+          <Pressable style={styles.dateButton} onPress={() => setShowDatePicker(true)} accessibilityRole="button" accessibilityLabel="Sélectionner la date">
             <Calendar size={20} color={Colors.primary} />
             <Text style={styles.dateText}>
               {date.toLocaleDateString("fr-FR", {
@@ -204,12 +217,16 @@ export default function ExpenseFormScreen() {
             placeholderTextColor={Colors.textMuted}
             multiline
             numberOfLines={3}
+            accessibilityRole="text"
+            accessibilityLabel="Notes"
           />
         </View>
 
         <Pressable
           style={({ pressed }) => [styles.saveButton, pressed && { opacity: 0.9 }]}
           onPress={handleSave}
+          accessibilityRole="button"
+          accessibilityLabel="Ajouter la dépense"
         >
           <Check size={20} color="#fff" />
           <Text style={styles.saveButtonText}>Ajouter la dépense</Text>

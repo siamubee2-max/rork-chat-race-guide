@@ -60,6 +60,9 @@ const ShoppingItemCard = ({ item, onToggle, onDelete }: ShoppingItemCardProps) =
           pressed && { opacity: 0.7 },
         ]}
         onPress={onToggle}
+        accessibilityRole="button"
+        accessibilityLabel={item.checked ? `Décocher "${item.name}"` : `Cocher "${item.name}"`}
+        accessibilityState={{ checked: item.checked }}
       >
         {item.checked && <Check size={14} color="#fff" />}
       </Pressable>
@@ -86,6 +89,8 @@ const ShoppingItemCard = ({ item, onToggle, onDelete }: ShoppingItemCardProps) =
       <Pressable
         style={({ pressed }) => [styles.deleteButton, pressed && { opacity: 0.7 }]}
         onPress={onDelete}
+        accessibilityRole="button"
+        accessibilityLabel={`Supprimer "${item.name}"`}
       >
         <Trash2 size={16} color={Colors.textMuted} />
       </Pressable>
@@ -157,6 +162,9 @@ export default function ShoppingScreen() {
         <Pressable
           style={({ pressed }) => [styles.addButton, pressed && { opacity: 0.9 }]}
           onPress={() => setShowAddForm(!showAddForm)}
+          accessibilityRole="button"
+          accessibilityLabel="Ajouter un article"
+          accessibilityState={{ expanded: showAddForm }}
         >
           <Plus size={20} color="#fff" />
           <Text style={styles.addButtonText}>Ajouter un article</Text>

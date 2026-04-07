@@ -289,10 +289,13 @@ export default function CatDetailsScreen() {
                 <Text style={styles.photoCounter}>
                   {selectedPhotoIndex + 1} / {cat.gallery.length}
                 </Text>
-                <Pressable 
+                <Pressable
                   onPress={() => setSelectedPhotoIndex(Math.min(cat.gallery!.length - 1, selectedPhotoIndex + 1))}
                   style={[styles.navBtn, selectedPhotoIndex === cat.gallery.length - 1 && styles.navBtnDisabled]}
                   disabled={selectedPhotoIndex === cat.gallery.length - 1}
+                  accessibilityRole="button"
+                  accessibilityLabel="Photo suivante"
+                  accessibilityState={{ disabled: selectedPhotoIndex === cat.gallery.length - 1 }}
                 >
                   <Text style={styles.navBtnText}>→</Text>
                 </Pressable>
