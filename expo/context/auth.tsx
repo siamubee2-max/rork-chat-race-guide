@@ -210,11 +210,14 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
 
       if (userIndex === -1) return;
 
-      const expiry = customExpiry 
-        ? new Date(customExpiry).toISOString()
-        : tier !== 'free' 
-          ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString() 
-          : undefined;
+      let expiry: string | undefined;
+      if (customExpiry) {
+        expiry = new Date(customExpiry).toISOString();
+      } else if (tier !== 'free') {
+        // Use RevenueCat's actual expiry when available; only fallback for edge cases
+        console.warn('[Auth] No expiry date provided for tier:', tier, '- subscription may not reflect actual period');
+        expiry = undefined;
+      }
 
       users[userIndex].subscriptionTier = tier;
       users[userIndex].subscriptionExpiry = expiry;

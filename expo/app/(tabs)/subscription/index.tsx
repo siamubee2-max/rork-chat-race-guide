@@ -14,6 +14,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/context/auth";
 import { router } from "expo-router";
 import { Colors } from "@/constants/colors";
+import { getTierFromProductId } from "@/utils/subscription";
 
 let Purchases: any = null;
 
@@ -169,14 +170,6 @@ const IconMap = {
   gem: Gem,
 } as const;
 
-function getTierFromProductId(productId: string): "premium" | "premium_plus" {
-  const lower = productId.toLowerCase();
-  if (lower.includes("family") || lower.includes("pro")) {
-    return "premium_plus";
-  }
-  return "premium";
-}
-
 export default function SubscriptionScreen() {
   const { isAuthenticated, updateSubscription } = useAuth();
   const queryClient = useQueryClient();
@@ -275,7 +268,7 @@ export default function SubscriptionScreen() {
         return pkgId.includes(planKey) || planKey.includes(pkgId);
       });
       if (match) {
-        console.log("[Subscription] Fuzzy matched plan", plan.id, "-> RC package", match.identifier, "product:", match.product?.identifier);
+        console.warn("[Subscription] FUZZY matched plan", plan.id, "-> RC package", match.identifier, "product:", match.product?.identifier, "- verify this is correct");
         return match;
       }
       console.log("[Subscription] No RC match for plan", plan.id, "with key", targetKey, "available packages:", rcPackages.map((p: any) => p.identifier).join(", "));
