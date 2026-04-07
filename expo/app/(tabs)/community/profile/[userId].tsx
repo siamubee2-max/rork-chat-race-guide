@@ -114,7 +114,7 @@ export default function ProfileScreen() {
               </>
             )}
           </Pressable>
-          <Pressable style={styles.messageBtn} onPress={handleMessage}>
+          <Pressable style={styles.messageBtn} onPress={handleMessage} accessibilityRole="button" accessibilityLabel="Envoyer un message">
             <MessageCircle size={18} color={Colors.text} />
             <Text style={styles.messageBtnText}>Message</Text>
           </Pressable>

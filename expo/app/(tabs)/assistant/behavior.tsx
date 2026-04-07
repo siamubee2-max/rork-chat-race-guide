@@ -198,6 +198,9 @@ export default function BehaviorScreen() {
                 setSelectedCatId(cat.id);
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
               }}
+              accessibilityRole="button"
+              accessibilityLabel={cat.name}
+              accessibilityState={{ selected: selectedCatId === cat.id }}
             >
               <Text
                 style={[
@@ -254,6 +257,9 @@ export default function BehaviorScreen() {
         onPress={handleAnalyze}
         disabled={!canAnalyze || isAnalyzingBehavior}
         activeOpacity={0.8}
+        accessibilityRole="button"
+        accessibilityLabel="Analyser le comportement"
+        accessibilityState={{ disabled: !canAnalyze || isAnalyzingBehavior }}
       >
         {isAnalyzingBehavior ? (
           <>

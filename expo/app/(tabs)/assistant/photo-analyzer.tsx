@@ -196,6 +196,9 @@ export default function PhotoAnalyzerScreen() {
                 setSelectedCatId(null);
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
               }}
+              accessibilityRole="button"
+              accessibilityLabel="Aucun chat"
+              accessibilityState={{ selected: !selectedCatId }}
             >
               <Text style={[
                 styles.catPillText,
@@ -215,6 +218,9 @@ export default function PhotoAnalyzerScreen() {
                   setSelectedCatId(cat.id);
                   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                 }}
+                accessibilityRole="button"
+                accessibilityLabel={cat.name}
+                accessibilityState={{ selected: selectedCatId === cat.id }}
               >
                 <Text style={[
                   styles.catPillText,
@@ -243,15 +249,19 @@ export default function PhotoAnalyzerScreen() {
               style={styles.uploadButton}
               onPress={() => pickImage(true)}
               activeOpacity={0.8}
+              accessibilityRole="button"
+              accessibilityLabel="Prendre une photo"
             >
               <Camera color="#fff" size={22} />
               <Text style={styles.uploadButtonText}>Prendre une photo</Text>
             </TouchableOpacity>
-            
+
             <TouchableOpacity
               style={[styles.uploadButton, styles.uploadButtonSecondary]}
               onPress={() => pickImage(false)}
               activeOpacity={0.8}
+              accessibilityRole="button"
+              accessibilityLabel="Choisir depuis la galerie"
             >
               <ImagePlus color={Colors.primary} size={22} />
               <Text style={[styles.uploadButtonText, styles.uploadButtonTextSecondary]}>
@@ -263,8 +273,8 @@ export default function PhotoAnalyzerScreen() {
       ) : (
         <View style={styles.imageSection}>
           <View style={styles.imageContainer}>
-            <Image source={{ uri: selectedImage }} style={styles.selectedImage} />
-            <TouchableOpacity style={styles.changeImageButton} onPress={resetAnalysis}>
+            <Image source={{ uri: selectedImage }} style={styles.selectedImage} accessibilityRole="image" accessibilityLabel="Photo sélectionnée pour l'analyse" />
+            <TouchableOpacity style={styles.changeImageButton} onPress={resetAnalysis} accessibilityRole="button" accessibilityLabel="Changer de photo">
               <RefreshCw color="#fff" size={18} />
             </TouchableOpacity>
           </View>
@@ -278,6 +288,9 @@ export default function PhotoAnalyzerScreen() {
               onPress={handleAnalyze}
               disabled={isAnalyzingPhoto}
               activeOpacity={0.8}
+              accessibilityRole="button"
+              accessibilityLabel="Analyser avec l'IA"
+              accessibilityState={{ disabled: isAnalyzingPhoto }}
             >
               {isAnalyzingPhoto ? (
                 <>
@@ -369,6 +382,8 @@ export default function PhotoAnalyzerScreen() {
           <TouchableOpacity
             style={styles.newAnalysisButton}
             onPress={resetAnalysis}
+            accessibilityRole="button"
+            accessibilityLabel="Nouvelle analyse"
           >
             <Text style={styles.newAnalysisButtonText}>Nouvelle analyse</Text>
           </TouchableOpacity>
