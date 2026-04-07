@@ -173,6 +173,9 @@ export default function RecordFormScreen() {
                 key={t}
                 onPress={() => setType(t)}
                 style={[styles.typeOption, type === t && styles.typeOptionSelected]}
+                accessibilityRole="button"
+                accessibilityLabel={getTypeLabel(t)}
+                accessibilityState={{ selected: type === t }}
               >
                 {getTypeIcon(t, type === t)}
                 <Text style={[styles.typeText, type === t && styles.typeTextSelected]}>
@@ -190,6 +193,8 @@ export default function RecordFormScreen() {
               onChangeText={setTitle}
               placeholder={type === "vaccine" ? "Ex: Rage + Typhus" : type === "parasite" ? "Ex: Vermifuge, Anti-puces" : "Ex: Consultation annuelle"}
               placeholderTextColor="#999"
+              accessibilityRole="text"
+              accessibilityLabel="Titre de l'enregistrement"
             />
           </View>
 
@@ -204,6 +209,8 @@ export default function RecordFormScreen() {
                   onChangeText={setDate}
                   placeholder="YYYY-MM-DD"
                   placeholderTextColor="#999"
+                  accessibilityRole="text"
+                  accessibilityLabel="Date de l'enregistrement"
                 />
               </View>
             </View>
@@ -218,6 +225,8 @@ export default function RecordFormScreen() {
                   onChangeText={setNextDueDate}
                   placeholder="Optionnel"
                   placeholderTextColor="#999"
+                  accessibilityRole="text"
+                  accessibilityLabel="Date du prochain rendez-vous"
                 />
               </View>
             </View>
@@ -231,6 +240,8 @@ export default function RecordFormScreen() {
               onChangeText={setVetName}
               placeholder="Ex: Dr. Martin"
               placeholderTextColor="#999"
+              accessibilityRole="text"
+              accessibilityLabel="Vétérinaire ou clinique"
             />
           </View>
 
@@ -243,11 +254,13 @@ export default function RecordFormScreen() {
               placeholder="Observations, dosage, etc."
               placeholderTextColor="#999"
               multiline
+              accessibilityRole="text"
+              accessibilityLabel="Notes"
             />
           </View>
 
           {isEditing && (
-            <Pressable onPress={onDelete} style={styles.deleteBtn}>
+            <Pressable onPress={onDelete} style={styles.deleteBtn} accessibilityRole="button" accessibilityLabel="Supprimer cet enregistrement">
               <Trash2 color="#FF3B30" size={20} />
               <Text style={styles.deleteText}>Supprimer cet enregistrement</Text>
             </Pressable>
@@ -257,7 +270,7 @@ export default function RecordFormScreen() {
       </KeyboardAvoidingView>
 
       <View style={[styles.footer, { paddingBottom: insets.bottom + 16 }]}>
-        <Pressable onPress={onSave} style={styles.saveBtn}>
+        <Pressable onPress={onSave} style={styles.saveBtn} accessibilityRole="button" accessibilityLabel="Enregistrer">
           <Save color="#fff" size={20} />
           <Text style={styles.saveText}>Enregistrer</Text>
         </Pressable>

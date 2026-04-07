@@ -152,11 +152,16 @@ export default function ChatScreen() {
           onChangeText={setMessageText}
           multiline
           maxLength={500}
+          accessibilityRole="text"
+          accessibilityLabel="Votre message"
         />
         <Pressable
           style={[styles.sendBtn, !messageText.trim() && styles.sendBtnDisabled]}
           onPress={handleSend}
           disabled={!messageText.trim()}
+          accessibilityRole="button"
+          accessibilityLabel="Envoyer le message"
+          accessibilityState={{ disabled: !messageText.trim() }}
         >
           <Send size={20} color="#fff" />
         </Pressable>

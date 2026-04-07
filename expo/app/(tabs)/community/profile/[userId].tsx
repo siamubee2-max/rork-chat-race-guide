@@ -49,11 +49,13 @@ export default function ProfileScreen() {
   };
 
   const renderPost = ({ item }: { item: Post }) => (
-    <Pressable 
+    <Pressable
       style={styles.gridItem}
       onPress={() => router.push(`/(tabs)/community/post/${item.id}` as any)}
+      accessibilityRole="button"
+      accessibilityLabel="Voir la publication"
     >
-      <Image source={{ uri: item.imageUrl }} style={styles.gridImage} />
+      <Image source={{ uri: item.imageUrl }} style={styles.gridImage} accessibilityRole="image" accessibilityLabel={`Publication de ${userName}`} />
     </Pressable>
   );
 
@@ -96,6 +98,9 @@ export default function ProfileScreen() {
           <Pressable
             style={[styles.followBtn, following && styles.followBtnActive]}
             onPress={handleFollow}
+            accessibilityRole="button"
+            accessibilityLabel={following ? "Abonné" : "Suivre"}
+            accessibilityState={{ selected: following }}
           >
             {following ? (
               <>
@@ -109,7 +114,7 @@ export default function ProfileScreen() {
               </>
             )}
           </Pressable>
-          <Pressable style={styles.messageBtn} onPress={handleMessage}>
+          <Pressable style={styles.messageBtn} onPress={handleMessage} accessibilityRole="button" accessibilityLabel="Envoyer un message">
             <MessageCircle size={18} color={Colors.text} />
             <Text style={styles.messageBtnText}>Message</Text>
           </Pressable>

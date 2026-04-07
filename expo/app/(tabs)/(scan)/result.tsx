@@ -745,6 +745,10 @@ Race: Persan | Confiance: Faible | Raison: Pelage long et épais visible.`;
             pressed ? { opacity: 0.9 } : null,
           ]}
           testID={`scanCandidate-${item.id}`}
+          accessibilityRole="button"
+          accessibilityLabel={`${item.name}, confiance ${item.confidenceLabel}`}
+          accessibilityHint="Sélectionner cette race"
+          accessibilityState={{ selected: isActive }}
         >
           <View style={styles.rowLeft}>
             <View style={[styles.avatar, isActive ? styles.avatarActive : null]}>
@@ -793,6 +797,8 @@ Race: Persan | Confiance: Faible | Raison: Pelage long et épais visible.`;
             source={{ uri: imageData.uri }}
             style={styles.image}
             contentFit="cover"
+            accessibilityRole="image"
+            accessibilityLabel="Photo du chat analysé"
           />
         </View>
       )}
@@ -808,6 +814,9 @@ Race: Persan | Confiance: Faible | Raison: Pelage long et épais visible.`;
               styles.errorBtn,
               pressed ? { opacity: 0.8 } : null,
             ]}
+            accessibilityRole="button"
+            accessibilityLabel={t("scan.retry")}
+            accessibilityHint="Retourner pour réessayer l'analyse"
           >
             <Text style={styles.errorBtnText}>{t("scan.retry")}</Text>
           </Pressable>
@@ -824,6 +833,9 @@ Race: Persan | Confiance: Faible | Raison: Pelage long et épais visible.`;
                   pressed && { opacity: 0.7 },
                 ]}
                 testID="scanShareBtn"
+                accessibilityRole="button"
+                accessibilityLabel="Partager le résultat"
+                accessibilityHint="Partager les résultats de l'analyse"
               >
                 <Share2 color="#111" size={18} />
               </Pressable>
@@ -853,6 +865,9 @@ Race: Persan | Confiance: Faible | Raison: Pelage long et épais visible.`;
                 pressed && selected ? { transform: [{ scale: 0.99 }] } : null,
               ]}
               testID="scanOpenBreedSheet"
+              accessibilityRole="button"
+              accessibilityLabel={selected ? `Voir la fiche : ${selected.name}` : "Sélectionnez une race"}
+              accessibilityState={{ disabled: !selected }}
             >
               <Text style={styles.ctaText}>
                 {selected
@@ -868,6 +883,9 @@ Race: Persan | Confiance: Faible | Raison: Pelage long et épais visible.`;
                 pressed ? { opacity: 0.8 } : null,
               ]}
               testID="scanBack"
+              accessibilityRole="button"
+              accessibilityLabel="Nouvelle analyse"
+              accessibilityHint="Retourner pour analyser une autre photo"
             >
               <Text style={styles.secondaryText}>Nouvelle analyse</Text>
             </Pressable>

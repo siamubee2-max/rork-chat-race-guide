@@ -21,7 +21,7 @@ export default function DailyLogsScreen() {
       navigation.setOptions({
         title: `Logs quotidiens - ${cat.name}`,
         headerRight: () => (
-          <Pressable onPress={onAddLog} style={({ pressed }) => ({ opacity: pressed ? 0.5 : 1 })}>
+          <Pressable onPress={onAddLog} style={({ pressed }) => ({ opacity: pressed ? 0.5 : 1 })} accessibilityRole="button" accessibilityLabel="Ajouter un log quotidien">
             <Plus size={24} color="#007AFF" />
           </Pressable>
         ),
@@ -61,7 +61,7 @@ export default function DailyLogsScreen() {
         {dailyLogs.length === 0 ? (
           <View style={styles.emptyState}>
             <Text style={styles.emptyText}>Aucun log quotidien</Text>
-            <Pressable onPress={onAddLog} style={styles.emptyBtn}>
+            <Pressable onPress={onAddLog} style={styles.emptyBtn} accessibilityRole="button" accessibilityLabel="Ajouter un log quotidien">
               <Plus size={20} color="#fff" />
               <Text style={styles.emptyBtnText}>Ajouter un log</Text>
             </Pressable>

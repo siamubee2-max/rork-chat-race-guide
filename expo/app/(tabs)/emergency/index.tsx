@@ -473,6 +473,8 @@ const { alerts, updateAlert, deleteAlert } = useEmergency();
               source={{ uri: item.catImageUri }}
               style={styles.catImage}
               contentFit="cover"
+              accessibilityRole="image"
+              accessibilityLabel={`Photo de ${item.catName}`}
             />
           )}
 
@@ -516,6 +518,8 @@ const { alerts, updateAlert, deleteAlert } = useEmergency();
         <Pressable
           style={styles.moreButton}
           onPress={() => setSelectedAlert(item)}
+          accessibilityRole="button"
+          accessibilityLabel={`Actions pour l'alerte ${item.catName}`}
         >
           <MoreVertical color={Colors.textSecondary} size={20} />
         </Pressable>
@@ -563,6 +567,8 @@ const { alerts, updateAlert, deleteAlert } = useEmergency();
             testID="emergency-request-location"
             onPress={handleRequestLocation}
             style={styles.permissionBtn}
+            accessibilityRole="button"
+            accessibilityLabel={isLocating ? "Localisation en cours" : "Me localiser"}
           >
             <Navigation size={16} color="white" />
             <Text style={styles.permissionBtnText}>
@@ -578,7 +584,7 @@ const { alerts, updateAlert, deleteAlert } = useEmergency();
           <Text style={styles.countryText}>
             📍 Numéros d&apos;urgence pour : {userCountry}
           </Text>
-          <TouchableOpacity onPress={() => { void locateOnce(); }}>
+          <TouchableOpacity onPress={() => { void locateOnce(); }} accessibilityRole="button" accessibilityLabel="Actualiser la localisation">
             <Text style={styles.refreshText}>↻</Text>
           </TouchableOpacity>
         </View>
@@ -596,6 +602,8 @@ const { alerts, updateAlert, deleteAlert } = useEmergency();
           <TouchableOpacity
             onPress={() => Linking.openURL(`https://www.google.com/search?q=urgence+v%C3%A9t%C3%A9rinaire+${encodeURIComponent(userCountry)}`)}
             style={styles.googleSearchBtn}
+            accessibilityRole="button"
+            accessibilityLabel="Rechercher en ligne"
           >
             <Globe size={16} color="white" />
             <Text style={styles.googleSearchBtnText}>Rechercher en ligne</Text>
@@ -636,6 +644,8 @@ const { alerts, updateAlert, deleteAlert } = useEmergency();
                 pressed ? { opacity: 0.8 } : null,
               ]}
               onPress={() => handleCallEmergency(contact.phone)}
+              accessibilityRole="button"
+              accessibilityLabel={`Appeler ${contact.name}`}
             >
               <PhoneCall color="#fff" size={18} />
               <Text style={styles.emergencyActionText}>Appeler</Text>
@@ -647,6 +657,8 @@ const { alerts, updateAlert, deleteAlert } = useEmergency();
                 pressed ? { opacity: 0.8 } : null,
               ]}
               onPress={() => handleOpenWebsite(contact.website)}
+              accessibilityRole="button"
+              accessibilityLabel={`Site web de ${contact.name}`}
             >
               <Globe color="#fff" size={18} />
               <Text style={styles.emergencyActionText}>Site web</Text>
@@ -666,7 +678,7 @@ const { alerts, updateAlert, deleteAlert } = useEmergency();
       <Text style={styles.emptyText}>
         Créez une alerte d&apos;urgence si votre chat est perdu, blessé, ou si vous avez trouvé un chat
       </Text>
-      <Pressable onPress={onCreateAlert} style={styles.emptyBtn}>
+      <Pressable onPress={onCreateAlert} style={styles.emptyBtn} accessibilityRole="button" accessibilityLabel="Créer une alerte d'urgence">
         <Plus color="#fff" size={20} />
         <Text style={styles.emptyBtnText}>Créer une alerte</Text>
       </Pressable>
@@ -678,6 +690,9 @@ const { alerts, updateAlert, deleteAlert } = useEmergency();
       <Pressable
         style={styles.archivedHeader}
         onPress={() => setShowArchivedAlerts(!showArchivedAlerts)}
+        accessibilityRole="button"
+        accessibilityLabel={`Alertes archivées (${archivedAlerts.length})`}
+        accessibilityState={{ expanded: showArchivedAlerts }}
       >
         <Text style={styles.archivedTitle}>
           📋 Alertes archivées ({archivedAlerts.length})
@@ -709,6 +724,8 @@ const { alerts, updateAlert, deleteAlert } = useEmergency();
                   source={{ uri: alert.catImageUri }}
                   style={styles.catImage}
                   contentFit="cover"
+                  accessibilityRole="image"
+                  accessibilityLabel={`Photo de ${alert.catName}`}
                 />
               )}
 
@@ -750,6 +767,8 @@ const { alerts, updateAlert, deleteAlert } = useEmergency();
             <Pressable
               style={styles.moreButton}
               onPress={() => setSelectedAlert(alert)}
+              accessibilityRole="button"
+              accessibilityLabel={`Actions pour l'alerte ${alert.catName}`}
             >
               <MoreVertical color={Colors.textSecondary} size={20} />
             </Pressable>
@@ -779,7 +798,7 @@ const { alerts, updateAlert, deleteAlert } = useEmergency();
             { bottom: insets.bottom + 20 },
           ]}
         >
-          <Pressable onPress={onCreateAlert} style={styles.fab}>
+          <Pressable onPress={onCreateAlert} style={styles.fab} accessibilityRole="button" accessibilityLabel="Créer une alerte d'urgence">
             <Plus color="#fff" size={24} />
           </Pressable>
         </View>
@@ -794,6 +813,8 @@ const { alerts, updateAlert, deleteAlert } = useEmergency();
         <Pressable
           style={styles.modalOverlay}
           onPress={() => setSelectedAlert(null)}
+          accessibilityRole="button"
+          accessibilityLabel="Fermer le menu"
         >
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Actions</Text>
@@ -802,6 +823,8 @@ const { alerts, updateAlert, deleteAlert } = useEmergency();
               <Pressable
                 style={styles.modalAction}
                 onPress={() => handleShareAlert(selectedAlert)}
+                accessibilityRole="button"
+                accessibilityLabel="Partager sur les réseaux sociaux"
               >
                 <Share2 color="#2563EB" size={20} />
                 <Text style={styles.modalActionText}>Partager sur les réseaux sociaux</Text>
@@ -812,6 +835,8 @@ const { alerts, updateAlert, deleteAlert } = useEmergency();
               <Pressable
                 style={styles.modalAction}
                 onPress={() => handleResolveAlert(selectedAlert)}
+                accessibilityRole="button"
+                accessibilityLabel="Marquer comme résolu"
               >
                 <Check color="#10B981" size={20} />
                 <Text style={styles.modalActionText}>Marquer comme résolu</Text>
@@ -822,6 +847,8 @@ const { alerts, updateAlert, deleteAlert } = useEmergency();
               <Pressable
                 style={styles.modalAction}
                 onPress={() => handleReactivateAlert(selectedAlert)}
+                accessibilityRole="button"
+                accessibilityLabel="Réactiver l'alerte"
               >
                 <RotateCcw color="#2563EB" size={20} />
                 <Text style={styles.modalActionText}>Réactiver l&apos;alerte</Text>
@@ -832,6 +859,8 @@ const { alerts, updateAlert, deleteAlert } = useEmergency();
               <Pressable
                 style={styles.modalAction}
                 onPress={() => handleDeleteAlert(selectedAlert)}
+                accessibilityRole="button"
+                accessibilityLabel="Supprimer définitivement"
               >
                 <Trash2 color="#DC2626" size={20} />
                 <Text style={[styles.modalActionText, { color: "#DC2626" }]}>
@@ -843,6 +872,8 @@ const { alerts, updateAlert, deleteAlert } = useEmergency();
             <Pressable
               style={styles.modalCancel}
               onPress={() => setSelectedAlert(null)}
+              accessibilityRole="button"
+              accessibilityLabel="Annuler"
             >
               <X color={Colors.textSecondary} size={20} />
               <Text style={styles.modalCancelText}>Annuler</Text>

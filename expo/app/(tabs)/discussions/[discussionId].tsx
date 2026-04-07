@@ -141,6 +141,8 @@ export default function DiscussionDetailScreen() {
           onChangeText={setInputText}
           multiline
           maxLength={500}
+          accessibilityRole="text"
+          accessibilityLabel="Votre message"
         />
         <Pressable
           onPress={handleSend}
@@ -149,6 +151,9 @@ export default function DiscussionDetailScreen() {
             !inputText.trim() && styles.sendBtnDisabled,
           ]}
           disabled={!inputText.trim()}
+          accessibilityRole="button"
+          accessibilityLabel="Envoyer le message"
+          accessibilityState={{ disabled: !inputText.trim() }}
         >
           <Send color="#fff" size={20} />
         </Pressable>

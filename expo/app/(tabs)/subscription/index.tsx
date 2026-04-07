@@ -14,6 +14,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/context/auth";
 import { router } from "expo-router";
 import { Colors } from "@/constants/colors";
+import { getTierFromProductId } from "@/utils/subscription";
 
 let Purchases: any = null;
 
@@ -169,14 +170,6 @@ const IconMap = {
   gem: Gem,
 } as const;
 
-function getTierFromProductId(productId: string): "premium" | "premium_plus" {
-  const lower = productId.toLowerCase();
-  if (lower.includes("family") || lower.includes("pro")) {
-    return "premium_plus";
-  }
-  return "premium";
-}
-
 export default function SubscriptionScreen() {
   const { isAuthenticated, updateSubscription } = useAuth();
   const queryClient = useQueryClient();
@@ -275,7 +268,7 @@ export default function SubscriptionScreen() {
         return pkgId.includes(planKey) || planKey.includes(pkgId);
       });
       if (match) {
-        console.log("[Subscription] Fuzzy matched plan", plan.id, "-> RC package", match.identifier, "product:", match.product?.identifier);
+        console.warn("[Subscription] FUZZY matched plan", plan.id, "-> RC package", match.identifier, "product:", match.product?.identifier, "- verify this is correct");
         return match;
       }
       console.log("[Subscription] No RC match for plan", plan.id, "with key", targetKey, "available packages:", rcPackages.map((p: any) => p.identifier).join(", "));
@@ -446,6 +439,9 @@ export default function SubscriptionScreen() {
             style={[styles.ctaButton, { backgroundColor: plan.color }, isProcessing && { opacity: 0.7 }]}
             onPress={() => handlePurchase(plan)}
             disabled={isProcessing || purchasingLocalId !== null}
+            accessibilityRole="button"
+            accessibilityLabel={`Choisir le plan ${plan.name}`}
+            accessibilityState={{ disabled: isProcessing || purchasingLocalId !== null, busy: isProcessing }}
           >
             {isProcessing ? (
               <ActivityIndicator color="#fff" />
@@ -484,7 +480,7 @@ export default function SubscriptionScreen() {
       {offeringsQuery.isError && (
         <View style={styles.errorContainer}>
           <Text style={styles.errorText}>Impossible de charger les offres.</Text>
-          <Pressable style={styles.retryButton} onPress={() => offeringsQuery.refetch()}>
+          <Pressable style={styles.retryButton} onPress={() => offeringsQuery.refetch()} accessibilityRole="button" accessibilityLabel="Réessayer le chargement des offres">
             <Text style={styles.retryText}>Réessayer</Text>
           </Pressable>
         </View>
@@ -499,6 +495,9 @@ export default function SubscriptionScreen() {
           style={styles.restoreButton}
           onPress={() => restoreMutation.mutate()}
           disabled={restoreMutation.isPending}
+          accessibilityRole="button"
+          accessibilityLabel="Restaurer mes achats"
+          accessibilityState={{ busy: restoreMutation.isPending }}
         >
           {restoreMutation.isPending ? (
             <ActivityIndicator size="small" color={Colors.primary} />
@@ -518,12 +517,12 @@ export default function SubscriptionScreen() {
           vos abonnements dans les réglages de votre appareil.
         </Text>
         <View style={styles.legalLinks}>
-          <Pressable onPress={() => router.push('/(tabs)/more/terms' as any)} style={styles.legalLink}>
+          <Pressable onPress={() => router.push('/(tabs)/more/terms' as any)} style={styles.legalLink} accessibilityRole="button" accessibilityLabel="Conditions d'utilisation">
             <ExternalLink size={12} color="#94a3b8" />
             <Text style={styles.legalLinkText}>Conditions d'utilisation</Text>
           </Pressable>
           <Text style={styles.legalSeparator}>·</Text>
-          <Pressable onPress={() => router.push('/(tabs)/more/privacy' as any)} style={styles.legalLink}>
+          <Pressable onPress={() => router.push('/(tabs)/more/privacy' as any)} style={styles.legalLink} accessibilityRole="button" accessibilityLabel="Politique de confidentialité">
             <ExternalLink size={12} color="#94a3b8" />
             <Text style={styles.legalLinkText}>Politique de confidentialité</Text>
           </Pressable>

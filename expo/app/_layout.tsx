@@ -13,6 +13,7 @@ try {
 } catch {
   console.log("[RootLayout] react-native-purchases not available");
 }
+import { getTierFromProductId } from "@/utils/subscription";
 import { CatsContext } from "@/context/cats";
 import { DiscussionsProvider } from "@/context/discussions";
 import { AuthProvider, useAuth } from "@/context/auth";
@@ -78,11 +79,7 @@ function useRevenueCatSync() {
 
         if (activeEntitlements["premium"]) {
           const productId = activeEntitlements["premium"].productIdentifier;
-          const lower = productId.toLowerCase();
-          let tier: 'premium' | 'premium_plus' = 'premium';
-          if (lower.includes('family') || lower.includes('pro')) {
-            tier = 'premium_plus';
-          }
+          const tier = getTierFromProductId(productId);
           const expirationDate = activeEntitlements["premium"].expirationDate;
           const expiry = expirationDate ? new Date(expirationDate).getTime() : undefined;
 

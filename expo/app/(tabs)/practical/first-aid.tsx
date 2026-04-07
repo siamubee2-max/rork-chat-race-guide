@@ -246,7 +246,7 @@ export default function FirstAidScreen() {
           </Text>
         </View>
 
-        <Pressable style={styles.emergencyCard} onPress={handleCallEmergency}>
+        <Pressable style={styles.emergencyCard} onPress={handleCallEmergency} accessibilityRole="button" accessibilityLabel="Appeler le Centre Antipoison Animal au 01 48 94 31 00" accessibilityHint="Disponible 24h/24">
           <View style={styles.emergencyLeft}>
             <Phone size={24} color="#fff" />
             <View>
@@ -277,6 +277,10 @@ export default function FirstAidScreen() {
               <Pressable
                 style={styles.guideHeader}
                 onPress={() => setExpandedId(isExpanded ? null : guide.id)}
+                accessibilityRole="button"
+                accessibilityLabel={`${guide.title} - ${severityInfo.label}`}
+                accessibilityState={{ expanded: isExpanded }}
+                accessibilityHint="Appuyez pour voir les détails"
               >
                 <View style={[styles.guideIcon, { backgroundColor: guide.color + "20" }]}>
                   <IconComponent size={22} color={guide.color} />

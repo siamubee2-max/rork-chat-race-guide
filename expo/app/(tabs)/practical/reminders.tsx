@@ -76,6 +76,9 @@ const ReminderCard = ({ reminder, onToggle, onDelete, isOverdue }: ReminderCardP
           pressed && { opacity: 0.7 },
         ]}
         onPress={onToggle}
+        accessibilityRole="button"
+        accessibilityLabel={reminder.completed ? `Marquer "${reminder.title}" comme non terminé` : `Marquer "${reminder.title}" comme terminé`}
+        accessibilityState={{ checked: reminder.completed }}
       >
         {reminder.completed && <Check size={16} color="#fff" />}
       </Pressable>
@@ -112,6 +115,8 @@ const ReminderCard = ({ reminder, onToggle, onDelete, isOverdue }: ReminderCardP
       <Pressable
         style={({ pressed }) => [styles.deleteButton, pressed && { opacity: 0.7 }]}
         onPress={onDelete}
+        accessibilityRole="button"
+        accessibilityLabel={`Supprimer le rappel "${reminder.title}"`}
       >
         <Trash2 size={18} color={Colors.error} />
       </Pressable>
@@ -188,6 +193,9 @@ export default function RemindersScreen() {
             <Pressable
               style={styles.sectionHeader}
               onPress={() => setShowCompleted(!showCompleted)}
+              accessibilityRole="button"
+              accessibilityLabel={showCompleted ? "Masquer les rappels terminés" : `Afficher les rappels terminés (${completedReminders.length})`}
+              accessibilityState={{ expanded: showCompleted }}
             >
               <Text style={styles.sectionTitle}>✅ Terminés</Text>
               <Text style={styles.sectionCount}>
@@ -224,6 +232,9 @@ export default function RemindersScreen() {
         <Pressable
           style={({ pressed }) => [styles.fab, pressed && { transform: [{ scale: 0.95 }] }]}
           onPress={() => router.push("/(tabs)/practical/reminder-form" as any)}
+          accessibilityRole="button"
+          accessibilityLabel="Ajouter un rappel"
+          accessibilityHint="Ouvre le formulaire de création de rappel"
         >
           <Plus size={24} color="#fff" />
         </Pressable>

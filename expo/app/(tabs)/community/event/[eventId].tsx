@@ -95,7 +95,7 @@ export default function EventDetailScreen() {
         showsVerticalScrollIndicator={false}
       >
         {event.imageUrl && (
-          <Image source={{ uri: event.imageUrl }} style={styles.image} />
+          <Image source={{ uri: event.imageUrl }} style={styles.image} accessibilityRole="image" accessibilityLabel={`Image de l'événement ${event.title}`} />
         )}
 
         <View style={styles.mainContent}>
@@ -107,9 +107,11 @@ export default function EventDetailScreen() {
 
           <Text style={styles.title}>{event.title}</Text>
 
-          <Pressable 
+          <Pressable
             style={styles.organizer}
             onPress={() => router.push(`/(tabs)/community/profile/${event.organizerId}` as any)}
+            accessibilityRole="button"
+            accessibilityLabel={`Organisé par ${event.organizerName}`}
           >
             <View style={styles.organizerAvatar}>
               <Text style={styles.organizerAvatarText}>
@@ -187,7 +189,7 @@ export default function EventDetailScreen() {
       </ScrollView>
 
       <View style={[styles.footer, { paddingBottom: insets.bottom || 20 }]}>
-        <Pressable style={styles.shareBtn}>
+        <Pressable style={styles.shareBtn} accessibilityRole="button" accessibilityLabel="Partager l'événement">
           <Share2 size={20} color={Colors.text} />
         </Pressable>
         <Pressable
@@ -198,6 +200,9 @@ export default function EventDetailScreen() {
           ]}
           onPress={handleAttend}
           disabled={isFull && !attending}
+          accessibilityRole="button"
+          accessibilityLabel={attending ? "Inscrit" : isFull ? "Complet" : "Participer"}
+          accessibilityState={{ disabled: isFull && !attending, selected: attending }}
         >
           {attending ? (
             <>

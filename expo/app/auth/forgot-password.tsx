@@ -16,7 +16,7 @@ import { KeyRound } from "lucide-react-native";
 import { useAuth } from "@/context/auth";
 
 export default function ForgotPasswordScreen() {
-  const { getRegisteredEmails, getUserByEmail } = useAuth();
+  const { resetPassword } = useAuth();
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { width } = useWindowDimensions();
@@ -29,45 +29,22 @@ export default function ForgotPasswordScreen() {
     }
 
     setIsLoading(true);
-    const user = await getUserByEmail(email.trim());
+    const result = await resetPassword(email.trim());
     setIsLoading(false);
 
-    if (user) {
+    if (result.success) {
       Alert.alert(
-        "Informations du compte",
-        `Nom: ${user.name}\nMot de passe: ${user.password}`,
+        "Email envoyé",
+        "Si un compte est associé à cette adresse, vous recevrez un email pour réinitialiser votre mot de passe.",
         [
           {
-            text: "Se connecter",
+            text: "Retour à la connexion",
             onPress: () => router.back(),
-          },
-          {
-            text: "OK",
-            style: "cancel",
           },
         ]
       );
     } else {
-      Alert.alert(
-        "Email non trouvé",
-        "Aucun compte n'est associé à cette adresse email"
-      );
-    }
-  };
-
-  const handleShowAllEmails = async () => {
-    setIsLoading(true);
-    const emails = await getRegisteredEmails();
-    setIsLoading(false);
-
-    if (emails.length === 0) {
-      Alert.alert("Aucun compte", "Aucun compte n'est enregistré");
-    } else {
-      Alert.alert(
-        "Emails enregistrés",
-        emails.map((e, i) => `${i + 1}. ${e}`).join("\n"),
-        [{ text: "OK" }]
-      );
+      Alert.alert("Erreur", result.error || "Une erreur est survenue");
     }
   };
 
@@ -86,7 +63,7 @@ export default function ForgotPasswordScreen() {
           </View>
           <Text style={styles.title}>Mot de passe oublié ?</Text>
           <Text style={styles.subtitle}>
-            Entrez votre adresse email pour récupérer vos informations de compte
+            Entrez votre adresse email pour recevoir un lien de réinitialisation
           </Text>
         </View>
 
@@ -102,6 +79,9 @@ export default function ForgotPasswordScreen() {
               autoCorrect={false}
               keyboardType="email-address"
               editable={!isLoading}
+              accessibilityRole="none"
+              accessibilityLabel="Adresse email"
+              accessibilityHint="Entrez votre adresse email pour réinitialiser votre mot de passe"
             />
           </View>
 
@@ -113,28 +93,12 @@ export default function ForgotPasswordScreen() {
               pressed && styles.buttonPressed,
               isLoading && styles.buttonDisabled,
             ]}
+            accessibilityRole="button"
+            accessibilityLabel={isLoading ? "Envoi en cours" : "Réinitialiser mon mot de passe"}
+            accessibilityState={{ disabled: isLoading, busy: isLoading }}
           >
             <Text style={styles.buttonText}>
-              {isLoading ? "Recherche..." : "Récupérer mon mot de passe"}
-            </Text>
-          </Pressable>
-
-          <View style={styles.divider}>
-            <View style={styles.dividerLine} />
-            <Text style={styles.dividerText}>ou</Text>
-            <View style={styles.dividerLine} />
-          </View>
-
-          <Pressable
-            onPress={handleShowAllEmails}
-            disabled={isLoading}
-            style={({ pressed }) => [
-              styles.secondaryButton,
-              pressed && styles.buttonPressed,
-            ]}
-          >
-            <Text style={styles.secondaryButtonText}>
-              Voir tous les emails enregistrés
+              {isLoading ? "Envoi..." : "Réinitialiser mon mot de passe"}
             </Text>
           </Pressable>
 
@@ -142,6 +106,9 @@ export default function ForgotPasswordScreen() {
             onPress={() => router.back()}
             disabled={isLoading}
             style={styles.backButton}
+            accessibilityRole="button"
+            accessibilityLabel="Retour à la connexion"
+            accessibilityState={{ disabled: isLoading }}
           >
             <Text style={styles.backButtonText}>
               Retour à la connexion
@@ -231,33 +198,6 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontWeight: "900",
-  },
-  divider: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-    marginVertical: 8,
-  },
-  dividerLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: "rgba(0,0,0,0.1)",
-  },
-  dividerText: {
-    fontSize: 14,
-    color: "rgba(0,0,0,0.4)",
-    fontWeight: "600",
-  },
-  secondaryButton: {
-    backgroundColor: "#F6F7FB",
-    borderRadius: 14,
-    paddingVertical: 16,
-    alignItems: "center",
-  },
-  secondaryButtonText: {
-    color: "#111",
-    fontSize: 16,
-    fontWeight: "700",
   },
   backButton: {
     alignItems: "center",

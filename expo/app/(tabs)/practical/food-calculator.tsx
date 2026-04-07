@@ -89,6 +89,8 @@ export default function FoodCalculatorScreen() {
             placeholder="4.5"
             placeholderTextColor={Colors.textMuted}
             keyboardType="decimal-pad"
+            accessibilityRole="text"
+            accessibilityLabel="Poids du chat en kilogrammes"
           />
           <Text style={styles.weightUnit}>kg</Text>
         </View>
@@ -102,6 +104,9 @@ export default function FoodCalculatorScreen() {
               key={stage.value}
               style={[styles.stageButton, lifeStage === stage.value && styles.stageButtonSelected]}
               onPress={() => setLifeStage(stage.value)}
+              accessibilityRole="button"
+              accessibilityLabel={stage.label}
+              accessibilityState={{ selected: lifeStage === stage.value }}
             >
               <Text style={[styles.stageLabel, lifeStage === stage.value && styles.stageLabelSelected]}>
                 {stage.label}
@@ -122,6 +127,9 @@ export default function FoodCalculatorScreen() {
                 key={level.value}
                 style={[styles.activityButton, isSelected && styles.activityButtonSelected]}
                 onPress={() => setActivity(level.value)}
+                accessibilityRole="button"
+                accessibilityLabel={level.label}
+                accessibilityState={{ selected: isSelected }}
               >
                 <IconComponent size={20} color={isSelected ? "#fff" : Colors.textMuted} />
                 <Text style={[styles.activityLabel, isSelected && styles.activityLabelSelected]}>
@@ -137,6 +145,9 @@ export default function FoodCalculatorScreen() {
         <Pressable
           style={[styles.toggleButton, isNeutered && styles.toggleButtonActive]}
           onPress={() => setIsNeutered(!isNeutered)}
+          accessibilityRole="button"
+          accessibilityLabel="Chat stérilisé ou castré"
+          accessibilityState={{ selected: isNeutered }}
         >
           <View style={[styles.toggleIndicator, isNeutered && styles.toggleIndicatorActive]} />
           <Text style={styles.toggleLabel}>Chat stérilisé / castré</Text>

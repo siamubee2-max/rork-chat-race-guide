@@ -24,7 +24,7 @@ export default function WeightChartScreen() {
       navigation.setOptions({
         title: `Évolution du poids - ${cat.name}`,
         headerRight: () => (
-          <Pressable onPress={onAddWeight} style={({ pressed }) => ({ opacity: pressed ? 0.5 : 1 })}>
+          <Pressable onPress={onAddWeight} style={({ pressed }) => ({ opacity: pressed ? 0.5 : 1 })} accessibilityRole="button" accessibilityLabel="Ajouter une pesée">
             <Plus size={24} color="#007AFF" />
           </Pressable>
         ),
@@ -164,7 +164,7 @@ export default function WeightChartScreen() {
         ) : (
           <View style={styles.emptyState}>
             <Text style={styles.emptyText}>Aucune donnée de poids</Text>
-            <Pressable onPress={onAddWeight} style={styles.emptyBtn}>
+            <Pressable onPress={onAddWeight} style={styles.emptyBtn} accessibilityRole="button" accessibilityLabel="Ajouter une pesée">
               <Plus size={20} color="#fff" />
               <Text style={styles.emptyBtnText}>Ajouter une pesée</Text>
             </Pressable>
@@ -179,6 +179,9 @@ export default function WeightChartScreen() {
                 key={entry.id}
                 onPress={() => onEditWeight(entry.id)}
                 style={({ pressed }) => [styles.historyCard, pressed && styles.pressed]}
+                accessibilityRole="button"
+                accessibilityLabel={`${entry.weight} ${entry.unit}, ${entry.date}`}
+                accessibilityHint="Modifier cette pesée"
               >
                 <View style={styles.historyMain}>
                   <Text style={styles.historyWeight}>{entry.weight} {entry.unit}</Text>

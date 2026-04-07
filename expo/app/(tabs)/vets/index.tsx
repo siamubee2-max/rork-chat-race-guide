@@ -353,6 +353,8 @@ export default function VetsScreen() {
                 onPress={handleRequestLocation}
                 style={styles.locationBtn}
                 activeOpacity={0.8}
+                accessibilityRole="button"
+                accessibilityLabel={isLocating ? t("vets.locating") : t("vets.locateMe")}
               >
                 <Locate size={20} color={Colors.background} />
                 <Text style={styles.locationBtnText}>
@@ -373,6 +375,8 @@ export default function VetsScreen() {
                 onPress={() => locateOnce()}
                 style={styles.refreshBtn}
                 activeOpacity={0.7}
+                accessibilityRole="button"
+                accessibilityLabel={t("vets.refresh")}
               >
                 <Text style={styles.refreshBtnText}>
                   {isLocating ? "..." : t("vets.refresh")}
@@ -405,6 +409,9 @@ export default function VetsScreen() {
                     ]}
                     onPress={() => searchNearbyPlaces(category.id)}
                     activeOpacity={0.8}
+                    accessibilityRole="button"
+                    accessibilityLabel={category.title}
+                    accessibilityState={{ selected: selectedCategory === category.id }}
                   >
                     <View style={[styles.categoryChipIcon, { backgroundColor: category.color }]}>
                       {category.icon}
@@ -431,6 +438,8 @@ export default function VetsScreen() {
                   <TouchableOpacity
                     style={styles.retryBtn}
                     onPress={() => searchNearbyPlaces(selectedCategory)}
+                    accessibilityRole="button"
+                    accessibilityLabel="Réessayer la recherche"
                   >
                     <Text style={styles.retryBtnText}>Réessayer</Text>
                   </TouchableOpacity>
@@ -445,10 +454,13 @@ export default function VetsScreen() {
 
                   {/* Native Map Section */}
                   {coords && <View style={styles.mapSection}>
-                    <TouchableOpacity 
+                    <TouchableOpacity
                       style={styles.mapToggleHeader}
                       onPress={() => setShowMap(!showMap)}
                       activeOpacity={0.7}
+                      accessibilityRole="button"
+                      accessibilityLabel={t("vets.mapView")}
+                      accessibilityState={{ expanded: showMap }}
                     >
                       <View style={styles.mapToggleLeft}>
                         <Map size={18} color={Colors.primary} />
@@ -483,6 +495,9 @@ export default function VetsScreen() {
                         style={styles.resultCard}
                         onPress={() => openPlaceDetails(place)}
                         activeOpacity={0.8}
+                        accessibilityRole="button"
+                        accessibilityLabel={`${place.name}${place.address ? `, ${place.address}` : ""}`}
+                        accessibilityHint="Ouvrir dans Google Maps"
                       >
                         <View style={styles.resultIcon}>
                           <Stethoscope size={24} color="#fff" />
@@ -506,6 +521,8 @@ export default function VetsScreen() {
                               <TouchableOpacity
                                 style={styles.resultActionBtn}
                                 onPress={() => callPlace(place.phone!)}
+                                accessibilityRole="button"
+                                accessibilityLabel={`Appeler ${place.name}`}
                               >
                                 <Text style={styles.resultActionText}>📞 Appeler</Text>
                               </TouchableOpacity>
@@ -513,6 +530,8 @@ export default function VetsScreen() {
                             <TouchableOpacity
                               style={styles.resultActionBtn}
                               onPress={() => openPlaceDetails(place)}
+                              accessibilityRole="button"
+                              accessibilityLabel={`Itinéraire vers ${place.name}`}
                             >
                               <Text style={styles.resultActionText}>📍 Itinéraire</Text>
                             </TouchableOpacity>
@@ -530,6 +549,8 @@ export default function VetsScreen() {
                   style={styles.quickActionBtn}
                   onPress={() => openGoogleMaps("vétérinaire")}
                   activeOpacity={0.8}
+                  accessibilityRole="button"
+                  accessibilityLabel={t("vets.openGoogleMaps")}
                 >
                   <Map size={20} color="#fff" />
                   <Text style={styles.quickActionText}>{t("vets.openGoogleMaps")}</Text>

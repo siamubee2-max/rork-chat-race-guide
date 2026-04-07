@@ -86,6 +86,8 @@ export default function DiscussionsScreen() {
           styles.card,
           pressed ? { transform: [{ scale: 0.98 }] } : null,
         ]}
+        accessibilityRole="button"
+        accessibilityLabel={`${item.title} par ${item.userName}, ${item.messagesCount} messages`}
       >
         <View style={styles.cardHeader}>
           <View style={[styles.badge, { backgroundColor: categoryColor + "20" }]}>
@@ -134,6 +136,9 @@ export default function DiscussionsScreen() {
             backgroundColor: item.color,
           },
         ]}
+        accessibilityRole="button"
+        accessibilityLabel={item.label}
+        accessibilityState={{ selected: selectedCategory === item.id }}
       >
         <Text
           style={[
@@ -210,7 +215,7 @@ export default function DiscussionsScreen() {
       />
 
       <View style={[styles.fabContainer, { bottom: insets.bottom + 20 }]}>
-        <Pressable onPress={handleNewDiscussion} style={styles.fab}>
+        <Pressable onPress={handleNewDiscussion} style={styles.fab} accessibilityRole="button" accessibilityLabel={t("discussions.beFirstToStart")} accessibilityHint="Créer une nouvelle discussion">
           <Plus color="#fff" size={24} />
         </Pressable>
       </View>

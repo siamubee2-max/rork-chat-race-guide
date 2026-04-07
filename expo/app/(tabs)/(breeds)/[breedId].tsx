@@ -101,6 +101,8 @@ export default function BreedDetailsScreen() {
               contentFit="cover"
               contentPosition={{ top: -20, left: '50%' }}
               transition={120}
+              accessibilityRole="image"
+              accessibilityLabel={`Photo de ${breed.name}`}
             />
             <View style={styles.heroOverlay} />
             <View style={[styles.heroCopy, isTablet && styles.heroCopyTablet]}>
@@ -187,12 +189,15 @@ export default function BreedDetailsScreen() {
              <Text style={styles.breedersText}>
                Trouvez des éleveurs certifiés de {breed.name} dans le monde entier.
              </Text>
-             <TouchableOpacity 
+             <TouchableOpacity
                 style={styles.breedersButton}
                 onPress={() => router.push({
                   pathname: "/(tabs)/(breeds)/breeders" as any,
                   params: { breedId: breed.id }
                 })}
+                accessibilityRole="button"
+                accessibilityLabel="Voir les élevages sur la carte"
+                accessibilityHint={`Trouver des éleveurs de ${breed.name}`}
              >
                 <Globe color="white" size={18} />
                 <Text style={styles.breedersButtonText}>Voir les élevages sur la carte</Text>

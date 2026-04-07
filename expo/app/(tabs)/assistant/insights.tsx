@@ -150,6 +150,8 @@ export default function InsightsScreen() {
             style={styles.dismissButton}
             onPress={() => handleDismiss(insight.id)}
             hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            accessibilityRole="button"
+            accessibilityLabel="Ignorer cette analyse"
           >
             <X color={Colors.textMuted} size={16} />
           </TouchableOpacity>
@@ -215,6 +217,9 @@ export default function InsightsScreen() {
                 setSelectedCatId(cat.id);
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
               }}
+              accessibilityRole="button"
+              accessibilityLabel={cat.name}
+              accessibilityState={{ selected: selectedCatId === cat.id }}
             >
               <Text
                 style={[
@@ -237,6 +242,9 @@ export default function InsightsScreen() {
         onPress={handleGenerateInsights}
         disabled={isGeneratingInsights || !selectedCat}
         activeOpacity={0.8}
+        accessibilityRole="button"
+        accessibilityLabel={`Analyser ${selectedCat?.name || ""}`}
+        accessibilityState={{ disabled: isGeneratingInsights || !selectedCat }}
       >
         {isGeneratingInsights ? (
           <>

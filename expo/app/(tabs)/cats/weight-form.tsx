@@ -161,17 +161,25 @@ export default function WeightFormScreen() {
                   placeholder="Ex: 4.5"
                   placeholderTextColor="#999"
                   keyboardType="decimal-pad"
+                  accessibilityRole="text"
+                  accessibilityLabel="Poids"
                 />
                 <View style={styles.unitSelector}>
                   <Pressable
                     onPress={() => setUnit("kg")}
                     style={[styles.unitBtn, unit === "kg" && styles.unitBtnSelected]}
+                    accessibilityRole="button"
+                    accessibilityLabel="Kilogrammes"
+                    accessibilityState={{ selected: unit === "kg" }}
                   >
                     <Text style={[styles.unitText, unit === "kg" && styles.unitTextSelected]}>kg</Text>
                   </Pressable>
                   <Pressable
                     onPress={() => setUnit("lb")}
                     style={[styles.unitBtn, unit === "lb" && styles.unitBtnSelected]}
+                    accessibilityRole="button"
+                    accessibilityLabel="Livres"
+                    accessibilityState={{ selected: unit === "lb" }}
                   >
                     <Text style={[styles.unitText, unit === "lb" && styles.unitTextSelected]}>lb</Text>
                   </Pressable>
@@ -189,6 +197,8 @@ export default function WeightFormScreen() {
                   onChangeText={setDate}
                   placeholder="YYYY-MM-DD"
                   placeholderTextColor="#999"
+                  accessibilityRole="text"
+                  accessibilityLabel="Date de la pesée"
                 />
               </View>
             </View>
@@ -202,11 +212,13 @@ export default function WeightFormScreen() {
                 placeholder="Observations, contexte..."
                 placeholderTextColor="#999"
                 multiline
+                accessibilityRole="text"
+                accessibilityLabel="Notes"
               />
             </View>
 
             {isEditing && (
-              <Pressable onPress={onDelete} style={styles.deleteBtn}>
+              <Pressable onPress={onDelete} style={styles.deleteBtn} accessibilityRole="button" accessibilityLabel="Supprimer cette pesée">
                 <Trash2 color="#FF3B30" size={20} />
                 <Text style={styles.deleteText}>Supprimer cette pesée</Text>
               </Pressable>
@@ -216,7 +228,7 @@ export default function WeightFormScreen() {
         </KeyboardAvoidingView>
 
         <View style={[styles.footer, { paddingBottom: insets.bottom + 16 }]}>
-          <Pressable onPress={onSave} style={styles.saveBtn}>
+          <Pressable onPress={onSave} style={styles.saveBtn} accessibilityRole="button" accessibilityLabel="Enregistrer">
             <Save color="#fff" size={20} />
             <Text style={styles.saveText}>Enregistrer</Text>
           </Pressable>

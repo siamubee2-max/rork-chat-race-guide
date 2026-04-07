@@ -98,10 +98,12 @@ export default function NewPostScreen() {
         <View style={styles.imageSection}>
           {imageUrl ? (
             <View style={styles.imagePreview}>
-              <Image source={{ uri: imageUrl }} style={styles.previewImage} />
-              <Pressable 
+              <Image source={{ uri: imageUrl }} style={styles.previewImage} accessibilityRole="image" accessibilityLabel="Aperçu de la photo sélectionnée" />
+              <Pressable
                 style={styles.removeImage}
                 onPress={() => setImageUrl("")}
+                accessibilityRole="button"
+                accessibilityLabel="Supprimer la photo"
               >
                 <X size={20} color="#fff" />
               </Pressable>
@@ -113,12 +115,14 @@ export default function NewPostScreen() {
                 Ajouter une photo de votre chat
               </Text>
               <View style={styles.imageButtons}>
-                <Pressable style={styles.imageBtn} onPress={pickImage}>
+                <Pressable style={styles.imageBtn} onPress={pickImage} accessibilityRole="button" accessibilityLabel="Choisir depuis la galerie">
                   <Text style={styles.imageBtnText}>Galerie</Text>
                 </Pressable>
-                <Pressable 
-                  style={[styles.imageBtn, styles.imageBtnSecondary]} 
+                <Pressable
+                  style={[styles.imageBtn, styles.imageBtnSecondary]}
                   onPress={useSampleImage}
+                  accessibilityRole="button"
+                  accessibilityLabel="Utiliser une photo exemple"
                 >
                   <Text style={styles.imageBtnTextSecondary}>Photo exemple</Text>
                 </Pressable>
@@ -137,6 +141,8 @@ export default function NewPostScreen() {
             onChangeText={setCaption}
             multiline
             maxLength={500}
+            accessibilityRole="text"
+            accessibilityLabel="Légende de la publication"
           />
           <Text style={styles.charCount}>{caption.length}/500</Text>
         </View>
@@ -161,6 +167,9 @@ export default function NewPostScreen() {
                   onPress={() => setSelectedCatId(
                     selectedCatId === cat.id ? null : cat.id
                   )}
+                  accessibilityRole="button"
+                  accessibilityLabel={cat.name}
+                  accessibilityState={{ selected: selectedCatId === cat.id }}
                 >
                   <Text style={[
                     styles.catChipText,
@@ -185,6 +194,8 @@ export default function NewPostScreen() {
             value={location}
             onChangeText={setLocation}
             maxLength={50}
+            accessibilityRole="text"
+            accessibilityLabel="Lieu"
           />
         </View>
       </ScrollView>
@@ -194,6 +205,9 @@ export default function NewPostScreen() {
           style={[styles.submitBtn, !canSubmit && styles.submitBtnDisabled]}
           onPress={handleSubmit}
           disabled={!canSubmit}
+          accessibilityRole="button"
+          accessibilityLabel="Publier"
+          accessibilityState={{ disabled: !canSubmit }}
         >
           <Text style={styles.submitBtnText}>
             {isSubmitting ? "Publication..." : "Publier"}

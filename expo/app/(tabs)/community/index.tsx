@@ -115,9 +115,11 @@ export default function CommunityScreen() {
     return (
       <View style={[styles.postCard, isTablet && { maxWidth: postMaxWidth, alignSelf: 'center' as const, width: '100%', borderRadius: 16, marginVertical: 8, overflow: 'hidden' as const }]}>
         <View style={styles.postHeader}>
-          <Pressable 
+          <Pressable
             style={styles.postUser}
             onPress={() => router.push(`/(tabs)/community/profile/${item.userId}` as any)}
+            accessibilityRole="button"
+            accessibilityLabel={`Profil de ${item.userName}`}
           >
             <View style={styles.avatar}>
               <Text style={styles.avatarText}>
@@ -140,14 +142,17 @@ export default function CommunityScreen() {
           </Pressable>
         </View>
 
-        <Pressable onPress={() => router.push(`/(tabs)/community/post/${item.id}` as any)}>
-          <Image source={{ uri: item.imageUrl }} style={styles.postImage} />
+        <Pressable onPress={() => router.push(`/(tabs)/community/post/${item.id}` as any)} accessibilityRole="button" accessibilityLabel="Voir la publication">
+          <Image source={{ uri: item.imageUrl }} style={styles.postImage} accessibilityRole="image" accessibilityLabel={`Photo publiée par ${item.userName}`} />
         </Pressable>
 
         <View style={styles.postActions}>
-          <Pressable 
+          <Pressable
             style={styles.actionBtn}
             onPress={() => handleLike(item.id)}
+            accessibilityRole="button"
+            accessibilityLabel={liked ? "Ne plus aimer" : "Aimer"}
+            accessibilityState={{ selected: liked }}
           >
             <Heart
               size={24}
@@ -158,14 +163,16 @@ export default function CommunityScreen() {
               {item.likesCount}
             </Text>
           </Pressable>
-          <Pressable 
+          <Pressable
             style={styles.actionBtn}
             onPress={() => router.push(`/(tabs)/community/post/${item.id}` as any)}
+            accessibilityRole="button"
+            accessibilityLabel={`${item.commentsCount} commentaires`}
           >
             <MessageCircle size={24} color={Colors.text} />
             <Text style={styles.actionText}>{item.commentsCount}</Text>
           </Pressable>
-          <Pressable style={styles.actionBtn}>
+          <Pressable style={styles.actionBtn} accessibilityRole="button" accessibilityLabel="Partager">
             <Send size={22} color={Colors.text} />
           </Pressable>
         </View>
@@ -184,7 +191,7 @@ export default function CommunityScreen() {
             {item.caption}
           </Text>
           {item.commentsCount > 0 && (
-            <Pressable onPress={() => router.push(`/(tabs)/community/post/${item.id}` as any)}>
+            <Pressable onPress={() => router.push(`/(tabs)/community/post/${item.id}` as any)} accessibilityRole="button" accessibilityLabel={t("community.viewComments", { count: item.commentsCount })}>
               <Text style={styles.viewComments}>
                 {t("community.viewComments", { count: item.commentsCount })}
               </Text>
@@ -199,12 +206,15 @@ export default function CommunityScreen() {
     const typeColor = getEventTypeColor(item.type);
 
     return (
-      <Pressable 
+      <Pressable
         style={[styles.eventCard, isTablet && { maxWidth: postMaxWidth, alignSelf: 'center' as const, width: '100%' }]}
         onPress={() => router.push(`/(tabs)/community/event/${item.id}` as any)}
+        accessibilityRole="button"
+        accessibilityLabel={`${item.title}, ${getEventTypeLabel(item.type)}`}
+        accessibilityHint="Ouvre les détails de l'événement"
       >
         {item.imageUrl && (
-          <Image source={{ uri: item.imageUrl }} style={styles.eventImage} />
+          <Image source={{ uri: item.imageUrl }} style={styles.eventImage} accessibilityRole="image" accessibilityLabel={`Image de l'événement ${item.title}`} />
         )}
         <View style={styles.eventContent}>
           <View style={[styles.eventTypeBadge, { backgroundColor: typeColor + "20" }]}>
@@ -245,9 +255,11 @@ export default function CommunityScreen() {
     const otherUserName = item.participantNames[otherUserId] || t("community.user");
 
     return (
-      <Pressable 
+      <Pressable
         style={[styles.conversationCard, isTablet && { maxWidth: postMaxWidth, alignSelf: 'center' as const, width: '100%' }]}
         onPress={() => router.push(`/(tabs)/community/chat/${item.id}` as any)}
+        accessibilityRole="button"
+        accessibilityLabel={`Conversation avec ${otherUserName}`}
       >
         <View style={styles.conversationAvatar}>
           <Text style={styles.conversationAvatarText}>
@@ -280,7 +292,7 @@ export default function CommunityScreen() {
       <Text style={styles.emptyText}>
         {t("community.welcomeText")}
       </Text>
-      <Pressable style={styles.emptyBtn} onPress={handleNewPost}>
+      <Pressable style={styles.emptyBtn} onPress={handleNewPost} accessibilityRole="button" accessibilityLabel={t("community.publishPhoto")}>
         <Text style={styles.emptyBtnText}>{t("community.publishPhoto")}</Text>
       </Pressable>
     </View>
@@ -295,9 +307,11 @@ export default function CommunityScreen() {
       <Text style={styles.emptyText}>
         {t("community.noEventsText")}
       </Text>
-      <Pressable 
-        style={styles.emptyBtn} 
+      <Pressable
+        style={styles.emptyBtn}
         onPress={() => router.push("/(tabs)/community/new-event" as any)}
+        accessibilityRole="button"
+        accessibilityLabel={t("community.createEvent")}
       >
         <Text style={styles.emptyBtnText}>{t("community.createEvent")}</Text>
       </Pressable>
@@ -323,6 +337,9 @@ export default function CommunityScreen() {
         <Pressable
           style={[styles.tab, activeTab === "feed" && styles.tabActive]}
           onPress={() => setActiveTab("feed")}
+          accessibilityRole="button"
+          accessibilityLabel={t("community.feed")}
+          accessibilityState={{ selected: activeTab === "feed" }}
         >
           <Sparkles 
             size={18} 
@@ -335,6 +352,9 @@ export default function CommunityScreen() {
         <Pressable
           style={[styles.tab, activeTab === "events" && styles.tabActive]}
           onPress={() => setActiveTab("events")}
+          accessibilityRole="button"
+          accessibilityLabel={t("community.events")}
+          accessibilityState={{ selected: activeTab === "events" }}
         >
           <Calendar 
             size={18} 
@@ -347,6 +367,9 @@ export default function CommunityScreen() {
         <Pressable
           style={[styles.tab, activeTab === "messages" && styles.tabActive]}
           onPress={() => setActiveTab("messages")}
+          accessibilityRole="button"
+          accessibilityLabel={t("community.messages")}
+          accessibilityState={{ selected: activeTab === "messages" }}
         >
           <Send 
             size={18} 
@@ -423,6 +446,8 @@ export default function CommunityScreen() {
         <Pressable
           style={[styles.fab, { bottom: insets.bottom + 16 }]}
           onPress={activeTab === "feed" ? handleNewPost : () => router.push("/(tabs)/community/new-event" as any)}
+          accessibilityRole="button"
+          accessibilityLabel={activeTab === "feed" ? t("community.publishPhoto") : t("community.createEvent")}
         >
           <Plus size={24} color="#fff" />
         </Pressable>

@@ -137,9 +137,11 @@ export default function HealthDashboardScreen() {
           <Text style={styles.premiumItem}>• Abonnement Premium ou Premium Plus</Text>
           <Text style={styles.premiumItem}>• Module &quot;Suivi Santé Avancé&quot;</Text>
         </View>
-        <Pressable 
+        <Pressable
           style={styles.upgradeBtn}
           onPress={() => router.push('/(tabs)/subscription' as any)}
+          accessibilityRole="button"
+          accessibilityLabel="Découvrir Premium"
         >
           <Text style={styles.upgradeBtnText}>Découvrir Premium</Text>
         </Pressable>
@@ -195,13 +197,13 @@ export default function HealthDashboardScreen() {
               <Weight size={20} color="#111" />
               <Text style={styles.sectionTitle}>Poids</Text>
             </View>
-            <Pressable onPress={onAddWeight} style={styles.addIconBtn}>
+            <Pressable onPress={onAddWeight} style={styles.addIconBtn} accessibilityRole="button" accessibilityLabel="Ajouter un poids">
               <Plus size={18} color="#007AFF" />
             </Pressable>
           </View>
 
           {latestWeight ? (
-            <Pressable onPress={onViewWeightChart} style={styles.weightCard}>
+            <Pressable onPress={onViewWeightChart} style={styles.weightCard} accessibilityRole="button" accessibilityLabel={`Poids: ${latestWeight.weight} ${latestWeight.unit}`} accessibilityHint="Ouvre le graphique de poids">
               <View style={styles.weightMain}>
                 <Text style={styles.weightValue}>{latestWeight.weight}</Text>
                 <Text style={styles.weightUnit}>{latestWeight.unit}</Text>
@@ -223,7 +225,7 @@ export default function HealthDashboardScreen() {
           ) : (
             <View style={styles.emptyCard}>
               <Text style={styles.emptyText}>Aucun poids enregistré</Text>
-              <Pressable onPress={onAddWeight} style={styles.emptyBtn}>
+              <Pressable onPress={onAddWeight} style={styles.emptyBtn} accessibilityRole="button" accessibilityLabel="Ajouter un poids">
                 <Text style={styles.emptyBtnText}>Ajouter</Text>
               </Pressable>
             </View>
@@ -236,13 +238,13 @@ export default function HealthDashboardScreen() {
               <Heart size={20} color="#FF3B30" />
               <Text style={styles.sectionTitle}>Suivi quotidien (7 jours)</Text>
             </View>
-            <Pressable onPress={onAddDailyLog} style={styles.addIconBtn}>
+            <Pressable onPress={onAddDailyLog} style={styles.addIconBtn} accessibilityRole="button" accessibilityLabel="Ajouter un log quotidien">
               <Plus size={18} color="#007AFF" />
             </Pressable>
           </View>
 
           {recentLogs.length > 0 ? (
-            <Pressable onPress={onViewDailyLogs} style={styles.statsContainer}>
+            <Pressable onPress={onViewDailyLogs} style={styles.statsContainer} accessibilityRole="button" accessibilityLabel="Suivi quotidien des 7 derniers jours" accessibilityHint="Ouvre l'historique des logs">
               <View style={styles.statCard}>
                 <View style={[styles.statIcon, { backgroundColor: "#FFF3E0" }]}>
                   <UtensilsCrossed size={20} color="#FF9500" />
@@ -279,7 +281,7 @@ export default function HealthDashboardScreen() {
           ) : (
             <View style={styles.emptyCard}>
               <Text style={styles.emptyText}>Aucun suivi quotidien</Text>
-              <Pressable onPress={onAddDailyLog} style={styles.emptyBtn}>
+              <Pressable onPress={onAddDailyLog} style={styles.emptyBtn} accessibilityRole="button" accessibilityLabel="Commencer le suivi quotidien">
                 <Text style={styles.emptyBtnText}>Commencer</Text>
               </Pressable>
             </View>
@@ -287,12 +289,12 @@ export default function HealthDashboardScreen() {
         </View>
 
         <View style={styles.quickActions}>
-          <Pressable onPress={onViewWeightChart} style={styles.actionBtn}>
+          <Pressable onPress={onViewWeightChart} style={styles.actionBtn} accessibilityRole="button" accessibilityLabel="Graphique de poids">
             <TrendingUp size={20} color="#007AFF" />
             <Text style={styles.actionBtnText}>Graphique de poids</Text>
           </Pressable>
-          
-          <Pressable onPress={onViewDailyLogs} style={styles.actionBtn}>
+
+          <Pressable onPress={onViewDailyLogs} style={styles.actionBtn} accessibilityRole="button" accessibilityLabel="Historique des logs">
             <Calendar size={20} color="#007AFF" />
             <Text style={styles.actionBtnText}>Historique des logs</Text>
           </Pressable>

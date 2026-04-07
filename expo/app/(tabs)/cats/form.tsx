@@ -179,12 +179,14 @@ export default function CatFormScreen() {
 
           {/* Image Picker */}
           <View style={styles.imageSection}>
-            <Pressable onPress={onPickImage} style={styles.imagePicker}>
+            <Pressable onPress={onPickImage} style={styles.imagePicker} accessibilityRole="button" accessibilityLabel={t("cats.addPhoto")} accessibilityHint="Ouvre la galerie pour choisir une photo">
               {imageUri ? (
                 <Image
                   source={{ uri: imageUri }}
                   style={styles.image}
                   contentFit="cover"
+                  accessibilityRole="image"
+                  accessibilityLabel="Photo du chat"
                 />
               ) : (
                 <View style={styles.imagePlaceholder}>
@@ -197,6 +199,8 @@ export default function CatFormScreen() {
               <Pressable
                 onPress={() => setImageUri(undefined)}
                 style={styles.removeImageBtn}
+                accessibilityRole="button"
+                accessibilityLabel="Supprimer la photo"
               >
                 <X color="#fff" size={14} />
               </Pressable>
@@ -211,6 +215,8 @@ export default function CatFormScreen() {
               onChangeText={setName}
               placeholder={t("cats.catNamePlaceholder")}
               placeholderTextColor="#999"
+              accessibilityRole="text"
+              accessibilityLabel={t("cats.catNameRequired")}
             />
           </View>
 
@@ -219,6 +225,9 @@ export default function CatFormScreen() {
             <Pressable
               onPress={() => setShowBreedSelect(!showBreedSelect)}
               style={styles.selectInput}
+              accessibilityRole="button"
+              accessibilityLabel={`${t("cats.selectBreedOptional")}: ${selectedBreedName}`}
+              accessibilityHint="Ouvre la liste des races"
             >
               <Text
                 style={[
@@ -238,6 +247,8 @@ export default function CatFormScreen() {
                       setShowBreedSelect(false);
                     }}
                     style={[styles.breedItem, styles.breedItemHighlight]}
+                    accessibilityRole="button"
+                    accessibilityLabel={t("cats.noBreedOption")}
                   >
                     <Text style={styles.breedItemTextHighlight}>{t("cats.noBreedOption")}</Text>
                   </Pressable>
@@ -249,6 +260,8 @@ export default function CatFormScreen() {
                         setShowBreedSelect(false);
                       }}
                       style={styles.breedItem}
+                      accessibilityRole="button"
+                      accessibilityLabel={breed.name}
                     >
                       <Text style={styles.breedItemText}>{breed.name}</Text>
                     </Pressable>
@@ -267,6 +280,8 @@ export default function CatFormScreen() {
               placeholder={t("cats.microchipPlaceholder")}
               placeholderTextColor="#999"
               keyboardType="numeric"
+              accessibilityRole="text"
+              accessibilityLabel={t("cats.microchip")}
             />
             <Text style={styles.helperText}>
               {t("cats.microchipHelp")}
@@ -282,6 +297,8 @@ export default function CatFormScreen() {
               placeholder={t("cats.notesPlaceholder")}
               placeholderTextColor="#999"
               multiline
+              accessibilityRole="text"
+              accessibilityLabel={t("cats.notes")}
             />
           </View>
 
@@ -292,14 +309,14 @@ export default function CatFormScreen() {
                 <Images size={18} color="#1C1C1E" />
                 <Text style={styles.label}>Galerie photos</Text>
               </View>
-              <Pressable onPress={onAddGalleryPhoto} style={styles.addGalleryBtn}>
+              <Pressable onPress={onAddGalleryPhoto} style={styles.addGalleryBtn} accessibilityRole="button" accessibilityLabel="Ajouter des photos à la galerie">
                 <Plus size={16} color="#fff" />
                 <Text style={styles.addGalleryText}>Ajouter</Text>
               </Pressable>
             </View>
             
             {gallery.length === 0 ? (
-              <Pressable onPress={onAddGalleryPhoto} style={styles.emptyGallery}>
+              <Pressable onPress={onAddGalleryPhoto} style={styles.emptyGallery} accessibilityRole="button" accessibilityLabel="Ajouter des photos à la galerie">
                 <Images size={32} color="#999" />
                 <Text style={styles.emptyGalleryText}>Ajouter des photos à la galerie</Text>
                 <Text style={styles.emptyGallerySubtext}>Capturez les meilleurs moments de votre chat</Text>
@@ -312,16 +329,18 @@ export default function CatFormScreen() {
               >
                 {gallery.map((photo) => (
                   <View key={photo.id} style={styles.galleryItem}>
-                    <Image source={{ uri: photo.uri }} style={styles.galleryImage} contentFit="cover" />
+                    <Image source={{ uri: photo.uri }} style={styles.galleryImage} contentFit="cover" accessibilityRole="image" accessibilityLabel="Photo de la galerie" />
                     <Pressable
                       onPress={() => onRemoveGalleryPhoto(photo.id)}
                       style={styles.removeGalleryBtn}
+                      accessibilityRole="button"
+                      accessibilityLabel="Supprimer cette photo"
                     >
                       <X color="#fff" size={12} />
                     </Pressable>
                   </View>
                 ))}
-                <Pressable onPress={onAddGalleryPhoto} style={styles.addMoreBtn}>
+                <Pressable onPress={onAddGalleryPhoto} style={styles.addMoreBtn} accessibilityRole="button" accessibilityLabel="Ajouter plus de photos">
                   <Plus size={24} color="#666" />
                 </Pressable>
               </ScrollView>
@@ -329,7 +348,7 @@ export default function CatFormScreen() {
           </View>
 
           {isEditing && (
-            <Pressable onPress={onDelete} style={styles.deleteBtn}>
+            <Pressable onPress={onDelete} style={styles.deleteBtn} accessibilityRole="button" accessibilityLabel={t("cats.deleteCat")}>
               <Trash2 color="#FF3B30" size={20} />
               <Text style={styles.deleteText}>{t("cats.deleteCat")}</Text>
             </Pressable>
@@ -343,7 +362,7 @@ export default function CatFormScreen() {
           { paddingBottom: insets.bottom + 16 },
         ]}
       >
-        <Pressable onPress={onSave} style={styles.saveBtn}>
+        <Pressable onPress={onSave} style={styles.saveBtn} accessibilityRole="button" accessibilityLabel={t("common.save")}>
           <Save color="#fff" size={20} />
           <Text style={styles.saveText}>{t("common.save")}</Text>
         </Pressable>

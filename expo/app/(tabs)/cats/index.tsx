@@ -50,6 +50,9 @@ export default function CatsListScreen() {
           styles.card,
           pressed ? { transform: [{ scale: 0.98 }], opacity: 0.95 } : null,
         ]}
+        accessibilityRole="button"
+        accessibilityLabel={`${item.name}, ${breedDisplay}`}
+        accessibilityHint="Ouvre la fiche du chat"
       >
         <View style={styles.cardContent}>
           <View style={styles.avatar}>
@@ -60,6 +63,8 @@ export default function CatsListScreen() {
                 contentFit="cover"
                 cachePolicy="memory-disk"
                 transition={200}
+                accessibilityRole="image"
+                accessibilityLabel={`Photo de ${item.name}`}
               />
             ) : (
               <Cat color={Colors.textMuted} size={24} />
@@ -107,12 +112,14 @@ export default function CatsListScreen() {
         <Heart size={14} color={Colors.heart} />
         <Text style={styles.welcomeHintText}>{t("cats.allCatsWelcome")}</Text>
       </View>
-      <Pressable 
-        onPress={onAddCat} 
+      <Pressable
+        onPress={onAddCat}
         style={({ pressed }) => [
           styles.emptyBtn,
           pressed && { opacity: 0.9, transform: [{ scale: 0.98 }] }
         ]}
+        accessibilityRole="button"
+        accessibilityLabel={t("cats.addCat")}
       >
         <Plus color="#fff" size={20} />
         <Text style={styles.emptyBtnText}>{t("cats.addCat")}</Text>
@@ -151,12 +158,15 @@ export default function CatsListScreen() {
             { bottom: insets.bottom + 20 },
           ]}
         >
-          <Pressable 
-            onPress={onAddCat} 
+          <Pressable
+            onPress={onAddCat}
             style={({ pressed }) => [
               styles.fab,
               pressed && { transform: [{ scale: 0.95 }] }
             ]}
+            accessibilityRole="button"
+            accessibilityLabel={t("cats.addCat")}
+            accessibilityHint="Ouvre le formulaire pour ajouter un chat"
           >
             <Plus color="#fff" size={24} />
           </Pressable>

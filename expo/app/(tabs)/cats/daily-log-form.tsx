@@ -124,6 +124,9 @@ export default function DailyLogFormScreen() {
         selected && styles.optionBtnSelected,
         selected && color && { backgroundColor: color, borderColor: color }
       ]}
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      accessibilityState={{ selected }}
     >
       <Text style={[styles.optionText, selected && styles.optionTextSelected]}>{label}</Text>
     </Pressable>
@@ -143,6 +146,10 @@ export default function DailyLogFormScreen() {
     <Pressable
       onPress={onToggle}
       style={[styles.symptomBtn, active && styles.symptomBtnActive]}
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      accessibilityState={{ selected: active }}
+      accessibilityHint={active ? "Désactiver ce symptôme" : "Activer ce symptôme"}
     >
       <Icon size={20} color={active ? "#fff" : "#666"} />
       <Text style={[styles.symptomText, active && styles.symptomTextActive]}>{label}</Text>
@@ -168,6 +175,8 @@ export default function DailyLogFormScreen() {
                   onChangeText={setDate}
                   placeholder="YYYY-MM-DD"
                   placeholderTextColor="#999"
+                  accessibilityRole="text"
+                  accessibilityLabel={t("dailyLog.date")}
                 />
               </View>
             </View>
@@ -244,6 +253,8 @@ export default function DailyLogFormScreen() {
                 placeholder="Comportements, observations..."
                 placeholderTextColor="#999"
                 multiline
+                accessibilityRole="text"
+                accessibilityLabel="Notes additionnelles"
               />
             </View>
 
@@ -251,7 +262,7 @@ export default function DailyLogFormScreen() {
         </KeyboardAvoidingView>
 
         <View style={[styles.footer, { paddingBottom: insets.bottom + 16 }]}>
-          <Pressable onPress={onSave} style={styles.saveBtn}>
+          <Pressable onPress={onSave} style={styles.saveBtn} accessibilityRole="button" accessibilityLabel="Enregistrer le log quotidien">
             <Save color="#fff" size={20} />
             <Text style={styles.saveText}>Enregistrer</Text>
           </Pressable>

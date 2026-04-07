@@ -44,6 +44,8 @@ export function PremiumGate({ children }: PremiumGateProps) {
               pressed && styles.subscribeButtonPressed,
             ]}
             onPress={() => router.push('/(tabs)/subscription' as any)}
+            accessibilityRole="button"
+            accessibilityLabel={t('premiumGate.subscribe')}
           >
             <Crown color="#fff" size={20} />
             <Text style={styles.subscribeButtonText}>{t('premiumGate.subscribe')}</Text>

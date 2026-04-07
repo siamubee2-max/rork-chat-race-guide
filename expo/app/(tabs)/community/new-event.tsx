@@ -99,12 +99,15 @@ export default function NewEventScreen() {
                 key={eventType.id}
                 style={[
                   styles.typeOption,
-                  type === eventType.id && { 
+                  type === eventType.id && {
                     backgroundColor: eventType.color,
                     borderColor: eventType.color,
                   },
                 ]}
                 onPress={() => setType(eventType.id)}
+                accessibilityRole="button"
+                accessibilityLabel={eventType.label}
+                accessibilityState={{ selected: type === eventType.id }}
               >
                 <Text style={[
                   styles.typeOptionText,
@@ -126,6 +129,8 @@ export default function NewEventScreen() {
             value={title}
             onChangeText={setTitle}
             maxLength={100}
+            accessibilityRole="text"
+            accessibilityLabel="Titre de l'événement"
           />
         </View>
 
@@ -139,6 +144,8 @@ export default function NewEventScreen() {
             onChangeText={setDescription}
             multiline
             maxLength={1000}
+            accessibilityRole="text"
+            accessibilityLabel="Description de l'événement"
           />
         </View>
 
@@ -152,6 +159,8 @@ export default function NewEventScreen() {
               value={date}
               onChangeText={setDate}
               maxLength={10}
+              accessibilityRole="text"
+              accessibilityLabel="Date de l'événement"
             />
           </View>
           <View style={[styles.section, styles.flex1]}>
@@ -163,6 +172,8 @@ export default function NewEventScreen() {
               value={time}
               onChangeText={setTime}
               maxLength={5}
+              accessibilityRole="text"
+              accessibilityLabel="Heure de l'événement"
             />
           </View>
         </View>
@@ -176,6 +187,8 @@ export default function NewEventScreen() {
             value={location}
             onChangeText={setLocation}
             maxLength={100}
+            accessibilityRole="text"
+            accessibilityLabel="Lieu de l'événement"
           />
         </View>
 
@@ -188,6 +201,8 @@ export default function NewEventScreen() {
             value={address}
             onChangeText={setAddress}
             maxLength={200}
+            accessibilityRole="text"
+            accessibilityLabel="Adresse de l'événement"
           />
         </View>
 
@@ -202,6 +217,8 @@ export default function NewEventScreen() {
               onChangeText={setMaxAttendees}
               keyboardType="numeric"
               maxLength={4}
+              accessibilityRole="text"
+              accessibilityLabel="Nombre de places maximum"
             />
           </View>
           <View style={[styles.section, styles.flex1]}>
@@ -213,6 +230,8 @@ export default function NewEventScreen() {
               value={price}
               onChangeText={setPrice}
               maxLength={20}
+              accessibilityRole="text"
+              accessibilityLabel="Tarif"
             />
           </View>
         </View>
@@ -223,6 +242,9 @@ export default function NewEventScreen() {
           style={[styles.submitBtn, !canSubmit && styles.submitBtnDisabled]}
           onPress={handleSubmit}
           disabled={!canSubmit}
+          accessibilityRole="button"
+          accessibilityLabel="Créer l'événement"
+          accessibilityState={{ disabled: !canSubmit }}
         >
           <Text style={styles.submitBtnText}>
             {isSubmitting ? "Création..." : "Créer l'événement"}

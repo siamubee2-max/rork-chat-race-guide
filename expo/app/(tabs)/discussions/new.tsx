@@ -68,6 +68,9 @@ export default function NewDiscussionScreen() {
                     borderColor: cat.color,
                   },
                 ]}
+                accessibilityRole="button"
+                accessibilityLabel={cat.label}
+                accessibilityState={{ selected: category === cat.id }}
               >
                 <Text
                   style={[
@@ -91,6 +94,8 @@ export default function NewDiscussionScreen() {
             onChangeText={setTitle}
             maxLength={100}
             autoFocus
+            accessibilityRole="text"
+            accessibilityLabel={t("discussions.titleLabel")}
           />
           <Text style={styles.hint}>{title.length}/100</Text>
         </View>
@@ -106,6 +111,8 @@ export default function NewDiscussionScreen() {
             numberOfLines={6}
             textAlignVertical="top"
             maxLength={1000}
+            accessibilityRole="text"
+            accessibilityLabel={t("discussions.messageLabel")}
           />
           <Text style={styles.hint}>{message.length}/1000</Text>
         </View>
@@ -116,6 +123,9 @@ export default function NewDiscussionScreen() {
           onPress={handleSubmit}
           style={[styles.submitBtn, !canSubmit && styles.submitBtnDisabled]}
           disabled={!canSubmit}
+          accessibilityRole="button"
+          accessibilityLabel={isSubmitting ? t("discussions.publishing") : t("discussions.publish")}
+          accessibilityState={{ disabled: !canSubmit }}
         >
           <Text style={styles.submitBtnText}>
             {isSubmitting ? t("discussions.publishing") : t("discussions.publish")}

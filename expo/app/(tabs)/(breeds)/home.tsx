@@ -64,6 +64,9 @@ export default function BreedsHomeScreen() {
           pressed ? { transform: [{ scale: 0.98 }], opacity: 0.95 } : null,
         ]}
         testID={`breedCard-${item.id}`}
+        accessibilityRole="button"
+        accessibilityLabel={`${item.name}, ${item.origin}`}
+        accessibilityHint="Voir les détails de cette race"
       >
         <Image
           source={{ uri: item.imageUri }}
@@ -72,6 +75,8 @@ export default function BreedsHomeScreen() {
           transition={200}
           cachePolicy="memory-disk"
           placeholder={{ blurhash: "L6PZfSi_.AyE_3t7t7R**0o#DgR4" }}
+          accessibilityRole="image"
+          accessibilityLabel={`Photo de ${item.name}`}
         />
         <LinearGradient
           colors={["rgba(0, 0, 0, 0.55)", "rgba(0, 0, 0, 0.15)", "rgba(0, 0, 0, 0.4)"]}
@@ -119,6 +124,9 @@ export default function BreedsHomeScreen() {
           style={styles.searchInput}
           autoCorrect={false}
           testID="breedsSearchInput"
+          accessibilityRole="none"
+          accessibilityLabel={t('breeds.searchPlaceholder')}
+          accessibilityHint="Rechercher une race de chat"
         />
       </View>
 
@@ -128,6 +136,9 @@ export default function BreedsHomeScreen() {
           pressed && { opacity: 0.9, transform: [{ scale: 0.98 }] }
         ]}
         onPress={onBreedersPress}
+        accessibilityRole="button"
+        accessibilityLabel={t('breeds.worldMap')}
+        accessibilityHint="Voir les élevages sur la carte du monde"
       >
         <Globe color="#fff" size={18} />
         <Text style={styles.mapButtonText}>{t('breeds.worldMap')}</Text>

@@ -14,57 +14,57 @@ export const SUBSCRIPTION_CONFIG = {
     
     premium_monthly: {
       id: 'premium_monthly',
-      revenueCatId: 'premium_monthly', // À créer dans RevenueCat
-      stripeId: 'price_premium_monthly', // À créer dans Stripe
+      revenueCatId: 'premium_monthly',
+      stripeId: 'price_premium_monthly',
       price: 14.99,
-      currency: 'USD',
+      currency: 'EUR',
       interval: 'month',
     },
-    
+
     premium_yearly: {
       id: 'premium_yearly',
       revenueCatId: 'premium_yearly',
       stripeId: 'price_premium_yearly',
       price: 149.99,
-      currency: 'USD',
+      currency: 'EUR',
       interval: 'year',
-      savings: 29.89, // vs monthly × 12
+      savings: 29.89,
     },
-    
+
     family_monthly: {
       id: 'family_monthly',
       revenueCatId: 'family_monthly',
       stripeId: 'price_family_monthly',
       price: 24.99,
-      currency: 'USD',
+      currency: 'EUR',
       interval: 'month',
     },
-    
+
     family_yearly: {
       id: 'family_yearly',
       revenueCatId: 'family_yearly',
       stripeId: 'price_family_yearly',
       price: 239.99,
-      currency: 'USD',
+      currency: 'EUR',
       interval: 'year',
       savings: 59.89,
     },
-    
+
     pro_monthly: {
       id: 'pro_monthly',
       revenueCatId: 'pro_monthly',
       stripeId: 'price_pro_monthly',
       price: 49.99,
-      currency: 'USD',
+      currency: 'EUR',
       interval: 'month',
     },
-    
+
     pro_yearly: {
       id: 'pro_yearly',
       revenueCatId: 'pro_yearly',
       stripeId: 'price_pro_yearly',
       price: 499.99,
-      currency: 'USD',
+      currency: 'EUR',
       interval: 'year',
       savings: 99.89,
     },
@@ -154,6 +154,6 @@ export function getDisplayPrice(
   
   return new Intl.NumberFormat(locale, {
     style: 'currency',
-    currency: product.currency ?? 'USD',
+    currency: product.currency ?? 'EUR',
   }).format(product.price);
 }

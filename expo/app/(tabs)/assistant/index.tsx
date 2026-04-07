@@ -299,6 +299,8 @@ ${messageText}`
                   style={styles.quickPromptItem}
                   onPress={() => handleQuickPrompt(question)}
                   activeOpacity={0.7}
+                  accessibilityRole="button"
+                  accessibilityLabel={question}
                 >
                   <Text style={styles.quickPromptText}>{question}</Text>
                 </TouchableOpacity>
@@ -408,7 +410,7 @@ ${messageText}`
       </ScrollView>
 
       {messages.length > 0 && (
-        <TouchableOpacity style={styles.clearButton} onPress={clearChat}>
+        <TouchableOpacity style={styles.clearButton} onPress={clearChat} accessibilityRole="button" accessibilityLabel="Nouvelle conversation">
           <Text style={styles.clearButtonText}>Nouvelle conversation</Text>
         </TouchableOpacity>
       )}
@@ -424,6 +426,9 @@ ${messageText}`
               ]}
               onPress={isRecording ? stopRecording : startRecording}
               disabled={isTranscribing}
+              accessibilityRole="button"
+              accessibilityLabel={isRecording ? "Arrêter l'enregistrement" : isTranscribing ? "Transcription en cours" : "Enregistrer un message vocal"}
+              accessibilityState={{ disabled: isTranscribing }}
             >
               {isTranscribing ? (
                 <ActivityIndicator size="small" color="#fff" />
@@ -447,6 +452,8 @@ ${messageText}`
           onSubmitEditing={() => handleSend()}
           blurOnSubmit={false}
           editable={!isRecording}
+          accessibilityRole="text"
+          accessibilityLabel="Écrivez votre question"
         />
         
         <TouchableOpacity
@@ -456,6 +463,9 @@ ${messageText}`
           ]}
           onPress={() => handleSend()}
           disabled={!input.trim()}
+          accessibilityRole="button"
+          accessibilityLabel="Envoyer la question"
+          accessibilityState={{ disabled: !input.trim() }}
         >
           <Send
             color={input.trim() ? "#fff" : Colors.textMuted}

@@ -77,7 +77,7 @@ export default function BreedersScreen() {
           <ScrollView contentContainerStyle={styles.listContainer}>
             {filteredBreeders.map((breeder) => (
               <View key={breeder.id} style={styles.card}>
-                <Image source={{ uri: breeder.imageUri }} style={styles.webCardImage} contentFit="cover" />
+                <Image source={{ uri: breeder.imageUri }} style={styles.webCardImage} contentFit="cover" accessibilityRole="image" accessibilityLabel={`Photo de l'élevage ${breeder.name}`} />
                 <View style={styles.webCardContent}>
                     <View style={styles.cardHeader}>
                       <Text style={styles.cardTitle}>{breeder.name}</Text>
@@ -126,9 +126,11 @@ export default function BreedersScreen() {
           >
             <View style={styles.markerContainer}>
               <View style={[styles.marker, selectedBreeder?.id === breeder.id && styles.markerActive]}>
-                <Image 
-                    source={{ uri: breeder.imageUri }} 
-                    style={styles.markerImage} 
+                <Image
+                    source={{ uri: breeder.imageUri }}
+                    style={styles.markerImage}
+                    accessibilityRole="image"
+                    accessibilityLabel={`Marqueur de ${breeder.name}`}
                 />
               </View>
               <View style={[styles.markerArrow, selectedBreeder?.id === breeder.id && styles.markerArrowActive]} />
@@ -143,16 +145,19 @@ export default function BreedersScreen() {
           <BlurView intensity={90} tint="light" style={styles.floatingCard}>
             <View style={styles.cardContent}>
                 <View style={styles.cardImageContainer}>
-                    <Image source={{ uri: selectedBreeder.imageUri }} style={styles.cardImage} contentFit="cover" />
+                    <Image source={{ uri: selectedBreeder.imageUri }} style={styles.cardImage} contentFit="cover" accessibilityRole="image" accessibilityLabel={`Photo de l'élevage ${selectedBreeder.name}`} />
                 </View>
                 
                 <View style={styles.cardDetails}>
                     <View style={styles.cardHeader}>
                         <Text style={styles.cardTitle} numberOfLines={1}>{selectedBreeder.name}</Text>
-                        <TouchableOpacity 
-                            style={styles.closeButton} 
+                        <TouchableOpacity
+                            style={styles.closeButton}
                             onPress={() => setSelectedBreeder(null)}
                             hitSlop={10}
+                            accessibilityRole="button"
+                            accessibilityLabel="Fermer"
+                            accessibilityHint="Fermer la fiche de l'éleveur"
                         >
                             <Text style={styles.closeButtonText}>×</Text>
                         </TouchableOpacity>
@@ -176,12 +181,22 @@ export default function BreedersScreen() {
             <View style={styles.divider} />
 
             <View style={styles.actionButtons}>
-              <TouchableOpacity style={[styles.actionButton, styles.callButton]}>
+              <TouchableOpacity
+                style={[styles.actionButton, styles.callButton]}
+                accessibilityRole="button"
+                accessibilityLabel="Contacter l'éleveur"
+                accessibilityHint="Appeler l'éleveur par téléphone"
+              >
                 <Phone size={18} color="white" />
                 <Text style={styles.actionButtonText}>Contacter</Text>
               </TouchableOpacity>
-              
-              <TouchableOpacity style={[styles.actionButton, styles.routeButton]}>
+
+              <TouchableOpacity
+                style={[styles.actionButton, styles.routeButton]}
+                accessibilityRole="button"
+                accessibilityLabel="Itinéraire"
+                accessibilityHint="Obtenir l'itinéraire vers l'éleveur"
+              >
                 <Navigation size={18} color="white" />
                 <Text style={styles.actionButtonText}>Itinéraire</Text>
               </TouchableOpacity>
