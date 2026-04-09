@@ -58,10 +58,7 @@
           "ar"
         ]
       },
-      "privacyPolicyUrl": "https://siamubee2-max.github.io/purrly-legal/privacy/",
-      "buildNumber": "1",
-      "supportUrl": "https://siamubee2-max.github.io/purrly-legal/",
-      "marketingUrl": "https://siamubee2-max.github.io/purrly-legal/"
+      "buildNumber": "1"
     },
     "android": {
       "adaptiveIcon": {
@@ -138,6 +135,7 @@
       "eas": {
         "projectId": "7405c4ca-ff58-4d81-b4bd-5ae0c0218b0c"
       }
-    }
+    },
+    "privacyPolicyUrl": "https://siamubee2-max.github.io/purrly-legal/privacy/"
   }
 }
