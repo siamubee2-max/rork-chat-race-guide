@@ -516,20 +516,6 @@ export default function ScanResultScreen() {
           console.log("Starting AI analysis, base64 length:", imageBase64.length);
         }
 
-        const prompt = `Analyse cette image d'un chat et identifie sa race. 
-Fournis exactement 3 races possibles avec leurs niveaux de confiance (Élevée, Moyenne, ou Faible).
-Pour chaque race, explique brièvement pourquoi cette race correspond aux caractéristiques visibles dans l'image.
-
-Format ta réponse EXACTEMENT comme ceci (une race par ligne):
-Race: [Nom de la race] | Confiance: [Élevée/Moyenne/Faible] | Raison: [Explication courte]
-Race: [Nom de la race] | Confiance: [Élevée/Moyenne/Faible] | Raison: [Explication courte]
-Race: [Nom de la race] | Confiance: [Élevée/Moyenne/Faible] | Raison: [Explication courte]
-
-Exemple:
-Race: Maine Coon | Confiance: Élevée | Raison: Grand gabarit, queue très fournie, plumet aux oreilles.
-Race: British Shorthair | Confiance: Moyenne | Raison: Tête ronde, joues pleines, pelage dense.
-Race: Persan | Confiance: Faible | Raison: Pelage long et épais visible.`;
-
         // Call tRPC OpenAI Vision endpoint
         let response: string;
         try {
