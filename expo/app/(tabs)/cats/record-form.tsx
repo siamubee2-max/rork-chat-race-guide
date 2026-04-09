@@ -10,7 +10,7 @@ import {
   Platform,
   Alert,
 } from "react-native";
-import { , useLocalSearchParams , useRouter } from "expo-router";
+import { useLocalSearchParams,useRouter } from "expo-router";
 import { navigate, navigateWithParams, navigateReplace } from "@/utils/navigate";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Save, Trash2, Calendar as CalendarIcon, Syringe, Stethoscope, Pill, HeartPulse, Bug } from "lucide-react-native";

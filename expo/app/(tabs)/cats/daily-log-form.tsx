@@ -10,7 +10,7 @@ import {
   Alert,
   TextInput,
 } from "react-native";
-import { , useLocalSearchParams, useNavigation , useRouter } from "expo-router";
+import { useLocalSearchParams, useNavigation,useRouter } from "expo-router";
 import { navigate, navigateWithParams, navigateReplace } from "@/utils/navigate";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Save, Calendar as CalendarIcon, UtensilsCrossed, Droplets, Activity, Trash } from "lucide-react-native";
