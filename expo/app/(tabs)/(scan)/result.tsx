@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState, useRef } from "react";
 import { navigate, navigateWithParams, navigateReplace } from "@/utils/navigate";
 import { Image } from "expo-image";
 import * as Haptics from "expo-haptics";
-import { generateText } from "@rork-ai/toolkit-sdk";
+import { trpc } from "@/lib/trpc";
 import { Cat, ChevronRight, Scan, Sparkles, Search, Eye, Share2 } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { Colors } from "@/constants/colors";
@@ -475,6 +475,7 @@ const scanStyles = StyleSheet.create({
 });
 
 export default function ScanResultScreen() {
+  const breedIdentifyMutation = trpc.ai.breedIdentify.useMutation();
   const { t } = useTranslation();
   const { imageData, clearImage } = useScanImage();
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -529,27 +530,27 @@ Race: Maine Coon | Confiance: Élevée | Raison: Grand gabarit, queue très four
 Race: British Shorthair | Confiance: Moyenne | Raison: Tête ronde, joues pleines, pelage dense.
 Race: Persan | Confiance: Faible | Raison: Pelage long et épais visible.`;
 
-        const base64ImageData = `data:image/jpeg;base64,${imageBase64}`;
-
+        // Call tRPC OpenAI Vision endpoint
         let response: string;
         try {
-          response = await generateText({
-            messages: [
-              {
-                role: "user",
-                content: [
-                  { type: "text", text: prompt },
-                  { type: "image", image: base64ImageData },
-                ],
-              },
-            ],
+          const breedResult = await breedIdentifyMutation.mutateAsync({
+            imageBase64,
+            language: "fr",
           });
+          // Convert structured JSON → text format expected by the parser below
+          const confidence = breedResult.confidence === "high" ? "Élevée"
+            : breedResult.confidence === "medium" ? "Moyenne" : "Faible";
+          response = [
+            `Race: ${breedResult.breed} | Confiance: ${confidence} | Raison: ${breedResult.description ?? breedResult.temperament ?? ""}`,
+            `Race: Chat Européen | Confiance: Faible | Raison: Morphologie générale commune.`,
+            `Race: Chat de gouttière | Confiance: Faible | Raison: Caractéristiques mixtes possibles.`,
+          ].join("\n");
           if (__DEV__) {
-            console.log("AI Response received:", response?.substring(0, 200));
+            console.log("Breed identification result:", breedResult);
           }
         } catch (aiError) {
           if (__DEV__) {
-            console.error("AI generateText error:", aiError);
+            console.error("AI breedIdentify error:", aiError);
           }
           throw new Error("Impossible de contacter l'IA. Vérifiez votre connexion.");
         }

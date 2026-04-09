@@ -2,9 +2,8 @@ import createContextHook from "@nkzw/create-context-hook";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useMemo } from "react";
-import { generateObject, generateText } from "@rork-ai/toolkit-sdk";
-import { z } from "zod";
 import { useCats, CatProfile } from "./cats";
+import { trpc } from "@/lib/trpc";
 
 export type HealthInsight = {
   id: string;
@@ -43,44 +42,25 @@ const INSIGHTS_KEY = "ai_insights";
 const ANALYSES_KEY = "ai_photo_analyses";
 const PATTERNS_KEY = "ai_behavior_patterns";
 
-const healthInsightSchema = z.object({
-  insights: z.array(z.object({
-    type: z.enum(["warning", "tip", "alert", "positive"]),
-    category: z.enum(["weight", "behavior", "nutrition", "health", "general"]),
-    title: z.string(),
-    description: z.string(),
-    priority: z.enum(["low", "medium", "high"]),
-  })),
-});
-
-const photoAnalysisSchema = z.object({
-  mood: z.string().describe("The cat's apparent mood (e.g., relaxed, playful, anxious, sleepy)"),
-  bodyCondition: z.string().describe("Body condition assessment (underweight, ideal, overweight)"),
-  healthObservations: z.array(z.string()).describe("Any visible health observations"),
-  recommendations: z.array(z.string()).describe("Care recommendations based on the photo"),
-});
-
-const behaviorAnalysisSchema = z.object({
-  patterns: z.array(z.object({
-    pattern: z.string(),
-    frequency: z.enum(["daily", "weekly", "occasional"]),
-    sentiment: z.enum(["positive", "neutral", "concerning"]),
-    insights: z.array(z.string()),
-  })),
-});
-
 export const [AIContext, useAI] = createContextHook(() => {
   const queryClient = useQueryClient();
   const { cats } = useCats();
 
+  // tRPC mutations
+  const aiHealthInsights = trpc.ai.generateHealthInsights.useMutation();
+  const aiAnalyzeImage = trpc.ai.analyzeImage.useMutation();
+  const aiChat = trpc.ai.chat.useMutation();
+
+  // ---------------------------------------------------------------------------
+  // Local storage queries
+  // ---------------------------------------------------------------------------
   const insightsQuery = useQuery({
     queryKey: ["ai_insights"],
     queryFn: async () => {
       try {
         const stored = await AsyncStorage.getItem(INSIGHTS_KEY);
         return stored ? (JSON.parse(stored) as HealthInsight[]) : [];
-      } catch (e) {
-        console.error("Failed to load AI insights", e);
+      } catch {
         return [];
       }
     },
@@ -93,8 +73,7 @@ export const [AIContext, useAI] = createContextHook(() => {
       try {
         const stored = await AsyncStorage.getItem(ANALYSES_KEY);
         return stored ? (JSON.parse(stored) as PhotoAnalysis[]) : [];
-      } catch (e) {
-        console.error("Failed to load photo analyses", e);
+      } catch {
         return [];
       }
     },
@@ -107,44 +86,44 @@ export const [AIContext, useAI] = createContextHook(() => {
       try {
         const stored = await AsyncStorage.getItem(PATTERNS_KEY);
         return stored ? (JSON.parse(stored) as BehaviorPattern[]) : [];
-      } catch (e) {
-        console.error("Failed to load behavior patterns", e);
+      } catch {
         return [];
       }
     },
     initialData: [],
   });
 
+  // ---------------------------------------------------------------------------
+  // Generate health insights via OpenAI backend
+  // ---------------------------------------------------------------------------
   const generateHealthInsightsMutation = useMutation({
     mutationFn: async (cat: CatProfile) => {
       const recentLogs = (cat.dailyLogs || []).slice(-14);
       const weightHistory = (cat.weightHistory || []).slice(-10);
-      
-      const prompt = `Analyze this cat's health data and provide insights:
-Cat: ${cat.name}
-Age: ${cat.birthDate ? calculateAge(cat.birthDate) : "Unknown"}
-Recent daily logs (last 14 days): ${JSON.stringify(recentLogs)}
-Weight history: ${JSON.stringify(weightHistory)}
-Medical records: ${JSON.stringify(cat.medicalRecords || [])}
 
-Provide helpful health insights, tips, and any warnings based on patterns in the data. Focus on actionable advice.`;
-
-      const result = await generateObject({
-        messages: [{ role: "user", content: prompt }],
-        schema: healthInsightSchema,
+      const result = await aiHealthInsights.mutateAsync({
+        catName: cat.name,
+        catAge: cat.birthDate ? calculateAge(cat.birthDate) : undefined,
+        recentLogs,
+        weightHistory,
+        medicalRecords: cat.medicalRecords || [],
       });
 
       const newInsights: HealthInsight[] = result.insights.map((insight, index) => ({
         id: `${cat.id}-${Date.now()}-${index}`,
         catId: cat.id,
-        ...insight,
+        type: insight.type as HealthInsight["type"],
+        category: insight.category as HealthInsight["category"],
+        title: insight.title,
+        description: insight.description,
+        priority: insight.priority as HealthInsight["priority"],
         createdAt: new Date().toISOString(),
       }));
 
       const currentInsights = insightsQuery.data || [];
-      const filteredInsights = currentInsights.filter(i => i.catId !== cat.id);
+      const filteredInsights = currentInsights.filter((i) => i.catId !== cat.id);
       const updatedInsights = [...filteredInsights, ...newInsights];
-      
+
       await AsyncStorage.setItem(INSIGHTS_KEY, JSON.stringify(updatedInsights));
       return updatedInsights;
     },
@@ -153,85 +132,86 @@ Provide helpful health insights, tips, and any warnings based on patterns in the
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Analyze photo via OpenAI Vision backend
+  // ---------------------------------------------------------------------------
   const analyzePhotoMutation = useMutation({
-    mutationFn: async ({ imageBase64, catId }: { imageBase64: string; catId?: string }) => {
-      try {
-        const cat = catId ? cats.find(c => c.id === catId) : null;
-        
-        const prompt = cat 
-          ? `Analyze this photo of ${cat.name} (${cat.birthDate ? calculateAge(cat.birthDate) : "unknown age"}). Assess mood, body condition, and any visible health observations.`
-          : "Analyze this cat photo. Assess mood, body condition, and any visible health observations.";
+    mutationFn: async ({
+      imageBase64,
+      catId,
+    }: {
+      imageBase64: string;
+      catId?: string;
+    }) => {
+      const cat = catId ? cats.find((c) => c.id === catId) : null;
 
-        console.log("Starting photo analysis...");
-        
-        const result = await generateObject({
-          messages: [{ 
-            role: "user", 
-            content: [
-              { type: "text", text: prompt },
-              { type: "image", image: imageBase64 }
-            ]
-          }],
-          schema: photoAnalysisSchema,
-        });
+      const result = await aiAnalyzeImage.mutateAsync({
+        imageBase64,
+        catName: cat?.name,
+        catAge: cat?.birthDate ? calculateAge(cat.birthDate) : undefined,
+      });
 
-        console.log("Photo analysis result:", result);
+      const newAnalysis: PhotoAnalysis = {
+        id: `analysis-${Date.now()}`,
+        catId,
+        imageUri: imageBase64,
+        mood: result.mood,
+        bodyCondition: result.bodyCondition,
+        healthObservations: result.healthObservations,
+        recommendations: result.recommendations,
+        analyzedAt: new Date().toISOString(),
+      };
 
-        const newAnalysis: PhotoAnalysis = {
-          id: `analysis-${Date.now()}`,
-          catId,
-          imageUri: imageBase64,
-          mood: result?.mood || "Inconnu",
-          bodyCondition: result?.bodyCondition || "Non déterminé",
-          healthObservations: result?.healthObservations || [],
-          recommendations: result?.recommendations || [],
-          analyzedAt: new Date().toISOString(),
-        };
-
-        const currentAnalyses = analysesQuery.data || [];
-        const updatedAnalyses = [newAnalysis, ...currentAnalyses.slice(0, 19)];
-        
-        await AsyncStorage.setItem(ANALYSES_KEY, JSON.stringify(updatedAnalyses));
-        return { analysis: newAnalysis, allAnalyses: updatedAnalyses };
-      } catch (error) {
-        console.error("Photo analysis error:", error);
-        throw new Error("L'analyse de la photo a échoué. Veuillez réessayer.");
-      }
+      const currentAnalyses = analysesQuery.data || [];
+      const updatedAnalyses = [newAnalysis, ...currentAnalyses.slice(0, 19)];
+      await AsyncStorage.setItem(ANALYSES_KEY, JSON.stringify(updatedAnalyses));
+      return { analysis: newAnalysis, allAnalyses: updatedAnalyses };
     },
     onSuccess: ({ allAnalyses }) => {
       queryClient.setQueryData(["ai_photo_analyses"], allAnalyses);
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Behavior analysis — uses chat endpoint with structured prompt
+  // ---------------------------------------------------------------------------
   const analyzeBehaviorMutation = useMutation({
     mutationFn: async (cat: CatProfile) => {
       const logs = cat.dailyLogs || [];
-      
       if (logs.length < 3) {
         throw new Error("Not enough data for behavior analysis. Log at least 3 days.");
       }
 
-      const prompt = `Analyze behavior patterns for cat ${cat.name}:
-Daily logs: ${JSON.stringify(logs)}
+      const prompt = `Analyze behavior patterns for cat ${cat.name}. Logs: ${JSON.stringify(logs.slice(-30))}. Respond in JSON: {"patterns":[{"pattern":"string","frequency":"daily"|"weekly"|"occasional","sentiment":"positive"|"neutral"|"concerning","insights":["string"]}]}`;
 
-Identify behavioral patterns, their frequency, and provide insights about what they might indicate about the cat's wellbeing.`;
-
-      const result = await generateObject({
+      const result = await aiChat.mutateAsync({
         messages: [{ role: "user", content: prompt }],
-        schema: behaviorAnalysisSchema,
+        systemPrompt: "You are a veterinary AI. Analyze cat behavior patterns. Return ONLY valid JSON. Respond in French.",
+        model: "gpt-4o-mini",
       });
 
-      const newPatterns: BehaviorPattern[] = result.patterns.map((pattern, index) => ({
-        id: `${cat.id}-pattern-${Date.now()}-${index}`,
-        catId: cat.id,
-        ...pattern,
-        detectedAt: new Date().toISOString(),
-      }));
+      let parsed: { patterns: any[] } = { patterns: [] };
+      try {
+        parsed = JSON.parse(result.content);
+      } catch {
+        console.error("Failed to parse behavior response");
+      }
+
+      const newPatterns: BehaviorPattern[] = (parsed.patterns || []).map(
+        (p: any, index: number) => ({
+          id: `${cat.id}-pattern-${Date.now()}-${index}`,
+          catId: cat.id,
+          pattern: p.pattern,
+          frequency: p.frequency,
+          sentiment: p.sentiment,
+          insights: p.insights || [],
+          detectedAt: new Date().toISOString(),
+        })
+      );
 
       const currentPatterns = patternsQuery.data || [];
-      const filteredPatterns = currentPatterns.filter(p => p.catId !== cat.id);
+      const filteredPatterns = currentPatterns.filter((p) => p.catId !== cat.id);
       const updatedPatterns = [...filteredPatterns, ...newPatterns];
-      
       await AsyncStorage.setItem(PATTERNS_KEY, JSON.stringify(updatedPatterns));
       return updatedPatterns;
     },
@@ -240,10 +220,13 @@ Identify behavioral patterns, their frequency, and provide insights about what t
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Dismiss insight
+  // ---------------------------------------------------------------------------
   const dismissInsightMutation = useMutation({
     mutationFn: async (insightId: string) => {
       const currentInsights = insightsQuery.data || [];
-      const updatedInsights = currentInsights.map(i => 
+      const updatedInsights = currentInsights.map((i) =>
         i.id === insightId ? { ...i, dismissed: true } : i
       );
       await AsyncStorage.setItem(INSIGHTS_KEY, JSON.stringify(updatedInsights));
@@ -254,41 +237,42 @@ Identify behavioral patterns, their frequency, and provide insights about what t
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Quick advice
+  // ---------------------------------------------------------------------------
   const getQuickAdviceMutation = useMutation({
     mutationFn: async (question: string) => {
-      const catsContext = cats.length > 0 
-        ? `User has ${cats.length} cat(s): ${cats.map(c => `${c.name} (${c.birthDate ? calculateAge(c.birthDate) : "unknown age"})`).join(", ")}.`
-        : "User doesn't have any cats registered yet.";
+      const catsCtx =
+        cats.length > 0
+          ? `L'utilisateur a ${cats.length} chat(s): ${cats.map((c) => c.name).join(", ")}.`
+          : "L'utilisateur n'a pas de chats enregistrés.";
 
-      const response = await generateText({
-        messages: [{ 
-          role: "user", 
-          content: `${catsContext}\n\nQuestion about cats: ${question}\n\nProvide a helpful, concise answer in French.`
-        }],
+      const result = await aiChat.mutateAsync({
+        messages: [{ role: "user", content: `${catsCtx}\n\nQuestion: ${question}` }],
+        systemPrompt: "Tu es un assistant vétérinaire. Réponds de manière concise en français.",
+        model: "gpt-4o-mini",
       });
-
-      return response;
+      return result.content;
     },
   });
 
-  const insights = useMemo(() => 
-    (insightsQuery.data || []).filter(i => !i.dismissed),
+  // ---------------------------------------------------------------------------
+  // Derived state
+  // ---------------------------------------------------------------------------
+  const insights = useMemo(
+    () => (insightsQuery.data || []).filter((i) => !i.dismissed),
     [insightsQuery.data]
   );
-
   const analyses = useMemo(() => analysesQuery.data || [], [analysesQuery.data]);
   const patterns = useMemo(() => patternsQuery.data || [], [patternsQuery.data]);
-
-  const getInsightsForCat = (catId: string) => insights.filter(i => i.catId === catId);
-  const getPatternsForCat = (catId: string) => patterns.filter(p => p.catId === catId);
 
   return {
     insights,
     analyses,
     patterns,
     isLoadingInsights: insightsQuery.isLoading,
-    getInsightsForCat,
-    getPatternsForCat,
+    getInsightsForCat: (catId: string) => insights.filter((i) => i.catId === catId),
+    getPatternsForCat: (catId: string) => patterns.filter((p) => p.catId === catId),
     generateHealthInsights: generateHealthInsightsMutation.mutateAsync,
     isGeneratingInsights: generateHealthInsightsMutation.isPending,
     analyzePhoto: analyzePhotoMutation.mutateAsync,
@@ -304,12 +288,12 @@ Identify behavioral patterns, their frequency, and provide insights about what t
 function calculateAge(birthDate: string): string {
   const birth = new Date(birthDate);
   const now = new Date();
-  const months = (now.getFullYear() - birth.getFullYear()) * 12 + (now.getMonth() - birth.getMonth());
-  
-  if (months < 12) {
-    return `${months} mois`;
-  }
+  const months =
+    (now.getFullYear() - birth.getFullYear()) * 12 + (now.getMonth() - birth.getMonth());
+  if (months < 12) return `${months} mois`;
   const years = Math.floor(months / 12);
-  const remainingMonths = months % 12;
-  return remainingMonths > 0 ? `${years} an${years > 1 ? "s" : ""} et ${remainingMonths} mois` : `${years} an${years > 1 ? "s" : ""}`;
+  const rem = months % 12;
+  return rem > 0
+    ? `${years} an${years > 1 ? "s" : ""} et ${rem} mois`
+    : `${years} an${years > 1 ? "s" : ""}`;
 }

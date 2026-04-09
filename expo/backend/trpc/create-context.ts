@@ -4,14 +4,20 @@ import { createClient } from "@supabase/supabase-js";
 import superjson from "superjson";
 
 // ---------------------------------------------------------------------------
-// Supabase admin client (server-side, uses service-role key if available,
-// otherwise falls back to anon key for read operations)
+// Supabase admin client
 // ---------------------------------------------------------------------------
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL ?? "";
 const supabaseKey =
   process.env.SUPABASE_SERVICE_ROLE_KEY ??
   process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ??
   "";
+
+// OpenAI API key — server-side only, never sent to client
+export const getOpenAIKey = (): string => {
+  const key = process.env.OPENAI_API_KEY ?? "";
+  if (!key) console.warn("[tRPC] OPENAI_API_KEY is not set");
+  return key;
+};
 
 // We create a server-side client per-request so we can set the auth header.
 function makeSupabaseClient(accessToken?: string) {

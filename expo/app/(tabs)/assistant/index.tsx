@@ -13,29 +13,47 @@ import {
   useWindowDimensions,
 } from "react-native";
 import { Send, Mic, MicOff, Sparkles, Cat } from "lucide-react-native";
-import { useRorkAgent, createRorkTool } from "@rork-ai/toolkit-sdk";
 import { Audio } from "expo-av";
 import * as Haptics from "expo-haptics";
-import { z } from "zod";
+import * as FileSystem from "expo-file-system";
 import { useTranslation } from "react-i18next";
 import { Colors } from "@/constants/colors";
 import { useCats } from "@/context/cats";
 import { PremiumGate } from "@/components/PremiumGate";
 import { useReminders } from "@/context/reminders";
+import { trpc } from "@/lib/trpc";
 
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
+type Message = {
+  id: string;
+  role: "user" | "assistant";
+  content: string;
+};
+
+// ---------------------------------------------------------------------------
+// Screen
+// ---------------------------------------------------------------------------
 export default function AssistantScreen() {
   const { t } = useTranslation();
   const [input, setInput] = useState("");
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [recording, setRecording] = useState<Audio.Recording | null>(null);
   const [isTranscribing, setIsTranscribing] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
   const pulseAnim = useRef(new Animated.Value(1)).current;
   const { width } = useWindowDimensions();
-  const isTablet = width >= 768; // Considéré comme tablette si largeur >= 768px
+  const isTablet = width >= 768;
 
   const { cats } = useCats();
   const { addReminder } = useReminders();
+
+  // tRPC mutations
+  const chatMutation = trpc.ai.chat.useMutation();
+  const transcribeMutation = trpc.ai.transcribe.useMutation();
 
   const QUICK_PROMPTS = [
     t("assistant.quickPrompts.whyPurr"),
@@ -48,66 +66,17 @@ export default function AssistantScreen() {
     t("assistant.quickPrompts.scratching"),
   ];
 
-  const catsContext = cats.length > 0
-    ? `L'utilisateur a ${cats.length} chat(s): ${cats.map(c => {
-        const age = c.birthDate ? calculateAge(c.birthDate) : "âge inconnu";
-        return `${c.name} (${age})`;
-      }).join(", ")}.`
-    : "L'utilisateur n'a pas encore enregistré de chats.";
-
-  const { messages, error, sendMessage, setMessages } = useRorkAgent({
-    tools: {
-      createReminder: createRorkTool({
-        description: "Créer un rappel pour le chat (vaccin, médicament, toilettage, etc.)",
-        zodSchema: z.object({
-          title: z.string().describe("Titre du rappel"),
-          description: z.string().describe("Description détaillée").optional(),
-          date: z.string().describe("Date du rappel au format ISO 8601"),
-          catId: z.string().describe("ID du chat concerné").optional(),
-        }),
-        execute: async (params) => {
-          console.log("Creating reminder:", params);
-          await addReminder({
-            id: `reminder-${Date.now()}`,
-            title: params.title,
-            description: params.description,
-            dueDate: params.date,
-            type: "other",
-            frequency: "once",
-            completed: false,
-            createdAt: new Date().toISOString(),
-          });
-          return `Rappel "${params.title}" créé avec succès`;
-        },
-      }),
-      getCatInfo: createRorkTool({
-        description: "Obtenir des informations sur les chats de l'utilisateur",
-        zodSchema: z.object({
-          catName: z.string().describe("Nom du chat (optionnel)").optional(),
-        }),
-        execute: (params) => {
-          if (params.catName) {
-            const cat = cats.find(c => c.name.toLowerCase() === params.catName?.toLowerCase());
-            if (cat) {
-              const catInfo = {
-                name: cat.name,
-                age: cat.birthDate ? calculateAge(cat.birthDate) : "inconnu",
-                weight: cat.weight || "non renseigné",
-                recentLogs: (cat.dailyLogs || []).slice(-3),
-              };
-              return JSON.stringify(catInfo);
-            }
-            return `Aucun chat nommé ${params.catName} trouvé`;
-          }
-          const allCats = cats.map(c => ({
-            name: c.name,
-            age: c.birthDate ? calculateAge(c.birthDate) : "inconnu",
-          }));
-          return JSON.stringify({ totalCats: cats.length, cats: allCats });
-        },
-      }),
-    },
-  });
+  const systemPrompt = [
+    "Tu es Purrly, un assistant IA expert en santé et bien-être félin. Réponds de manière concise, précise et amicale en français.",
+    cats.length > 0
+      ? `L'utilisateur a ${cats.length} chat(s): ${cats
+          .map((c) => {
+            const age = c.birthDate ? calculateAge(c.birthDate) : "âge inconnu";
+            return `${c.name} (${age})`;
+          })
+          .join(", ")}.`
+      : "L'utilisateur n'a pas encore de chats enregistrés.",
+  ].join(" ");
 
   useEffect(() => {
     scrollViewRef.current?.scrollToEnd({ animated: true });
@@ -117,16 +86,8 @@ export default function AssistantScreen() {
     if (isRecording) {
       Animated.loop(
         Animated.sequence([
-          Animated.timing(pulseAnim, {
-            toValue: 1.2,
-            duration: 500,
-            useNativeDriver: true,
-          }),
-          Animated.timing(pulseAnim, {
-            toValue: 1,
-            duration: 500,
-            useNativeDriver: true,
-          }),
+          Animated.timing(pulseAnim, { toValue: 1.2, duration: 500, useNativeDriver: true }),
+          Animated.timing(pulseAnim, { toValue: 1, duration: 500, useNativeDriver: true }),
         ])
       ).start();
     } else {
@@ -134,35 +95,63 @@ export default function AssistantScreen() {
     }
   }, [isRecording, pulseAnim]);
 
-  const handleSend = useCallback(async (customMessage?: string) => {
-    const messageText = customMessage || input.trim();
-    if (!messageText) return;
+  const handleSend = useCallback(
+    async (customMessage?: string) => {
+      const text = (customMessage ?? input).trim();
+      if (!text || isLoading) return;
 
-    if (!customMessage) setInput("");
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      if (!customMessage) setInput("");
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
-    const isFirstUserMessage = messages.length === 0;
-    const fullMessage = isFirstUserMessage
-      ? `[Contexte: Tu es Purrly, un assistant IA spécialisé dans les chats. ${catsContext} Tu peux créer des rappels et consulter les infos des chats. Réponds de manière concise et amicale en français.]
+      const userMsg: Message = {
+        id: `user-${Date.now()}`,
+        role: "user",
+        content: text,
+      };
+      const updated = [...messages, userMsg];
+      setMessages(updated);
+      setIsLoading(true);
 
-${messageText}`
-      : messageText;
+      try {
+        const result = await chatMutation.mutateAsync({
+          messages: updated.map((m) => ({ role: m.role, content: m.content })),
+          systemPrompt,
+          model: "gpt-4o-mini",
+        });
 
-    await sendMessage(fullMessage);
-  }, [input, sendMessage, messages.length, catsContext]);
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: `assistant-${Date.now()}`,
+            role: "assistant",
+            content: result.content,
+          },
+        ]);
+      } catch (err) {
+        console.error("Chat error:", err);
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: `error-${Date.now()}`,
+            role: "assistant",
+            content: "Désolé, une erreur est survenue. Veuillez réessayer.",
+          },
+        ]);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [input, messages, isLoading, chatMutation, systemPrompt]
+  );
 
   const startRecording = useCallback(async () => {
-    if (Platform.OS === "web") {
-      return;
-    }
-
+    if (Platform.OS === "web") return;
     try {
       await Audio.requestPermissionsAsync();
       await Audio.setAudioModeAsync({
         allowsRecordingIOS: true,
         playsInSilentModeIOS: true,
       });
-
       const { recording: newRecording } = await Audio.Recording.createAsync({
         android: {
           extension: ".m4a",
@@ -185,7 +174,6 @@ ${messageText}`
         },
         web: {},
       });
-
       setRecording(newRecording);
       setIsRecording(true);
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -196,42 +184,28 @@ ${messageText}`
 
   const stopRecording = useCallback(async () => {
     if (!recording) return;
-
     try {
       setIsRecording(false);
       await recording.stopAndUnloadAsync();
-      await Audio.setAudioModeAsync({
-        allowsRecordingIOS: false,
-      });
-
+      await Audio.setAudioModeAsync({ allowsRecordingIOS: false });
       const uri = recording.getURI();
       setRecording(null);
 
       if (uri) {
         setIsTranscribing(true);
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-
-        const uriParts = uri.split(".");
-        const fileType = uriParts[uriParts.length - 1];
-
-        const formData = new FormData();
-        formData.append("audio", {
-          uri,
-          name: `recording.${fileType}`,
-          type: `audio/${fileType}`,
-        } as unknown as Blob);
-        formData.append("language", "fr");
-
         try {
-          const response = await fetch("https://toolkit.rork.com/stt/transcribe/", {
-            method: "POST",
-            body: formData,
+          // Read file as base64 and send to tRPC Whisper endpoint
+          const base64 = await FileSystem.readAsStringAsync(uri, {
+            encoding: FileSystem.EncodingType.Base64,
           });
-
-          const data = await response.json();
-          if (data.text) {
-            setInput(data.text);
-          }
+          const ext = uri.split(".").pop() ?? "m4a";
+          const result = await transcribeMutation.mutateAsync({
+            audioBase64: base64,
+            mimeType: `audio/${ext}`,
+            language: "fr",
+          });
+          if (result.text) setInput(result.text);
         } catch (err) {
           console.error("Transcription failed", err);
         } finally {
@@ -243,226 +217,146 @@ ${messageText}`
       setIsRecording(false);
       setIsTranscribing(false);
     }
-  }, [recording]);
-
-  const handleQuickPrompt = useCallback((prompt: string) => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    handleSend(prompt);
-  }, [handleSend]);
+  }, [recording, transcribeMutation]);
 
   const clearChat = useCallback(() => {
     setMessages([]);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-  }, [setMessages]);
+  }, []);
 
   return (
     <PremiumGate>
       <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
-    >
-      <ScrollView
-        ref={scrollViewRef}
-        style={styles.messagesContainer}
-        contentContainerStyle={styles.messagesContent}
-        onContentSizeChange={() =>
-          scrollViewRef.current?.scrollToEnd({ animated: true })
-        }
-        nestedScrollEnabled={true}
-        showsVerticalScrollIndicator={true}
+        style={styles.container}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
       >
-        {messages.length === 0 && (
-          <View style={styles.emptyState}>
-            <View style={styles.logoContainer}>
-              <View style={styles.logoCircle}>
-                <Sparkles color={Colors.primary} size={32} />
-              </View>
-            </View>
-            <Text style={styles.emptyTitle}>Purrly AI</Text>
-            <Text style={styles.emptySubtitle}>Votre assistant félin intelligent</Text>
-            
-            {cats.length > 0 && (
-              <View style={styles.catsInfoBadge}>
-                <Cat color={Colors.primary} size={16} />
-                <Text style={styles.catsInfoText}>
-                  {cats.length} chat{cats.length > 1 ? "s" : ""} enregistré{cats.length > 1 ? "s" : ""}
-                </Text>
-              </View>
-            )}
-
-            <Text style={styles.quickPromptsTitle}>Questions courantes</Text>
-            <View style={styles.quickPromptsList}>
-              {QUICK_PROMPTS.map((question, index) => (
-                <TouchableOpacity
-                  key={index}
-                  style={styles.quickPromptItem}
-                  onPress={() => handleQuickPrompt(question)}
-                  activeOpacity={0.7}
-                >
-                  <Text style={styles.quickPromptText}>{question}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </View>
-        )}
-
-        {messages.map((message) => {
-          const validParts = message.parts.filter((part) => {
-            if (part.type === "text") {
-              if (!part.text || typeof part.text !== 'string') {
-                return false;
-              }
-              const cleanedText = part.text.replace(/[\s\u200B-\u200D\uFEFF]/g, '');
-              return cleanedText.length > 0;
-            }
-            return true;
-          });
-          
-          if (validParts.length === 0) {
-            return null;
-          }
-          
-          return (
-            <View 
-              key={message.id} 
-              style={{ width: '100%', flexShrink: 1, minHeight: 0 }}
-            >
-              {validParts.map((part, index) => {
-                if (part.type === "text") {
-                  if (!part.text || typeof part.text !== 'string') {
-                    return null;
-                  }
-                  const cleanedText = part.text.replace(/[\s\u200B-\u200D\uFEFF]/g, '');
-                  if (cleanedText.length === 0) {
-                    return null;
-                  }
-                  const textToRender = part.text.trim();
-                  if (textToRender.length === 0) {
-                    return null;
-                  }
-                  
-                  return (
-                    <View
-                      key={`${message.id}-${index}`}
-                      style={[
-                        styles.messageBubble,
-                        message.role === "user"
-                          ? styles.userBubble
-                          : styles.assistantBubble,
-                        !isTablet && styles.messageBubbleMobile,
-                      ]}
-                    >
-                      {message.role === "assistant" && (
-                        <View style={styles.assistantAvatar}>
-                          <Sparkles color="#fff" size={12} />
-                        </View>
-                      )}
-                      <Text
-                        style={[
-                          styles.messageText,
-                          message.role === "user"
-                            ? styles.userText
-                            : styles.assistantText,
-                        ]}
-                      >
-                        {textToRender}
-                      </Text>
-                    </View>
-                  );
-                }
-                
-                if (part.type === "tool") {
-                  const toolName = part.toolName;
-                  if (part.state === "output-available") {
-                    return (
-                      <View key={`${message.id}-${index}`} style={styles.toolResultBubble}>
-                        <Text style={styles.toolResultText}>
-                          ✅ {toolName === "createReminder" ? "Rappel créé" : "Information récupérée"}
-                        </Text>
-                      </View>
-                    );
-                  }
-                  if (part.state === "input-streaming" || part.state === "input-available") {
-                    return (
-                      <View key={`${message.id}-${index}`} style={styles.toolLoadingBubble}>
-                        <ActivityIndicator size="small" color={Colors.primary} />
-                        <Text style={styles.toolLoadingText}>
-                          {toolName === "createReminder" ? "Création du rappel..." : "Consultation des données..."}
-                        </Text>
-                      </View>
-                    );
-                  }
-                }
-                return null;
-              })}
-            </View>
-          );
-        })}
-
-        {error && (
-          <View style={styles.errorContainer}>
-            <Text style={styles.errorText}>Erreur: {error.message}</Text>
-          </View>
-        )}
-      </ScrollView>
-
-      {messages.length > 0 && (
-        <TouchableOpacity style={styles.clearButton} onPress={clearChat}>
-          <Text style={styles.clearButtonText}>Nouvelle conversation</Text>
-        </TouchableOpacity>
-      )}
-
-      <View style={styles.inputContainer}>
-        {Platform.OS !== "web" && (
-          <Animated.View style={{ transform: [{ scale: pulseAnim }] }}>
-            <TouchableOpacity
-              style={[
-                styles.voiceButton,
-                isRecording && styles.voiceButtonActive,
-                isTranscribing && styles.voiceButtonTranscribing,
-              ]}
-              onPress={isRecording ? stopRecording : startRecording}
-              disabled={isTranscribing}
-            >
-              {isTranscribing ? (
-                <ActivityIndicator size="small" color="#fff" />
-              ) : isRecording ? (
-                <MicOff color="#fff" size={20} />
-              ) : (
-                <Mic color={Colors.primary} size={20} />
-              )}
-            </TouchableOpacity>
-          </Animated.View>
-        )}
-        
-        <TextInput
-          style={styles.input}
-          value={input}
-          onChangeText={setInput}
-          placeholder={isRecording ? "Écoute en cours..." : "Écrivez votre question..."}
-          placeholderTextColor="#999999"
-          multiline
-          maxLength={500}
-          onSubmitEditing={() => handleSend()}
-          blurOnSubmit={false}
-          editable={!isRecording}
-        />
-        
-        <TouchableOpacity
-          style={[
-            styles.sendButton,
-            !input.trim() && styles.sendButtonDisabled,
-          ]}
-          onPress={() => handleSend()}
-          disabled={!input.trim()}
+        <ScrollView
+          ref={scrollViewRef}
+          style={styles.messagesContainer}
+          contentContainerStyle={styles.messagesContent}
+          onContentSizeChange={() => scrollViewRef.current?.scrollToEnd({ animated: true })}
+          showsVerticalScrollIndicator={true}
         >
-          <Send
-            color={input.trim() ? "#fff" : Colors.textMuted}
-            size={20}
+          {messages.length === 0 && (
+            <View style={styles.emptyState}>
+              <View style={styles.logoContainer}>
+                <View style={styles.logoCircle}>
+                  <Sparkles color={Colors.primary} size={32} />
+                </View>
+              </View>
+              <Text style={styles.emptyTitle}>Purrly AI</Text>
+              <Text style={styles.emptySubtitle}>Votre assistant félin intelligent</Text>
+
+              {cats.length > 0 && (
+                <View style={styles.catsInfoBadge}>
+                  <Cat color={Colors.primary} size={16} />
+                  <Text style={styles.catsInfoText}>
+                    {cats.length} chat{cats.length > 1 ? "s" : ""} enregistré
+                    {cats.length > 1 ? "s" : ""}
+                  </Text>
+                </View>
+              )}
+
+              <Text style={styles.quickPromptsTitle}>Questions courantes</Text>
+              <View style={styles.quickPromptsList}>
+                {QUICK_PROMPTS.map((question, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={styles.quickPromptItem}
+                    onPress={() => handleSend(question)}
+                    activeOpacity={0.7}
+                  >
+                    <Text style={styles.quickPromptText}>{question}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
+          )}
+
+          {messages.map((message) => (
+            <View
+              key={message.id}
+              style={[
+                styles.messageBubble,
+                message.role === "user" ? styles.userBubble : styles.assistantBubble,
+                !isTablet && styles.messageBubbleMobile,
+              ]}
+            >
+              {message.role === "assistant" && (
+                <View style={styles.assistantAvatar}>
+                  <Sparkles color="#fff" size={12} />
+                </View>
+              )}
+              <Text
+                style={[
+                  styles.messageText,
+                  message.role === "user" ? styles.userText : styles.assistantText,
+                ]}
+              >
+                {message.content}
+              </Text>
+            </View>
+          ))}
+
+          {isLoading && (
+            <View style={[styles.messageBubble, styles.assistantBubble]}>
+              <View style={styles.assistantAvatar}>
+                <Sparkles color="#fff" size={12} />
+              </View>
+              <ActivityIndicator size="small" color={Colors.primary} />
+            </View>
+          )}
+        </ScrollView>
+
+        {messages.length > 0 && (
+          <TouchableOpacity style={styles.clearButton} onPress={clearChat}>
+            <Text style={styles.clearButtonText}>Nouvelle conversation</Text>
+          </TouchableOpacity>
+        )}
+
+        <View style={styles.inputContainer}>
+          {Platform.OS !== "web" && (
+            <Animated.View style={{ transform: [{ scale: pulseAnim }] }}>
+              <TouchableOpacity
+                style={[
+                  styles.voiceButton,
+                  isRecording && styles.voiceButtonActive,
+                  isTranscribing && styles.voiceButtonTranscribing,
+                ]}
+                onPress={isRecording ? stopRecording : startRecording}
+                disabled={isTranscribing}
+              >
+                {isTranscribing ? (
+                  <ActivityIndicator size="small" color="#fff" />
+                ) : isRecording ? (
+                  <MicOff color="#fff" size={20} />
+                ) : (
+                  <Mic color={Colors.primary} size={20} />
+                )}
+              </TouchableOpacity>
+            </Animated.View>
+          )}
+
+          <TextInput
+            style={styles.input}
+            value={input}
+            onChangeText={setInput}
+            placeholder={isRecording ? "Écoute en cours..." : "Écrivez votre question..."}
+            placeholderTextColor="#999999"
+            multiline
+            maxLength={500}
+            editable={!isRecording && !isLoading}
           />
-        </TouchableOpacity>
-      </View>
+
+          <TouchableOpacity
+            style={[styles.sendButton, (!input.trim() || isLoading) && styles.sendButtonDisabled]}
+            onPress={() => handleSend()}
+            disabled={!input.trim() || isLoading}
+          >
+            <Send color={input.trim() && !isLoading ? "#fff" : Colors.textMuted} size={20} />
+          </TouchableOpacity>
+        </View>
       </KeyboardAvoidingView>
     </PremiumGate>
   );
@@ -471,254 +365,86 @@ ${messageText}`
 function calculateAge(birthDate: string): string {
   const birth = new Date(birthDate);
   const now = new Date();
-  const months = (now.getFullYear() - birth.getFullYear()) * 12 + (now.getMonth() - birth.getMonth());
-  
-  if (months < 12) {
-    return `${months} mois`;
-  }
+  const months =
+    (now.getFullYear() - birth.getFullYear()) * 12 + (now.getMonth() - birth.getMonth());
+  if (months < 12) return `${months} mois`;
   const years = Math.floor(months / 12);
   return `${years} an${years > 1 ? "s" : ""}`;
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.background,
-  },
-  containerMobile: {
-    flex: 1,
-    minHeight: 0,
-  },
-  messagesContainer: {
-    flex: 1,
-  },
-  messagesContainerMobile: {
-    flex: 1,
-  },
-  messagesContent: {
-    padding: 16,
-    gap: 12,
-    flexGrow: 1,
-    paddingBottom: 24,
-  },
-  messagesContentMobile: {
-    flexGrow: 1,
-    paddingBottom: 24,
-  },
-  emptyState: {
-    alignItems: "center" as const,
-    paddingHorizontal: 24,
-    marginTop: 40,
-  },
-  logoContainer: {
-    marginBottom: 16,
-  },
+  container: { flex: 1, backgroundColor: Colors.background },
+  messagesContainer: { flex: 1 },
+  messagesContent: { padding: 16, gap: 12, flexGrow: 1, paddingBottom: 24 },
+  emptyState: { alignItems: "center" as const, paddingHorizontal: 24, marginTop: 40 },
+  logoContainer: { marginBottom: 16 },
   logoCircle: {
-    width: 72,
-    height: 72,
-    borderRadius: 36,
+    width: 72, height: 72, borderRadius: 36,
     backgroundColor: Colors.primaryMuted,
-    justifyContent: "center" as const,
-    alignItems: "center" as const,
+    justifyContent: "center" as const, alignItems: "center" as const,
   },
-  emptyTitle: {
-    fontSize: 28,
-    fontWeight: "700" as const,
-    color: Colors.text,
-    marginBottom: 4,
-  },
-  emptySubtitle: {
-    fontSize: 15,
-    color: Colors.textSecondary,
-    marginBottom: 16,
-  },
+  emptyTitle: { fontSize: 28, fontWeight: "700" as const, color: Colors.text, marginBottom: 4 },
+  emptySubtitle: { fontSize: 15, color: Colors.textSecondary, marginBottom: 16 },
   catsInfoBadge: {
-    flexDirection: "row" as const,
-    alignItems: "center" as const,
-    backgroundColor: Colors.primaryMuted,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 16,
-    gap: 6,
-    marginBottom: 24,
+    flexDirection: "row" as const, alignItems: "center" as const,
+    backgroundColor: Colors.primaryMuted, paddingHorizontal: 12,
+    paddingVertical: 6, borderRadius: 16, gap: 6, marginBottom: 24,
   },
-  catsInfoText: {
-    fontSize: 13,
-    fontWeight: "500" as const,
-    color: Colors.primary,
-  },
+  catsInfoText: { fontSize: 13, fontWeight: "500" as const, color: Colors.primary },
   quickPromptsTitle: {
-    fontSize: 14,
-    fontWeight: "600" as const,
-    color: Colors.textSecondary,
-    marginBottom: 12,
-    alignSelf: "flex-start" as const,
+    fontSize: 14, fontWeight: "600" as const, color: Colors.textSecondary,
+    marginBottom: 12, alignSelf: "flex-start" as const,
   },
-  quickPromptsList: {
-    width: "100%",
-    gap: 8,
-  },
+  quickPromptsList: { width: "100%", gap: 8 },
   quickPromptItem: {
-    backgroundColor: Colors.backgroundCard,
-    borderRadius: 12,
-    padding: 14,
-    borderWidth: 1,
-    borderColor: Colors.border,
-    alignItems: "flex-start" as const,
+    backgroundColor: Colors.backgroundCard, borderRadius: 12, padding: 14,
+    borderWidth: 1, borderColor: Colors.border, alignItems: "flex-start" as const,
   },
-  quickPromptText: {
-    fontSize: 14,
-    color: Colors.text,
-    lineHeight: 20,
-  },
+  quickPromptText: { fontSize: 14, color: Colors.text, lineHeight: 20 },
   messageBubble: {
-    maxWidth: "85%",
-    padding: 14,
-    borderRadius: 20,
-    marginVertical: 4,
-    flexShrink: 1,
-    minHeight: 0,
+    maxWidth: "85%", padding: 14, borderRadius: 20,
+    marginVertical: 4, flexShrink: 1,
   },
-  messageBubbleMobile: {
-    flexShrink: 1,
-    minHeight: 0,
-  },
+  messageBubbleMobile: { flexShrink: 1 },
   userBubble: {
     alignSelf: "flex-end" as const,
-    backgroundColor: Colors.primary,
-    borderBottomRightRadius: 6,
+    backgroundColor: Colors.primary, borderBottomRightRadius: 6,
   },
   assistantBubble: {
-    alignSelf: "flex-start" as const,
-    backgroundColor: "#2C2826",
-    borderBottomLeftRadius: 6,
-    borderWidth: 2,
-    borderColor: Colors.primary,
-    flexDirection: "row" as const,
-    alignItems: "flex-start" as const,
-    alignContent: "flex-start" as const,
-    gap: 10,
-    flexShrink: 1,
-    flexWrap: "nowrap" as const,
-    minHeight: 0,
+    alignSelf: "flex-start" as const, backgroundColor: "#2C2826",
+    borderBottomLeftRadius: 6, borderWidth: 2, borderColor: Colors.primary,
+    flexDirection: "row" as const, alignItems: "flex-start" as const,
+    gap: 10, flexShrink: 1,
   },
   assistantAvatar: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: Colors.primary,
-    justifyContent: "center" as const,
-    alignItems: "center" as const,
-    marginTop: 2,
+    width: 24, height: 24, borderRadius: 12, backgroundColor: Colors.primary,
+    justifyContent: "center" as const, alignItems: "center" as const, marginTop: 2,
   },
-  messageText: {
-    fontSize: 16,
-    lineHeight: 24,
-    flexShrink: 1,
-    fontWeight: "500" as const,
-  },
-  userText: {
-    color: "#000000",
-    fontWeight: "700" as const,
-  },
-  assistantText: {
-    color: "#FFFFFF",
-    fontWeight: "600" as const,
-  },
-  toolResultBubble: {
-    alignSelf: "flex-start" as const,
-    backgroundColor: Colors.success + "20",
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 12,
-    marginVertical: 4,
-  },
-  toolResultText: {
-    fontSize: 13,
-    color: Colors.success,
-    fontWeight: "500" as const,
-  },
-  toolLoadingBubble: {
-    alignSelf: "flex-start" as const,
-    backgroundColor: Colors.backgroundSecondary,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 12,
-    marginVertical: 4,
-    flexDirection: "row" as const,
-    alignItems: "center" as const,
-    gap: 8,
-  },
-  toolLoadingText: {
-    fontSize: 13,
-    color: Colors.textSecondary,
-  },
-  errorContainer: {
-    backgroundColor: Colors.error + "15",
-    padding: 12,
-    borderRadius: 12,
-    marginTop: 8,
-  },
-  errorText: {
-    color: Colors.error,
-    fontSize: 14,
-  },
-  clearButton: {
-    alignSelf: "center" as const,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    marginBottom: 8,
-  },
-  clearButtonText: {
-    fontSize: 13,
-    color: Colors.primary,
-    fontWeight: "500" as const,
-  },
+  messageText: { fontSize: 16, lineHeight: 24, flexShrink: 1, fontWeight: "500" as const },
+  userText: { color: "#000000", fontWeight: "700" as const },
+  assistantText: { color: "#FFFFFF", fontWeight: "600" as const },
+  clearButton: { alignSelf: "center" as const, paddingHorizontal: 16, paddingVertical: 8, marginBottom: 8 },
+  clearButtonText: { fontSize: 13, color: Colors.primary, fontWeight: "500" as const },
   inputContainer: {
-    flexDirection: "row" as const,
-    alignItems: "flex-end" as const,
-    padding: 12,
-    backgroundColor: Colors.backgroundCard,
-    borderTopWidth: 1,
-    borderTopColor: Colors.border,
-    gap: 8,
+    flexDirection: "row" as const, alignItems: "flex-end" as const,
+    padding: 12, backgroundColor: Colors.backgroundCard,
+    borderTopWidth: 1, borderTopColor: Colors.border, gap: 8,
   },
   voiceButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: Colors.primaryMuted,
-    justifyContent: "center" as const,
-    alignItems: "center" as const,
+    width: 44, height: 44, borderRadius: 22, backgroundColor: Colors.primaryMuted,
+    justifyContent: "center" as const, alignItems: "center" as const,
   },
-  voiceButtonActive: {
-    backgroundColor: Colors.error,
-  },
-  voiceButtonTranscribing: {
-    backgroundColor: Colors.primary,
-  },
+  voiceButtonActive: { backgroundColor: Colors.error },
+  voiceButtonTranscribing: { backgroundColor: Colors.primary },
   input: {
-    flex: 1,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 22,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    fontSize: 16,
-    maxHeight: 100,
-    color: "#000000",
-    borderWidth: 2,
-    borderColor: Colors.primary,
-    fontWeight: "500" as const,
+    flex: 1, backgroundColor: "#FFFFFF", borderRadius: 22,
+    paddingHorizontal: 16, paddingVertical: 12, fontSize: 16,
+    maxHeight: 100, color: "#000000", borderWidth: 2,
+    borderColor: Colors.primary, fontWeight: "500" as const,
   },
   sendButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: Colors.primary,
-    justifyContent: "center" as const,
-    alignItems: "center" as const,
+    width: 44, height: 44, borderRadius: 22, backgroundColor: Colors.primary,
+    justifyContent: "center" as const, alignItems: "center" as const,
   },
-  sendButtonDisabled: {
-    backgroundColor: Colors.backgroundSecondary,
-  },
+  sendButtonDisabled: { backgroundColor: Colors.backgroundSecondary },
 });
