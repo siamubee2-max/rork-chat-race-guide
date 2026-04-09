@@ -1,4 +1,5 @@
 import { useCallback, useRef, useState } from "react";
+import { useRouter } from "expo-router";
 import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import { navigate, navigateWithParams, navigateReplace } from "@/utils/navigate";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -70,6 +71,7 @@ function PermissionRequest({ onRequest }: { onRequest: () => void }) {
 }
 
 export default function CameraScreen() {
+  const router = useRouter();
   const insets = useSafeAreaInsets();
   const { setImage } = useScanImage();
   const cameraRef = useRef<any>(null);

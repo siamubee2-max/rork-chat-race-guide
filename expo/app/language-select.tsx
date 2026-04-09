@@ -7,7 +7,7 @@ import {
   Pressable,
   Animated,
 } from 'react-native';
-import { router } from 'expo-router';
+import { router , useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Check, Globe, Sparkles } from 'lucide-react-native';
@@ -16,6 +16,7 @@ import { useLanguage } from '@/context/language';
 import { languages } from '@/i18n/translations';
 
 export default function LanguageSelectScreen() {
+  const router = useRouter();
   const insets = useSafeAreaInsets();
   const { currentLanguage, changeLanguage } = useLanguage();
   const [selectedLang, setSelectedLang] = useState<string>(currentLanguage);

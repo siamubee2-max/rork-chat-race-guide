@@ -1,5 +1,5 @@
 import React from "react";
-import { router } from "expo-router";
+import { router , useRouter } from "expo-router";
 import {
   Pressable,
   ScrollView,
@@ -13,6 +13,7 @@ import { languages } from "@/i18n/translations";
 import { Colors } from "@/constants/colors";
 
 export default function LanguageSelectorModal() {
+  const router = useRouter();
   const { currentLanguage, changeLanguage } = useLanguage();
 
   const handleLanguageSelect = async (langCode: string) => {

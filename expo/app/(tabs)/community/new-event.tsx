@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { router } from "expo-router";
+import { router , useRouter } from "expo-router";
 import {
   KeyboardAvoidingView,
   Platform,
@@ -25,6 +25,7 @@ const EVENT_TYPES: { id: CatEvent["type"]; label: string; color: string }[] = [
 ];
 
 export default function NewEventScreen() {
+  const router = useRouter();
   const { createEvent } = useSocial();
   const insets = useSafeAreaInsets();
 

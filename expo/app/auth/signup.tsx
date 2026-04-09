@@ -12,7 +12,7 @@ import {
   Linking,
   useWindowDimensions,
 } from "react-native";
-import { router } from "expo-router";
+import { router , useRouter } from "expo-router";
 import { navigateReplace } from "@/utils/navigate";
 import { UserPlus } from "lucide-react-native";
 import { useAuth } from "@/context/auth";
@@ -21,6 +21,7 @@ const PRIVACY_URL = "https://siamubee2-max.github.io/purrly-legal/privacy/";
 const TERMS_URL = "https://siamubee2-max.github.io/purrly-legal/terms/";
 
 export default function SignupScreen() {
+  const router = useRouter();
   const { signup } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

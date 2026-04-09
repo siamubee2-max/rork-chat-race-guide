@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { router } from "expo-router";
+import { router , useRouter } from "expo-router";
 import {
   KeyboardAvoidingView,
   Platform,
@@ -16,6 +16,7 @@ import { useTranslation } from "react-i18next";
 import { useDiscussions } from "@/context/discussions";
 
 export default function NewDiscussionScreen() {
+  const router = useRouter();
   const { createDiscussion } = useDiscussions();
   const insets = useSafeAreaInsets();
   const [title, setTitle] = useState("");

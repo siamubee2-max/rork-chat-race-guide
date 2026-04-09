@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState, useRef } from "react";
+import { useRouter } from "expo-router";
 import { navigate, navigateWithParams, navigateReplace } from "@/utils/navigate";
 import { Image } from "expo-image";
 import * as Haptics from "expo-haptics";
@@ -475,6 +476,7 @@ const scanStyles = StyleSheet.create({
 });
 
 export default function ScanResultScreen() {
+  const router = useRouter();
   const breedIdentifyMutation = trpc.ai.breedIdentify.useMutation();
   const { t } = useTranslation();
   const { imageData, clearImage } = useScanImage();

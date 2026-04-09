@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { router, useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams , useRouter } from "expo-router";
 import * as ImagePicker from "expo-image-picker";
 import { Image } from "expo-image";
 import { Camera, Save, Trash2, X, Heart, Plus, Images } from "lucide-react-native";
@@ -22,6 +22,7 @@ import { BREEDS } from "@/constants/breeds";
 import { generateUUID } from "@/utils/polyfills";
 
 export default function CatFormScreen() {
+  const router = useRouter();
   const { t } = useTranslation();
   const { catId } = useLocalSearchParams<{ catId: string }>();
   const { cats, addCat, updateCat, deleteCat } = useCats();

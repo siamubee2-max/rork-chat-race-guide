@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { router } from "expo-router";
+import { router , useRouter } from "expo-router";
 import {
   ScrollView,
   StyleSheet,
@@ -25,6 +25,7 @@ const EMERGENCY_TYPES: { value: EmergencyType; label: string; color: string }[] 
 ];
 
 export default function CreateEmergencyScreen() {
+  const router = useRouter();
   const { addAlert } = useEmergency();
   const { cats } = useCats();
   const insets = useSafeAreaInsets();

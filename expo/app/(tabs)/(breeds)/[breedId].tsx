@@ -1,5 +1,5 @@
 import React, { useMemo, useLayoutEffect } from "react";
-import { useLocalSearchParams, router, useNavigation } from "expo-router";
+import { useLocalSearchParams, router, useNavigation , useRouter } from "expo-router";
 import { Image } from "expo-image";
 import { HeartPulse, PawPrint, Salad, ShieldAlert, Globe } from "lucide-react-native";
 import {
@@ -68,6 +68,7 @@ function BulletList({ items, testID }: { items: string[]; testID?: string }) {
 }
 
 export default function BreedDetailsScreen() {
+  const router = useRouter();
   const params = useLocalSearchParams<Params>();
   const navigation = useNavigation();
   const { width: screenWidth } = useWindowDimensions();

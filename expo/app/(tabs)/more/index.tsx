@@ -1,5 +1,5 @@
 import React from "react";
-import { router } from "expo-router";
+import { router , useRouter } from "expo-router";
 import { navigate } from "@/utils/navigate";
 import * as Haptics from "expo-haptics";
 import { useTranslation } from "react-i18next";
@@ -51,6 +51,7 @@ interface MenuItem {
 }
 
 export default function MoreScreen() {
+  const router = useRouter();
   const { currentUser, deleteAccount, logout } = useAuth();
   const { t } = useTranslation();
   const { width: screenWidth } = useWindowDimensions();

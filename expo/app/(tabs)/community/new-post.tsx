@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { router } from "expo-router";
+import { router , useRouter } from "expo-router";
 import { Image as ImageIcon, MapPin, Cat, X } from "lucide-react-native";
 import {
   Image,
@@ -29,6 +29,7 @@ const SAMPLE_IMAGES = [
 ];
 
 export default function NewPostScreen() {
+  const router = useRouter();
   const { createPost } = useSocial();
   const { cats } = useCats();
   const insets = useSafeAreaInsets();

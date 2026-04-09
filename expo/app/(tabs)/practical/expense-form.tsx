@@ -9,7 +9,7 @@ import {
   Platform,
   Alert,
 } from "react-native";
-import { router } from "expo-router";
+import { router , useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import {
@@ -43,6 +43,7 @@ const CATEGORIES: { value: ExpenseCategory; label: string; icon: typeof Shopping
 ];
 
 export default function ExpenseFormScreen() {
+  const router = useRouter();
   const insets = useSafeAreaInsets();
   const { addExpense } = useExpenses();
   const { cats } = useCats();

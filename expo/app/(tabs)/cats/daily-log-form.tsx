@@ -10,7 +10,7 @@ import {
   Alert,
   TextInput,
 } from "react-native";
-import { , useLocalSearchParams, useNavigation } from "expo-router";
+import { , useLocalSearchParams, useNavigation , useRouter } from "expo-router";
 import { navigate, navigateWithParams, navigateReplace } from "@/utils/navigate";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Save, Calendar as CalendarIcon, UtensilsCrossed, Droplets, Activity, Trash } from "lucide-react-native";
@@ -25,6 +25,7 @@ type EnergyLevel = "normal" | "playful" | "lethargic" | "hyperactive";
 type LitterStatus = "normal" | "diarrhea" | "constipation" | "blood" | "none";
 
 export default function DailyLogFormScreen() {
+  const router = useRouter();
   const { catId } = useLocalSearchParams<{ catId: string }>();
   const { cats, updateCat } = useCats();
   const { t } = useTranslation();

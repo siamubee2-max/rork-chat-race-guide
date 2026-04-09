@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import { useRouter } from "expo-router";
 import { navigate, navigateWithParams, navigateReplace } from "@/utils/navigate";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
@@ -24,6 +25,7 @@ const heroImageUri =
   "https://images.unsplash.com/photo-1495360010541-f48722b34f7d?auto=format&fit=crop&w=1200&q=80";
 
 export default function ScanHomeScreen() {
+  const router = useRouter();
   const { t } = useTranslation();
   const { width } = useWindowDimensions();
   const insets = useSafeAreaInsets();

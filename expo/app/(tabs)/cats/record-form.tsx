@@ -10,7 +10,7 @@ import {
   Platform,
   Alert,
 } from "react-native";
-import { , useLocalSearchParams } from "expo-router";
+import { , useLocalSearchParams , useRouter } from "expo-router";
 import { navigate, navigateWithParams, navigateReplace } from "@/utils/navigate";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Save, Trash2, Calendar as CalendarIcon, Syringe, Stethoscope, Pill, HeartPulse, Bug } from "lucide-react-native";
@@ -20,6 +20,7 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth";
 
 export default function RecordFormScreen() {
+  const router = useRouter();
   const { catId, recordId } = useLocalSearchParams<{ catId: string; recordId: string }>();
   const { cats, updateCat } = useCats();
   const { t } = useTranslation();

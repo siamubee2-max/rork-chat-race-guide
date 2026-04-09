@@ -10,7 +10,7 @@ import {
   Platform,
   Alert,
 } from "react-native";
-import { , useLocalSearchParams, useNavigation } from "expo-router";
+import { , useLocalSearchParams, useNavigation , useRouter } from "expo-router";
 import { navigate, navigateWithParams, navigateReplace } from "@/utils/navigate";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Save, Trash2, Calendar as CalendarIcon } from "lucide-react-native";
@@ -20,6 +20,7 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth";
 
 export default function WeightFormScreen() {
+  const router = useRouter();
   const { catId, weightId } = useLocalSearchParams<{ catId: string; weightId?: string }>();
   const { cats, updateCat } = useCats();
   const { t } = useTranslation();

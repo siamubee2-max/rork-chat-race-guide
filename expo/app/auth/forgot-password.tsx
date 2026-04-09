@@ -11,11 +11,12 @@ import {
   Alert,
   useWindowDimensions,
 } from "react-native";
-import { router } from "expo-router";
+import { router , useRouter } from "expo-router";
 import { KeyRound } from "lucide-react-native";
 import { useAuth } from "@/context/auth";
 
 export default function ForgotPasswordScreen() {
+  const router = useRouter();
   const { getRegisteredEmails, getUserByEmail } = useAuth();
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);

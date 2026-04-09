@@ -9,7 +9,7 @@ import {
   Platform,
   Alert,
 } from "react-native";
-import { router } from "expo-router";
+import { router , useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import {
@@ -48,6 +48,7 @@ const FREQUENCIES: { value: ReminderFrequency; label: string }[] = [
 ];
 
 export default function ReminderFormScreen() {
+  const router = useRouter();
   const insets = useSafeAreaInsets();
   const { addReminder } = useReminders();
   const { cats } = useCats();

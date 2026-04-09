@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useCallback, useState } from "react";
 import { View, Text, StyleSheet, ScrollView, Pressable, Platform, Modal, Dimensions, Alert } from "react-native";
-import { useLocalSearchParams, , useNavigation } from "expo-router";
+import { useLocalSearchParams, useNavigation } from "expo-router";
 import { navigate, navigateWithParams, navigateReplace } from "@/utils/navigate";
 import { Image } from "expo-image";
 import { Cat, Plus, Calendar, Syringe, Stethoscope, Pill, HeartPulse, ChevronRight, Heart, Bug, Activity, Images, X } from "lucide-react-native";
@@ -30,10 +30,7 @@ export default function CatDetailsScreen() {
 
   const onEditCat = useCallback(() => {
     if (cat) {
-      router.push({
-        pathname: "/(tabs)/cats/form" as any,
-        params: { catId: cat.id },
-      });
+      navigateWithParams("/(tabs)/cats/form", { catId: cat.id });
     }
   }, [cat]);
 
@@ -59,17 +56,11 @@ export default function CatDetailsScreen() {
   }
 
   const onAddRecord = () => {
-    router.push({
-      pathname: "/(tabs)/cats/record-form" as any,
-      params: { catId: cat.id },
-    });
+    navigateWithParams("/(tabs)/cats/record-form", { catId: cat.id });
   };
 
   const onEditRecord = (recordId: string) => {
-    router.push({
-      pathname: "/(tabs)/cats/record-form" as any,
-      params: { catId: cat.id, recordId },
-    });
+    navigateWithParams("/(tabs)/cats/record-form", { catId: cat.id, recordId });
   };
 
   const onOpenHealthDashboard = () => {
@@ -87,10 +78,7 @@ export default function CatDetailsScreen() {
       return;
     }
     
-    router.push({
-      pathname: "/cats/health-dashboard" as any,
-      params: { catId: cat.id },
-    });
+    navigateWithParams("/cats/health-dashboard", { catId: cat.id });
   };
 
   const getRecordIcon = (type: MedicalRecordType) => {
