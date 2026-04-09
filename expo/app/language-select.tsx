@@ -7,7 +7,7 @@ import {
   Pressable,
   Animated,
 } from 'react-native';
-import { router , useRouter } from 'expo-router';
+import { router, useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Check, Globe, Sparkles } from 'lucide-react-native';

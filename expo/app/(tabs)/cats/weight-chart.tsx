@@ -1,6 +1,6 @@
 import React, { useMemo, useLayoutEffect, useCallback } from "react";
 import { View, Text, StyleSheet, ScrollView, Pressable, Dimensions } from "react-native";
-import { useLocalSearchParams, , useNavigation } from "expo-router";
+import { useLocalSearchParams, useNavigation } from "expo-router";
 import { navigate, navigateWithParams, navigateReplace } from "@/utils/navigate";
 import { TrendingUp, TrendingDown, Plus, Edit3 } from "lucide-react-native";
 import { useCats } from "@/context/cats";

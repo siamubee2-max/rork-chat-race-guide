@@ -1,5 +1,5 @@
 import React from "react";
-import { router , useRouter } from "expo-router";
+import { router, useRouter } from "expo-router";
 import { navigate } from "@/utils/navigate";
 import * as Haptics from "expo-haptics";
 import { useTranslation } from "react-i18next";

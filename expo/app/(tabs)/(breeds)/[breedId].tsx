@@ -1,5 +1,5 @@
 import React, { useMemo, useLayoutEffect } from "react";
-import { useLocalSearchParams, router, useNavigation , useRouter } from "expo-router";
+import { useLocalSearchParams, router, useNavigation, useRouter } from "expo-router";
 import { Image } from "expo-image";
 import { HeartPulse, PawPrint, Salad, ShieldAlert, Globe } from "lucide-react-native";
 import {

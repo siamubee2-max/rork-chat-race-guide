@@ -11,7 +11,7 @@ import {
   Alert,
   useWindowDimensions,
 } from "react-native";
-import { router , useRouter } from "expo-router";
+import { router, useRouter } from "expo-router";
 import { KeyRound } from "lucide-react-native";
 import { useAuth } from "@/context/auth";
 

@@ -9,7 +9,7 @@ import {
   Platform,
   Alert,
 } from "react-native";
-import { router , useRouter } from "expo-router";
+import { router, useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import {

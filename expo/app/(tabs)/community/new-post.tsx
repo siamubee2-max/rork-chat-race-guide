@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { router , useRouter } from "expo-router";
+import { router, useRouter } from "expo-router";
 import { Image as ImageIcon, MapPin, Cat, X } from "lucide-react-native";
 import {
   Image,

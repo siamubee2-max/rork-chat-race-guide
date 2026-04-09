@@ -12,7 +12,7 @@ import {
   Linking,
   useWindowDimensions,
 } from "react-native";
-import { router , useRouter } from "expo-router";
+import { router, useRouter } from "expo-router";
 import { navigateReplace } from "@/utils/navigate";
 import { UserPlus } from "lucide-react-native";
 import { useAuth } from "@/context/auth";
