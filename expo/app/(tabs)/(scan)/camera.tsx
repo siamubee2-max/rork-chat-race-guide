@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from "react";
 import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
-import { router } from "expo-router";
+import { navigate, navigateWithParams, navigateReplace } from "@/utils/navigate";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as Haptics from "expo-haptics";
 import { X, Zap, ZapOff, SwitchCamera, Circle } from "lucide-react-native";
@@ -107,7 +107,7 @@ export default function CameraScreen() {
       if (photo?.base64) {
         console.log("Camera: Photo taken, base64 length:", photo.base64.length);
         setImage(photo.uri, photo.base64);
-        router.replace("/(tabs)/(scan)/result" as any);
+        navigateReplace("/(tabs)/(scan)/result");
       } else {
         console.warn("Camera: No base64 in photo result");
       }

@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { router } from "expo-router";
+import { navigate, navigateWithParams } from "@/utils/navigate";
 import { Image } from "expo-image";
 import { Search, Globe, Cat } from "lucide-react-native";
 import {
@@ -53,10 +53,7 @@ export default function BreedsHomeScreen() {
     return (
       <Pressable
         onPress={() =>
-          router.push({
-            pathname: "/(tabs)/(breeds)/[breedId]" as any,
-            params: { breedId: item.id },
-          } as any)
+          navigateWithParams("/(tabs)/(breeds)/[breedId]", { breedId: item.id })
         }
         style={({ pressed }) => [
           styles.card,
@@ -94,7 +91,7 @@ export default function BreedsHomeScreen() {
   const keyExtractor = useCallback((item: BreedRow) => item.id, []);
 
   const onBreedersPress = useCallback(() => {
-    router.push("/(tabs)/(breeds)/breeders" as any);
+    navigate("/(tabs)/(breeds)/breeders");
   }, []);
 
   return (

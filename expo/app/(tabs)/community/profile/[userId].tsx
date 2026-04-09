@@ -1,5 +1,6 @@
 import React from "react";
-import { useLocalSearchParams, router } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
+import { navigate } from "@/utils/navigate";
 import { MessageCircle, UserPlus, UserCheck, Grid3x3, MapPin } from "lucide-react-native";
 import {
   FlatList,
@@ -31,7 +32,7 @@ export default function ProfileScreen() {
 
   const handleFollow = async () => {
     if (!isAuthenticated) {
-      router.push("/auth/login" as any);
+      navigate("/auth/login");
       return;
     }
     if (Platform.OS !== "web") {
@@ -42,16 +43,16 @@ export default function ProfileScreen() {
 
   const handleMessage = () => {
     if (!isAuthenticated) {
-      router.push("/auth/login" as any);
+      navigate("/auth/login");
       return;
     }
-    router.push(`/(tabs)/community/chat/${[currentUser?.id, userId].sort().join("_")}` as any);
+    navigate(`/(tabs)/community/chat/${[currentUser?.id, userId].sort().join("_")}`);;
   };
 
   const renderPost = ({ item }: { item: Post }) => (
     <Pressable 
       style={styles.gridItem}
-      onPress={() => router.push(`/(tabs)/community/post/${item.id}` as any)}
+      onPress={() => navigate(`/(tabs)/community/post/${item.id}`)}
     >
       <Image source={{ uri: item.imageUrl }} style={styles.gridImage} />
     </Pressable>

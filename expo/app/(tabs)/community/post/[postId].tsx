@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
-import { useLocalSearchParams, router } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
+import { navigate } from "@/utils/navigate";
 import { Heart, MessageCircle, Send, MapPin } from "lucide-react-native";
 import {
   FlatList,
@@ -56,7 +57,7 @@ export default function PostDetailScreen() {
 
   const handleLike = async () => {
     if (!isAuthenticated) {
-      router.push("/auth/login" as any);
+      navigate("/auth/login");
       return;
     }
     if (Platform.OS !== "web") {
@@ -67,7 +68,7 @@ export default function PostDetailScreen() {
 
   const handleComment = async () => {
     if (!commentText.trim() || !isAuthenticated) {
-      if (!isAuthenticated) router.push("/auth/login" as any);
+      if (!isAuthenticated) navigate("/auth/login");
       return;
     }
 
@@ -101,7 +102,7 @@ export default function PostDetailScreen() {
       <View style={styles.header}>
         <Pressable 
           style={styles.userInfo}
-          onPress={() => router.push(`/(tabs)/community/profile/${post.userId}` as any)}
+          onPress={() => navigate(`/(tabs)/community/profile/${post.userId}`)}
         >
           <View style={styles.avatar}>
             <Text style={styles.avatarText}>

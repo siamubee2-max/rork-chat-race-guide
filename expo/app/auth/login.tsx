@@ -11,7 +11,7 @@ import {
   Alert,
   useWindowDimensions,
 } from "react-native";
-import { router } from "expo-router";
+import { navigate, navigateReplace } from "@/utils/navigate";
 import { LogIn, Cat } from "lucide-react-native";
 import { useAuth } from "@/context/auth";
 import { Colors } from "@/constants/colors";
@@ -35,18 +35,18 @@ export default function LoginScreen() {
     setIsLoading(false);
 
     if (result.success) {
-      router.replace("/(tabs)/(scan)/home" as any);
+      navigateReplace("/(tabs)/(scan)/home");
     } else {
       Alert.alert("Erreur", result.error || "Erreur lors de la connexion");
     }
   };
 
   const goToSignup = () => {
-    router.push("/auth/signup" as any);
+    navigate("/auth/signup");
   };
 
   const goToForgotPassword = () => {
-    router.push("/auth/forgot-password" as any);
+    navigate("/auth/forgot-password");
   };
 
   return (

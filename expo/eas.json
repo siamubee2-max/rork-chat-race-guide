@@ -9,7 +9,15 @@
                         "distribution": "internal"
               },
               "preview": {
+                        "android": {
+                                    "buildType": "apk"
+                        },
                         "distribution": "internal"
+              },
+              "simulator": {
+                        "ios": {
+                                    "simulator": true
+                        }
               },
               "production": {
                         "autoIncrement": true,
@@ -22,7 +30,8 @@
               "production": {
                         "ios": {
                                     "appleId": "siamubee2@gmail.com",
-                                    "appleTeamId": "SPLML3CN76"
+                                    "appleTeamId": "SPLML3CN76",
+                                    "ascAppId": "6758865155"
                         }
               }
       }

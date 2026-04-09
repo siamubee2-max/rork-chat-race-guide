@@ -9,6 +9,12 @@ dist/
 web-build/
 expo-env.d.ts
 
+# Build outputs — never commit compiled binaries
+*.app/
+*.ipa
+*.apk
+*.aab
+
 # Native
 ios/
 android/

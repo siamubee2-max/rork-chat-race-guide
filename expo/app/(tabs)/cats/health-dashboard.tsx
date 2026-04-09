@@ -1,6 +1,7 @@
 import React, { useMemo, useLayoutEffect } from "react";
 import { View, Text, StyleSheet, ScrollView, Pressable } from "react-native";
-import { useLocalSearchParams, router, useNavigation } from "expo-router";
+import { useLocalSearchParams, useNavigation } from "expo-router";
+import { navigate, navigateWithParams } from "@/utils/navigate";
 import { 
   TrendingUp, 
   TrendingDown, 
@@ -139,7 +140,7 @@ export default function HealthDashboardScreen() {
         </View>
         <Pressable 
           style={styles.upgradeBtn}
-          onPress={() => router.push('/(tabs)/subscription' as any)}
+          onPress={() => navigate('/(tabs)/subscription')}
         >
           <Text style={styles.upgradeBtnText}>Découvrir Premium</Text>
         </Pressable>
@@ -148,19 +149,19 @@ export default function HealthDashboardScreen() {
   }
 
   const onAddWeight = () => {
-    router.push({ pathname: "/cats/weight-form" as any, params: { catId: cat.id } });
+    navigateWithParams("/cats/weight-form", { catId: cat.id });
   };
 
   const onViewWeightChart = () => {
-    router.push({ pathname: "/cats/weight-chart" as any, params: { catId: cat.id } });
+    navigateWithParams("/cats/weight-chart", { catId: cat.id });
   };
 
   const onAddDailyLog = () => {
-    router.push({ pathname: "/cats/daily-log-form" as any, params: { catId: cat.id } });
+    navigateWithParams("/cats/daily-log-form", { catId: cat.id });
   };
 
   const onViewDailyLogs = () => {
-    router.push({ pathname: "/cats/daily-logs" as any, params: { catId: cat.id } });
+    navigateWithParams("/cats/daily-logs", { catId: cat.id });
   };
 
   const getSeverityColor = (severity: "high" | "medium" | "low") => {

@@ -1,6 +1,7 @@
 import React, { useMemo, useLayoutEffect, useCallback } from "react";
 import { View, Text, StyleSheet, ScrollView, Pressable, Dimensions } from "react-native";
-import { useLocalSearchParams, router, useNavigation } from "expo-router";
+import { useLocalSearchParams, , useNavigation } from "expo-router";
+import { navigate, navigateWithParams, navigateReplace } from "@/utils/navigate";
 import { TrendingUp, TrendingDown, Plus, Edit3 } from "lucide-react-native";
 import { useCats } from "@/context/cats";
 
@@ -16,7 +17,7 @@ export default function WeightChartScreen() {
   const cat = cats.find((c) => c.id === catId);
 
   const onAddWeight = useCallback(() => {
-    router.push({ pathname: "/cats/weight-form" as any, params: { catId: cat?.id } });
+    navigateWithParams("/cats/weight-form", { catId: cat?.id });
   }, [cat?.id]);
 
   useLayoutEffect(() => {
@@ -83,7 +84,7 @@ export default function WeightChartScreen() {
   }, [weightHistory]);
 
   const onEditWeight = (weightId: string) => {
-    router.push({ pathname: "/cats/weight-form" as any, params: { catId: cat?.id, weightId } });
+    navigateWithParams("/cats/weight-form", { catId: cat?.id, weightId });
   };
 
   if (!cat) {

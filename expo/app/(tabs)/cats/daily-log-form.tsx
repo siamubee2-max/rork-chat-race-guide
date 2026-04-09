@@ -10,7 +10,8 @@ import {
   Alert,
   TextInput,
 } from "react-native";
-import { router, useLocalSearchParams, useNavigation } from "expo-router";
+import { , useLocalSearchParams, useNavigation } from "expo-router";
+import { navigate, navigateWithParams, navigateReplace } from "@/utils/navigate";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Save, Calendar as CalendarIcon, UtensilsCrossed, Droplets, Activity, Trash } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
@@ -47,7 +48,7 @@ export default function DailyLogFormScreen() {
             text: t('subscription.subscribe'),
             onPress: () => {
               router.back();
-              setTimeout(() => router.push('/(tabs)/subscription' as any), 100);
+              setTimeout(() => navigate('/(tabs)/subscription'), 100);
             },
           }
         ]

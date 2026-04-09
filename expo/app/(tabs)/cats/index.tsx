@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from "react";
-import { router } from "expo-router";
+import { navigate, navigateWithParams, navigateReplace } from "@/utils/navigate";
 import { Image } from "expo-image";
 import { Plus, Cat, Heart } from "lucide-react-native";
 import {
@@ -32,11 +32,11 @@ export default function CatsListScreen() {
   const insets = useSafeAreaInsets();
 
   const onAddCat = useCallback(() => {
-    router.push("/(tabs)/cats/form" as any);
+    navigate("/(tabs)/cats/form");
   }, []);
 
   const onOpenCat = useCallback((cat: CatProfile) => {
-    router.push(`/(tabs)/cats/${cat.id}` as any);
+    navigate(`/(tabs)/cats/${cat.id}`);
   }, []);
 
   const renderItem: ListRenderItem<CatProfile> = useCallback(({ item }) => {

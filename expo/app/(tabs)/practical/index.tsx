@@ -6,7 +6,7 @@ import {
   ScrollView,
   Pressable,
 } from "react-native";
-import { router } from "expo-router";
+import { navigate } from "@/utils/navigate";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   Bell,
@@ -111,7 +111,7 @@ export default function PracticalScreen() {
       {overdueCount > 0 && (
         <Pressable
           style={styles.alertBanner}
-          onPress={() => router.push("/(tabs)/practical/reminders" as any)}
+          onPress={() => navigate("/(tabs)/practical/reminders")}
         >
           <View style={styles.alertIconContainer}>
             <AlertCircle size={24} color="#fff" />
@@ -132,25 +132,25 @@ export default function PracticalScreen() {
           <QuickAction
             icon={<MapPin size={22} color={Colors.primary} />}
             label={t('practical.veterinarians')}
-            onPress={() => router.push("/(tabs)/vets/" as any)}
+            onPress={() => navigate("/(tabs)/vets/")}
             color={Colors.primary}
           />
           <QuickAction
             icon={<AlertCircle size={22} color={Colors.error} />}
             label={t('practical.emergencies')}
-            onPress={() => router.push("/(tabs)/emergency/" as any)}
+            onPress={() => navigate("/(tabs)/emergency/")}
             color={Colors.error}
           />
           <QuickAction
             icon={<Heart size={22} color="#E91E63" />}
             label={t('practical.firstAidShort')}
-            onPress={() => router.push("/(tabs)/practical/first-aid" as any)}
+            onPress={() => navigate("/(tabs)/practical/first-aid")}
             color="#E91E63"
           />
           <QuickAction
             icon={<Calculator size={22} color={Colors.info} />}
             label={t('practical.portions')}
-            onPress={() => router.push("/(tabs)/practical/food-calculator" as any)}
+            onPress={() => navigate("/(tabs)/practical/food-calculator")}
             color={Colors.info}
           />
         </View>
@@ -165,7 +165,7 @@ export default function PracticalScreen() {
           subtitle={t('practical.upcomingReminders', { count: upcomingCount })}
           badge={overdueCount > 0 ? overdueCount : undefined}
           badgeColor={Colors.error}
-          onPress={() => router.push("/(tabs)/practical/reminders" as any)}
+          onPress={() => navigate("/(tabs)/practical/reminders")}
           color={Colors.warning}
         />
 
@@ -173,7 +173,7 @@ export default function PracticalScreen() {
           icon={<Wallet size={24} color={Colors.success} />}
           title={t('practical.expenseTracking')}
           subtitle={`${totalThisMonth.toFixed(2)}€ ${t('practical.thisMonth')}`}
-          onPress={() => router.push("/(tabs)/practical/expenses" as any)}
+          onPress={() => navigate("/(tabs)/practical/expenses")}
           color={Colors.success}
         />
 
@@ -183,7 +183,7 @@ export default function PracticalScreen() {
           subtitle={t('practical.itemsToBuy', { count: uncheckedItems.length })}
           badge={uncheckedItems.length > 0 ? uncheckedItems.length : undefined}
           badgeColor={Colors.info}
-          onPress={() => router.push("/(tabs)/practical/shopping" as any)}
+          onPress={() => navigate("/(tabs)/practical/shopping")}
           color={Colors.info}
         />
       </View>
@@ -195,7 +195,7 @@ export default function PracticalScreen() {
           icon={<Calculator size={24} color="#9C27B0" />}
           title={t('practical.foodCalculatorTitle')}
           subtitle={t('practical.foodCalculatorDesc')}
-          onPress={() => router.push("/(tabs)/practical/food-calculator" as any)}
+          onPress={() => navigate("/(tabs)/practical/food-calculator")}
           color="#9C27B0"
         />
 
@@ -203,7 +203,7 @@ export default function PracticalScreen() {
           icon={<Plane size={24} color="#00BCD4" />}
           title={t('practical.travelChecklist')}
           subtitle={t('practical.travelChecklistDesc')}
-          onPress={() => router.push("/(tabs)/practical/travel" as any)}
+          onPress={() => navigate("/(tabs)/practical/travel")}
           color="#00BCD4"
         />
 
@@ -211,7 +211,7 @@ export default function PracticalScreen() {
           icon={<Heart size={24} color="#E91E63" />}
           title={t('practical.firstAidGuide')}
           subtitle={t('practical.firstAidGuideDesc')}
-          onPress={() => router.push("/(tabs)/practical/first-aid" as any)}
+          onPress={() => navigate("/(tabs)/practical/first-aid")}
           color="#E91E63"
         />
       </View>

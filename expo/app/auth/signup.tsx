@@ -9,11 +9,16 @@ import {
   Platform,
   ScrollView,
   Alert,
+  Linking,
   useWindowDimensions,
 } from "react-native";
 import { router } from "expo-router";
+import { navigateReplace } from "@/utils/navigate";
 import { UserPlus } from "lucide-react-native";
 import { useAuth } from "@/context/auth";
+
+const PRIVACY_URL = "https://siamubee2-max.github.io/purrly-legal/privacy/";
+const TERMS_URL = "https://siamubee2-max.github.io/purrly-legal/terms/";
 
 export default function SignupScreen() {
   const { signup } = useAuth();
@@ -36,8 +41,8 @@ export default function SignupScreen() {
       return;
     }
 
-    if (password.length < 4) {
-      Alert.alert("Erreur", "Le mot de passe doit contenir au moins 4 caractères");
+    if (password.length < 6) {
+      Alert.alert("Erreur", "Le mot de passe doit contenir au moins 6 caractères");
       return;
     }
 
@@ -46,7 +51,7 @@ export default function SignupScreen() {
     setIsLoading(false);
 
     if (result.success) {
-      router.replace("/(tabs)/(scan)/home" as any);
+      navigateReplace("/(tabs)/(scan)/home");
     } else {
       Alert.alert("Erreur", result.error || "Erreur lors de l'inscription");
     }
@@ -71,7 +76,7 @@ export default function SignupScreen() {
           </View>
           <Text style={styles.title}>Créer un compte</Text>
           <Text style={styles.subtitle}>
-            Inscrivez-vous pour commencer à utiliser CatID
+            Inscrivez-vous pour commencer à utiliser Purrly
           </Text>
         </View>
 
@@ -109,13 +114,32 @@ export default function SignupScreen() {
               style={styles.input}
               value={password}
               onChangeText={setPassword}
-              placeholder="Choisissez un mot de passe"
+              placeholder="Au moins 6 caractères"
               secureTextEntry
               autoCapitalize="none"
               autoCorrect={false}
               editable={!isLoading}
             />
           </View>
+
+          {/* Privacy / Terms consent — required by Apple and Google */}
+          <Text style={styles.consentText}>
+            En créant un compte, vous acceptez nos{" "}
+            <Text
+              style={styles.consentLink}
+              onPress={() => Linking.openURL(TERMS_URL)}
+            >
+              Conditions d'utilisation
+            </Text>
+            {" "}et notre{" "}
+            <Text
+              style={styles.consentLink}
+              onPress={() => Linking.openURL(PRIVACY_URL)}
+            >
+              Politique de confidentialité
+            </Text>
+            .
+          </Text>
 
           <Pressable
             onPress={handleSignup}
@@ -203,12 +227,22 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     color: "#111",
   },
+  consentText: {
+    fontSize: 12,
+    color: "rgba(0,0,0,0.45)",
+    textAlign: "center",
+    lineHeight: 18,
+  },
+  consentLink: {
+    color: "#111",
+    fontWeight: "600",
+    textDecorationLine: "underline",
+  },
   button: {
     backgroundColor: "#111",
     borderRadius: 14,
     paddingVertical: 16,
     alignItems: "center",
-    marginTop: 8,
   },
   buttonPressed: {
     opacity: 0.85,
@@ -226,7 +260,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: 6,
-    marginTop: 8,
   },
   footerText: {
     fontSize: 15,

@@ -1,5 +1,6 @@
 import React from "react";
 import { router } from "expo-router";
+import { navigate } from "@/utils/navigate";
 import * as Haptics from "expo-haptics";
 import { useTranslation } from "react-i18next";
 import {
@@ -32,6 +33,7 @@ import {
   Switch,
   Platform,
   Alert,
+  Linking,
   useWindowDimensions,
 } from "react-native";
 import { Colors } from "@/constants/colors";
@@ -64,15 +66,19 @@ export default function MoreScreen() {
     try {
       await Haptics.selectionAsync();
     } catch {}
+    // External URLs (privacy, terms) open in browser
+    if (route.startsWith('https://')) {
+      try {
+        await Linking.openURL(route);
+      } catch (e) {
+        console.error('Could not open URL:', e);
+      }
+      return;
+    }
     try {
-      router.push(route as any);
+      navigate(route);
     } catch (error) {
       console.error(`Navigation error to ${route}:`, error);
-      try {
-        router.navigate(route as any);
-      } catch (navError) {
-        console.error(`Navigation fallback failed:`, navError);
-      }
     }
   };
 
@@ -261,7 +267,7 @@ export default function MoreScreen() {
           icon: <Shield color="#5BA88F" size={22} />,
           title: t("legal.privacyPolicy"),
           subtitle: t("legal.privacySubtitle"),
-          route: "/(tabs)/more/privacy",
+          route: "https://siamubee2-max.github.io/purrly-legal/privacy/",
           color: "rgba(91, 168, 143, 0.15)",
         },
         {
@@ -269,7 +275,7 @@ export default function MoreScreen() {
           icon: <FileText color="#7B8FA1" size={22} />,
           title: t("legal.termsOfUse"),
           subtitle: t("legal.termsSubtitle"),
-          route: "/(tabs)/more/terms",
+          route: "https://siamubee2-max.github.io/purrly-legal/terms/",
           color: "rgba(123, 143, 161, 0.15)",
         },
         {

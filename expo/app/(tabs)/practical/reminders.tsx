@@ -7,7 +7,7 @@ import {
   Pressable,
   Alert,
 } from "react-native";
-import { router } from "expo-router";
+import { navigate, navigateWithParams, navigateReplace } from "@/utils/navigate";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   Plus,
@@ -223,7 +223,7 @@ export default function RemindersScreen() {
       <View style={[styles.fabContainer, { bottom: insets.bottom + 20 }]}>
         <Pressable
           style={({ pressed }) => [styles.fab, pressed && { transform: [{ scale: 0.95 }] }]}
-          onPress={() => router.push("/(tabs)/practical/reminder-form" as any)}
+          onPress={() => navigate("/(tabs)/practical/reminder-form")}
         >
           <Plus size={24} color="#fff" />
         </Pressable>

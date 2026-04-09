@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import React, { useEffect } from "react";
+import React, { useEffect, type ReactNode } from "react";
 import { Platform, StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useTranslation } from "react-i18next";
@@ -15,7 +15,7 @@ try {
 }
 import { CatsContext } from "@/context/cats";
 import { DiscussionsProvider } from "@/context/discussions";
-import { AuthProvider, useAuth } from "@/context/auth";
+import { AuthProvider, useAuth, type SubscriptionTier } from "@/context/auth";
 import { EmergencyContext } from "@/context/emergency";
 import { SocialProvider } from "@/context/social";
 import { RemindersContext } from "@/context/reminders";
@@ -79,9 +79,11 @@ function useRevenueCatSync() {
         if (activeEntitlements["premium"]) {
           const productId = activeEntitlements["premium"].productIdentifier;
           const lower = productId.toLowerCase();
-          let tier: 'premium' | 'premium_plus' = 'premium';
-          if (lower.includes('family') || lower.includes('pro')) {
-            tier = 'premium_plus';
+          let tier: SubscriptionTier = 'premium';
+          if (lower.includes('family')) {
+            tier = 'family';
+          } else if (lower.includes('pro')) {
+            tier = 'pro';
           }
           const expirationDate = activeEntitlements["premium"].expirationDate;
           const expiry = expirationDate ? new Date(expirationDate).getTime() : undefined;
@@ -139,6 +141,42 @@ function RootLayoutNav() {
   );
 }
 
+function AppProviders({ children }: { children: ReactNode }) {
+  return (
+    <LanguageProvider>
+      <AuthProvider>
+        <RevenueCatSyncWrapper>
+          <CatsContext>
+            <DiscussionsProvider>
+              <EmergencyContext>
+                <RemindersContext>
+                  <ExpensesContext>
+                    <ShoppingContext>
+                      <SocialProvider>
+                        <GamificationContext>
+                          <AIContext>
+                            <ScanImageProvider>
+                              <UserLocationProvider>
+                                <NotificationsContext>
+                                  {children}
+                                </NotificationsContext>
+                              </UserLocationProvider>
+                            </ScanImageProvider>
+                          </AIContext>
+                        </GamificationContext>
+                      </SocialProvider>
+                    </ShoppingContext>
+                  </ExpensesContext>
+                </RemindersContext>
+              </EmergencyContext>
+            </DiscussionsProvider>
+          </CatsContext>
+        </RevenueCatSyncWrapper>
+      </AuthProvider>
+    </LanguageProvider>
+  );
+}
+
 export default function RootLayout() {
   useEffect(() => {
     void (async () => {
@@ -154,37 +192,9 @@ export default function RootLayout() {
     <QueryClientProvider client={queryClient}>
       <GestureHandlerRootView style={styles.root}>
         <ErrorBoundary>
-          <LanguageProvider>
-            <AuthProvider>
-              <RevenueCatSyncWrapper>
-                <CatsContext>
-                  <DiscussionsProvider>
-                    <EmergencyContext>
-                      <RemindersContext>
-                        <ExpensesContext>
-                          <ShoppingContext>
-                            <SocialProvider>
-                              <GamificationContext>
-                                <AIContext>
-                                  <ScanImageProvider>
-                                    <UserLocationProvider>
-                                      <NotificationsContext>
-                                        <RootLayoutNav />
-                                      </NotificationsContext>
-                                    </UserLocationProvider>
-                                  </ScanImageProvider>
-                                </AIContext>
-                              </GamificationContext>
-                            </SocialProvider>
-                          </ShoppingContext>
-                        </ExpensesContext>
-                      </RemindersContext>
-                    </EmergencyContext>
-                  </DiscussionsProvider>
-                </CatsContext>
-              </RevenueCatSyncWrapper>
-            </AuthProvider>
-          </LanguageProvider>
+          <AppProviders>
+            <RootLayoutNav />
+          </AppProviders>
         </ErrorBoundary>
       </GestureHandlerRootView>
     </QueryClientProvider>

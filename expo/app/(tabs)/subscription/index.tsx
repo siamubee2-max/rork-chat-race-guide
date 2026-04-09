@@ -7,12 +7,13 @@ import {
   Pressable,
   Alert,
   ActivityIndicator,
+  Linking,
   useWindowDimensions,
 } from "react-native";
 import { Check, Crown, RefreshCw, Sparkles, Star, Users, Briefcase, Gem, ExternalLink } from "lucide-react-native";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/context/auth";
-import { router } from "expo-router";
+import { navigate } from "@/utils/navigate";
 import { Colors } from "@/constants/colors";
 
 let Purchases: any = null;
@@ -33,7 +34,7 @@ interface LocalPlan {
   badge: string | null;
   target?: string;
   features: string[];
-  tier: "premium" | "premium_plus";
+  tier: "premium" | "family" | "pro";
   icon: "star" | "users" | "briefcase" | "gem";
   savings?: string;
   rcPackageKey: string;
@@ -90,7 +91,7 @@ const LOCAL_PLANS: LocalPlan[] = [
     color: "#ec4899",
     badge: "💎 FAMILLE",
     icon: "users",
-    tier: "premium_plus",
+    tier: "family",
     rcPackageKey: "family_monthly",
     features: [
       "Tout Premium +",
@@ -110,7 +111,7 @@ const LOCAL_PLANS: LocalPlan[] = [
     color: "#ec4899",
     badge: "💎 FAMILLE - MEILLEUR PRIX",
     icon: "users",
-    tier: "premium_plus",
+    tier: "family",
     rcPackageKey: "family_yearly",
     savings: "Économisez ~20% vs mensuel",
     features: [
@@ -128,7 +129,7 @@ const LOCAL_PLANS: LocalPlan[] = [
     color: "#f59e0b",
     badge: "💼 PROFESSIONNEL",
     icon: "briefcase",
-    tier: "premium_plus",
+    tier: "pro",
     rcPackageKey: "pro_monthly",
     target: "Éleveurs, Vétérinaires, Pros",
     features: [
@@ -149,7 +150,7 @@ const LOCAL_PLANS: LocalPlan[] = [
     color: "#f59e0b",
     badge: "💼 PRO - MEILLEUR PRIX",
     icon: "briefcase",
-    tier: "premium_plus",
+    tier: "pro",
     rcPackageKey: "pro_yearly",
     savings: "Économisez ~17% vs mensuel",
     target: "Éleveurs, Vétérinaires, Pros",
@@ -169,11 +170,10 @@ const IconMap = {
   gem: Gem,
 } as const;
 
-function getTierFromProductId(productId: string): "premium" | "premium_plus" {
+function getTierFromProductId(productId: string): "premium" | "family" | "pro" {
   const lower = productId.toLowerCase();
-  if (lower.includes("family") || lower.includes("pro")) {
-    return "premium_plus";
-  }
+  if (lower.includes("family")) return "family";
+  if (lower.includes("pro")) return "pro";
   return "premium";
 }
 
@@ -289,7 +289,7 @@ export default function SubscriptionScreen() {
       if (!isAuthenticated) {
         Alert.alert("Connexion requise", "Veuillez vous connecter pour souscrire à un plan.", [
           { text: "Annuler", style: "cancel" },
-          { text: "Se connecter", onPress: () => router.push("/auth/login" as any) },
+          { text: "Se connecter", onPress: () => navigate("/auth/login") },
         ]);
         return;
       }
@@ -337,7 +337,7 @@ export default function SubscriptionScreen() {
             void queryClient.invalidateQueries({ queryKey: ["rc-offerings"] });
             void queryClient.invalidateQueries({ queryKey: ["rc-customer-info"] });
             Alert.alert("🎉 Bienvenue !", "Votre abonnement est maintenant actif.", [
-              { text: "OK", onPress: () => router.push("/(tabs)/(scan)" as any) },
+              { text: "OK", onPress: () => navigate("/(tabs)/(scan)") },
             ]);
             return;
           } catch (retryError: any) {
@@ -374,7 +374,7 @@ export default function SubscriptionScreen() {
         void queryClient.invalidateQueries({ queryKey: ["rc-customer-info"] });
 
         Alert.alert("🎉 Bienvenue !", "Votre abonnement est maintenant actif.", [
-          { text: "OK", onPress: () => router.push("/(tabs)/(scan)" as any) },
+          { text: "OK", onPress: () => navigate("/(tabs)/(scan)") },
         ]);
       } catch (error: any) {
         if (error?.userCancelled) {
@@ -518,12 +518,12 @@ export default function SubscriptionScreen() {
           vos abonnements dans les réglages de votre appareil.
         </Text>
         <View style={styles.legalLinks}>
-          <Pressable onPress={() => router.push('/(tabs)/more/terms' as any)} style={styles.legalLink}>
+          <Pressable onPress={() => Linking.openURL('https://siamubee2-max.github.io/purrly-legal/terms/')} style={styles.legalLink}>
             <ExternalLink size={12} color="#94a3b8" />
             <Text style={styles.legalLinkText}>Conditions d'utilisation</Text>
           </Pressable>
           <Text style={styles.legalSeparator}>·</Text>
-          <Pressable onPress={() => router.push('/(tabs)/more/privacy' as any)} style={styles.legalLink}>
+          <Pressable onPress={() => Linking.openURL('https://siamubee2-max.github.io/purrly-legal/privacy/')} style={styles.legalLink}>
             <ExternalLink size={12} color="#94a3b8" />
             <Text style={styles.legalLinkText}>Politique de confidentialité</Text>
           </Pressable>

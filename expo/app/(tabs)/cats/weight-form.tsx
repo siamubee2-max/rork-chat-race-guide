@@ -10,7 +10,8 @@ import {
   Platform,
   Alert,
 } from "react-native";
-import { router, useLocalSearchParams, useNavigation } from "expo-router";
+import { , useLocalSearchParams, useNavigation } from "expo-router";
+import { navigate, navigateWithParams, navigateReplace } from "@/utils/navigate";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Save, Trash2, Calendar as CalendarIcon } from "lucide-react-native";
 import { useCats, type WeightEntry } from "@/context/cats";
@@ -42,7 +43,7 @@ export default function WeightFormScreen() {
             text: t('subscription.subscribe'),
             onPress: () => {
               router.back();
-              setTimeout(() => router.push('/(tabs)/subscription' as any), 100);
+              setTimeout(() => navigate('/(tabs)/subscription'), 100);
             },
           }
         ]

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
-import { router } from "expo-router";
+import { navigateReplace } from "@/utils/navigate";
 import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "expo-image";
 import { BookOpen, Crown, ScanLine, Sparkles } from "lucide-react-native";
@@ -48,21 +48,21 @@ export default function Index() {
 
   useEffect(() => {
     if (!isLanguageLoading && !hasSelectedLanguage) {
-      router.replace("/language-select" as any);
+      navigateReplace("/language-select");
       return;
     }
     
     if (!isLoading && !isLanguageLoading && !isAuthenticated) {
-      router.replace("/auth/login" as any);
+      navigateReplace("/auth/login");
     }
   }, [isLoading, isAuthenticated, hasSelectedLanguage, isLanguageLoading]);
 
   const goScan = useCallback(() => {
-    router.replace("/(tabs)/(scan)/home" as any);
+    navigateReplace("/(tabs)/(scan)/home");
   }, []);
 
   const goBreeds = useCallback(() => {
-    router.replace("/(tabs)/(breeds)/home" as any);
+    navigateReplace("/(tabs)/(breeds)/home");
   }, []);
 
   if (isLoading || isLanguageLoading || !isAuthenticated) {

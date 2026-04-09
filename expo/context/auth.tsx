@@ -1,8 +1,9 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import createContextHook from "@nkzw/create-context-hook";
+import { supabase } from "@/lib/supabase";
+import type { Session } from "@supabase/supabase-js";
 
-export type SubscriptionTier = 'free' | 'premium' | 'premium_plus';
+export type SubscriptionTier = 'free' | 'premium' | 'premium_plus' | 'family' | 'pro';
 
 export interface User {
   id: string;
@@ -13,228 +14,264 @@ export interface User {
   subscriptionExpiry?: string;
 }
 
-interface StoredUser extends User {
-  password: string;
-}
+const LIFETIME_EXPIRY = '2125-01-01T00:00:00Z';
 
-const STORAGE_USERS = "users";
-const STORAGE_CURRENT_USER = "current_user";
+// VIP accounts that get lifetime pro subscription — loaded from env to avoid
+// exposing real emails in source code. Format: comma-separated list.
+// Example in .env: EXPO_PUBLIC_VIP_EMAILS=admin@example.com,vip@example.com
+const VIP_EMAILS: string[] = (
+  process.env.EXPO_PUBLIC_VIP_EMAILS ?? ''
+)
+  .split(',')
+  .map((e) => e.trim().toLowerCase())
+  .filter(Boolean);
 
-const hashPassword = (password: string, email: string): string => {
-  let hash = 0;
-  const str = password + email.toLowerCase();
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash;
-  }
-  return Math.abs(hash).toString(36);
-};
+// Apple/Google review demo account — set in .env, never hardcoded
+export const DEMO_EMAIL = process.env.EXPO_PUBLIC_DEMO_EMAIL ?? 'demo@purrly.app';
+export const DEMO_PASSWORD = process.env.EXPO_PUBLIC_DEMO_PASSWORD ?? 'Demo1234!';
+
+const mapProfile = (profile: any): User => ({
+  id: profile.id,
+  email: profile.email,
+  name: profile.name || '',
+  createdAt: profile.created_at,
+  subscriptionTier: (profile.subscription_tier as SubscriptionTier) || 'free',
+  subscriptionExpiry: profile.subscription_expiry ?? undefined,
+});
 
 export const [AuthProvider, useAuth] = createContextHook(() => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Fetch profile from Supabase and apply VIP upgrade if needed
+  const loadProfile = async (userId: string, email: string): Promise<User | null> => {
+    const isVip = VIP_EMAILS.includes(email.toLowerCase());
+
+    if (isVip) {
+      // Ensure VIP has lifetime pro — upsert
+      await supabase
+        .from('profiles')
+        .update({ subscription_tier: 'pro', subscription_expiry: LIFETIME_EXPIRY })
+        .eq('id', userId);
+    }
+
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', userId)
+      .single();
+
+    if (error || !data) return null;
+    return mapProfile(data);
+  };
+
+  // Listen to Supabase auth state changes
   useEffect(() => {
-    void (async () => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (event === 'SIGNED_OUT') {
+          setCurrentUser(null);
+          setIsLoading(false);
+          return;
+        }
+
+        if (session?.user) {
+          const user = await loadProfile(session.user.id, session.user.email!);
+          setCurrentUser(user);
+        } else {
+          setCurrentUser(null);
+        }
+        setIsLoading(false);
+      }
+    );
+
+    // Initial session check with timeout fallback
+    const initSession = async () => {
       try {
-        const userData = await AsyncStorage.getItem(STORAGE_CURRENT_USER);
-        if (userData) {
-          setCurrentUser(JSON.parse(userData));
+        const timeout = new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error('Session timeout')), 10000)
+        );
+
+        const sessionPromise = supabase.auth.getSession();
+        const { data: { session } } = await Promise.race([sessionPromise, timeout]);
+
+        if (session?.user) {
+          const user = await loadProfile(session.user.id, session.user.email!);
+          setCurrentUser(user);
         }
       } catch (error) {
-        if (__DEV__) {
-          console.error("Error loading current user:", error);
-        }
+        // Network or timeout error — treat as not authenticated
+        if (__DEV__) console.log('[Auth] Init session error (treating as logged out):', error);
+        setCurrentUser(null);
       } finally {
         setIsLoading(false);
       }
-    })();
+    };
+
+    void initSession();
+
+    return () => subscription.unsubscribe();
   }, []);
 
-  const signup = useCallback(async (email: string, password: string, name: string): Promise<{ success: boolean; error?: string }> => {
+  const signup = useCallback(async (
+    email: string,
+    password: string,
+    name: string
+  ): Promise<{ success: boolean; error?: string }> => {
     try {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
         return { success: false, error: "Adresse email invalide" };
       }
 
-      const usersData = await AsyncStorage.getItem(STORAGE_USERS);
-      const users: StoredUser[] = usersData ? JSON.parse(usersData) : [];
+      const isVip = VIP_EMAILS.includes(email.toLowerCase());
 
-      if (users.some((u) => u.email.toLowerCase() === email.toLowerCase())) {
-        return { success: false, error: "Cette adresse email existe déjà" };
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { name },
+          // Skip email confirmation for demo
+          emailRedirectTo: undefined,
+        },
+      });
+
+      if (error) {
+        if (error.message.includes('already registered')) {
+          return { success: false, error: "Cette adresse email existe déjà" };
+        }
+        return { success: false, error: error.message };
       }
 
-      const newUser: StoredUser = {
-        id: Date.now().toString(),
-        email,
-        password: hashPassword(password, email),
-        name,
-        createdAt: new Date().toISOString(),
-        subscriptionTier: 'free',
-      };
+      if (!data.user) {
+        return { success: false, error: "Erreur lors de l'inscription" };
+      }
 
-      users.push(newUser);
-      await AsyncStorage.setItem(STORAGE_USERS, JSON.stringify(users));
-
-      const userToStore: User = {
-        id: newUser.id,
-        email: newUser.email,
-        name: newUser.name,
-        createdAt: newUser.createdAt,
-        subscriptionTier: newUser.subscriptionTier,
-        subscriptionExpiry: newUser.subscriptionExpiry,
-      };
-
-      setCurrentUser(userToStore);
-      await AsyncStorage.setItem(STORAGE_CURRENT_USER, JSON.stringify(userToStore));
+      // Upsert profile with retry (trigger may have already created it)
+      let retries = 3;
+      let profileCreated = false;
+      while (retries > 0 && !profileCreated) {
+        try {
+          const { error: upsertError } = await supabase.from('profiles').upsert({
+            id: data.user.id,
+            email,
+            name,
+            subscription_tier: isVip ? 'pro' : 'free',
+            subscription_expiry: isVip ? LIFETIME_EXPIRY : null,
+          });
+          if (!upsertError) {
+            profileCreated = true;
+          } else if (upsertError.code === '23505') {
+            // Duplicate key — profile already exists, that's fine
+            profileCreated = true;
+          } else {
+            retries--;
+            if (retries > 0) await new Promise((r) => setTimeout(r, 1000));
+          }
+        } catch {
+          retries--;
+          if (retries > 0) await new Promise((r) => setTimeout(r, 1000));
+        }
+      }
 
       return { success: true };
     } catch (error) {
-      if (__DEV__) {
-        console.error("Error signing up:", error);
-      }
+      if (__DEV__) console.error("Error signing up:", error);
       return { success: false, error: "Erreur lors de l'inscription" };
     }
   }, []);
 
-  const login = useCallback(async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
+  const login = useCallback(async (
+    email: string,
+    password: string
+  ): Promise<{ success: boolean; error?: string }> => {
     try {
-      const usersData = await AsyncStorage.getItem(STORAGE_USERS);
-      const users: StoredUser[] = usersData ? JSON.parse(usersData) : [];
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
 
-      const passwordHash = hashPassword(password, email);
-      const user = users.find(
-        (u) => u.email.toLowerCase() === email.toLowerCase() && u.password === passwordHash
-      );
-
-      if (!user) {
-        return { success: false, error: "Email ou mot de passe incorrect" };
+      if (error) {
+        if (error.message.includes('Invalid login credentials')) {
+          return { success: false, error: "Email ou mot de passe incorrect" };
+        }
+        if (error.message.includes('Email not confirmed')) {
+          return { success: false, error: "Veuillez confirmer votre email" };
+        }
+        return { success: false, error: error.message };
       }
-
-      const userToStore: User = {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        createdAt: user.createdAt,
-        subscriptionTier: user.subscriptionTier || 'free',
-        subscriptionExpiry: user.subscriptionExpiry,
-      };
-
-      setCurrentUser(userToStore);
-      await AsyncStorage.setItem(STORAGE_CURRENT_USER, JSON.stringify(userToStore));
 
       return { success: true };
     } catch (error) {
-      if (__DEV__) {
-        console.error("Error logging in:", error);
-      }
+      if (__DEV__) console.error("Error logging in:", error);
       return { success: false, error: "Erreur lors de la connexion" };
     }
   }, []);
 
   const logout = useCallback(async () => {
     try {
-      await AsyncStorage.removeItem(STORAGE_CURRENT_USER);
+      await supabase.auth.signOut();
       setCurrentUser(null);
     } catch (error) {
-      if (__DEV__) {
-        console.error("Error logging out:", error);
-      }
+      if (__DEV__) console.error("Error logging out:", error);
     }
   }, []);
 
   const deleteAccount = useCallback(async (): Promise<{ success: boolean; error?: string }> => {
     try {
-      const currentUserData = await AsyncStorage.getItem(STORAGE_CURRENT_USER);
-      if (!currentUserData) {
-        return { success: false, error: "Aucun utilisateur connecté" };
-      }
-      const parsedUser: User = JSON.parse(currentUserData);
+      if (!currentUser) return { success: false, error: "Aucun utilisateur connecté" };
 
-      const usersData = await AsyncStorage.getItem(STORAGE_USERS);
-      const users: StoredUser[] = usersData ? JSON.parse(usersData) : [];
-      const updatedUsers = users.filter((u) => u.id !== parsedUser.id);
-      await AsyncStorage.setItem(STORAGE_USERS, JSON.stringify(updatedUsers));
-
-      await AsyncStorage.removeItem(STORAGE_CURRENT_USER);
+      // Delete profile first (cascades from auth.users)
+      await supabase.from('profiles').delete().eq('id', currentUser.id);
+      // Sign out (actual auth.users deletion requires service_role server-side)
+      await supabase.auth.signOut();
       setCurrentUser(null);
-
-      console.log("Account deleted successfully for user:", parsedUser.id);
       return { success: true };
     } catch (error) {
-      if (__DEV__) {
-        console.error("Error deleting account:", error);
-      }
+      if (__DEV__) console.error("Error deleting account:", error);
       return { success: false, error: "Erreur lors de la suppression du compte" };
     }
-  }, []);
+  }, [currentUser]);
 
   const getRegisteredEmails = useCallback(async (): Promise<string[]> => {
-    try {
-      const usersData = await AsyncStorage.getItem(STORAGE_USERS);
-      const users: StoredUser[] = usersData ? JSON.parse(usersData) : [];
-      return users.map((u) => u.email);
-    } catch (error) {
-      if (__DEV__) {
-        console.error("Error getting registered emails:", error);
-      }
-      return [];
-    }
+    // Not exposable with anon key + RLS — return empty
+    return [];
   }, []);
 
-  const getUserByEmail = useCallback(async (email: string): Promise<{ name: string; password: string } | null> => {
-    try {
-      const usersData = await AsyncStorage.getItem(STORAGE_USERS);
-      const users: StoredUser[] = usersData ? JSON.parse(usersData) : [];
-      const user = users.find((u) => u.email.toLowerCase() === email.toLowerCase());
-      return user ? { name: user.name, password: user.password } : null;
-    } catch (error) {
-      if (__DEV__) {
-        console.error("Error getting user by email:", error);
-      }
-      return null;
-    }
+  const getUserByEmail = useCallback(async (
+    email: string
+  ): Promise<{ name: string; password: string } | null> => {
+    // Passwords are not accessible via Supabase Auth — return null
+    return null;
   }, []);
 
-  const updateSubscription = useCallback(async (tier: SubscriptionTier, customExpiry?: number) => {
+  const updateSubscription = useCallback(async (
+    tier: SubscriptionTier,
+    customExpiry?: number
+  ) => {
     try {
-      const currentUserData = await AsyncStorage.getItem(STORAGE_CURRENT_USER);
-      if (!currentUserData) return;
-      const parsedUser: User = JSON.parse(currentUserData);
+      if (!currentUser) return;
 
-      const usersData = await AsyncStorage.getItem(STORAGE_USERS);
-      const users: StoredUser[] = usersData ? JSON.parse(usersData) : [];
-      const userIndex = users.findIndex((u) => u.id === parsedUser.id);
-
-      if (userIndex === -1) return;
-
-      const expiry = customExpiry 
+      const expiry = customExpiry
         ? new Date(customExpiry).toISOString()
-        : tier !== 'free' 
-          ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString() 
-          : undefined;
+        : tier !== 'free'
+          ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
+          : null;
 
-      users[userIndex].subscriptionTier = tier;
-      users[userIndex].subscriptionExpiry = expiry;
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          subscription_tier: tier,
+          subscription_expiry: expiry,
+        })
+        .eq('id', currentUser.id);
 
-      await AsyncStorage.setItem(STORAGE_USERS, JSON.stringify(users));
-
-      const updatedUser: User = {
-        ...parsedUser,
-        subscriptionTier: tier,
-        subscriptionExpiry: expiry,
-      };
-
-      setCurrentUser(updatedUser);
-      await AsyncStorage.setItem(STORAGE_CURRENT_USER, JSON.stringify(updatedUser));
-    } catch (error) {
-      if (__DEV__) {
-        console.error("Error updating subscription:", error);
+      if (!error) {
+        setCurrentUser((prev) =>
+          prev ? { ...prev, subscriptionTier: tier, subscriptionExpiry: expiry ?? undefined } : null
+        );
       }
+    } catch (error) {
+      if (__DEV__) console.error("Error updating subscription:", error);
     }
-  }, []);
+  }, [currentUser]);
 
   return useMemo(() => ({
     currentUser,

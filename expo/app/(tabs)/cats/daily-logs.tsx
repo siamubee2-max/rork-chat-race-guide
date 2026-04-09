@@ -1,6 +1,7 @@
 import React, { useLayoutEffect, useCallback } from "react";
 import { View, Text, StyleSheet, ScrollView, Pressable } from "react-native";
-import { useLocalSearchParams, router, useNavigation } from "expo-router";
+import { useLocalSearchParams, , useNavigation } from "expo-router";
+import { navigate, navigateWithParams, navigateReplace } from "@/utils/navigate";
 import { Plus, Calendar, UtensilsCrossed, Droplets, Activity, Trash, AlertTriangle } from "lucide-react-native";
 import { useCats } from "@/context/cats";
 
@@ -13,7 +14,7 @@ export default function DailyLogsScreen() {
   const dailyLogs = cat?.dailyLogs ?? [];
 
   const onAddLog = useCallback(() => {
-    router.push({ pathname: "/cats/daily-log-form" as any, params: { catId: cat?.id } });
+    navigateWithParams("/cats/daily-log-form", { catId: cat?.id });
   }, [cat?.id]);
 
   useLayoutEffect(() => {

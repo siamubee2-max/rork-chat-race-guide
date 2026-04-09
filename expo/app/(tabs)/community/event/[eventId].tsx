@@ -1,5 +1,6 @@
 import React from "react";
-import { useLocalSearchParams, router } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
+import { navigate } from "@/utils/navigate";
 import { Calendar, MapPin, Users, Clock, Euro, Share2, UserCheck } from "lucide-react-native";
 import {
   Image,
@@ -69,7 +70,7 @@ export default function EventDetailScreen() {
 
   const handleAttend = async () => {
     if (!isAuthenticated) {
-      router.push("/auth/login" as any);
+      navigate("/auth/login");
       return;
     }
 
@@ -109,7 +110,7 @@ export default function EventDetailScreen() {
 
           <Pressable 
             style={styles.organizer}
-            onPress={() => router.push(`/(tabs)/community/profile/${event.organizerId}` as any)}
+            onPress={() => navigate(`/(tabs)/community/profile/${event.organizerId}`)}
           >
             <View style={styles.organizerAvatar}>
               <Text style={styles.organizerAvatarText}>

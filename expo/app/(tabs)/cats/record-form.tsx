@@ -10,7 +10,8 @@ import {
   Platform,
   Alert,
 } from "react-native";
-import { router, useLocalSearchParams } from "expo-router";
+import { , useLocalSearchParams } from "expo-router";
+import { navigate, navigateWithParams, navigateReplace } from "@/utils/navigate";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Save, Trash2, Calendar as CalendarIcon, Syringe, Stethoscope, Pill, HeartPulse, Bug } from "lucide-react-native";
 import { useCats, MedicalRecordType, MedicalRecord } from "@/context/cats";
@@ -41,7 +42,7 @@ export default function RecordFormScreen() {
             text: t('subscription.subscribe'),
             onPress: () => {
               router.back();
-              setTimeout(() => router.push('/(tabs)/subscription' as any), 100);
+              setTimeout(() => navigate('/(tabs)/subscription'), 100);
             },
           }
         ]

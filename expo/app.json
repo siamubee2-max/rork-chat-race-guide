@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "rork-app",
+    "scheme": "purrly",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
@@ -16,18 +16,52 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "app.rork.chat-race-guide",
+      "privacyManifests": {
+        "NSPrivacyAccessedAPITypes": [
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryUserDefaults",
+            "NSPrivacyAccessedAPITypeReasons": [
+              "CA92.1"
+            ]
+          },
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryFileTimestamp",
+            "NSPrivacyAccessedAPITypeReasons": [
+              "C617.1"
+            ]
+          }
+        ]
+      },
       "infoPlist": {
-        "NSLocationAlwaysAndWhenInUseUsageDescription": "Allow $(PRODUCT_NAME) to use your location.",
-        "NSLocationAlwaysUsageDescription": "Allow $(PRODUCT_NAME) to use your location.",
-        "NSLocationWhenInUseUsageDescription": "Allow $(PRODUCT_NAME) to use your location.",
+        "NSLocationWhenInUseUsageDescription": "Purrly uses your location to display emergency veterinary contacts and find nearby clinics for your cat.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Purrly uses your location in background to display emergency veterinary contacts near you.",
+        "NSLocationAlwaysUsageDescription": "Purrly uses your location in background to display emergency veterinary contacts near you.",
         "UIBackgroundModes": [
-          "location",
-          "audio"
+          "location"
         ],
-        "NSPhotoLibraryUsageDescription": "Allow $(PRODUCT_NAME) to access your photos",
-        "NSCameraUsageDescription": "Purrly uses your camera to take photos of your cat for their health journal and to identify cat breeds using the AI breed scanner.",
-        "NSMicrophoneUsageDescription": "Allow $(PRODUCT_NAME) to access your microphone"
-      }
+        "NSPhotoLibraryUsageDescription": "Purrly accesses your photo library so you can add photos of your cat for breed identification and to their health journal.",
+        "NSCameraUsageDescription": "Purrly uses your camera to photograph your cat for AI breed identification and to add photos to their health journal.",
+        "NSMicrophoneUsageDescription": "Purrly uses your microphone so you can use voice input to send messages to the AI cat assistant.",
+        "ITSAppUsesNonExemptEncryption": false,
+        "CFBundleDevelopmentRegion": "fr",
+        "CFBundleLocalizations": [
+          "en",
+          "fr",
+          "de",
+          "es",
+          "it",
+          "ja",
+          "nl",
+          "pt",
+          "ru",
+          "zh-Hans",
+          "ar"
+        ]
+      },
+      "privacyPolicyUrl": "https://siamubee2-max.github.io/purrly-legal/privacy/",
+      "buildNumber": "1",
+      "supportUrl": "https://siamubee2-max.github.io/purrly-legal/",
+      "marketingUrl": "https://siamubee2-max.github.io/purrly-legal/"
     },
     "android": {
       "adaptiveIcon": {
@@ -37,19 +71,21 @@
       "package": "app.rork.chat_race_guide",
       "permissions": [
         "android.permission.VIBRATE",
-        "ACCESS_COARSE_LOCATION",
-        "ACCESS_FINE_LOCATION",
-        "FOREGROUND_SERVICE",
-        "FOREGROUND_SERVICE_LOCATION",
-        "ACCESS_BACKGROUND_LOCATION",
-        "CAMERA",
-        "READ_EXTERNAL_STORAGE",
-        "WRITE_EXTERNAL_STORAGE",
-        "RECORD_AUDIO",
-        "INTERNET",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_LOCATION",
+        "android.permission.ACCESS_BACKGROUND_LOCATION",
+        "android.permission.CAMERA",
+        "android.permission.READ_MEDIA_IMAGES",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.INTERNET",
         "android.permission.RECEIVE_BOOT_COMPLETED",
-        "android.permission.SCHEDULE_EXACT_ALARM"
-      ]
+        "android.permission.SCHEDULE_EXACT_ALARM",
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.USE_EXACT_ALARM"
+      ],
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
@@ -69,26 +105,27 @@
           "isAndroidForegroundServiceEnabled": true,
           "isAndroidBackgroundLocationEnabled": true,
           "isIosBackgroundLocationEnabled": true,
-          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+          "locationAlwaysAndWhenInUsePermission": "Allow Purrly to use your location to show emergency veterinary contacts near you.",
+          "locationWhenInUsePermission": "Allow Purrly to use your location to show emergency veterinary contacts near you."
         }
       ],
       [
         "expo-image-picker",
         {
-          "photosPermission": "The app accesses your photos to let you share them with your friends."
+          "photosPermission": "Purrly accesses your photo library so you can add photos of your cat for breed identification and their health journal."
         }
       ],
       "expo-localization",
       [
         "expo-av",
         {
-          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone"
+          "microphonePermission": "Purrly uses your microphone so you can send voice messages to the AI cat assistant."
         }
       ],
       [
         "expo-notifications",
         {
-          "color": "#ffffff",
+          "color": "#D4A05C",
           "defaultChannel": "default",
           "enableBackgroundRemoteNotifications": false
         }

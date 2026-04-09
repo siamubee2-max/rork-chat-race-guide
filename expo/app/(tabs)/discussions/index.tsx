@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { router } from "expo-router";
+import { navigate, navigateWithParams, navigateReplace } from "@/utils/navigate";
 import { MessageCircle, Plus } from "lucide-react-native";
 import {
   FlatList,
@@ -64,7 +64,7 @@ export default function DiscussionsScreen() {
   };
 
   const handleNewDiscussion = useCallback(() => {
-    router.push("/(tabs)/discussions/new" as any);
+    navigate("/(tabs)/discussions/new");
   }, []);
 
   const filteredDiscussions = useMemo(
@@ -81,7 +81,7 @@ export default function DiscussionsScreen() {
 
     return (
       <Pressable
-        onPress={() => router.push(`/(tabs)/discussions/${item.id}` as any)}
+        onPress={() => navigate(`/(tabs)/discussions/${item.id}`)}
         style={({ pressed }) => [
           styles.card,
           pressed ? { transform: [{ scale: 0.98 }] } : null,

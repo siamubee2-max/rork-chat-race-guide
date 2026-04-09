@@ -24,24 +24,15 @@ export interface SubscriptionStatus {
   };
 }
 
-function mapAuthTierToSubTier(authTier: string): 'free' | 'premium' | 'family' | 'pro' {
-  if (authTier === 'premium_plus') return 'pro';
-  if (authTier === 'premium') return 'premium';
-  return 'free';
-}
-
 export function useSubscription() {
   const { currentUser } = useAuth();
+  const tier = (currentUser?.subscriptionTier ?? 'free') as 'free' | 'premium' | 'family' | 'pro';
   const [usage, setUsage] = useState<Record<string, number>>({});
-
-  const tier = useMemo(() => {
-    return mapAuthTierToSubTier(currentUser?.subscriptionTier ?? 'free');
-  }, [currentUser?.subscriptionTier]);
 
   const subscription = useMemo<SubscriptionStatus | null>(() => {
     if (!currentUser) return null;
 
-    const tierLimits = SUBSCRIPTION_CONFIG.limits[tier === 'pro' ? 'pro' : tier] as Record<string, number | boolean | undefined>;
+    const tierLimits = SUBSCRIPTION_CONFIG.limits[tier] as Record<string, number | boolean | undefined>;
 
     return {
       tier,
@@ -74,7 +65,7 @@ export function useSubscription() {
     remaining: number;
     limit: number;
   } => {
-    const tierLimits = SUBSCRIPTION_CONFIG.limits[tier === 'pro' ? 'pro' : tier] as Record<string, number | boolean | undefined>;
+    const tierLimits = SUBSCRIPTION_CONFIG.limits[tier] as Record<string, number | boolean | undefined>;
     const limit = tierLimits[feature] as number;
     const current = usage[feature] ?? 0;
 

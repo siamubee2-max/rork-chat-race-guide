@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { X, Crown, Zap } from 'lucide-react-native';
 import { useSubscription } from '@/hooks/useSubscription';
-import { router } from 'expo-router';
+import { navigate } from '@/utils/navigate';
 
 interface PaywallProps {
   visible: boolean;
@@ -120,7 +120,7 @@ export function Paywall({
               style={styles.ctaButton}
               onPress={() => {
                 onClose();
-                router.push('/(tabs)/subscription' as any);
+                navigate('/(tabs)/subscription');
               }}
             >
               <Crown size={20} color="#fff" />

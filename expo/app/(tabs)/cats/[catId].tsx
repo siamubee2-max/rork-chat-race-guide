@@ -1,6 +1,7 @@
 import React, { useLayoutEffect, useCallback, useState } from "react";
 import { View, Text, StyleSheet, ScrollView, Pressable, Platform, Modal, Dimensions, Alert } from "react-native";
-import { useLocalSearchParams, router, useNavigation } from "expo-router";
+import { useLocalSearchParams, , useNavigation } from "expo-router";
+import { navigate, navigateWithParams, navigateReplace } from "@/utils/navigate";
 import { Image } from "expo-image";
 import { Cat, Plus, Calendar, Syringe, Stethoscope, Pill, HeartPulse, ChevronRight, Heart, Bug, Activity, Images, X } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
@@ -80,7 +81,7 @@ export default function CatDetailsScreen() {
         "Le suivi santé avancé est disponible avec l'abonnement Premium ou le module complémentaire.",
         [
           { text: "Annuler", style: "cancel" },
-          { text: "Découvrir Premium", onPress: () => router.push('/(tabs)/subscription' as any) },
+          { text: "Découvrir Premium", onPress: () => navigate('/(tabs)/subscription') },
         ]
       );
       return;

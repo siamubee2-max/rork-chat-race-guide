@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { router } from "expo-router";
+import { navigate, navigateWithParams, navigateReplace } from "@/utils/navigate";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Haptics from "expo-haptics";
@@ -63,7 +63,7 @@ export default function ScanHomeScreen() {
       if (asset.base64) {
         console.log('Setting image from gallery, base64 length:', asset.base64.length);
         setImage(asset.uri, asset.base64);
-        router.push("/(tabs)/(scan)/result" as any);
+        navigate("/(tabs)/(scan)/result");
       } else {
         Alert.alert(t('common.error'), t('scan.imageProcessingError'));
       }
@@ -83,7 +83,7 @@ export default function ScanHomeScreen() {
       );
       return;
     }
-    router.push("/(tabs)/(scan)/camera" as any);
+    navigate("/(tabs)/(scan)/camera");
   }, [t]);
 
   const onAbout = useCallback(() => {

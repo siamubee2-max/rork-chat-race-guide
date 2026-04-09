@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState, useRef } from "react";
-import { router } from "expo-router";
+import { navigate, navigateWithParams, navigateReplace } from "@/utils/navigate";
 import { Image } from "expo-image";
 import * as Haptics from "expo-haptics";
 import { generateText } from "@rork-ai/toolkit-sdk";
@@ -670,7 +670,7 @@ Race: Persan | Confiance: Faible | Raison: Pelage long et épais visible.`;
       console.log("Navigating to breed details:", selectedId);
     }
     
-    router.push(`/(breeds)/${selectedId}` as any);
+    navigate(`/(breeds)/${selectedId}`);
   }, [selectedId]);
 
   const onShare = useCallback(async () => {

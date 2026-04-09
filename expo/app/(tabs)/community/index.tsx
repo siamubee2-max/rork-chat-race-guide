@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { router } from "expo-router";
+import { navigate } from "@/utils/navigate";
 import {
   Heart,
   MessageCircle,
@@ -77,7 +77,7 @@ export default function CommunityScreen() {
 
   const handleLike = async (postId: string) => {
     if (!isAuthenticated) {
-      router.push("/auth/login" as any);
+      navigate("/auth/login");
       return;
     }
     if (Platform.OS !== "web") {
@@ -88,10 +88,10 @@ export default function CommunityScreen() {
 
   const handleNewPost = () => {
     if (!isAuthenticated) {
-      router.push("/auth/login" as any);
+      navigate("/auth/login");
       return;
     }
-    router.push("/(tabs)/community/new-post" as any);
+    navigate("/(tabs)/community/new-post");
   };
 
   const getEventTypeLabel = (type: string) => {
@@ -117,7 +117,7 @@ export default function CommunityScreen() {
         <View style={styles.postHeader}>
           <Pressable 
             style={styles.postUser}
-            onPress={() => router.push(`/(tabs)/community/profile/${item.userId}` as any)}
+            onPress={() => navigate(`/(tabs)/community/profile/${item.userId}`)}
           >
             <View style={styles.avatar}>
               <Text style={styles.avatarText}>
@@ -140,7 +140,7 @@ export default function CommunityScreen() {
           </Pressable>
         </View>
 
-        <Pressable onPress={() => router.push(`/(tabs)/community/post/${item.id}` as any)}>
+        <Pressable onPress={() => navigate(`/(tabs)/community/post/${item.id}`)}>
           <Image source={{ uri: item.imageUrl }} style={styles.postImage} />
         </Pressable>
 
@@ -160,7 +160,7 @@ export default function CommunityScreen() {
           </Pressable>
           <Pressable 
             style={styles.actionBtn}
-            onPress={() => router.push(`/(tabs)/community/post/${item.id}` as any)}
+            onPress={() => navigate(`/(tabs)/community/post/${item.id}`)}
           >
             <MessageCircle size={24} color={Colors.text} />
             <Text style={styles.actionText}>{item.commentsCount}</Text>
@@ -184,7 +184,7 @@ export default function CommunityScreen() {
             {item.caption}
           </Text>
           {item.commentsCount > 0 && (
-            <Pressable onPress={() => router.push(`/(tabs)/community/post/${item.id}` as any)}>
+            <Pressable onPress={() => navigate(`/(tabs)/community/post/${item.id}`)}>
               <Text style={styles.viewComments}>
                 {t("community.viewComments", { count: item.commentsCount })}
               </Text>
@@ -201,7 +201,7 @@ export default function CommunityScreen() {
     return (
       <Pressable 
         style={[styles.eventCard, isTablet && { maxWidth: postMaxWidth, alignSelf: 'center' as const, width: '100%' }]}
-        onPress={() => router.push(`/(tabs)/community/event/${item.id}` as any)}
+        onPress={() => navigate(`/(tabs)/community/event/${item.id}`)}
       >
         {item.imageUrl && (
           <Image source={{ uri: item.imageUrl }} style={styles.eventImage} />
@@ -247,7 +247,7 @@ export default function CommunityScreen() {
     return (
       <Pressable 
         style={[styles.conversationCard, isTablet && { maxWidth: postMaxWidth, alignSelf: 'center' as const, width: '100%' }]}
-        onPress={() => router.push(`/(tabs)/community/chat/${item.id}` as any)}
+        onPress={() => navigate(`/(tabs)/community/chat/${item.id}`)}
       >
         <View style={styles.conversationAvatar}>
           <Text style={styles.conversationAvatarText}>
@@ -297,7 +297,7 @@ export default function CommunityScreen() {
       </Text>
       <Pressable 
         style={styles.emptyBtn} 
-        onPress={() => router.push("/(tabs)/community/new-event" as any)}
+        onPress={() => navigate("/(tabs)/community/new-event")}
       >
         <Text style={styles.emptyBtnText}>{t("community.createEvent")}</Text>
       </Pressable>
@@ -422,7 +422,7 @@ export default function CommunityScreen() {
       {(activeTab === "feed" || activeTab === "events") && (
         <Pressable
           style={[styles.fab, { bottom: insets.bottom + 16 }]}
-          onPress={activeTab === "feed" ? handleNewPost : () => router.push("/(tabs)/community/new-event" as any)}
+          onPress={activeTab === "feed" ? handleNewPost : () => navigate("/(tabs)/community/new-event")}
         >
           <Plus size={24} color="#fff" />
         </Pressable>

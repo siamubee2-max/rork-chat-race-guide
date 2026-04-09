@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback } from "react";
-import { router } from "expo-router";
+import { navigate } from "@/utils/navigate";
 import { Image } from "expo-image";
 import { Plus, AlertTriangle, MapPin, Phone, CheckCircle, PhoneCall, Globe, Navigation, MoreVertical, Trash2, RotateCcw, Check, X, Share2 } from "lucide-react-native";
 import {
@@ -326,7 +326,7 @@ const { alerts, updateAlert, deleteAlert } = useEmergency();
   const showDefaultContacts = !userCountry || filteredContacts.length === 0;
 
   const onCreateAlert = () => {
-    router.push("/(tabs)/emergency/create" as any);
+    navigate("/(tabs)/emergency/create");
   };
 
   const activeAlerts = alerts.filter((a) => !a.resolved);

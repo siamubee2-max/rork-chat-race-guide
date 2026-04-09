@@ -6,7 +6,7 @@ import {
   Pressable,
 } from "react-native";
 import { Lock, Crown } from "lucide-react-native";
-import { router } from "expo-router";
+import { navigate } from "@/utils/navigate";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth";
 import { Colors } from "@/constants/colors";
@@ -43,7 +43,7 @@ export function PremiumGate({ children }: PremiumGateProps) {
               styles.subscribeButton,
               pressed && styles.subscribeButtonPressed,
             ]}
-            onPress={() => router.push('/(tabs)/subscription' as any)}
+            onPress={() => navigate('/(tabs)/subscription')}
           >
             <Crown color="#fff" size={20} />
             <Text style={styles.subscribeButtonText}>{t('premiumGate.subscribe')}</Text>

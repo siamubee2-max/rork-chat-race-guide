@@ -8,7 +8,7 @@ import {
   Animated,
   Dimensions,
 } from "react-native";
-import { router } from "expo-router";
+import { navigate, navigateWithParams, navigateReplace } from "@/utils/navigate";
 import {
   Trophy,
   Target,
@@ -116,7 +116,7 @@ export default function GamificationScreen() {
 
       <Pressable
         style={styles.menuCard}
-        onPress={() => router.push("/gamification/challenges" as any)}
+        onPress={() => navigate("/gamification/challenges")}
       >
         <View style={styles.menuLeft}>
           <View style={[styles.menuIcon, { backgroundColor: Colors.accentMuted }]}>
@@ -147,7 +147,7 @@ export default function GamificationScreen() {
 
       <Pressable
         style={styles.menuCard}
-        onPress={() => router.push("/gamification/challenges" as any)}
+        onPress={() => navigate("/gamification/challenges")}
       >
         <View style={styles.menuLeft}>
           <View style={[styles.menuIcon, { backgroundColor: "rgba(122, 160, 91, 0.2)" }]}>
@@ -179,7 +179,7 @@ export default function GamificationScreen() {
 
       <Pressable
         style={styles.menuCard}
-        onPress={() => router.push("/gamification/achievements" as any)}
+        onPress={() => navigate("/gamification/achievements")}
       >
         <View style={styles.menuLeft}>
           <View style={[styles.menuIcon, { backgroundColor: Colors.primaryMuted }]}>
@@ -197,7 +197,7 @@ export default function GamificationScreen() {
 
       <Pressable
         style={styles.menuCard}
-        onPress={() => router.push("/gamification/leaderboard" as any)}
+        onPress={() => navigate("/gamification/leaderboard")}
       >
         <View style={styles.menuLeft}>
           <View style={[styles.menuIcon, { backgroundColor: "rgba(107, 154, 196, 0.2)" }]}>
