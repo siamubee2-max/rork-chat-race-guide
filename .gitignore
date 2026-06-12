@@ -1,3 +1,9 @@
 node_modules
 .env
 .expo
+
+# iOS native (Purrly)
+ios-native/RaceGuide/Resources/Secrets.xcconfig
+ios-native/DerivedData/
+ios-native/.swiftpm/
+ios-native/build/

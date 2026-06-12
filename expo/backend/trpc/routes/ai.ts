@@ -1,13 +1,71 @@
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
+import { createTRPCRouter, protectedProcedure } from "../create-context";
+import { getOpenAIKey } from "../../../lib/openai";
 import OpenAI from "openai";
+import type { SubscriptionTier } from "../../../lib/supabase";
 
-import {
-  createTRPCRouter,
-  publicProcedure,
-  protectedProcedure,
-  getOpenAIKey,
-} from "../create-context";
+// Tier hierarchy for subscription verification
+const TIER_HIERARCHY: Record<SubscriptionTier, number> = {
+  free: 0,
+  pro: 1,
+  premium: 2,
+  premium_plus: 3,
+  family: 4,
+};
+
+/**
+ * Verify user has required subscription tier before processing AI requests
+ * @param ctx - tRPC context with Supabase client and user
+ * @param requiredTier - Minimum tier required ("pro" or "premium")
+ * @param feature - Optional feature name for logging
+ * @throws TRPCError with UNAUTHORIZED code if subscription insufficient
+ */
+async function verifySubscriptionTier(
+  ctx: any,
+  requiredTier: "pro" | "premium",
+  feature?: string
+): Promise<void> {
+  // Fetch current subscription status
+  const { data: profile, error } = await ctx.supabase
+    .from("profiles")
+    .select("subscription_tier, subscription_expiry")
+    .eq("id", ctx.user.id)
+    .single();
+
+  if (error) {
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: `Failed to verify subscription: ${error.message}`,
+    });
+  }
+
+  if (!profile) {
+    throw new TRPCError({
+      code: "NOT_FOUND",
+      message: "User profile not found.",
+    });
+  }
+
+  // Check if subscription is active
+  const now = new Date();
+  const expiryDate = profile.subscription_expiry ? new Date(profile.subscription_expiry) : null;
+  const isActive = expiryDate ? expiryDate > now : false;
+
+  // Check tier hierarchy
+  const userTier = profile.subscription_tier as SubscriptionTier;
+  const hasRequiredTier = TIER_HIERARCHY[userTier] >= TIER_HIERARCHY[requiredTier];
+
+  // Grant access only if subscription is active AND tier is sufficient
+  const hasAccess = isActive && hasRequiredTier;
+
+  if (!hasAccess) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: `This feature requires an active ${requiredTier} subscription. Your current tier: ${userTier} (${isActive ? "active" : "expired"})`,
+    });
+  }
+}
 
 // ---------------------------------------------------------------------------
 // Lazy OpenAI client — created on first use to avoid crash if key is missing
@@ -27,12 +85,19 @@ function getClient(): OpenAI {
   return _openai;
 }
 
+const ALLOWED_CHAT_MODELS = ["gpt-4o-mini"] as const;
+const MAX_CHAT_MESSAGES = 20;
+const MAX_MESSAGE_LENGTH = 4000;
+const MAX_SYSTEM_PROMPT_LENGTH = 1000;
+const MAX_AUDIO_BASE64_LENGTH = 7_000_000;
+const MAX_IMAGE_BASE64_LENGTH = 7_000_000;
+
 // ---------------------------------------------------------------------------
 // Schemas
 // ---------------------------------------------------------------------------
 const messageSchema = z.object({
   role: z.enum(["user", "assistant", "system"]),
-  content: z.string(),
+  content: z.string().min(1).max(MAX_MESSAGE_LENGTH),
 });
 
 export const aiRouter = createTRPCRouter({
@@ -45,11 +110,18 @@ export const aiRouter = createTRPCRouter({
     .input(
       z.object({
         messages: z.array(messageSchema).min(1),
-        systemPrompt: z.string().optional(),
-        model: z.string().optional().default("gpt-4o-mini"),
+        systemPrompt: z.string().max(MAX_SYSTEM_PROMPT_LENGTH).optional(),
+        model: z.enum(ALLOWED_CHAT_MODELS).optional().default("gpt-4o-mini"),
+      })
+      .refine((value) => value.messages.length <= MAX_CHAT_MESSAGES, {
+        message: `A maximum of ${MAX_CHAT_MESSAGES} messages is allowed per request.`,
+        path: ["messages"],
       })
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
+      // Subscription verification - pro tier required for AI chat
+      await verifySubscriptionTier(ctx, 'pro');
+
       const openai = getClient();
 
       const systemMessage: OpenAI.ChatCompletionMessageParam = {
@@ -84,11 +156,18 @@ export const aiRouter = createTRPCRouter({
     .input(
       z.object({
         audioBase64: z.string(),
-        mimeType: z.string().default("audio/m4a"),
-        language: z.string().default("fr"),
+        mimeType: z.string().min(3).max(100).default("audio/m4a"),
+        language: z.string().min(2).max(10).default("fr"),
+      })
+      .refine((value) => value.audioBase64.length <= MAX_AUDIO_BASE64_LENGTH, {
+        message: "Audio payload too large.",
+        path: ["audioBase64"],
       })
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
+      // Subscription verification - pro tier required for audio transcription
+      await verifySubscriptionTier(ctx.supabase, ctx.user.id, 'pro');
+
       const openai = getClient();
 
       // Convert base64 → Buffer → File
@@ -116,11 +195,18 @@ export const aiRouter = createTRPCRouter({
     .input(
       z.object({
         imageBase64: z.string(),
-        catName: z.string().optional(),
-        catAge: z.string().optional(),
+        catName: z.string().max(80).optional(),
+        catAge: z.string().max(40).optional(),
+      })
+      .refine((value) => value.imageBase64.length <= MAX_IMAGE_BASE64_LENGTH, {
+        message: "Image payload too large.",
+        path: ["imageBase64"],
       })
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
+      // Subscription verification - pro tier required for image analysis
+      await verifySubscriptionTier(ctx, 'pro');
+
       const openai = getClient();
 
       const catInfo = input.catName
@@ -174,14 +260,17 @@ export const aiRouter = createTRPCRouter({
   generateHealthInsights: protectedProcedure
     .input(
       z.object({
-        catName: z.string(),
-        catAge: z.string().optional(),
+        catName: z.string().min(1).max(80),
+        catAge: z.string().max(40).optional(),
         recentLogs: z.array(z.any()).max(14),
         weightHistory: z.array(z.any()).max(10),
         medicalRecords: z.array(z.any()).optional(),
       })
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
+      // Subscription verification - pro tier required for health insights generation
+      await verifySubscriptionTier(ctx, 'pro');
+
       const openai = getClient();
 
       const prompt = `Analyze this cat's health data and provide insights. Respond ONLY with valid JSON.
@@ -227,14 +316,21 @@ Return JSON matching:
    * POST /trpc/ai.breedIdentify
    * Identifies a cat's breed from a photo using GPT-4o Vision.
    */
-  breedIdentify: publicProcedure
+  breedIdentify: protectedProcedure
     .input(
       z.object({
         imageBase64: z.string(),
-        language: z.string().default("fr"),
+        language: z.string().min(2).max(10).default("fr"),
+      })
+      .refine((value) => value.imageBase64.length <= MAX_IMAGE_BASE64_LENGTH, {
+        message: "Image payload too large.",
+        path: ["imageBase64"],
       })
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
+      // Subscription verification - pro tier required for breed identification
+      await verifySubscriptionTier(ctx, 'pro');
+
       const openai = getClient();
 
       const response = await openai.chat.completions.create({

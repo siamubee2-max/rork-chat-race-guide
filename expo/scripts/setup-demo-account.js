@@ -7,7 +7,8 @@
  *
  *   node scripts/setup-demo-account.js
  *
- * Requires EXPO_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in .env
+ * Requires EXPO_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY,
+ * DEMO_ACCOUNT_EMAIL and DEMO_ACCOUNT_PASSWORD in .env
  */
 
 require('dotenv').config();
@@ -15,11 +16,11 @@ const { createClient } = require('@supabase/supabase-js');
 
 const SUPABASE_URL = process.env.EXPO_PUBLIC_SUPABASE_URL;
 const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const DEMO_EMAIL = process.env.EXPO_PUBLIC_DEMO_EMAIL ?? 'demo@purrly.app';
-const DEMO_PASSWORD = process.env.EXPO_PUBLIC_DEMO_PASSWORD ?? 'Demo1234!';
+const DEMO_EMAIL = process.env.DEMO_ACCOUNT_EMAIL ?? 'demo@purrly.app';
+const DEMO_PASSWORD = process.env.DEMO_ACCOUNT_PASSWORD;
 
-if (!SUPABASE_URL || !SERVICE_KEY) {
-  console.error('❌ Missing EXPO_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY in .env');
+if (!SUPABASE_URL || !SERVICE_KEY || !DEMO_PASSWORD) {
+  console.error('❌ Missing EXPO_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, or DEMO_ACCOUNT_PASSWORD in .env');
   process.exit(1);
 }
 
@@ -81,7 +82,7 @@ async function main() {
   console.log('✅ Profile set to Premium tier');
   console.log('\n📱 Demo account ready for App Review:');
   console.log(`   Email    : ${DEMO_EMAIL}`);
-  console.log(`   Password : ${DEMO_PASSWORD}`);
+  console.log('   Password : [configured in DEMO_ACCOUNT_PASSWORD]');
   console.log(`   Plan     : Premium\n`);
 }
 

@@ -111,7 +111,7 @@ export default function LanguageSelectScreen() {
               ]}
               testID="confirm-language"
             >
-              <Sparkles color="#fff" size={20} />
+              <Sparkles color="#0C0A09" size={20} />
               <Text style={styles.confirmText}>
                 {selectedLang === 'fr' ? 'Continuer' : 
                  selectedLang === 'es' ? 'Continuar' :
@@ -268,6 +268,6 @@ const styles = StyleSheet.create({
   confirmText: {
     fontSize: 18,
     fontWeight: '700' as const,
-    color: '#fff',
+    color: '#0C0A09',
   },
 });

@@ -113,7 +113,7 @@ export default function LoginScreen() {
               isLoading && styles.buttonDisabled,
             ]}
           >
-            <LogIn color="#fff" size={20} />
+            <LogIn color="#0C0A09" size={20} />
             <Text style={styles.buttonText}>
               {isLoading ? "Connexion..." : "Se connecter"}
             </Text>
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   buttonText: {
-    color: "#fff",
+    color: "#0C0A09",
     fontSize: 16,
     fontWeight: "800",
   },

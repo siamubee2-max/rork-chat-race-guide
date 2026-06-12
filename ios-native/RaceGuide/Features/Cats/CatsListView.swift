@@ -1,0 +1,100 @@
+import SwiftUI
+
+struct CatsListView: View {
+    @Environment(AppEnvironment.self) private var environment
+    @State private var showForm = false
+
+    var body: some View {
+        Group {
+            if environment.cats.cats.isEmpty {
+                empty
+            } else {
+                list
+            }
+        }
+        .purrlyScreenBackground()
+        .navigationTitle(String(localized: "cats.title"))
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button {
+                    showForm = true
+                } label: {
+                    Image(systemName: "plus")
+                }
+                .accessibilityLabel(String(localized: "cats.add"))
+            }
+        }
+        .sheet(isPresented: $showForm) {
+            CatFormView(cat: nil)
+        }
+    }
+
+    private var empty: some View {
+        VStack(spacing: 16) {
+            Image(systemName: "cat.fill")
+                .font(.system(size: 48))
+                .foregroundStyle(AppTheme.textMuted)
+            Text(String(localized: "cats.empty.title"))
+                .font(.title3.weight(.bold))
+                .foregroundStyle(AppTheme.ivory)
+            Text(String(localized: "cats.empty.body"))
+                .multilineTextAlignment(.center)
+                .foregroundStyle(AppTheme.textSecondary)
+                .padding(.horizontal, 32)
+            Button(String(localized: "cats.add")) { showForm = true }
+                .buttonStyle(GlassPrimaryButtonStyle())
+                .padding(.horizontal, 40)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private var list: some View {
+        List {
+            ForEach(environment.cats.cats) { cat in
+                NavigationLink(value: cat) {
+                    CatRow(cat: cat, breedName: environment.breeds.breed(id: cat.breedId)?.name)
+                }
+                .listRowBackground(AppTheme.backgroundCard)
+            }
+            .onDelete(perform: delete)
+        }
+        .listStyle(.plain)
+        .scrollContentBackground(.hidden)
+        .navigationDestination(for: CatProfile.self) { cat in
+            CatDetailView(cat: cat)
+        }
+    }
+
+    private func delete(at offsets: IndexSet) {
+        for index in offsets {
+            let id = environment.cats.cats[index].id
+            environment.cats.delete(id: id)
+        }
+    }
+}
+
+private struct CatRow: View {
+    let cat: CatProfile
+    let breedName: String?
+
+    var body: some View {
+        HStack(spacing: 12) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 14)
+                    .fill(AppTheme.backgroundSecondary)
+                    .frame(width: 56, height: 56)
+                Image(systemName: "cat.fill")
+                    .foregroundStyle(AppTheme.textMuted)
+            }
+            VStack(alignment: .leading, spacing: 4) {
+                Text(cat.name)
+                    .font(.headline)
+                    .foregroundStyle(AppTheme.ivory)
+                Text(breedName ?? String(localized: "cats.mixed"))
+                    .font(.caption)
+                    .foregroundStyle(AppTheme.textMuted)
+            }
+        }
+        .padding(.vertical, 4)
+    }
+}

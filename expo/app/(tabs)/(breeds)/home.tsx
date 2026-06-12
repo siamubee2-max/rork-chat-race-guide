@@ -126,7 +126,7 @@ export default function BreedsHomeScreen() {
         ]}
         onPress={onBreedersPress}
       >
-        <Globe color="#fff" size={18} />
+        <Globe color="#0C0A09" size={18} />
         <Text style={styles.mapButtonText}>{t('breeds.worldMap')}</Text>
       </Pressable>
 
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   mapButtonText: {
-    color: "#fff",
+    color: "#0C0A09",
     fontSize: 15,
     fontWeight: "700",
   },

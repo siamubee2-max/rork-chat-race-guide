@@ -26,10 +26,6 @@ const VIP_EMAILS: string[] = (
   .map((e) => e.trim().toLowerCase())
   .filter(Boolean);
 
-// Apple/Google review demo account — set in .env, never hardcoded
-export const DEMO_EMAIL = process.env.EXPO_PUBLIC_DEMO_EMAIL ?? 'demo@purrly.app';
-export const DEMO_PASSWORD = process.env.EXPO_PUBLIC_DEMO_PASSWORD ?? 'Demo1234!';
-
 const mapProfile = (profile: any): User => ({
   id: profile.id,
   email: profile.email,
@@ -119,18 +115,25 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
     name: string
   ): Promise<{ success: boolean; error?: string }> => {
     try {
+      const normalizedEmail = email.trim().toLowerCase();
+      const normalizedName = name.trim();
+
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
+      if (!emailRegex.test(normalizedEmail)) {
         return { success: false, error: "Adresse email invalide" };
       }
 
-      const isVip = VIP_EMAILS.includes(email.toLowerCase());
+      if (!normalizedName) {
+        return { success: false, error: "Le nom est requis" };
+      }
+
+      const isVip = VIP_EMAILS.includes(normalizedEmail);
 
       const { data, error } = await supabase.auth.signUp({
-        email,
+        email: normalizedEmail,
         password,
         options: {
-          data: { name },
+          data: { name: normalizedName },
           // Skip email confirmation for demo
           emailRedirectTo: undefined,
         },
@@ -154,8 +157,8 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
         try {
           const { error: upsertError } = await supabase.from('profiles').upsert({
             id: data.user.id,
-            email,
-            name,
+            email: normalizedEmail,
+            name: normalizedName,
             subscription_tier: isVip ? 'pro' : 'free',
             subscription_expiry: isVip ? LIFETIME_EXPIRY : null,
           });
@@ -186,7 +189,8 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
     password: string
   ): Promise<{ success: boolean; error?: string }> => {
     try {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      const normalizedEmail = email.trim().toLowerCase();
+      const { error } = await supabase.auth.signInWithPassword({ email: normalizedEmail, password });
 
       if (error) {
         if (error.message.includes('Invalid login credentials')) {
@@ -255,19 +259,28 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
           ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
           : null;
 
-      const { error } = await supabase
-        .from('profiles')
-        .update({
-          subscription_tier: tier,
-          subscription_expiry: expiry,
-        })
-        .eq('id', currentUser.id);
+      if (tier === 'free') {
+        const { error } = await supabase
+          .from('profiles')
+          .update({
+            subscription_tier: 'free',
+            subscription_expiry: null,
+          })
+          .eq('id', currentUser.id);
 
-      if (!error) {
-        setCurrentUser((prev) =>
-          prev ? { ...prev, subscriptionTier: tier, subscriptionExpiry: expiry ?? undefined } : null
-        );
+        if (error) {
+          if (__DEV__) console.error("Error downgrading subscription:", error);
+          return;
+        }
       }
+
+      if (__DEV__ && tier !== 'free') {
+        console.warn('[Auth] Skipping client-side persistence for paid tier update');
+      }
+
+      setCurrentUser((prev) =>
+        prev ? { ...prev, subscriptionTier: tier, subscriptionExpiry: expiry ?? undefined } : null
+      );
     } catch (error) {
       if (__DEV__) console.error("Error updating subscription:", error);
     }

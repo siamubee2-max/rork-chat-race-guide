@@ -3,14 +3,21 @@ import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 import { createClient } from "@supabase/supabase-js";
 import superjson from "superjson";
 
+const getRequiredServerEnv = (name: string): string => {
+  const value = process.env[name]?.trim();
+
+  if (!value) {
+    throw new Error(`[tRPC] Missing required server environment variable: ${name}`);
+  }
+
+  return value;
+};
+
 // ---------------------------------------------------------------------------
 // Supabase admin client
 // ---------------------------------------------------------------------------
-const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL ?? "";
-const supabaseKey =
-  process.env.SUPABASE_SERVICE_ROLE_KEY ??
-  process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ??
-  "";
+const supabaseUrl = getRequiredServerEnv("EXPO_PUBLIC_SUPABASE_URL");
+const supabaseKey = getRequiredServerEnv("SUPABASE_SERVICE_ROLE_KEY");
 
 // OpenAI API key — server-side only, never sent to client
 export const getOpenAIKey = (): string => {

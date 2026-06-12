@@ -13,9 +13,6 @@ import type { SubscriptionTier } from "../../../lib/supabase";
 // ---------------------------------------------------------------------------
 const updateProfileSchema = z.object({
   name: z.string().min(1).max(100).optional(),
-  subscription_tier: z
-    .enum(["free", "premium", "premium_plus", "family", "pro"])
-    .optional(),
 });
 
 export const profileRouter = createTRPCRouter({
