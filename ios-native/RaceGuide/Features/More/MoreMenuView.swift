@@ -2,61 +2,104 @@ import SwiftUI
 
 struct MoreMenuView: View {
     @Environment(AppEnvironment.self) private var environment
+    @State private var showPaywall = false
 
     var body: some View {
         List {
-            if let user = environment.auth.currentUser {
-                Section {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(user.name.isEmpty ? user.email : user.name)
-                            .font(.headline)
-                            .foregroundStyle(AppTheme.ivory)
-                        Text(user.email)
-                            .font(.caption)
-                            .foregroundStyle(AppTheme.textMuted)
-                        Text(user.subscriptionTier.rawValue.uppercased())
-                            .font(.caption2.weight(.bold))
-                            .foregroundStyle(AppTheme.primary)
-                    }
-                    .padding(.vertical, 4)
-                }
-                .listRowBackground(AppTheme.backgroundCard)
-            }
-
-            Section(String(localized: "more.discover")) {
-                NavigationLink {
-                    BreedListView()
-                } label: {
-                    row(icon: "book.closed.fill", title: String(localized: "more.breeds"), subtitle: String(localized: "more.breeds.sub"))
+            Section("Assistant") {
+                NavigationLink(destination: AssistantChatView()) {
+                    MoreRow(symbol: "sparkles", title: "Assistant IA",
+                            subtitle: environment.limits.isPremium
+                                ? "Illimité"
+                                : "\(environment.limits.aiMessagesRemaining) messages restants",
+                            tint: .purple)
                 }
             }
             .listRowBackground(AppTheme.backgroundCard)
 
-            Section(String(localized: "more.account")) {
+            Section("Outils") {
+                NavigationLink(destination: PracticalHomeView()) {
+                    MoreRow(symbol: "creditcard", title: "Pratique",
+                            subtitle: "Dépenses & outils", tint: AppTheme.primary)
+                }
+                NavigationLink(destination: GamificationView()) {
+                    MoreRow(symbol: "trophy.fill", title: "Progression",
+                            subtitle: "Niveau \(environment.gamification.level) · \(environment.gamification.totalXP) XP",
+                            tint: .yellow)
+                }
+                NavigationLink(destination: DiscussionsListView()) {
+                    MoreRow(symbol: "bubble.left.and.bubble.right.fill", title: "Forum",
+                            subtitle: "\(environment.discussions.threads.count) discussions",
+                            tint: .cyan)
+                }
+            }
+            .listRowBackground(AppTheme.backgroundCard)
+
+            Section("Compte") {
+                if !environment.limits.isPremium {
+                    Button { showPaywall = true } label: {
+                        MoreRow(symbol: "crown.fill", title: "Purrly Premium",
+                                subtitle: "14,99 $/mois", tint: AppTheme.primary)
+                    }
+                }
+                NavigationLink(destination: AboutView()) {
+                    MoreRow(symbol: "info.circle", title: "À propos",
+                            subtitle: "Version 1.0.0", tint: AppTheme.textMuted)
+                }
+                NavigationLink(destination: FAQView()) {
+                    MoreRow(symbol: "questionmark.circle", title: "FAQ",
+                            subtitle: nil, tint: AppTheme.textMuted)
+                }
+                NavigationLink(destination: PrivacyView()) {
+                    MoreRow(symbol: "hand.raised.fill", title: "Confidentialité",
+                            subtitle: nil, tint: AppTheme.textMuted)
+                }
+                NavigationLink(destination: TermsView()) {
+                    MoreRow(symbol: "doc.text", title: "Conditions",
+                            subtitle: nil, tint: AppTheme.textMuted)
+                }
+            }
+            .listRowBackground(AppTheme.backgroundCard)
+
+            Section {
                 Button(role: .destructive) {
                     Task { await environment.auth.signOut() }
                 } label: {
-                    Label(String(localized: "auth.logout"), systemImage: "rectangle.portrait.and.arrow.right")
+                    MoreRow(symbol: "rectangle.portrait.and.arrow.right",
+                            title: "Se déconnecter", subtitle: nil, tint: .red)
                 }
             }
             .listRowBackground(AppTheme.backgroundCard)
         }
         .listStyle(.insetGrouped)
         .scrollContentBackground(.hidden)
+        .navigationTitle("Plus")
+        .sheet(isPresented: $showPaywall) {
+            PaywallView(feature: .extraCat)
+        }
         .purrlyScreenBackground()
-        .navigationTitle(String(localized: "tab.more"))
     }
+}
 
-    private func row(icon: String, title: String, subtitle: String) -> some View {
-        HStack(spacing: 12) {
-            Image(systemName: icon)
-                .foregroundStyle(AppTheme.primary)
-                .frame(width: 28)
+private struct MoreRow: View {
+    let symbol: String
+    let title: String
+    let subtitle: String?
+    let tint: Color
+
+    var body: some View {
+        HStack(spacing: 14) {
+            Image(systemName: symbol)
+                .font(.system(size: 18))
+                .foregroundStyle(tint)
+                .frame(width: 32)
             VStack(alignment: .leading, spacing: 2) {
-                Text(title).foregroundStyle(AppTheme.ivory)
-                Text(subtitle).font(.caption).foregroundStyle(AppTheme.textMuted)
+                Text(title).foregroundStyle(AppTheme.ivory).font(.body)
+                if let sub = subtitle {
+                    Text(sub).foregroundStyle(AppTheme.textMuted).font(.caption)
+                }
             }
         }
-        .frame(minHeight: AppTheme.minTouch)
+        .padding(.vertical, 2)
     }
 }

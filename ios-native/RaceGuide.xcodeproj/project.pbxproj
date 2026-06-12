@@ -30,6 +30,7 @@
 		64E1EE8E94114963A7DE2184 /* DiscussionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354413C4A3AA1BCD295D8233 /* DiscussionDetailView.swift */; };
 		6533518AF658BF62AB7222A0 /* Breed.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7A9C261E97B97A6EEAFB7A /* Breed.swift */; };
 		6A3135278D34A6A092B55729 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCEFD2EF95258F034DDC63A /* Achievement.swift */; };
+		6B0FBF463068E1848BB1C33C /* FAQView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCDB8B3C1979CBE2390DDB4 /* FAQView.swift */; };
 		6D04AA171A66D87ABB7C601F /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1504AABD5A8A6CE5746F2E16 /* PaywallView.swift */; };
 		729C703F893A8C2DFEF93266 /* AssistantChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE50E248668FB9677E130C27 /* AssistantChatView.swift */; };
 		778EA930D506EB32D8FBCCDB /* CatsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 919782F656AA116A394EA934 /* CatsListView.swift */; };
@@ -38,8 +39,10 @@
 		7B3F77867021A4F921E581D6 /* BreedListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F59CE78464A949D6B246311 /* BreedListView.swift */; };
 		7C5732C5521F89DC1FD55699 /* DiscussionThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCC6D0C918FAACB36D19B56 /* DiscussionThread.swift */; };
 		879477C78A0DD973E5DBFD1B /* GamificationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E7E071606E247CCF73DBB4 /* GamificationStore.swift */; };
+		8B5528BF01E20A7D9121AC9E /* PrivacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F570CA68E778F50872E1473 /* PrivacyView.swift */; };
 		928E91C2CD1BADC57A10F709 /* ScanHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DFF005469913EF8113CCB9B /* ScanHomeView.swift */; };
 		97B9733307B45F8B328EF5EF /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89793B2AC67333CC1E8A8178 /* LoginView.swift */; };
+		97C694447902ED4F3F5C4AD1 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73C7C1AA693FE3A99D744E58 /* AboutView.swift */; };
 		9FF623074864F821D665B3F0 /* UsageLimits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93223CECB9048BABDD3391C3 /* UsageLimits.swift */; };
 		A1ECE462148C1C3A6CEE7E3A /* BreedCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BEF6ED797F4E50DEA0674D /* BreedCatalog.swift */; };
 		A4384C25037A509EC5FCF130 /* RaceGuideApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2378A802F47AA1F2B7B6145 /* RaceGuideApp.swift */; };
@@ -53,6 +56,7 @@
 		B96ADAE05CB507F374191CF6 /* CommunityHubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C41DC0D999D51AA12DA79F /* CommunityHubView.swift */; };
 		BA957D4DF8CBCF490BA72852 /* CatFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A95025F9C0A3D78B0013EE4B /* CatFormView.swift */; };
 		CAD195320253EA18C6F3A13F /* EmergencyStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D38DC700EA2DFCD69031E3A /* EmergencyStoreTests.swift */; };
+		CC1F8F2ED51E5D0A7BDF51E8 /* TermsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751364949B8804C3201CDFD8 /* TermsView.swift */; };
 		CFFE254AEDA94C69356AEAD0 /* DiscussionsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82171EE787D6A3D17E87F8D1 /* DiscussionsListView.swift */; };
 		D46BDEF5202D7EC631399818 /* BreedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378EA510B8B12941636E7C03 /* BreedDetailView.swift */; };
 		E0A8C1482DD49F66DFD86359 /* ExpenseStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BCE17156EB99C4DD2B34BC7 /* ExpenseStoreTests.swift */; };
@@ -100,11 +104,15 @@
 		54E4B00F6CA82A1CB6C39FD3 /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
 		59E5C010875AB7328B9CC5ED /* RaceGuideTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = RaceGuideTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A44E4B8CF7D7DB79482F338 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		5DCDB8B3C1979CBE2390DDB4 /* FAQView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQView.swift; sourceTree = "<group>"; };
 		5F74E2EB04F17C6268837013 /* ExpenseStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseStore.swift; sourceTree = "<group>"; };
 		72BEF6ED797F4E50DEA0674D /* BreedCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedCatalog.swift; sourceTree = "<group>"; };
 		73569926D80945533CE47BC5 /* EmergencyAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmergencyAlert.swift; sourceTree = "<group>"; };
+		73C7C1AA693FE3A99D744E58 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		751364949B8804C3201CDFD8 /* TermsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsView.swift; sourceTree = "<group>"; };
 		7C43D1DC3CF133E0A0DECDD1 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
 		7C8001E6853DA77BF863CD92 /* AchievementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsView.swift; sourceTree = "<group>"; };
+		7F570CA68E778F50872E1473 /* PrivacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyView.swift; sourceTree = "<group>"; };
 		7FCC6D0C918FAACB36D19B56 /* DiscussionThread.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionThread.swift; sourceTree = "<group>"; };
 		82171EE787D6A3D17E87F8D1 /* DiscussionsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionsListView.swift; sourceTree = "<group>"; };
 		84F8661B7F6E267558AFDC82 /* VetDetailSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VetDetailSheet.swift; sourceTree = "<group>"; };
@@ -156,7 +164,11 @@
 		05B74D43B5DF939C8A7BA1B1 /* More */ = {
 			isa = PBXGroup;
 			children = (
+				73C7C1AA693FE3A99D744E58 /* AboutView.swift */,
+				5DCDB8B3C1979CBE2390DDB4 /* FAQView.swift */,
 				ACBE40D0FF8E7A3E33F557B8 /* MoreMenuView.swift */,
+				7F570CA68E778F50872E1473 /* PrivacyView.swift */,
+				751364949B8804C3201CDFD8 /* TermsView.swift */,
 			);
 			path = More;
 			sourceTree = "<group>";
@@ -508,6 +520,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3DB6BF2B736655EC5199CE8C /* AIChatService.swift in Sources */,
+				97C694447902ED4F3F5C4AD1 /* AboutView.swift in Sources */,
 				6A3135278D34A6A092B55729 /* Achievement.swift in Sources */,
 				083E959E44DBC69CFBAEAD56 /* AchievementsView.swift in Sources */,
 				4E1FB0E9C6827D4B01CA86B2 /* AppConfiguration.swift in Sources */,
@@ -538,6 +551,7 @@
 				3FD84E672FB4BF44BACE8273 /* ExpenseFormView.swift in Sources */,
 				F26AD58FCDD2A4E1471D6AA8 /* ExpenseStore.swift in Sources */,
 				5DB64F6D4352CB0E71D58292 /* ExpensesListView.swift in Sources */,
+				6B0FBF463068E1848BB1C33C /* FAQView.swift in Sources */,
 				879477C78A0DD973E5DBFD1B /* GamificationStore.swift in Sources */,
 				05224E2069062977E558E57C /* GamificationView.swift in Sources */,
 				E8E05FC978D515D3DCD724A8 /* GlassChrome.swift in Sources */,
@@ -549,10 +563,12 @@
 				B72E4EED20F9236F8C82FD31 /* NewDiscussionView.swift in Sources */,
 				6D04AA171A66D87ABB7C601F /* PaywallView.swift in Sources */,
 				B5B3FC4C74624663F68B41DB /* PracticalHomeView.swift in Sources */,
+				8B5528BF01E20A7D9121AC9E /* PrivacyView.swift in Sources */,
 				A4384C25037A509EC5FCF130 /* RaceGuideApp.swift in Sources */,
 				79748AEB38102672313B25FB /* RootView.swift in Sources */,
 				928E91C2CD1BADC57A10F709 /* ScanHomeView.swift in Sources */,
 				79963BECB5F50DC4F5422971 /* SignupView.swift in Sources */,
+				CC1F8F2ED51E5D0A7BDF51E8 /* TermsView.swift in Sources */,
 				9FF623074864F821D665B3F0 /* UsageLimits.swift in Sources */,
 				49B285C4C1E3983175FCAFB9 /* UserProfile.swift in Sources */,
 				15F945E500861F1BEE7DC396 /* VetDetailSheet.swift in Sources */,
