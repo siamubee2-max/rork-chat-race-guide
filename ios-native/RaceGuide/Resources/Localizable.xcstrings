@@ -85,7 +85,8 @@
     "emergency.form.phone" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Téléphone de contact" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Contact phone" } } } },
     "emergency.error.catNameRequired" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Le nom du chat est requis." } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Cat name is required." } } } },
     "emergency.error.locationRequired" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "La localisation est requise." } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Location is required." } } } },
-    "common.publish" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Publier" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Publish" } } } }
+    "common.publish" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Publier" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Publish" } } } },
+    "vets.title" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Vétérinaires" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Vets" } } } }
   },
   "version" : "1.0"
 }
