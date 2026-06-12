@@ -11,6 +11,9 @@ final class AppEnvironment {
     let aiChat = AIChatService()
     let limits = UsageLimits()
     let emergency = EmergencyStore()
+    let discussions = DiscussionsStore()
+    let expenses = ExpenseStore()
+    let gamification = GamificationStore()
 
     var hasSelectedLanguage: Bool {
         get { UserDefaults.standard.bool(forKey: "language_selected") }
