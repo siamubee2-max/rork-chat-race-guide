@@ -34,7 +34,7 @@ struct CommunityEvent: Identifiable, Hashable {
     let date: Date
 }
 
-struct ChatMessage: Identifiable, Hashable {
+struct ChatMessage: Identifiable, Hashable, Codable {
     let id: String
     let role: ChatRole
     let content: String

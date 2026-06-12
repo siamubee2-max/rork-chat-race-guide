@@ -3,7 +3,7 @@ import SwiftUI
 struct AssistantChatView: View {
     @Environment(AppEnvironment.self) private var environment
     @State private var input = ""
-    @State private var messages: [ChatMessage] = []
+    @State private var messages: [ChatMessage] = AssistantChatView.loadHistory()
     @State private var isLoading = false
     @State private var errorText: String?
     @FocusState private var focused: Bool
@@ -132,6 +132,24 @@ struct AssistantChatView: View {
         .background(.ultraThinMaterial)
     }
 
+    // MARK: – Persistence
+
+    private static let historyKey = "assistant_chat_history"
+
+    private static func loadHistory() -> [ChatMessage] {
+        guard let data = UserDefaults.standard.data(forKey: historyKey),
+              let messages = try? JSONDecoder().decode([ChatMessage].self, from: data)
+        else { return [] }
+        return messages
+    }
+
+    private static func saveHistory(_ messages: [ChatMessage]) {
+        let trimmed = Array(messages.suffix(50))
+        if let data = try? JSONEncoder().encode(trimmed) {
+            UserDefaults.standard.set(data, forKey: historyKey)
+        }
+    }
+
     private func send(_ text: String) {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
@@ -145,6 +163,7 @@ struct AssistantChatView: View {
             createdAt: Date()
         )
         messages.append(userMessage)
+        AssistantChatView.saveHistory(messages)
         isLoading = true
 
         Task {
@@ -164,6 +183,7 @@ struct AssistantChatView: View {
                         createdAt: Date()
                     )
                 )
+                AssistantChatView.saveHistory(messages)
             } catch {
                 errorText = error.localizedDescription
                 messages.append(
@@ -174,6 +194,7 @@ struct AssistantChatView: View {
                         createdAt: Date()
                     )
                 )
+                AssistantChatView.saveHistory(messages)
             }
             isLoading = false
         }
