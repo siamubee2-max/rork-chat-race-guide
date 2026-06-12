@@ -43,6 +43,7 @@
 		EB60A983A9983D9AC5A1B276 /* CatProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = F406FFD8AB49EC591917A5DF /* CatProfile.swift */; };
 		F5D35DB7D17278272C6674F7 /* EmergencyHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BF6B5E75E72251616CB3FB /* EmergencyHomeView.swift */; };
 		F628E6904F680223C8B588B0 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C43D1DC3CF133E0A0DECDD1 /* AppEnvironment.swift */; };
+		F7A3C1D2E8B54F309A1DC02E /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E45A1F9C3D7E8406F1A53B /* PaywallView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +69,7 @@
 		44425996E7452896490AD79B /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		4EE10D810454E5BC75C3FFDF /* KeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStore.swift; sourceTree = "<group>"; };
 		52BF6B5E75E72251616CB3FB /* EmergencyHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmergencyHomeView.swift; sourceTree = "<group>"; };
+		B2E45A1F9C3D7E8406F1A53B /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		54E4B00F6CA82A1CB6C39FD3 /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
 		59E5C010875AB7328B9CC5ED /* RaceGuideTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = RaceGuideTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A44E4B8CF7D7DB79482F338 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 				05B74D43B5DF939C8A7BA1B1 /* More */,
 				D064CE467A10869EA88C5603 /* Onboarding */,
 				76D1F609DDB37F2841502C80 /* Scan */,
+				A9F3B72C1D05E46B8C2E0F17 /* Subscription */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -263,6 +266,14 @@
 				52BF6B5E75E72251616CB3FB /* EmergencyHomeView.swift */,
 			);
 			path = Emergency;
+			sourceTree = "<group>";
+		};
+		A9F3B72C1D05E46B8C2E0F17 /* Subscription */ = {
+			isa = PBXGroup;
+			children = (
+				B2E45A1F9C3D7E8406F1A53B /* PaywallView.swift */,
+			);
+			path = Subscription;
 			sourceTree = "<group>";
 		};
 		D064CE467A10869EA88C5603 /* Onboarding */ = {
@@ -431,6 +442,7 @@
 				79963BECB5F50DC4F5422971 /* SignupView.swift in Sources */,
 				9FF623074864F821D665B3F0 /* UsageLimits.swift in Sources */,
 				49B285C4C1E3983175FCAFB9 /* UserProfile.swift in Sources */,
+				F7A3C1D2E8B54F309A1DC02E /* PaywallView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

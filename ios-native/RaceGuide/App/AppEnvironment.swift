@@ -9,6 +9,7 @@ final class AppEnvironment {
     let cats = CatPersistence()
     let community = CommunityStore()
     let aiChat = AIChatService()
+    let limits = UsageLimits()
 
     var hasSelectedLanguage: Bool {
         get { UserDefaults.standard.bool(forKey: "language_selected") }

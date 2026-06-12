@@ -61,7 +61,15 @@
     "more.discover" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Découvrir" } } } },
     "more.breeds" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Races de chats" } } } },
     "more.breeds.sub" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "96 fiches exportées depuis l'app Expo" } } } },
-    "more.account" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Compte" } } } }
+    "more.account" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Compte" } } } },
+    "paywall.extraCat.title" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Deuxième chat" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Second cat" } } } },
+    "paywall.extraCat.body" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Le plan Free inclut 1 chat. Passe en Premium pour en ajouter autant que tu veux." } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Free plan includes 1 cat. Upgrade to Premium to add as many as you want." } } } },
+    "paywall.aiMessage.title" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "15 messages utilisés" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "15 messages used" } } } },
+    "paywall.aiMessage.body" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Tu as atteint la limite mensuelle de l'assistant IA. Premium = illimité." } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "You've reached the monthly AI assistant limit. Premium = unlimited." } } } },
+    "paywall.communityPost.title" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Participer à la communauté" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Join the community" } } } },
+    "paywall.communityPost.body" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "La lecture est gratuite. Poste et réponds avec Premium." } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Reading is free. Post and reply with Premium." } } } },
+    "paywall.upgrade" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Passer en Premium — 14,99 $/mois" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Upgrade to Premium — $14.99/month" } } } },
+    "paywall.notNow" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Pas maintenant" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Not now" } } } }
   },
   "version" : "1.0"
 }
