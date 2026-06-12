@@ -42,6 +42,10 @@
 		E94D9AAEDBF9EAA47BF24B6B /* breeds.json in Resources */ = {isa = PBXBuildFile; fileRef = 162A4F6FE3468138D4C4181D /* breeds.json */; };
 		EB60A983A9983D9AC5A1B276 /* CatProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = F406FFD8AB49EC591917A5DF /* CatProfile.swift */; };
 		F5D35DB7D17278272C6674F7 /* EmergencyHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BF6B5E75E72251616CB3FB /* EmergencyHomeView.swift */; };
+		AA11BB22CC33DD44EE550001 /* EmergencyAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA11BB22CC33DD44EE550011 /* EmergencyAlert.swift */; };
+		AA11BB22CC33DD44EE550002 /* EmergencyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA11BB22CC33DD44EE550012 /* EmergencyStore.swift */; };
+		AA11BB22CC33DD44EE550003 /* CreateAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA11BB22CC33DD44EE550013 /* CreateAlertView.swift */; };
+		AA11BB22CC33DD44EE550004 /* EmergencyStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA11BB22CC33DD44EE550014 /* EmergencyStoreTests.swift */; };
 		F628E6904F680223C8B588B0 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C43D1DC3CF133E0A0DECDD1 /* AppEnvironment.swift */; };
 		F7A3C1D2E8B54F309A1DC02E /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E45A1F9C3D7E8406F1A53B /* PaywallView.swift */; };
 /* End PBXBuildFile section */
@@ -69,6 +73,10 @@
 		44425996E7452896490AD79B /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		4EE10D810454E5BC75C3FFDF /* KeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStore.swift; sourceTree = "<group>"; };
 		52BF6B5E75E72251616CB3FB /* EmergencyHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmergencyHomeView.swift; sourceTree = "<group>"; };
+		AA11BB22CC33DD44EE550011 /* EmergencyAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmergencyAlert.swift; sourceTree = "<group>"; };
+		AA11BB22CC33DD44EE550012 /* EmergencyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmergencyStore.swift; sourceTree = "<group>"; };
+		AA11BB22CC33DD44EE550013 /* CreateAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAlertView.swift; sourceTree = "<group>"; };
+		AA11BB22CC33DD44EE550014 /* EmergencyStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmergencyStoreTests.swift; sourceTree = "<group>"; };
 		B2E45A1F9C3D7E8406F1A53B /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		54E4B00F6CA82A1CB6C39FD3 /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
 		59E5C010875AB7328B9CC5ED /* RaceGuideTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = RaceGuideTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -125,6 +133,7 @@
 				EA7A9C261E97B97A6EEAFB7A /* Breed.swift */,
 				F406FFD8AB49EC591917A5DF /* CatProfile.swift */,
 				3CAACA1B8C73124268F40BE4 /* UserProfile.swift */,
+				AA11BB22CC33DD44EE550011 /* EmergencyAlert.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -158,6 +167,7 @@
 			isa = PBXGroup;
 			children = (
 				0F9361DA1A93BA6CB5E37145 /* UsageLimitsTests.swift */,
+				AA11BB22CC33DD44EE550014 /* EmergencyStoreTests.swift */,
 			);
 			path = RaceGuideTests;
 			sourceTree = "<group>";
@@ -247,6 +257,7 @@
 				DAFC6147934953850951BB41 /* CommunityStore.swift */,
 				4EE10D810454E5BC75C3FFDF /* KeychainStore.swift */,
 				93223CECB9048BABDD3391C3 /* UsageLimits.swift */,
+				AA11BB22CC33DD44EE550012 /* EmergencyStore.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -264,6 +275,7 @@
 			isa = PBXGroup;
 			children = (
 				52BF6B5E75E72251616CB3FB /* EmergencyHomeView.swift */,
+				AA11BB22CC33DD44EE550013 /* CreateAlertView.swift */,
 			);
 			path = Emergency;
 			sourceTree = "<group>";
@@ -430,6 +442,9 @@
 				B96ADAE05CB507F374191CF6 /* CommunityHubView.swift in Sources */,
 				017781852D9ABFFE97231748 /* CommunityStore.swift in Sources */,
 				F5D35DB7D17278272C6674F7 /* EmergencyHomeView.swift in Sources */,
+				AA11BB22CC33DD44EE550001 /* EmergencyAlert.swift in Sources */,
+				AA11BB22CC33DD44EE550002 /* EmergencyStore.swift in Sources */,
+				AA11BB22CC33DD44EE550003 /* CreateAlertView.swift in Sources */,
 				E8E05FC978D515D3DCD724A8 /* GlassChrome.swift in Sources */,
 				329361C8FCF4895C502C17B9 /* KeychainStore.swift in Sources */,
 				ACB32E6B78B4A1762376C3D1 /* LanguageSelectView.swift in Sources */,
@@ -451,6 +466,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3F27221C0F4C832DD8B46503 /* UsageLimitsTests.swift in Sources */,
+				AA11BB22CC33DD44EE550004 /* EmergencyStoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -69,7 +69,23 @@
     "paywall.communityPost.title" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Participer à la communauté" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Join the community" } } } },
     "paywall.communityPost.body" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "La lecture est gratuite. Poste et réponds avec Premium." } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Reading is free. Post and reply with Premium." } } } },
     "paywall.upgrade" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Passer en Premium — 14,99 $/mois" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Upgrade to Premium — $14.99/month" } } } },
-    "paywall.notNow" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Pas maintenant" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Not now" } } } }
+    "paywall.notNow" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Pas maintenant" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Not now" } } } },
+    "emergency.title" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Urgences" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Emergency" } } } },
+    "emergency.type.lost" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Chat perdu" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Lost cat" } } } },
+    "emergency.type.injured" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Chat blessé" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Injured cat" } } } },
+    "emergency.type.found" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Chat trouvé" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Found cat" } } } },
+    "emergency.empty.title" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucune alerte active" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "No active alerts" } } } },
+    "emergency.empty.body" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Crée une alerte si ton chat est perdu, blessé, ou si tu en as trouvé un." } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Create an alert if your cat is lost, injured, or if you found one." } } } },
+    "emergency.createAlert" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Créer une alerte" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Create alert" } } } },
+    "emergency.form.type" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Type d'urgence" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Emergency type" } } } },
+    "emergency.form.info" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Informations" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Information" } } } },
+    "emergency.form.catName" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Nom du chat" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Cat name" } } } },
+    "emergency.form.location" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Localisation" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Location" } } } },
+    "emergency.form.description" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Description" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Description" } } } },
+    "emergency.form.phone" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Téléphone de contact" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Contact phone" } } } },
+    "emergency.error.catNameRequired" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Le nom du chat est requis." } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Cat name is required." } } } },
+    "emergency.error.locationRequired" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "La localisation est requise." } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Location is required." } } } },
+    "common.publish" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Publier" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Publish" } } } }
   },
   "version" : "1.0"
 }
