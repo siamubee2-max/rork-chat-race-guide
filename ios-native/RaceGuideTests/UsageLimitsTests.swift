@@ -41,4 +41,21 @@ final class UsageLimitsTests: XCTestCase {
         for _ in 0..<20 { sut.recordAIMessage() }
         XCTAssertTrue(sut.canSendAIMessage)
     }
+
+    func testAIMessagesRemaining() {
+        // fresh user → 15 remaining
+        XCTAssertEqual(sut.aiMessagesRemaining, 15)
+
+        // after 10 messages → 5 remaining
+        for _ in 0..<10 { sut.recordAIMessage() }
+        XCTAssertEqual(sut.aiMessagesRemaining, 5)
+
+        // after 15 total messages → 0 remaining
+        for _ in 0..<5 { sut.recordAIMessage() }
+        XCTAssertEqual(sut.aiMessagesRemaining, 0)
+
+        // premium user → Int.max remaining
+        sut.isPremium = true
+        XCTAssertEqual(sut.aiMessagesRemaining, Int.max)
+    }
 }

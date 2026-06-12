@@ -17,15 +17,15 @@ final class UsageLimits: ObservableObject {
 
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
-        self.isPremium = defaults.bool(forKey: "usage_premium")
-        let storedMonth = defaults.string(forKey: "usage_ai_month") ?? ""
+        self.isPremium = defaults.bool(forKey: premiumKey)
+        let storedMonth = defaults.string(forKey: monthKey) ?? ""
         let currentMonth = Self.currentMonthKey()
         if storedMonth == currentMonth {
-            self.aiMessagesThisMonth = defaults.integer(forKey: "usage_ai_count")
+            self.aiMessagesThisMonth = defaults.integer(forKey: countKey)
         } else {
             self.aiMessagesThisMonth = 0
-            defaults.set(currentMonth, forKey: "usage_ai_month")
-            defaults.set(0, forKey: "usage_ai_count")
+            defaults.set(currentMonth, forKey: monthKey)
+            defaults.set(0, forKey: countKey)
         }
     }
 
@@ -41,6 +41,8 @@ final class UsageLimits: ObservableObject {
         isPremium || currentCount < Self.freeCatLimit
     }
 
+    /// Records one AI message. No-op check for limit is the caller's responsibility.
+    /// Increments counter even when user is premium (for analytics).
     func recordAIMessage() {
         aiMessagesThisMonth += 1
         defaults.set(aiMessagesThisMonth, forKey: countKey)
