@@ -15,6 +15,7 @@
 		329361C8FCF4895C502C17B9 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE10D810454E5BC75C3FFDF /* KeychainStore.swift */; };
 		3DB6BF2B736655EC5199CE8C /* AIChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E70A6AA47D018FC82FDBA /* AIChatService.swift */; };
 		3DE85AA531E51CBDA345318B /* MoreMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBE40D0FF8E7A3E33F557B8 /* MoreMenuView.swift */; };
+		3F27221C0F4C832DD8B46503 /* UsageLimitsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F9361DA1A93BA6CB5E37145 /* UsageLimitsTests.swift */; };
 		49B285C4C1E3983175FCAFB9 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAACA1B8C73124268F40BE4 /* UserProfile.swift */; };
 		4E1FB0E9C6827D4B01CA86B2 /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54E4B00F6CA82A1CB6C39FD3 /* AppConfiguration.swift */; };
 		4FFA4FA3F7315AA6859C0956 /* Secrets.xcconfig.example in Resources */ = {isa = PBXBuildFile; fileRef = 8FAE2D7874D8EBFB7630DBD7 /* Secrets.xcconfig.example */; };
@@ -27,6 +28,7 @@
 		7B3F77867021A4F921E581D6 /* BreedListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F59CE78464A949D6B246311 /* BreedListView.swift */; };
 		928E91C2CD1BADC57A10F709 /* ScanHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DFF005469913EF8113CCB9B /* ScanHomeView.swift */; };
 		97B9733307B45F8B328EF5EF /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89793B2AC67333CC1E8A8178 /* LoginView.swift */; };
+		9FF623074864F821D665B3F0 /* UsageLimits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93223CECB9048BABDD3391C3 /* UsageLimits.swift */; };
 		A1ECE462148C1C3A6CEE7E3A /* BreedCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BEF6ED797F4E50DEA0674D /* BreedCatalog.swift */; };
 		A4384C25037A509EC5FCF130 /* RaceGuideApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2378A802F47AA1F2B7B6145 /* RaceGuideApp.swift */; };
 		A701FE9FDF418F9267D27997 /* CatDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF25182BA9A832414EFF3DC /* CatDetailView.swift */; };
@@ -39,6 +41,7 @@
 		E8E05FC978D515D3DCD724A8 /* GlassChrome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E99C00F2688997E30A9BA /* GlassChrome.swift */; };
 		E94D9AAEDBF9EAA47BF24B6B /* breeds.json in Resources */ = {isa = PBXBuildFile; fileRef = 162A4F6FE3468138D4C4181D /* breeds.json */; };
 		EB60A983A9983D9AC5A1B276 /* CatProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = F406FFD8AB49EC591917A5DF /* CatProfile.swift */; };
+		F5D35DB7D17278272C6674F7 /* EmergencyHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BF6B5E75E72251616CB3FB /* EmergencyHomeView.swift */; };
 		F628E6904F680223C8B588B0 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C43D1DC3CF133E0A0DECDD1 /* AppEnvironment.swift */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +56,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0F9361DA1A93BA6CB5E37145 /* UsageLimitsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageLimitsTests.swift; sourceTree = "<group>"; };
 		162A4F6FE3468138D4C4181D /* breeds.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = breeds.json; sourceTree = "<group>"; };
 		20C41DC0D999D51AA12DA79F /* CommunityHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityHubView.swift; sourceTree = "<group>"; };
 		2F59CE78464A949D6B246311 /* BreedListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedListView.swift; sourceTree = "<group>"; };
@@ -63,6 +67,7 @@
 		41A8EC19DF624F4F571198AA /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 		44425996E7452896490AD79B /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		4EE10D810454E5BC75C3FFDF /* KeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStore.swift; sourceTree = "<group>"; };
+		52BF6B5E75E72251616CB3FB /* EmergencyHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmergencyHomeView.swift; sourceTree = "<group>"; };
 		54E4B00F6CA82A1CB6C39FD3 /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
 		59E5C010875AB7328B9CC5ED /* RaceGuideTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = RaceGuideTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A44E4B8CF7D7DB79482F338 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
@@ -73,6 +78,7 @@
 		89793B2AC67333CC1E8A8178 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		8FAE2D7874D8EBFB7630DBD7 /* Secrets.xcconfig.example */ = {isa = PBXFileReference; path = Secrets.xcconfig.example; sourceTree = "<group>"; };
 		919782F656AA116A394EA934 /* CatsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatsListView.swift; sourceTree = "<group>"; };
+		93223CECB9048BABDD3391C3 /* UsageLimits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageLimits.swift; sourceTree = "<group>"; };
 		94D8E0AE813F77D7E8C9F2CD /* CatPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatPersistence.swift; sourceTree = "<group>"; };
 		9DFF005469913EF8113CCB9B /* ScanHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanHomeView.swift; sourceTree = "<group>"; };
 		A95025F9C0A3D78B0013EE4B /* CatFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatFormView.swift; sourceTree = "<group>"; };
@@ -129,6 +135,7 @@
 				E9987389E58C98FA3A6CC405 /* Breeds */,
 				530C4C03F7019991BE984618 /* Cats */,
 				4C864C52661B60B84135B9C3 /* Community */,
+				CF3C3E9BC3AEB50A6E5C6767 /* Emergency */,
 				05B74D43B5DF939C8A7BA1B1 /* More */,
 				D064CE467A10869EA88C5603 /* Onboarding */,
 				76D1F609DDB37F2841502C80 /* Scan */,
@@ -147,6 +154,7 @@
 		3178C45D266BB668C7BCB736 /* RaceGuideTests */ = {
 			isa = PBXGroup;
 			children = (
+				0F9361DA1A93BA6CB5E37145 /* UsageLimitsTests.swift */,
 			);
 			path = RaceGuideTests;
 			sourceTree = "<group>";
@@ -235,6 +243,7 @@
 				94D8E0AE813F77D7E8C9F2CD /* CatPersistence.swift */,
 				DAFC6147934953850951BB41 /* CommunityStore.swift */,
 				4EE10D810454E5BC75C3FFDF /* KeychainStore.swift */,
+				93223CECB9048BABDD3391C3 /* UsageLimits.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -246,6 +255,14 @@
 				E70BE71D6C139C277A5156D0 /* SignupView.swift */,
 			);
 			path = Auth;
+			sourceTree = "<group>";
+		};
+		CF3C3E9BC3AEB50A6E5C6767 /* Emergency */ = {
+			isa = PBXGroup;
+			children = (
+				52BF6B5E75E72251616CB3FB /* EmergencyHomeView.swift */,
+			);
+			path = Emergency;
 			sourceTree = "<group>";
 		};
 		D064CE467A10869EA88C5603 /* Onboarding */ = {
@@ -401,6 +418,7 @@
 				778EA930D506EB32D8FBCCDB /* CatsListView.swift in Sources */,
 				B96ADAE05CB507F374191CF6 /* CommunityHubView.swift in Sources */,
 				017781852D9ABFFE97231748 /* CommunityStore.swift in Sources */,
+				F5D35DB7D17278272C6674F7 /* EmergencyHomeView.swift in Sources */,
 				E8E05FC978D515D3DCD724A8 /* GlassChrome.swift in Sources */,
 				329361C8FCF4895C502C17B9 /* KeychainStore.swift in Sources */,
 				ACB32E6B78B4A1762376C3D1 /* LanguageSelectView.swift in Sources */,
@@ -411,6 +429,7 @@
 				79748AEB38102672313B25FB /* RootView.swift in Sources */,
 				928E91C2CD1BADC57A10F709 /* ScanHomeView.swift in Sources */,
 				79963BECB5F50DC4F5422971 /* SignupView.swift in Sources */,
+				9FF623074864F821D665B3F0 /* UsageLimits.swift in Sources */,
 				49B285C4C1E3983175FCAFB9 /* UserProfile.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -419,6 +438,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F27221C0F4C832DD8B46503 /* UsageLimitsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -523,6 +543,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -558,6 +579,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
