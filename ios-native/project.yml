@@ -1,0 +1,63 @@
+name: RaceGuide
+options:
+  bundleIdPrefix: app.purrly
+  deploymentTarget:
+    iOS: "26.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    IPHONEOS_DEPLOYMENT_TARGET: "26.0"
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Automatic
+    CURRENT_PROJECT_VERSION: 1
+    MARKETING_VERSION: 1.0.0
+    GENERATE_INFOPLIST_FILE: NO
+packages:
+  Supabase:
+    url: https://github.com/supabase/supabase-swift
+    from: 2.5.1
+targets:
+  RaceGuide:
+    type: application
+    platform: iOS
+    sources:
+      - path: RaceGuide
+        excludes:
+          - Resources/Secrets.xcconfig
+    resources:
+      - path: RaceGuide/Resources/breeds.json
+      - path: RaceGuide/Resources/Localizable.xcstrings
+      - path: RaceGuide/Assets.xcassets
+    dependencies:
+      - package: Supabase
+        product: Supabase
+    settings:
+      base:
+        INFOPLIST_FILE: RaceGuide/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: app.purrly.raceguide
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        SWIFT_EMIT_LOC_STRINGS: YES
+      configs:
+        Debug:
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
+    configFiles:
+      Debug: RaceGuide/Resources/Secrets.xcconfig
+      Release: RaceGuide/Resources/Secrets.xcconfig
+    info:
+      path: RaceGuide/Info.plist
+      properties:
+        UILaunchScreen: {}
+        NSCameraUsageDescription: "Purrly utilise la caméra pour identifier la race de votre chat."
+        NSPhotoLibraryUsageDescription: "Purrly accède à vos photos pour analyser la race de votre chat."
+        NSLocationWhenInUseUsageDescription: "Purrly utilise votre position pour trouver des vétérinaires et éleveurs à proximité."
+  RaceGuideTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: RaceGuideTests
+    dependencies:
+      - target: RaceGuide
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.purrly.raceguide.tests
