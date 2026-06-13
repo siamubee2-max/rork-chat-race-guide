@@ -18,6 +18,8 @@
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>KIE_API_KEY</key>
+	<string>$(KIE_API_KEY)</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Purrly utilise la caméra pour identifier la race de votre chat.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>

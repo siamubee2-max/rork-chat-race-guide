@@ -58,18 +58,41 @@ struct CatPhotoBoothView: View {
     @State private var canvasSize: CGSize = .zero
     @State private var showCommunityPost = false
 
+    // kie.ai IA mode
+    @State private var panelMode: PanelMode = .stickers
+    @State private var kieService = KieAIService()
+    @State private var kieIsGenerating = false
+    @State private var kieProgress: Double = 0
+    @State private var kieError: String?
+    @State private var kieResultImage: UIImage?
+
+    enum PanelMode { case stickers, ai }
+
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                // Canvas
+                // Canvas (shows kie result if available)
                 canvas
 
+                // Mode switcher
+                Picker("Mode", selection: $panelMode) {
+                    Text("🎨 Stickers").tag(PanelMode.stickers)
+                    Text("✨ IA Booth").tag(PanelMode.ai)
+                }
+                .pickerStyle(.segmented)
+                .padding(.horizontal, 16).padding(.vertical, 8)
+                .background(AppTheme.backgroundSecondary)
+
                 // Bottom panel
-                VStack(spacing: 0) {
-                    // Category tabs
-                    categoryTabs
-                    // Sticker grid
-                    stickerGrid
+                Group {
+                    if panelMode == .stickers {
+                        VStack(spacing: 0) {
+                            categoryTabs
+                            stickerGrid
+                        }
+                    } else {
+                        aiPanel
+                    }
                 }
                 .background(AppTheme.backgroundSecondary)
             }
@@ -131,8 +154,21 @@ struct CatPhotoBoothView: View {
     private var canvas: some View {
         GeometryReader { geo in
             ZStack {
-                // Background
-                if let photo = selectedPhoto {
+                // Background — show kie.ai result if available, else original photo
+                if let result = kieResultImage {
+                    Image(uiImage: result)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: geo.size.width, height: geo.size.width)
+                        .clipped()
+                        .overlay(alignment: .topTrailing) {
+                            Button { kieResultImage = nil } label: {
+                                Image(systemName: "arrow.uturn.backward.circle.fill")
+                                    .font(.title2).foregroundStyle(AppTheme.primary)
+                                    .padding(12)
+                            }
+                        }
+                } else if let photo = selectedPhoto {
                     Image(uiImage: photo)
                         .resizable()
                         .scaledToFit()
@@ -237,6 +273,73 @@ struct CatPhotoBoothView: View {
         }
     }
 
+    // MARK: - AI Panel
+
+    private var aiPanel: some View {
+        VStack(spacing: 12) {
+            if !AppConfiguration.isKieConfigured {
+                HStack(spacing: 8) {
+                    Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(.orange)
+                    Text("Ajoute ta clé API kie.ai dans Secrets.xcconfig → KIE_API_KEY")
+                        .font(.caption).foregroundStyle(AppTheme.textMuted).multilineTextAlignment(.leading)
+                }
+                .padding(12)
+            } else if selectedPhoto == nil {
+                Text("📸 Choisis d'abord une photo de ton chat")
+                    .font(.subheadline).foregroundStyle(AppTheme.textMuted)
+                    .padding(12)
+            } else if kieIsGenerating {
+                VStack(spacing: 8) {
+                    ProgressView(value: kieProgress).tint(AppTheme.primary).padding(.horizontal)
+                    Text("Génération IA en cours… \(Int(kieProgress * 100))%")
+                        .font(.caption).foregroundStyle(AppTheme.textMuted)
+                }
+                .padding(12)
+            } else {
+                if let err = kieError {
+                    Text("⚠️ \(err)").font(.caption).foregroundStyle(AppTheme.error).padding(.horizontal, 12)
+                }
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 10) {
+                        ForEach(KieAIService.AccessoryPreset.allCases) { preset in
+                            Button { Task { await generateWithKie(preset: preset) } } label: {
+                                VStack(spacing: 4) {
+                                    Text(preset.emoji).font(.system(size: 32))
+                                    Text(preset.label).font(.caption2.weight(.semibold))
+                                        .foregroundStyle(AppTheme.textSecondary)
+                                        .multilineTextAlignment(.center)
+                                        .frame(width: 72)
+                                }
+                                .padding(.vertical, 8).padding(.horizontal, 6)
+                                .background(AppTheme.backgroundCard, in: RoundedRectangle(cornerRadius: 12))
+                                .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppTheme.border))
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 12).padding(.vertical, 8)
+                }
+            }
+        }
+    }
+
+    private func generateWithKie(preset: KieAIService.AccessoryPreset) async {
+        guard let photo = selectedPhoto else { return }
+        kieIsGenerating = true
+        kieError = nil
+        kieProgress = 0
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        do {
+            let result = try await kieService.generate(image: photo, preset: preset) { p in
+                kieProgress = p
+            }
+            kieResultImage = result
+            UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+        } catch {
+            kieError = error.localizedDescription
+        }
+        kieIsGenerating = false
+    }
+
     // MARK: - Logic
 
     private func addSticker(_ emoji: String) {
@@ -257,7 +360,12 @@ struct CatPhotoBoothView: View {
     }
 
     private func renderCanvas() -> UIImage? {
-        guard let photo = selectedPhoto else { return nil }
+        // If kie.ai generated a result and no stickers added, use it directly
+        if let kieResult = kieResultImage, stickers.isEmpty {
+            return kieResult
+        }
+        let photo = kieResultImage ?? selectedPhoto
+        guard let photo else { return nil }
         let size = canvasSize
         let renderer = UIGraphicsImageRenderer(size: size)
         return renderer.image { ctx in

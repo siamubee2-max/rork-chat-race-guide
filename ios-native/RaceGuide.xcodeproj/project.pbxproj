@@ -30,6 +30,7 @@
 		3DE85AA531E51CBDA345318B /* MoreMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBE40D0FF8E7A3E33F557B8 /* MoreMenuView.swift */; };
 		3F27221C0F4C832DD8B46503 /* UsageLimitsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F9361DA1A93BA6CB5E37145 /* UsageLimitsTests.swift */; };
 		3FD84E672FB4BF44BACE8273 /* ExpenseFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368D99C14752EC1F3281127C /* ExpenseFormView.swift */; };
+		45A3BCE1C3E546CCA4F27E10 /* KieAIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A6E37DD93802A5AA2ABD27 /* KieAIService.swift */; };
 		46001F3140B893B664C4C05C /* BreedScanService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E4E100D8E724BF2A8DBA49 /* BreedScanService.swift */; };
 		49B285C4C1E3983175FCAFB9 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAACA1B8C73124268F40BE4 /* UserProfile.swift */; };
 		4E1FB0E9C6827D4B01CA86B2 /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54E4B00F6CA82A1CB6C39FD3 /* AppConfiguration.swift */; };
@@ -198,6 +199,7 @@
 		AE9F30573AEDB9188C2A9018 /* PracticalHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticalHomeView.swift; sourceTree = "<group>"; };
 		B35A5B1330A8F5174F524642 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		BEDE1C2B3EA4D5A2A0ADF31E /* ReminderFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderFormView.swift; sourceTree = "<group>"; };
+		C1A6E37DD93802A5AA2ABD27 /* KieAIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KieAIService.swift; sourceTree = "<group>"; };
 		CE07B38975DB0E2D0727F801 /* ChallengesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengesView.swift; sourceTree = "<group>"; };
 		CEFF7EBE53E086F6A9AC1CD1 /* Expense.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Expense.swift; sourceTree = "<group>"; };
 		D222CBD1AEED6A3C5AAA7B9F /* RemindersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersView.swift; sourceTree = "<group>"; };
@@ -436,6 +438,7 @@
 				5F74E2EB04F17C6268837013 /* ExpenseStore.swift */,
 				23E7E071606E247CCF73DBB4 /* GamificationStore.swift */,
 				4EE10D810454E5BC75C3FFDF /* KeychainStore.swift */,
+				C1A6E37DD93802A5AA2ABD27 /* KieAIService.swift */,
 				09D1CA4F15BDFE3B0B7D6B65 /* ReminderStore.swift */,
 				21C7060E210349335922D0DC /* ShoppingStore.swift */,
 				93223CECB9048BABDD3391C3 /* UsageLimits.swift */,
@@ -695,6 +698,7 @@
 				E8E05FC978D515D3DCD724A8 /* GlassChrome.swift in Sources */,
 				07B50EDE9D8E52CAC44EFB7F /* InsightsView.swift in Sources */,
 				329361C8FCF4895C502C17B9 /* KeychainStore.swift in Sources */,
+				45A3BCE1C3E546CCA4F27E10 /* KieAIService.swift in Sources */,
 				ACB32E6B78B4A1762376C3D1 /* LanguageSelectView.swift in Sources */,
 				A39DE53C3BDDDFA5539648A8 /* LeaderboardView.swift in Sources */,
 				97B9733307B45F8B328EF5EF /* LoginView.swift in Sources */,

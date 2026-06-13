@@ -39,4 +39,13 @@ enum AppConfiguration {
     static var isSupabaseConfigured: Bool {
         supabaseURL != nil && supabaseAnonKey != nil
     }
+
+    static var kieApiKey: String? {
+        guard let key = Bundle.main.object(forInfoDictionaryKey: "KIE_API_KEY") as? String,
+              !key.isEmpty,
+              key != "your_kie_api_key_here" else { return nil }
+        return key
+    }
+
+    static var isKieConfigured: Bool { kieApiKey != nil }
 }
