@@ -14,10 +14,11 @@ final class AppEnvironment {
     let discussions = DiscussionsStore()
     let expenses = ExpenseStore()
     let gamification = GamificationStore()
+    let reminders = ReminderStore()
+    let shopping = ShoppingStore()
 
-    var hasSelectedLanguage: Bool {
-        get { UserDefaults.standard.bool(forKey: "language_selected") }
-        set { UserDefaults.standard.set(newValue, forKey: "language_selected") }
+    var hasSelectedLanguage: Bool = UserDefaults.standard.bool(forKey: "language_selected") {
+        didSet { UserDefaults.standard.set(hasSelectedLanguage, forKey: "language_selected") }
     }
 
     func bootstrap() async {
