@@ -3,6 +3,8 @@ import SwiftUI
 struct GamificationView: View {
     @Environment(AppEnvironment.self) private var environment
     @State private var showAchievements = false
+    @State private var showChallenges = false
+    @State private var showLeaderboard = false
 
     private var store: GamificationStore { environment.gamification }
 
@@ -10,6 +12,7 @@ struct GamificationView: View {
         ScrollView {
             VStack(spacing: 24) {
                 levelCard
+                quickActions
                 recentBadges
             }
             .padding(16)
@@ -24,6 +27,8 @@ struct GamificationView: View {
             }
         }
         .sheet(isPresented: $showAchievements) { AchievementsView() }
+        .navigationDestination(isPresented: $showChallenges) { ChallengesView() }
+        .navigationDestination(isPresented: $showLeaderboard) { LeaderboardView() }
         .purrlyScreenBackground()
     }
 
@@ -44,6 +49,48 @@ struct GamificationView: View {
                         .font(.caption).foregroundStyle(AppTheme.textMuted)
                 }
             }
+        }
+    }
+
+    private var quickActions: some View {
+        HStack(spacing: 12) {
+            Button {
+                showChallenges = true
+            } label: {
+                GlassChrome.card(tint: AppTheme.primary.opacity(0.10)) {
+                    HStack(spacing: 8) {
+                        Image(systemName: "trophy.fill")
+                            .foregroundStyle(AppTheme.primary)
+                        Text("Défis")
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(AppTheme.ivory)
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .font(.caption)
+                            .foregroundStyle(AppTheme.textMuted)
+                    }
+                }
+            }
+            .buttonStyle(.plain)
+
+            Button {
+                showLeaderboard = true
+            } label: {
+                GlassChrome.card(tint: AppTheme.primary.opacity(0.10)) {
+                    HStack(spacing: 8) {
+                        Image(systemName: "chart.bar.fill")
+                            .foregroundStyle(AppTheme.primary)
+                        Text("Classement")
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(AppTheme.ivory)
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .font(.caption)
+                            .foregroundStyle(AppTheme.textMuted)
+                    }
+                }
+            }
+            .buttonStyle(.plain)
         }
     }
 

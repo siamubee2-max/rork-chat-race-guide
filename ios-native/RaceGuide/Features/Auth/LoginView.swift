@@ -6,6 +6,7 @@ struct LoginView: View {
     @State private var password = ""
     @State private var isBusy = false
     @State private var showSignup = false
+    @State private var showForgotPassword = false
 
     var body: some View {
         ScrollView {
@@ -25,6 +26,9 @@ struct LoginView: View {
         .purrlyScreenBackground()
         .sheet(isPresented: $showSignup) {
             SignupView()
+        }
+        .sheet(isPresented: $showForgotPassword) {
+            ForgotPasswordView()
         }
     }
 
@@ -77,6 +81,10 @@ struct LoginView: View {
             .font(.subheadline.weight(.semibold))
             .foregroundStyle(AppTheme.primaryLight)
             .frame(minHeight: AppTheme.minTouch)
+
+            Button("Mot de passe oublié ?") { showForgotPassword = true }
+                .font(.caption)
+                .foregroundStyle(AppTheme.textMuted)
 
             #if DEBUG
             Button("Compte démo") {

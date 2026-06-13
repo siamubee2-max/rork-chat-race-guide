@@ -1,11 +1,12 @@
 import Foundation
 import Supabase
 
+@Observable
 @MainActor
-final class AuthService: ObservableObject {
-    @Published private(set) var currentUser: UserProfile?
-    @Published private(set) var isLoading = true
-    @Published var lastError: String?
+final class AuthService{
+    private(set) var currentUser: UserProfile?
+    private(set) var isLoading = true
+    var lastError: String?
 
     private var client: SupabaseClient?
 
@@ -75,8 +76,17 @@ final class AuthService: ObservableObject {
     func signUp(email: String, password: String, name: String) async -> Bool {
         lastError = nil
         guard let client else {
-            lastError = "Inscription indisponible sans Supabase configuré."
-            return false
+            // Mode démo hors-ligne — même comportement que signIn
+            let normalized = email.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+            try? KeychainStore.save(normalized, for: .accessToken)
+            currentUser = UserProfile(
+                id: "local-\(normalized)",
+                email: normalized,
+                name: name.isEmpty ? normalized.components(separatedBy: "@").first ?? "Utilisateur" : name,
+                subscriptionTier: AppConfiguration.vipEmails.contains(normalized) ? .pro : .free,
+                subscriptionExpiry: nil
+            )
+            return true
         }
         let normalized = email.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         do {
@@ -86,6 +96,14 @@ final class AuthService: ObservableObject {
             lastError = error.localizedDescription
             return false
         }
+    }
+
+    func sendPasswordReset(email: String) async throws {
+        guard let client else {
+            // Demo mode: simulate success
+            return
+        }
+        try await client.auth.resetPasswordForEmail(email)
     }
 
     func signOut() async {
