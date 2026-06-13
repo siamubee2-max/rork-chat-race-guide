@@ -43,6 +43,14 @@ struct PracticalHomeView: View {
                     PracticalRow(symbol: "stethoscope", title: "Vétérinaires",
                                  subtitle: "Trouver près de moi")
                 }
+                NavigationLink(destination: FoodCalculatorView()) {
+                    PracticalRow(symbol: "fork.knife", title: "Calculateur alimentaire",
+                                 subtitle: "Rations journalières")
+                }
+                NavigationLink(destination: TravelView()) {
+                    PracticalRow(symbol: "airplane", title: "Checklist voyage",
+                                 subtitle: "Préparer le départ")
+                }
             } header: {
                 Text("Outils").foregroundStyle(AppTheme.textMuted)
             }
