@@ -1,92 +1,1284 @@
 {
   "sourceLanguage" : "fr",
   "strings" : {
-    "tab.home" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Accueil" } } } },
-    "tab.cats" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Mes Chats" } } } },
-    "tab.community" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Social" } } } },
-    "tab.assistant" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Assistant" } } } },
-    "tab.more" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Plus" } } } },
-    "tab.emergency" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Urgence" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Emergency" } } } },
-    "tab.social" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Social" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Social" } } } },
-    "language.subtitle" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Choisissez votre langue pour personnaliser Purrly." } } } },
-    "auth.login.title" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Connexion" } } } },
-    "auth.login.subtitle" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Identifiez-vous pour synchroniser vos chats et l'assistant IA." } } } },
-    "auth.login.action" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Se connecter" } } } },
-    "auth.signup.link" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Créer un compte" } } } },
-    "auth.signup.title" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Inscription" } } } },
-    "auth.signup.action" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "S'inscrire" } } } },
-    "auth.email" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "E-mail" } } } },
-    "auth.password" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Mot de passe" } } } },
-    "auth.name" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Nom" } } } },
-    "auth.logout" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Se déconnecter" } } } },
-    "common.cancel" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Annuler" } } } },
-    "common.save" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Enregistrer" } } } },
-    "common.edit" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Modifier" } } } },
-    "scan.hero.title" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Découvrez la race de votre chat" } } } },
-    "scan.hero.subtitle" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Photo + IA : identification et fiches races." } } } },
-    "scan.hero.a11y" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Illustration d'un chat" } } } },
-    "scan.gallery" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Choisir une photo" } } } },
-    "scan.camera" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Caméra" } } } },
-    "scan.camera.placeholder" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "La caméra en direct sera branchée sur l'API d'analyse (prochaine itération)." } } } },
-    "scan.browseBreeds" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Parcourir les races" } } } },
-    "scan.recognition.title" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Reconnaissance IA" } } } },
-    "scan.recognition.body" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Notre IA analyse la photo et identifie la race avec des conseils soins et santé." } } } },
-    "scan.tip" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Astuce : profil, lumière naturelle, yeux visibles." } } } },
-    "breeds.title" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Races" } } } },
-    "breeds.search" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Rechercher une race" } } } },
-    "breeds.coat" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Pelage" } } } },
-    "breeds.care" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Soins" } } } },
-    "breeds.health" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Santé" } } } },
-    "breeds.diet" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Alimentation" } } } },
-    "cats.title" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Mes chats" } } } },
-    "cats.add" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ajouter un chat" } } } },
-    "cats.empty.title" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucun chat enregistré" } } } },
-    "cats.empty.body" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ajoutez vos chats pour suivre race, puce et carnet de santé." } } } },
-    "cats.mixed" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Croisé / Gouttière" } } } },
-    "cats.name" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Nom du chat" } } } },
-    "cats.breed" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Race" } } } },
-    "cats.chip" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Puce" } } } },
-    "cats.notes" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Notes" } } } },
-    "cats.health" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Carnet de santé" } } } },
-    "cats.noRecords" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucun enregistrement médical" } } } },
-    "community.feed" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Fil" } } } },
-    "community.events" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Événements" } } } },
-    "community.messages" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Messages" } } } },
-    "community.messages.placeholder" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Messagerie communautaire — synchronisation Supabase à venir." } } } },
-    "assistant.welcome" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Posez vos questions santé, comportement et alimentation." } } } },
-    "assistant.quick" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Suggestions" } } } },
-    "assistant.placeholder" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Votre question…" } } } },
-    "assistant.send" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Envoyer" } } } },
-    "assistant.offline" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Je ne peux pas joindre le serveur pour le moment. Vérifiez votre connexion et la configuration API." } } } },
-    "more.discover" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Découvrir" } } } },
-    "more.breeds" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Races de chats" } } } },
-    "more.breeds.sub" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "96 fiches exportées depuis l'app Expo" } } } },
-    "more.account" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Compte" } } } },
-    "paywall.extraCat.title" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Deuxième chat" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Second cat" } } } },
-    "paywall.extraCat.body" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Le plan Free inclut 1 chat. Passe en Premium pour en ajouter autant que tu veux." } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Free plan includes 1 cat. Upgrade to Premium to add as many as you want." } } } },
-    "paywall.aiMessage.title" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "15 messages utilisés" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "15 messages used" } } } },
-    "paywall.aiMessage.body" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Tu as atteint la limite mensuelle de l'assistant IA. Premium = illimité." } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "You've reached the monthly AI assistant limit. Premium = unlimited." } } } },
-    "paywall.communityPost.title" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Participer à la communauté" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Join the community" } } } },
-    "paywall.communityPost.body" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "La lecture est gratuite. Poste et réponds avec Premium." } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Reading is free. Post and reply with Premium." } } } },
-    "paywall.upgrade" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Passer en Premium — 14,99 $/mois" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Upgrade to Premium — $14.99/month" } } } },
-    "paywall.notNow" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Pas maintenant" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Not now" } } } },
-    "emergency.title" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Urgences" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Emergency" } } } },
-    "emergency.type.lost" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Chat perdu" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Lost cat" } } } },
-    "emergency.type.injured" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Chat blessé" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Injured cat" } } } },
-    "emergency.type.found" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Chat trouvé" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Found cat" } } } },
-    "emergency.empty.title" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucune alerte active" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "No active alerts" } } } },
-    "emergency.empty.body" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Crée une alerte si ton chat est perdu, blessé, ou si tu en as trouvé un." } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Create an alert if your cat is lost, injured, or if you found one." } } } },
-    "emergency.createAlert" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Créer une alerte" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Create alert" } } } },
-    "emergency.form.type" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Type d'urgence" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Emergency type" } } } },
-    "emergency.form.info" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Informations" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Information" } } } },
-    "emergency.form.catName" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Nom du chat" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Cat name" } } } },
-    "emergency.form.location" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Localisation" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Location" } } } },
-    "emergency.form.description" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Description" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Description" } } } },
-    "emergency.form.phone" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Téléphone de contact" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Contact phone" } } } },
-    "emergency.error.catNameRequired" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Le nom du chat est requis." } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Cat name is required." } } } },
-    "emergency.error.locationRequired" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "La localisation est requise." } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Location is required." } } } },
-    "common.publish" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Publier" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Publish" } } } },
-    "vets.title" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Vétérinaires" } }, "en" : { "stringUnit" : { "state" : "translated", "value" : "Vets" } } } }
+    "" : {
+
+    },
+    "·" : {
+
+    },
+    "%@: %@" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@: %2$@"
+          }
+        }
+      }
+    },
+    "%lld" : {
+
+    },
+    "%lld messages" : {
+
+    },
+    "%lld XP" : {
+
+    },
+    "%lld XP jusqu'au niveau %lld" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld XP jusqu'au niveau %2$lld"
+          }
+        }
+      }
+    },
+    "• Email et nom d'utilisateur (pour la création de compte)" : {
+
+    },
+    "• Messages envoyés à l'assistant IA (traités en temps réel, non conservés)" : {
+
+    },
+    "• Photos de chats (transmises temporairement pour l'analyse de races, non conservées)" : {
+
+    },
+    "+%lld XP" : {
+
+    },
+    "0,00" : {
+
+    },
+    "À propos" : {
+
+    },
+    "Abonnements" : {
+
+    },
+    "Aimer" : {
+
+    },
+    "Ajouter" : {
+
+    },
+    "Annuler" : {
+
+    },
+    "Appeler" : {
+
+    },
+    "Assistant" : {
+
+    },
+    "assistant.offline" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je ne peux pas joindre le serveur pour le moment. Vérifiez votre connexion et la configuration API."
+          }
+        }
+      }
+    },
+    "assistant.placeholder" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre question…"
+          }
+        }
+      }
+    },
+    "assistant.quick" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggestions"
+          }
+        }
+      }
+    },
+    "assistant.send" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envoyer"
+          }
+        }
+      }
+    },
+    "assistant.welcome" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Posez vos questions santé, comportement et alimentation."
+          }
+        }
+      }
+    },
+    "Aucune dépense enregistrée." : {
+
+    },
+    "auth.email" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-mail"
+          }
+        }
+      }
+    },
+    "auth.login.action" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se connecter"
+          }
+        }
+      }
+    },
+    "auth.login.subtitle" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identifiez-vous pour synchroniser vos chats et l'assistant IA."
+          }
+        }
+      }
+    },
+    "auth.login.title" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connexion"
+          }
+        }
+      }
+    },
+    "auth.logout" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se déconnecter"
+          }
+        }
+      }
+    },
+    "auth.name" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nom"
+          }
+        }
+      }
+    },
+    "auth.password" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mot de passe"
+          }
+        }
+      }
+    },
+    "auth.signup.action" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "S'inscrire"
+          }
+        }
+      }
+    },
+    "auth.signup.link" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Créer un compte"
+          }
+        }
+      }
+    },
+    "auth.signup.title" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inscription"
+          }
+        }
+      }
+    },
+    "breeds.care" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soins"
+          }
+        }
+      }
+    },
+    "breeds.coat" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pelage"
+          }
+        }
+      }
+    },
+    "breeds.diet" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alimentation"
+          }
+        }
+      }
+    },
+    "breeds.health" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Santé"
+          }
+        }
+      }
+    },
+    "breeds.search" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rechercher une race"
+          }
+        }
+      }
+    },
+    "breeds.title" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Races"
+          }
+        }
+      }
+    },
+    "Catégorie" : {
+
+    },
+    "cats.add" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter un chat"
+          }
+        }
+      }
+    },
+    "cats.breed" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Race"
+          }
+        }
+      }
+    },
+    "cats.chip" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puce"
+          }
+        }
+      }
+    },
+    "cats.empty.body" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajoutez vos chats pour suivre race, puce et carnet de santé."
+          }
+        }
+      }
+    },
+    "cats.empty.title" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun chat enregistré"
+          }
+        }
+      }
+    },
+    "cats.health" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carnet de santé"
+          }
+        }
+      }
+    },
+    "cats.mixed" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Croisé / Gouttière"
+          }
+        }
+      }
+    },
+    "cats.name" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nom du chat"
+          }
+        }
+      }
+    },
+    "cats.noRecords" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun enregistrement médical"
+          }
+        }
+      }
+    },
+    "cats.notes" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notes"
+          }
+        }
+      }
+    },
+    "cats.title" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mes chats"
+          }
+        }
+      }
+    },
+    "Chargement de Purrly" : {
+
+    },
+    "common.cancel" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annuler"
+          }
+        }
+      }
+    },
+    "common.edit" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modifier"
+          }
+        }
+      }
+    },
+    "common.publish" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Publish"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Publier"
+          }
+        }
+      }
+    },
+    "common.save" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enregistrer"
+          }
+        }
+      }
+    },
+    "community.events" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Événements"
+          }
+        }
+      }
+    },
+    "community.feed" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fil"
+          }
+        }
+      }
+    },
+    "community.messages" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Messages"
+          }
+        }
+      }
+    },
+    "community.messages.placeholder" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Messagerie communautaire — synchronisation Supabase à venir."
+          }
+        }
+      }
+    },
+    "community.newpost.title" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nouvelle publication"
+          }
+        }
+      }
+    },
+    "community.post.title" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Publication"
+          }
+        }
+      }
+    },
+    "action.cancel" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annuler"
+          }
+        }
+      }
+    },
+    "Compte" : {
+
+    },
+    "Conditions" : {
+
+    },
+    "Conditions d'utilisation" : {
+
+    },
+    "Confidentialité" : {
+
+    },
+    "Date" : {
+
+    },
+    "Décris ta situation…" : {
+
+    },
+    "Dépenses" : {
+
+    },
+    "Données collectées" : {
+
+    },
+    "ÉDITION LUXE" : {
+
+    },
+    "emergency.createAlert" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create alert"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Créer une alerte"
+          }
+        }
+      }
+    },
+    "emergency.empty.body" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create an alert if your cat is lost, injured, or if you found one."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crée une alerte si ton chat est perdu, blessé, ou si tu en as trouvé un."
+          }
+        }
+      }
+    },
+    "emergency.empty.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No active alerts"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucune alerte active"
+          }
+        }
+      }
+    },
+    "emergency.error.catNameRequired" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cat name is required."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le nom du chat est requis."
+          }
+        }
+      }
+    },
+    "emergency.error.locationRequired" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Location is required."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La localisation est requise."
+          }
+        }
+      }
+    },
+    "emergency.form.catName" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cat name"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nom du chat"
+          }
+        }
+      }
+    },
+    "emergency.form.description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Description"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Description"
+          }
+        }
+      }
+    },
+    "emergency.form.info" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Information"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Informations"
+          }
+        }
+      }
+    },
+    "emergency.form.location" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Location"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Localisation"
+          }
+        }
+      }
+    },
+    "emergency.form.phone" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contact phone"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Téléphone de contact"
+          }
+        }
+      }
+    },
+    "emergency.form.type" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Emergency type"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type d'urgence"
+          }
+        }
+      }
+    },
+    "emergency.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Emergency"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Urgences"
+          }
+        }
+      }
+    },
+    "emergency.type.found" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Found cat"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chat trouvé"
+          }
+        }
+      }
+    },
+    "emergency.type.injured" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Injured cat"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chat blessé"
+          }
+        }
+      }
+    },
+    "emergency.type.lost" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lost cat"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chat perdu"
+          }
+        }
+      }
+    },
+    "En utilisant Purrly, vous acceptez les présentes conditions. L'application est fournie à titre informatif et ne remplace pas un avis vétérinaire professionnel. En cas d'urgence médicale réelle, contactez immédiatement un vétérinaire." : {
+
+    },
+    "Erreur : %@" : {
+
+    },
+    "Ex: Mon chat ne mange plus…" : {
+
+    },
+    "FAQ" : {
+
+    },
+    "Forum" : {
+
+    },
+    "Itinéraire" : {
+
+    },
+    "L'abonnement Premium est facturé mensuellement. Il se renouvelle automatiquement sauf résiliation 24h avant la date de renouvellement depuis les Réglages > Abonnements de votre iPhone." : {
+
+    },
+    "La super-app N°1 pour chats — scanner de races, assistant IA vétérinaire, communauté, urgences et suivi complet en une seule app." : {
+
+    },
+    "language.subtitle" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisissez votre langue pour personnaliser Purrly."
+          }
+        }
+      }
+    },
+    "Montant" : {
+
+    },
+    "more.account" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compte"
+          }
+        }
+      }
+    },
+    "more.breeds" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Races de chats"
+          }
+        }
+      }
+    },
+    "more.breeds.sub" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "96 fiches exportées depuis l'app Expo"
+          }
+        }
+      }
+    },
+    "more.discover" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Découvrir"
+          }
+        }
+      }
+    },
+    "Niveau %lld" : {
+
+    },
+    "Notes" : {
+
+    },
+    "Notes (optionnel)" : {
+
+    },
+    "Nouveau sujet" : {
+
+    },
+    "Nouvelle dépense" : {
+
+    },
+    "Outils" : {
+
+    },
+    "paywall.aiMessage.body" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've reached the monthly AI assistant limit. Premium = unlimited."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu as atteint la limite mensuelle de l'assistant IA. Premium = illimité."
+          }
+        }
+      }
+    },
+    "paywall.aiMessage.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "15 messages used"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "15 messages utilisés"
+          }
+        }
+      }
+    },
+    "paywall.communityPost.body" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reading is free. Post and reply with Premium."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La lecture est gratuite. Poste et réponds avec Premium."
+          }
+        }
+      }
+    },
+    "paywall.communityPost.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Join the community"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Participer à la communauté"
+          }
+        }
+      }
+    },
+    "paywall.extraCat.body" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free plan includes 1 cat. Upgrade to Premium to add as many as you want."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le plan Free inclut 1 chat. Passe en Premium pour en ajouter autant que tu veux."
+          }
+        }
+      }
+    },
+    "paywall.extraCat.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Second cat"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deuxième chat"
+          }
+        }
+      }
+    },
+    "paywall.notNow" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not now"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pas maintenant"
+          }
+        }
+      }
+    },
+    "paywall.upgrade" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgrade to Premium — $14.99/month"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passer en Premium — 14,99 $/mois"
+          }
+        }
+      }
+    },
+    "Plus" : {
+
+    },
+    "Politique de confidentialité" : {
+
+    },
+    "Pratique" : {
+
+    },
+    "Premier message" : {
+
+    },
+    "Progression" : {
+
+    },
+    "Publier" : {
+
+    },
+    "Purrly" : {
+
+    },
+    "Purrly IA" : {
+
+    },
+    "Purrly respecte votre vie privée. Les profils de vos chats sont stockés localement sur votre appareil et ne sont pas transmis à nos serveurs sans votre consentement explicite." : {
+
+    },
+    "Répondre…" : {
+
+    },
+    "Résolu" : {
+
+    },
+    "Retirer le j'aime" : {
+
+    },
+    "scan.browseBreeds" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parcourir les races"
+          }
+        }
+      }
+    },
+    "scan.camera" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Caméra"
+          }
+        }
+      }
+    },
+    "scan.camera.placeholder" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La caméra en direct sera branchée sur l'API d'analyse (prochaine itération)."
+          }
+        }
+      }
+    },
+    "scan.gallery" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisir une photo"
+          }
+        }
+      }
+    },
+    "scan.hero.a11y" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Illustration d'un chat"
+          }
+        }
+      }
+    },
+    "scan.hero.subtitle" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photo + IA : identification et fiches races."
+          }
+        }
+      }
+    },
+    "scan.hero.title" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Découvrez la race de votre chat"
+          }
+        }
+      }
+    },
+    "scan.recognition.body" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notre IA analyse la photo et identifie la race avec des conseils soins et santé."
+          }
+        }
+      }
+    },
+    "scan.recognition.title" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reconnaissance IA"
+          }
+        }
+      }
+    },
+    "scan.tip" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Astuce : profil, lumière naturelle, yeux visibles."
+          }
+        }
+      }
+    },
+    "Succès" : {
+
+    },
+    "Succès récents" : {
+
+    },
+    "Supprimer" : {
+
+    },
+    "tab.assistant" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assistant"
+          }
+        }
+      }
+    },
+    "tab.cats" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mes Chats"
+          }
+        }
+      }
+    },
+    "tab.community" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Social"
+          }
+        }
+      }
+    },
+    "tab.emergency" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Emergency"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Urgence"
+          }
+        }
+      }
+    },
+    "tab.home" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accueil"
+          }
+        }
+      }
+    },
+    "tab.more" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus"
+          }
+        }
+      }
+    },
+    "tab.social" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Social"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Social"
+          }
+        }
+      }
+    },
+    "Titre" : {
+
+    },
+    "Total" : {
+
+    },
+    "Tous les succès" : {
+
+    },
+    "Type" : {
+
+    },
+    "Version 1.0.0" : {
+
+    },
+    "vets.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vets"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vétérinaires"
+          }
+        }
+      }
+    },
+    "Vos droits" : {
+
+    },
+    "Vous" : {
+
+    },
+    "Vous pouvez supprimer votre compte et toutes les données associées depuis Réglages > Supprimer mon compte." : {
+
+    }
   },
   "version" : "1.0"
 }

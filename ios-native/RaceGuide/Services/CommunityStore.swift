@@ -1,10 +1,12 @@
 import Foundation
 
 /// Données communauté locales (à brancher sur Supabase social plus tard).
+@Observable
 @MainActor
-final class CommunityStore: ObservableObject {
-    @Published private(set) var posts: [CommunityPost] = []
-    @Published private(set) var events: [CommunityEvent] = []
+final class CommunityStore{
+    private(set) var posts: [CommunityPost] = []
+    private(set) var events: [CommunityEvent] = []
+    private(set) var comments: [String: [CommunityComment]] = [:]
 
     func loadSampleIfNeeded() {
         guard posts.isEmpty else { return }
@@ -49,5 +51,34 @@ final class CommunityStore: ObservableObject {
         post.isLiked.toggle()
         post.likes += post.isLiked ? 1 : -1
         posts[index] = post
+    }
+
+    func addPost(content: String, authorName: String) {
+        let post = CommunityPost(
+            id: UUID().uuidString,
+            authorName: authorName,
+            content: content,
+            createdAt: Date(),
+            likes: 0,
+            isLiked: false
+        )
+        posts.insert(post, at: 0)
+    }
+
+    func addComment(postId: String, text: String, authorName: String) {
+        let comment = CommunityComment(
+            id: UUID().uuidString,
+            postId: postId,
+            authorName: authorName,
+            text: text,
+            createdAt: Date()
+        )
+        var existing = comments[postId] ?? []
+        existing.append(comment)
+        comments[postId] = existing
+    }
+
+    func commentsFor(postId: String) -> [CommunityComment] {
+        comments[postId] ?? []
     }
 }

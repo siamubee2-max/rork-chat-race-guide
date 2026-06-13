@@ -34,6 +34,14 @@ struct CommunityEvent: Identifiable, Hashable {
     let date: Date
 }
 
+struct CommunityComment: Identifiable, Hashable {
+    let id: String
+    let postId: String
+    let authorName: String
+    let text: String
+    let createdAt: Date
+}
+
 struct ChatMessage: Identifiable, Hashable, Codable {
     let id: String
     let role: ChatRole
