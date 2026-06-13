@@ -30,6 +30,14 @@ struct MoreMenuView: View {
             .listRowBackground(AppTheme.backgroundCard)
 
             Section("Outils") {
+                NavigationLink(destination: CatPhotoBoothView()) {
+                    MoreRow(symbol: "camera.filters", title: "Photo Booth",
+                            subtitle: "Stickers & cadres pour tes chats", tint: .pink)
+                }
+                NavigationLink(destination: CatAlbumView()) {
+                    MoreRow(symbol: "photo.on.rectangle.angled", title: "Mon album",
+                            subtitle: "Photos de tes chats", tint: .purple)
+                }
                 NavigationLink(destination: PracticalHomeView()) {
                     MoreRow(symbol: "creditcard", title: "Pratique",
                             subtitle: "Dépenses & outils", tint: AppTheme.primary)

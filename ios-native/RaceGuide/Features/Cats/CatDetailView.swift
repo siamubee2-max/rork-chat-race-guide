@@ -4,6 +4,7 @@ struct CatDetailView: View {
     @Environment(AppEnvironment.self) private var environment
     let cat: CatProfile
     @State private var showEdit = false
+    @State private var showPhotoBooth = false
 
     private var liveCat: CatProfile {
         environment.cats.cats.first { $0.id == cat.id } ?? cat
@@ -44,9 +45,19 @@ struct CatDetailView: View {
             ToolbarItem(placement: .primaryAction) {
                 Button(String(localized: "common.edit")) { showEdit = true }
             }
+            ToolbarItem(placement: .secondaryAction) {
+                Button {
+                    showPhotoBooth = true
+                } label: {
+                    Label("Photo Booth", systemImage: "camera.filters")
+                }
+            }
         }
         .sheet(isPresented: $showEdit) {
             CatFormView(cat: liveCat)
+        }
+        .sheet(isPresented: $showPhotoBooth) {
+            CatPhotoBoothView()
         }
     }
 

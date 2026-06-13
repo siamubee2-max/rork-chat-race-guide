@@ -22,6 +22,8 @@
 	<string>Purrly utilise la caméra pour identifier la race de votre chat.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Purrly utilise votre position pour trouver des vétérinaires et éleveurs à proximité.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Purrly sauvegarde vos photos Photo Booth dans votre galerie.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Purrly accède à vos photos pour analyser la race de votre chat.</string>
 	<key>UILaunchScreen</key>

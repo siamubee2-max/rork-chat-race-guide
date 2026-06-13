@@ -51,6 +51,7 @@ targets:
         NSCameraUsageDescription: "Purrly utilise la caméra pour identifier la race de votre chat."
         NSPhotoLibraryUsageDescription: "Purrly accède à vos photos pour analyser la race de votre chat."
         NSLocationWhenInUseUsageDescription: "Purrly utilise votre position pour trouver des vétérinaires et éleveurs à proximité."
+        NSPhotoLibraryAddUsageDescription: "Purrly sauvegarde vos photos Photo Booth dans votre galerie."
   RaceGuideTests:
     type: bundle.unit-test
     platform: iOS
