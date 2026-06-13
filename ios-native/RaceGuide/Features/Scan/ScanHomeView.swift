@@ -6,6 +6,7 @@ struct ScanHomeView: View {
     @State private var pickerItem: PhotosPickerItem?
     @State private var showCamera = false
     @State private var showBreeds = false
+    @State private var scannedImageData: Data?
 
     private let heroURL = URL(string: "https://images.unsplash.com/photo-1495360010541-f48722b34f7d?auto=format&fit=crop&w=1200&q=80")!
 
@@ -23,8 +24,14 @@ struct ScanHomeView: View {
         .navigationDestination(isPresented: $showBreeds) {
             BreedListView()
         }
-        .navigationDestination(isPresented: $showCamera) {
-            ScanCameraPlaceholderView()
+        .navigationDestination(item: $scannedImageData) { data in
+            ScanResultView(imageData: data)
+        }
+        .fullScreenCover(isPresented: $showCamera) {
+            ScanCameraView { data in
+                // Camera dismissed itself; now navigate to result
+                scannedImageData = data
+            }
         }
         .onChange(of: pickerItem) { _, item in
             guard let item else { return }
@@ -109,24 +116,7 @@ struct ScanHomeView: View {
 
     private func handlePhoto(_ item: PhotosPickerItem) async {
         guard let data = try? await item.loadTransferable(type: Data.self) else { return }
-        // Analyse IA : à brancher sur tRPC `ai.identify` — navigation résultat à venir
-        _ = data
+        scannedImageData = data
     }
 }
 
-struct ScanCameraPlaceholderView: View {
-    var body: some View {
-        VStack(spacing: 16) {
-            Image(systemName: "camera.viewfinder")
-                .font(.system(size: 64))
-                .foregroundStyle(AppTheme.primary)
-            Text(String(localized: "scan.camera.placeholder"))
-                .multilineTextAlignment(.center)
-                .foregroundStyle(AppTheme.textSecondary)
-                .padding(.horizontal, 32)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .purrlyScreenBackground()
-        .navigationTitle(String(localized: "scan.camera"))
-    }
-}
