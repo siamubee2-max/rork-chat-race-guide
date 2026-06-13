@@ -117,6 +117,18 @@ struct CatHealthDashboardView: View {
 
     private var quickActions: some View {
         VStack(spacing: 12) {
+            NavigationLink(destination: DailyLogsView(cat: liveCat)) {
+                Label("Logs quotidiens", systemImage: "calendar.badge.plus")
+                    .frame(maxWidth: .infinity, minHeight: AppTheme.minTouch)
+            }
+            .buttonStyle(GlassPrimaryButtonStyle())
+
+            NavigationLink(destination: WeightChartView(cat: liveCat)) {
+                Label("Suivi du poids", systemImage: "scalemass")
+                    .frame(maxWidth: .infinity, minHeight: AppTheme.minTouch)
+            }
+            .buttonStyle(GlassPrimaryButtonStyle())
+
             NavigationLink(destination: RecordFormView(cat: liveCat)) {
                 Label("Nouveau dossier médical", systemImage: "cross.case")
                     .frame(maxWidth: .infinity, minHeight: AppTheme.minTouch)

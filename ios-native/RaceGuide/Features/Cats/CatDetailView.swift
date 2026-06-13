@@ -89,18 +89,24 @@ struct CatDetailView: View {
                 .buttonStyle(GlassPrimaryButtonStyle())
 
                 HStack(spacing: 10) {
-                    NavigationLink(destination: WeightFormView(cat: liveCat)) {
+                    NavigationLink(destination: WeightChartView(cat: liveCat)) {
                         Label("Poids", systemImage: "scalemass")
                             .frame(maxWidth: .infinity, minHeight: AppTheme.minTouch)
                     }
                     .buttonStyle(GlassSecondaryButtonStyle())
 
-                    NavigationLink(destination: RecordFormView(cat: liveCat)) {
-                        Label("Acte médical", systemImage: "cross.case")
+                    NavigationLink(destination: DailyLogsView(cat: liveCat)) {
+                        Label("Logs", systemImage: "calendar.badge.plus")
                             .frame(maxWidth: .infinity, minHeight: AppTheme.minTouch)
                     }
                     .buttonStyle(GlassSecondaryButtonStyle())
                 }
+
+                NavigationLink(destination: RecordFormView(cat: liveCat)) {
+                    Label("Acte médical", systemImage: "cross.case")
+                        .frame(maxWidth: .infinity, minHeight: AppTheme.minTouch)
+                }
+                .buttonStyle(GlassSecondaryButtonStyle())
             }
         }
     }

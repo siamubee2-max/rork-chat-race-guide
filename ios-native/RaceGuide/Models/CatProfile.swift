@@ -22,6 +22,23 @@ struct WeightEntry: Codable, Identifiable, Hashable {
     var notes: String?
 }
 
+struct DailyLog: Codable, Identifiable, Hashable {
+    var id: String
+    var date: Date
+    var appetite: String  // normal, increased, decreased, none
+    var water: String     // normal, increased, decreased, none
+    var energy: String    // normal, playful, lethargic, hyperactive
+    var litter: String    // normal, diarrhea, constipation, blood, none
+    var notes: String
+
+    static func create(appetite: String = "normal", water: String = "normal",
+                       energy: String = "normal", litter: String = "normal",
+                       notes: String = "") -> DailyLog {
+        DailyLog(id: UUID().uuidString, date: Date(), appetite: appetite,
+                 water: water, energy: energy, litter: litter, notes: notes)
+    }
+}
+
 struct CatProfile: Codable, Identifiable, Hashable {
     var id: String
     var name: String
@@ -32,6 +49,7 @@ struct CatProfile: Codable, Identifiable, Hashable {
     var notes: String?
     var medicalRecords: [MedicalRecord]
     var weightHistory: [WeightEntry]
+    var dailyLogs: [DailyLog]
 
     static func empty(name: String) -> CatProfile {
         CatProfile(
@@ -43,7 +61,8 @@ struct CatProfile: Codable, Identifiable, Hashable {
             imageUri: nil,
             notes: nil,
             medicalRecords: [],
-            weightHistory: []
+            weightHistory: [],
+            dailyLogs: []
         )
     }
 }
