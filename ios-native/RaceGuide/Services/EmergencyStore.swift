@@ -1,8 +1,9 @@
 import Foundation
 
+@Observable
 @MainActor
-final class EmergencyStore: ObservableObject {
-    @Published private(set) var alerts: [EmergencyAlert] = []
+final class EmergencyStore{
+    private(set) var alerts: [EmergencyAlert] = []
     private let storageKey = "emergency_alerts"
     private let defaults: UserDefaults
 

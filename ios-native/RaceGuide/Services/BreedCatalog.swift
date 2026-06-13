@@ -1,9 +1,10 @@
 import Foundation
 
+@Observable
 @MainActor
-final class BreedCatalog: ObservableObject {
-    @Published private(set) var breeds: [BreedProfile] = []
-    @Published private(set) var loadError: String?
+final class BreedCatalog{
+    private(set) var breeds: [BreedProfile] = []
+    private(set) var loadError: String?
 
     func loadIfNeeded() {
         guard breeds.isEmpty, loadError == nil else { return }

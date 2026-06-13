@@ -1,9 +1,10 @@
 import Foundation
 
 /// Persistance locale des profils chats (équivalent AsyncStorage `cats_data`).
+@Observable
 @MainActor
-final class CatPersistence: ObservableObject {
-    @Published private(set) var cats: [CatProfile] = []
+final class CatPersistence{
+    private(set) var cats: [CatProfile] = []
 
     private let storageKey = "cats_data"
     private let defaults = UserDefaults.standard

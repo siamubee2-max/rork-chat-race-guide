@@ -1,11 +1,12 @@
 import Foundation
 
+@Observable
 @MainActor
-final class UsageLimits: ObservableObject {
-    @Published var isPremium: Bool {
+final class UsageLimits{
+    var isPremium: Bool {
         didSet { defaults.set(isPremium, forKey: premiumKey) }
     }
-    @Published private(set) var aiMessagesThisMonth: Int
+    private(set) var aiMessagesThisMonth: Int
 
     private let defaults: UserDefaults
     private let monthKey = "usage_ai_month"

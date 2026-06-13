@@ -1,8 +1,9 @@
 import Foundation
 
+@Observable
 @MainActor
-final class DiscussionsStore: ObservableObject {
-    @Published private(set) var threads: [DiscussionThread] = []
+final class DiscussionsStore{
+    private(set) var threads: [DiscussionThread] = []
     private let storageKey = "discussions_data"
 
     init() { load() }

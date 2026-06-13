@@ -1,8 +1,9 @@
 import Foundation
 
+@Observable
 @MainActor
-final class ExpenseStore: ObservableObject {
-    @Published private(set) var expenses: [Expense] = []
+final class ExpenseStore{
+    private(set) var expenses: [Expense] = []
     private let storageKey = "expenses_data"
     private let defaults: UserDefaults
 

@@ -1,9 +1,10 @@
 import Foundation
 
+@Observable
 @MainActor
-final class GamificationStore: ObservableObject {
-    @Published private(set) var achievements: [Achievement] = GamificationStore.defaultAchievements
-    @Published private(set) var totalXP: Int = 0
+final class GamificationStore{
+    private(set) var achievements: [Achievement] = GamificationStore.defaultAchievements
+    private(set) var totalXP: Int = 0
 
     private let storageKey = "gamification_data"
 

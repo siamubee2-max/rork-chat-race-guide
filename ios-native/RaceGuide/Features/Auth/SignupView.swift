@@ -26,6 +26,13 @@ struct SignupView: View {
                                 .foregroundStyle(AppTheme.ivory)
                         }
                     }
+                    if let error = environment.auth.lastError {
+                        Text(error)
+                            .font(.footnote)
+                            .foregroundStyle(AppTheme.error)
+                            .padding(.horizontal, 4)
+                    }
+
                     Button {
                         Task { await signUp() }
                     } label: {
