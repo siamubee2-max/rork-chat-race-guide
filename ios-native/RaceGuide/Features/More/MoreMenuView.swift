@@ -14,6 +14,18 @@ struct MoreMenuView: View {
                                 : "\(environment.limits.aiMessagesRemaining) messages restants",
                             tint: .purple)
                 }
+                NavigationLink(destination: BehaviorView()) {
+                    MoreRow(symbol: "brain.head.profile", title: "Comportement",
+                            subtitle: "Analyse comportementale IA", tint: .purple)
+                }
+                NavigationLink(destination: InsightsView()) {
+                    MoreRow(symbol: "lightbulb.fill", title: "Insights IA",
+                            subtitle: "Conseils santé personnalisés", tint: .yellow)
+                }
+                NavigationLink(destination: PhotoAnalyzerView()) {
+                    MoreRow(symbol: "camera.viewfinder", title: "Analyser une photo",
+                            subtitle: "Humeur & bien-être par IA", tint: .cyan)
+                }
             }
             .listRowBackground(AppTheme.backgroundCard)
 
