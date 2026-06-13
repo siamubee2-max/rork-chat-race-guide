@@ -179,7 +179,7 @@
 		8AFA2FE5EC0D1924E410496E /* CreateAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAlertView.swift; sourceTree = "<group>"; };
 		8B725B74D7E8ADE9396320C1 /* CatPhotoBoothView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatPhotoBoothView.swift; sourceTree = "<group>"; };
 		8BCE17156EB99C4DD2B34BC7 /* ExpenseStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseStoreTests.swift; sourceTree = "<group>"; };
-		8FAE2D7874D8EBFB7630DBD7 /* Secrets.xcconfig.example */ = {isa = PBXFileReference; path = Secrets.xcconfig.example; sourceTree = "<group>"; };
+		8FAE2D7874D8EBFB7630DBD7 /* Secrets.xcconfig.example */ = {isa = PBXFileReference; lastKnownFileType = text; path = Secrets.xcconfig.example; sourceTree = "<group>"; };
 		919782F656AA116A394EA934 /* CatsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatsListView.swift; sourceTree = "<group>"; };
 		93223CECB9048BABDD3391C3 /* UsageLimits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageLimits.swift; sourceTree = "<group>"; };
 		94D8E0AE813F77D7E8C9F2CD /* CatPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatPersistence.swift; sourceTree = "<group>"; };
@@ -204,7 +204,7 @@
 		CEFF7EBE53E086F6A9AC1CD1 /* Expense.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Expense.swift; sourceTree = "<group>"; };
 		D222CBD1AEED6A3C5AAA7B9F /* RemindersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersView.swift; sourceTree = "<group>"; };
 		D2378A802F47AA1F2B7B6145 /* RaceGuideApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaceGuideApp.swift; sourceTree = "<group>"; };
-		D53F059F5D97D2B211826BD4 /* RaceGuide.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = RaceGuide.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D53F059F5D97D2B211826BD4 /* RaceGuide.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RaceGuide.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5B6F6DC902310AF0B179039 /* WeightFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightFormView.swift; sourceTree = "<group>"; };
 		D95A6BB879703CD54A5CDA79 /* PostDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailView.swift; sourceTree = "<group>"; };
 		DAFC6147934953850951BB41 /* CommunityStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityStore.swift; sourceTree = "<group>"; };
@@ -586,7 +586,6 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					17F0711FCBCA6DBE2998EAB0 = {
-						DevelopmentTeam = GG9U76Z4X7;
 						ProvisioningStyle = Automatic;
 					};
 					94ACDBF5583504B0D1241553 = {
@@ -766,6 +765,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = SPLML3CN76;
 				INFOPLIST_FILE = RaceGuide/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -869,6 +869,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = SPLML3CN76;
 				INFOPLIST_FILE = RaceGuide/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

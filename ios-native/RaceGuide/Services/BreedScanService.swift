@@ -47,31 +47,15 @@ final class BreedScanService {
         }
         let base64 = jpeg.base64EncodedString()
 
-        var request = URLRequest(url: AppConfiguration.apiBaseURL.appending(path: "/trpc/ai.chat"))
+        // Edge Function breed-scan — sends base64 image directly to GPT-4o Vision
+        var request = URLRequest(url: AppConfiguration.apiBaseURL.appending(path: "/breed-scan"))
         request.httpMethod = "POST"
         request.timeoutInterval = 45
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 
-        struct VisionRequest: Encodable {
-            struct Msg: Encodable { let role: String; let content: String }
-            let messages: [Msg]
-            let systemPrompt: String?
-        }
-
-        let prompt = """
-        Identifie la race du chat dans cette image.
-        Image base64 (JPEG): data:image/jpeg;base64,\(base64)
-
-        Réponds UNIQUEMENT en JSON valide avec ce format exact:
-        {"topBreed":"<nom de la race>","confidence":"<Très probable|Probable|Possible>","why":"<explication courte>","alternatives":["<race2>","<race3>"]}
-        """
-
-        let body = VisionRequest(
-            messages: [VisionRequest.Msg(role: "user", content: prompt)],
-            systemPrompt: "Tu es un expert félinologue. Identifie la race avec précision. Réponds uniquement en JSON valide, sans texte supplémentaire."
-        )
-        request.httpBody = try JSONEncoder().encode(body)
+        struct ScanRequest: Encodable { let imageBase64: String }
+        request.httpBody = try JSONEncoder().encode(ScanRequest(imageBase64: base64))
 
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let http = response as? HTTPURLResponse else {

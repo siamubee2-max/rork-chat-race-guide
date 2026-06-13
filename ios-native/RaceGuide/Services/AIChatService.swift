@@ -39,7 +39,7 @@ struct AIChatService {
             throw ServiceError.unauthorized
         }
 
-        var request = URLRequest(url: AppConfiguration.apiBaseURL.appending(path: "/trpc/ai.chat"))
+        var request = URLRequest(url: AppConfiguration.apiBaseURL.appending(path: "/ai-chat"))
         request.httpMethod = "POST"
         request.timeoutInterval = 45
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
