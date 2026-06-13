@@ -34,6 +34,7 @@ struct CatDetailView: View {
                 }
 
                 recordsSection
+                healthSection
             }
             .padding(20)
         }
@@ -69,6 +70,36 @@ struct CatDetailView: View {
                                 .foregroundStyle(AppTheme.textMuted)
                         }
                     }
+                }
+            }
+        }
+    }
+
+    private var healthSection: some View {
+        GlassChrome.card(tint: AppTheme.primary.opacity(0.08)) {
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Santé & Suivi")
+                    .font(.headline)
+                    .foregroundStyle(AppTheme.ivory)
+
+                NavigationLink(destination: CatHealthDashboardView(cat: liveCat)) {
+                    Label("Tableau de bord santé", systemImage: "heart.text.square.fill")
+                        .frame(maxWidth: .infinity, minHeight: AppTheme.minTouch)
+                }
+                .buttonStyle(GlassPrimaryButtonStyle())
+
+                HStack(spacing: 10) {
+                    NavigationLink(destination: WeightFormView(cat: liveCat)) {
+                        Label("Poids", systemImage: "scalemass")
+                            .frame(maxWidth: .infinity, minHeight: AppTheme.minTouch)
+                    }
+                    .buttonStyle(GlassSecondaryButtonStyle())
+
+                    NavigationLink(destination: RecordFormView(cat: liveCat)) {
+                        Label("Acte médical", systemImage: "cross.case")
+                            .frame(maxWidth: .infinity, minHeight: AppTheme.minTouch)
+                    }
+                    .buttonStyle(GlassSecondaryButtonStyle())
                 }
             }
         }
