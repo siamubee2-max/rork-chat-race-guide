@@ -14,14 +14,14 @@ Application native **SwiftUI** pour iOS 26, port du projet Expo `expo/` (Purrly 
 
 ```bash
 cd ios-native
-cp RaceGuide/Resources/Secrets.xcconfig.example RaceGuide/Resources/Secrets.xcconfig
+cp Purrly/Resources/Secrets.xcconfig.example Purrly/Resources/Secrets.xcconfig
 # Éditer Secrets.xcconfig avec vos clés Supabase / API
 
 xcodegen generate
-open RaceGuide.xcodeproj
+open Purrly.xcodeproj
 ```
 
-Dans Xcode : schéma **RaceGuide**, simulateur **iPhone** (iOS 26), puis **Product → Run**.
+Dans Xcode : schéma **Purrly**, simulateur **iPhone** (iOS 26), puis **Product → Run**.
 
 ### Ligne de commande
 
@@ -29,8 +29,8 @@ Dans Xcode : schéma **RaceGuide**, simulateur **iPhone** (iOS 26), puis **Produ
 cd ios-native
 xcodegen generate
 xcodebuild \
-  -project RaceGuide.xcodeproj \
-  -scheme RaceGuide \
+  -project Purrly.xcodeproj \
+  -scheme Purrly \
   -destination 'platform=iOS Simulator,name=iPhone 16' \
   -configuration Debug \
   build
@@ -65,7 +65,7 @@ Le fichier `Secrets.xcconfig` est ignoré par git — ne pas committer de secret
 
 ## Données embarquées
 
-- `RaceGuide/Resources/breeds.json` — **96 races** exportées depuis `expo/constants/breeds.ts`
+- `Purrly/Resources/breeds.json` — **96 races** exportées depuis `expo/constants/breeds.ts`
 - Chats : persistance locale `UserDefaults` (équivalent `cats_data`)
 
 ## Onglets portés (shell principal)
@@ -96,5 +96,5 @@ Auth : `LoginView`, `SignupView`, `LanguageSelectView`.
 Pour régénérer le catalogue :
 
 ```bash
-cd expo && npx tsx -e "import { BREEDS } from './constants/breeds.ts'; import { writeFileSync, mkdirSync } from 'fs'; mkdirSync('../ios-native/RaceGuide/Resources', { recursive: true }); writeFileSync('../ios-native/RaceGuide/Resources/breeds.json', JSON.stringify(BREEDS));"
+cd expo && npx tsx -e "import { BREEDS } from './constants/breeds.ts'; import { writeFileSync, mkdirSync } from 'fs'; mkdirSync('../ios-native/Purrly/Resources', { recursive: true }); writeFileSync('../ios-native/Purrly/Resources/breeds.json', JSON.stringify(BREEDS));"
 ```

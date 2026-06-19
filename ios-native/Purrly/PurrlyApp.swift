@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct RaceGuideApp: App {
+struct PurrlyApp: App {
     @State private var environment = AppEnvironment()
 
     var body: some Scene {

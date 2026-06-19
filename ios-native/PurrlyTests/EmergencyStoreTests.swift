@@ -1,5 +1,5 @@
 import XCTest
-@testable import RaceGuide
+@testable import Purrly
 
 @MainActor
 final class EmergencyStoreTests: XCTestCase {

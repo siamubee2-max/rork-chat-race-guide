@@ -1,4 +1,4 @@
-name: RaceGuide
+name: Purrly
 options:
   bundleIdPrefix: app.purrly
   deploymentTarget:
@@ -8,7 +8,7 @@ settings:
   base:
     SWIFT_VERSION: "6.0"
     IPHONEOS_DEPLOYMENT_TARGET: "26.0"
-    DEVELOPMENT_TEAM: "GG9U76Z4X7"
+    DEVELOPMENT_TEAM: "SPLML3CN76"
     CODE_SIGN_STYLE: Automatic
     CURRENT_PROJECT_VERSION: 1
     MARKETING_VERSION: 1.0.0
@@ -18,23 +18,23 @@ packages:
     url: https://github.com/supabase/supabase-swift
     from: 2.5.1
 targets:
-  RaceGuide:
+  Purrly:
     type: application
     platform: iOS
     sources:
-      - path: RaceGuide
+      - path: Purrly
         excludes:
           - Resources/Secrets.xcconfig
     resources:
-      - path: RaceGuide/Resources/breeds.json
-      - path: RaceGuide/Resources/Localizable.xcstrings
-      - path: RaceGuide/Assets.xcassets
+      - path: Purrly/Resources/breeds.json
+      - path: Purrly/Resources/Localizable.xcstrings
+      - path: Purrly/Assets.xcassets
     dependencies:
       - package: Supabase
         product: Supabase
     settings:
       base:
-        INFOPLIST_FILE: RaceGuide/Info.plist
+        INFOPLIST_FILE: Purrly/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: app.purrly.raceguide
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         SWIFT_EMIT_LOC_STRINGS: YES
@@ -42,10 +42,10 @@ targets:
         Debug:
           SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
     configFiles:
-      Debug: RaceGuide/Resources/Secrets.xcconfig
-      Release: RaceGuide/Resources/Secrets.xcconfig
+      Debug: Purrly/Resources/Secrets.xcconfig
+      Release: Purrly/Resources/Secrets.xcconfig
     info:
-      path: RaceGuide/Info.plist
+      path: Purrly/Info.plist
       properties:
         UILaunchScreen: {}
         UIRequiresFullScreen: true
@@ -58,13 +58,13 @@ targets:
         NSLocationWhenInUseUsageDescription: "Purrly utilise votre position pour trouver des vétérinaires et éleveurs à proximité."
         NSPhotoLibraryAddUsageDescription: "Purrly sauvegarde vos photos Photo Booth dans votre galerie."
         KIE_API_KEY: $(KIE_API_KEY)
-  RaceGuideTests:
+  PurrlyTests:
     type: bundle.unit-test
     platform: iOS
     sources:
-      - path: RaceGuideTests
+      - path: PurrlyTests
     dependencies:
-      - target: RaceGuide
+      - target: Purrly
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: app.purrly.raceguide.tests
