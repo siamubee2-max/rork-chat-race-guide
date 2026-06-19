@@ -1,0 +1,9 @@
+# Optional: stronger scanning once you install the pre-commit framework.
+#   pipx install pre-commit && pre-commit install
+# Until then, the zero-dependency native hook at scripts/git-hooks/pre-commit
+# (active via core.hooksPath) provides baseline protection.
+repos:
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.21.2
+    hooks:
+      - id: gitleaks
