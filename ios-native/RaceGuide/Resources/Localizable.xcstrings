@@ -127,6 +127,16 @@
         }
       }
     },
+    "%@ à %@" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ à %2$@"
+          }
+        }
+      }
+    },
     "%@: %@" : {
       "localizations" : {
         "de" : {
@@ -417,6 +427,16 @@
         }
       }
     },
+    "%lld/%lld" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld/%2$lld"
+          }
+        }
+      }
+    },
     "• Email et nom d'utilisateur (pour la création de compte)" : {
       "localizations" : {
         "de" : {
@@ -573,6 +593,9 @@
         }
       }
     },
+    "• Prends une photo claire de ton chat\n• L'IA analyse l'expression, la posture et l'état général\n• Tu reçois un rapport sur son humeur et sa santé apparente" : {
+
+    },
     "+%lld XP" : {
       "localizations" : {
         "de" : {
@@ -630,6 +653,21 @@
           }
         }
       }
+    },
+    "⚠️ %@" : {
+
+    },
+    "✓ Je participe" : {
+
+    },
+    "✨ IA Booth" : {
+
+    },
+    "🎨 Stickers" : {
+
+    },
+    "📸 Choisis d'abord une photo de ton chat" : {
+
     },
     "0,00" : {
       "localizations" : {
@@ -750,6 +788,9 @@
     "A venir (%lld)" : {
 
     },
+    "Abonné·e" : {
+
+    },
     "Abonnements" : {
       "localizations" : {
         "de" : {
@@ -866,6 +907,9 @@
         }
       }
     },
+    "Adresse complète" : {
+
+    },
     "Aimer" : {
       "localizations" : {
         "de" : {
@@ -917,6 +961,9 @@
           }
         }
       }
+    },
+    "Ajoute ta clé API kie.ai dans Secrets.xcconfig → KIE_API_KEY" : {
+
     },
     "Ajouter" : {
       "localizations" : {
@@ -979,13 +1026,49 @@
     "Ajouter un commentaire..." : {
 
     },
+    "Ajouter un log" : {
+
+    },
     "Ajouter un poids" : {
+
+    },
+    "Ajouter une légende… 🐱" : {
 
     },
     "Ajoutez des articles pour ne rien oublier lors de vos courses" : {
 
     },
+    "Ajoutez un chat pour obtenir des insights personnalisés." : {
+
+    },
+    "Album vide" : {
+
+    },
+    "Analyse comportementale" : {
+
+    },
+    "Analyse de la photo en cours…" : {
+
+    },
+    "Analyse en cours…" : {
+
+    },
+    "Analyse IA" : {
+
+    },
     "Analyse impossible" : {
+
+    },
+    "Analyse…" : {
+
+    },
+    "Analyser la photo" : {
+
+    },
+    "Analyser pour" : {
+
+    },
+    "Analyser une photo" : {
 
     },
     "Annuaire des éleveurs" : {
@@ -1443,6 +1526,9 @@
     "Aucun" : {
 
     },
+    "Aucun log" : {
+
+    },
     "Aucun poids enregistré" : {
 
     },
@@ -1500,6 +1586,12 @@
           }
         }
       }
+    },
+    "Aucune pesée" : {
+
+    },
+    "Aucune publication pour l'instant" : {
+
     },
     "auth.email" : {
       "localizations" : {
@@ -2439,6 +2531,9 @@
     "Cadrez votre chat dans le viseur" : {
 
     },
+    "Calculateur alimentaire" : {
+
+    },
     "Carnet de santé" : {
 
     },
@@ -3135,6 +3230,9 @@
     "Ces informations sont un guide de premiers secours et ne remplacent pas une consultation vétérinaire. En cas de doute, consultez toujours un professionnel." : {
 
     },
+    "Ces valeurs sont indicatives. Consultez un vétérinaire pour un programme alimentaire adapté." : {
+
+    },
     "Chargement de Purrly" : {
       "localizations" : {
         "de" : {
@@ -3193,7 +3291,22 @@
     "Chat (optionnel)" : {
 
     },
+    "Checklist voyage" : {
+
+    },
+    "Choisir une photo de ton chat" : {
+
+    },
+    "Choisir une photo de votre chat" : {
+
+    },
     "Classement" : {
+
+    },
+    "Commencez la conversation avec %@" : {
+
+    },
+    "Comment ça marche ?" : {
 
     },
     "Commentaires" : {
@@ -3782,6 +3895,9 @@
         }
       }
     },
+    "Comportement" : {
+
+    },
     "Compte" : {
       "localizations" : {
         "de" : {
@@ -3993,6 +4109,15 @@
     "Courses" : {
 
     },
+    "Crée tes premières photos avec le Photo Booth !" : {
+
+    },
+    "Créer" : {
+
+    },
+    "Créer un événement" : {
+
+    },
     "Créez des rappels pour les vaccins, médicaments ou rendez-vous de votre chat" : {
 
     },
@@ -4161,6 +4286,9 @@
         }
       }
     },
+    "Description" : {
+
+    },
     "Détails" : {
 
     },
@@ -4273,6 +4401,9 @@
           }
         }
       }
+    },
+    "Effacer les stickers" : {
+
     },
     "Éleveurs" : {
 
@@ -5211,10 +5342,22 @@
     "Enregistrer" : {
 
     },
+    "Enregistrer dans Photos" : {
+
+    },
     "Enregistrer un poids" : {
 
     },
+    "Enregistrez régulièrement le poids pour détecter des variations." : {
+
+    },
+    "Envoyer" : {
+
+    },
     "Envoyer le lien" : {
+
+    },
+    "Envoyer un message à %@" : {
 
     },
     "Erreur : %@" : {
@@ -5268,6 +5411,9 @@
           }
         }
       }
+    },
+    "ex: 4.5" : {
+
     },
     "Ex: Mon chat ne mange plus…" : {
       "localizations" : {
@@ -5443,10 +5589,25 @@
     "Fréquence" : {
 
     },
+    "Galerie ou caméra" : {
+
+    },
+    "Génération IA en cours… %lld%%" : {
+
+    },
+    "Générer des insights" : {
+
+    },
     "Guide d'urgence pour réagir rapidement en cas de problème avec votre chat" : {
 
     },
+    "Historique" : {
+
+    },
     "Identification en cours…" : {
+
+    },
+    "Insights IA" : {
 
     },
     "Itinéraire" : {
@@ -5675,7 +5836,34 @@
     "Le titre est obligatoire." : {
 
     },
+    "Lieu" : {
+
+    },
     "Liste vide" : {
+
+    },
+    "Log du jour" : {
+
+    },
+    "Logs" : {
+
+    },
+    "Logs de %@" : {
+
+    },
+    "Logs quotidiens" : {
+
+    },
+    "Max participants" : {
+
+    },
+    "Message…" : {
+
+    },
+    "Mode" : {
+
+    },
+    "Mon album 🐱" : {
 
     },
     "Montant" : {
@@ -6024,7 +6212,13 @@
         }
       }
     },
+    "Niveau d'activité" : {
+
+    },
     "Nom de l'article" : {
+
+    },
+    "Nom du lieu" : {
 
     },
     "Notes" : {
@@ -6192,6 +6386,9 @@
         }
       }
     },
+    "Nouvel événement" : {
+
+    },
     "Nouvelle analyse" : {
 
     },
@@ -6250,6 +6447,9 @@
     "Nouvelle publication" : {
 
     },
+    "Observations…" : {
+
+    },
     "Optionnel" : {
 
     },
@@ -6304,6 +6504,24 @@
           }
         }
       }
+    },
+    "Ouvrir le Photo Booth" : {
+
+    },
+    "Partager" : {
+
+    },
+    "Partager dans la communauté" : {
+
+    },
+    "Participants" : {
+
+    },
+    "Participer" : {
+
+    },
+    "Participer à l'événement" : {
+
     },
     "paywall.aiMessage.body" : {
       "localizations" : {
@@ -6769,6 +6987,15 @@
         }
       }
     },
+    "Photo Booth" : {
+
+    },
+    "Photo Booth 🐱" : {
+
+    },
+    "Photo sauvegardée !" : {
+
+    },
     "Plus" : {
       "localizations" : {
         "de" : {
@@ -6822,6 +7049,12 @@
       }
     },
     "Poids" : {
+
+    },
+    "Poids de %@" : {
+
+    },
+    "Poids du chat" : {
 
     },
     "Politique de confidentialité" : {
@@ -6983,6 +7216,12 @@
     "Premiers secours" : {
 
     },
+    "Préparation voyage" : {
+
+    },
+    "Prix (optionnel, en €)" : {
+
+    },
     "Prochaine échéance" : {
 
     },
@@ -7041,6 +7280,9 @@
         }
       }
     },
+    "Publications" : {
+
+    },
     "Publier" : {
       "localizations" : {
         "de" : {
@@ -7092,6 +7334,9 @@
           }
         }
       }
+    },
+    "Publier dans la communauté" : {
+
     },
     "Purrly" : {
       "localizations" : {
@@ -7279,6 +7524,9 @@
     "Refuges" : {
 
     },
+    "Réinitialiser" : {
+
+    },
     "Réinitialiser le mot de passe" : {
 
     },
@@ -7387,6 +7635,9 @@
       }
     },
     "Résultat du scan" : {
+
+    },
+    "Résultats journaliers" : {
 
     },
     "Retirer le j'aime" : {
@@ -8034,7 +8285,19 @@
         }
       }
     },
+    "Se désabonner" : {
+
+    },
+    "Se désinscrire de l'événement" : {
+
+    },
     "Soyez le premier à commenter" : {
+
+    },
+    "Stade de vie" : {
+
+    },
+    "Stérilisé(e)" : {
 
     },
     "Succès" : {
@@ -8141,7 +8404,19 @@
         }
       }
     },
+    "Suivez l'appétit, l'énergie et la litière de %@ quotidiennement." : {
+
+    },
     "Suivi du poids" : {
+
+    },
+    "Suivre" : {
+
+    },
+    "Suivre %@" : {
+
+    },
+    "Sujets fréquents" : {
 
     },
     "Supprimer" : {
@@ -8821,6 +9096,9 @@
           }
         }
       }
+    },
+    "Type d'événement" : {
+
     },
     "Unité" : {
 
