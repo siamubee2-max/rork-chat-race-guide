@@ -15,6 +15,15 @@ higher wins on conflict:
 4. **BMAD** — NOT adopted. Borrow `bmad-review-adversarial-general` as a manual
    `/`-invoked sanity check only; do not add BMAD's PM/architect/PRD ceremony.
 
+## Setup (run once per clone)
+
+Git hook activation is local config and does NOT travel with the repo. After
+cloning, enable the secret-scanning pre-commit guard:
+
+```bash
+./scripts/setup-hooks.sh    # or: git config core.hooksPath scripts/git-hooks
+```
+
 ## Secrets
 
 - Provider routing + API keys live in `.claude/settings.local.json` (gitignored).
