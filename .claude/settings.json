@@ -1,8 +1,4 @@
 {
-    "env": {
-        "ANTHROPIC_BASE_URL": "https://openrouter.ai/api",
-        "ANTHROPIC_AUTH_TOKEN": "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",
-        "ANTHROPIC_API_KEY": "",
-        "ANTHROPIC_MODEL": "qwen/qwen3.6-plus"
-    }
+    "$schema": "https://json.schemastore.org/claude-code-settings.json",
+    "_comment": "Secrets and provider routing live in .claude/settings.local.json (gitignored). Do NOT put API keys here — this file is committed."
 }

@@ -7,3 +7,6 @@ ios-native/RaceGuide/Resources/Secrets.xcconfig
 ios-native/DerivedData/
 ios-native/.swiftpm/
 ios-native/build/
+
+# Claude Code local secrets/overrides
+.claude/settings.local.json
