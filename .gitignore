@@ -10,3 +10,6 @@ ios-native/build/
 
 # Claude Code local secrets/overrides
 .claude/settings.local.json
+
+# Xcode per-user state (should never be tracked)
+**/xcuserdata/
