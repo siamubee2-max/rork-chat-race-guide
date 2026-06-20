@@ -1,5 +1,6 @@
 import SwiftUI
 import PhotosUI
+import UIKit
 
 struct ScanHomeView: View {
     @Environment(AppEnvironment.self) private var environment
@@ -96,6 +97,21 @@ struct ScanHomeView: View {
                     .frame(maxWidth: .infinity, minHeight: AppTheme.minTouch)
             }
             .buttonStyle(GlassSecondaryButtonStyle())
+
+            #if DEBUG
+            // Hook tests UI : seed une image et déclenche le scan sans PhotosPicker.
+            if ProcessInfo.processInfo.arguments.contains("-uiTesting") {
+                Button("UITest Scan") {
+                    let renderer = UIGraphicsImageRenderer(size: CGSize(width: 64, height: 64))
+                    let img = renderer.image { ctx in
+                        UIColor.gray.setFill()
+                        ctx.fill(CGRect(x: 0, y: 0, width: 64, height: 64))
+                    }
+                    scannedImageData = img.jpegData(compressionQuality: 0.8)
+                }
+                .accessibilityIdentifier("uiTestScanButton")
+            }
+            #endif
 
             GlassChrome.card {
                 VStack(alignment: .leading, spacing: 8) {

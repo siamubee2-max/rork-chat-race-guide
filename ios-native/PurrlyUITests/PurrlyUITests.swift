@@ -213,4 +213,20 @@ final class PurrlyUITests: XCTestCase {
         XCTAssertTrue(reply.waitForExistence(timeout: 8),
                       "La réponse IA mockée doit apparaître dans le fil")
     }
+
+    /// Flux profond (réseau mocké) : scanner une photo → la race s'affiche.
+    /// Le bouton "uiTestScanButton" injecte une image sans le PhotosPicker système.
+    func testScanReturnsBreedResult() {
+        let tabBar = app.tabBars.firstMatch
+        XCTAssertTrue(tabBar.waitForExistence(timeout: 10))
+        tabBar.buttons.element(boundBy: 0).tap() // Accueil
+
+        let scanButton = app.buttons["uiTestScanButton"]
+        XCTAssertTrue(scanButton.waitForExistence(timeout: 5))
+        scanButton.tap()
+
+        // Le stub /breed-scan renvoie topBreed "Européen".
+        XCTAssertTrue(app.staticTexts["Européen"].waitForExistence(timeout: 8),
+                      "Le résultat de scan mocké doit afficher la race")
+    }
 }
