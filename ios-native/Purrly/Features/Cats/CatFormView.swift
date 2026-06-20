@@ -64,6 +64,7 @@ struct CatFormView: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button(String(localized: "common.save")) { save() }
                         .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
+                        .accessibilityIdentifier("saveCatButton")
                 }
             }
             .onAppear(perform: populate)

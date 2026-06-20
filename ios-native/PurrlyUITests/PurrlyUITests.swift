@@ -52,4 +52,33 @@ final class PurrlyUITests: XCTestCase {
         let nameField = app.textFields.firstMatch
         XCTAssertTrue(nameField.waitForExistence(timeout: 5), "Le formulaire d'ajout doit s'ouvrir")
     }
+
+    /// Flux complet : créer un chat, l'ouvrir, atteindre le tableau de bord santé.
+    /// Valide la navigation par valeur (CatRoute) des sous-écrans.
+    func testCreateCatThenOpenHealthDashboard() {
+        let tabBar = app.tabBars.firstMatch
+        XCTAssertTrue(tabBar.waitForExistence(timeout: 10))
+        tabBar.buttons.element(boundBy: 1).tap()
+
+        // Créer un chat nommé "Minou".
+        app.buttons["addCatButton"].tap()
+        let nameField = app.textFields.firstMatch
+        XCTAssertTrue(nameField.waitForExistence(timeout: 5))
+        nameField.tap()
+        nameField.typeText("Minou")
+        app.buttons["saveCatButton"].tap()
+
+        // La ligne du chat apparaît ; on l'ouvre.
+        let catRow = app.staticTexts["Minou"]
+        XCTAssertTrue(catRow.waitForExistence(timeout: 5), "Le chat créé doit apparaître dans la liste")
+        catRow.tap()
+
+        // Depuis la fiche, atteindre le tableau de bord santé (NavigationLink par valeur).
+        let healthLink = app.buttons["Tableau de bord santé"]
+        XCTAssertTrue(healthLink.waitForExistence(timeout: 5), "La fiche chat doit s'ouvrir")
+        healthLink.tap()
+
+        XCTAssertTrue(app.staticTexts["Suivi du poids"].waitForExistence(timeout: 5),
+                      "Le tableau de bord santé doit s'afficher")
+    }
 }

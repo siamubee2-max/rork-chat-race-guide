@@ -73,7 +73,7 @@ struct CatHealthDashboardView: View {
                     }
                 }
 
-                NavigationLink(destination: WeightFormView(cat: liveCat)) {
+                NavigationLink(value: CatRoute.weightForm(liveCat)) {
                     Label("Ajouter un poids", systemImage: "plus")
                         .frame(maxWidth: .infinity, minHeight: AppTheme.minTouch)
                 }
@@ -106,7 +106,7 @@ struct CatHealthDashboardView: View {
                     }
                 }
 
-                NavigationLink(destination: RecordFormView(cat: liveCat)) {
+                NavigationLink(value: CatRoute.recordForm(liveCat)) {
                     Text("Ajouter un acte médical")
                         .font(.subheadline)
                         .foregroundStyle(AppTheme.primary)
@@ -117,25 +117,25 @@ struct CatHealthDashboardView: View {
 
     private var quickActions: some View {
         VStack(spacing: 12) {
-            NavigationLink(destination: DailyLogsView(cat: liveCat)) {
+            NavigationLink(value: CatRoute.dailyLogs(liveCat)) {
                 Label("Logs quotidiens", systemImage: "calendar.badge.plus")
                     .frame(maxWidth: .infinity, minHeight: AppTheme.minTouch)
             }
             .buttonStyle(GlassPrimaryButtonStyle())
 
-            NavigationLink(destination: WeightChartView(cat: liveCat)) {
+            NavigationLink(value: CatRoute.weightChart(liveCat)) {
                 Label("Suivi du poids", systemImage: "scalemass")
                     .frame(maxWidth: .infinity, minHeight: AppTheme.minTouch)
             }
             .buttonStyle(GlassPrimaryButtonStyle())
 
-            NavigationLink(destination: RecordFormView(cat: liveCat)) {
+            NavigationLink(value: CatRoute.recordForm(liveCat)) {
                 Label("Nouveau dossier médical", systemImage: "cross.case")
                     .frame(maxWidth: .infinity, minHeight: AppTheme.minTouch)
             }
             .buttonStyle(GlassPrimaryButtonStyle())
 
-            NavigationLink(destination: WeightFormView(cat: liveCat)) {
+            NavigationLink(value: CatRoute.weightForm(liveCat)) {
                 Label("Enregistrer un poids", systemImage: "scalemass")
                     .frame(maxWidth: .infinity, minHeight: AppTheme.minTouch)
             }

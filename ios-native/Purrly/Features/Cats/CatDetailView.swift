@@ -102,27 +102,27 @@ struct CatDetailView: View {
                     .font(.headline)
                     .foregroundStyle(AppTheme.ivory)
 
-                NavigationLink(destination: CatHealthDashboardView(cat: liveCat)) {
+                NavigationLink(value: CatRoute.health(liveCat)) {
                     Label("Tableau de bord santé", systemImage: "heart.text.square.fill")
                         .frame(maxWidth: .infinity, minHeight: AppTheme.minTouch)
                 }
                 .buttonStyle(GlassPrimaryButtonStyle())
 
                 HStack(spacing: 10) {
-                    NavigationLink(destination: WeightChartView(cat: liveCat)) {
+                    NavigationLink(value: CatRoute.weightChart(liveCat)) {
                         Label("Poids", systemImage: "scalemass")
                             .frame(maxWidth: .infinity, minHeight: AppTheme.minTouch)
                     }
                     .buttonStyle(GlassSecondaryButtonStyle())
 
-                    NavigationLink(destination: DailyLogsView(cat: liveCat)) {
+                    NavigationLink(value: CatRoute.dailyLogs(liveCat)) {
                         Label("Logs", systemImage: "calendar.badge.plus")
                             .frame(maxWidth: .infinity, minHeight: AppTheme.minTouch)
                     }
                     .buttonStyle(GlassSecondaryButtonStyle())
                 }
 
-                NavigationLink(destination: RecordFormView(cat: liveCat)) {
+                NavigationLink(value: CatRoute.recordForm(liveCat)) {
                     Label("Acte médical", systemImage: "cross.case")
                         .frame(maxWidth: .infinity, minHeight: AppTheme.minTouch)
                 }

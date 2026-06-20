@@ -39,6 +39,17 @@ struct DailyLog: Codable, Identifiable, Hashable {
     }
 }
 
+/// Routes de navigation pour les écrans liés à un chat. Permet une navigation
+/// par valeur (lazy) plutôt que des NavigationLink(destination:) eager qui
+/// construisent leurs destinations à chaque rendu de la vue parente.
+enum CatRoute: Hashable {
+    case health(CatProfile)
+    case weightChart(CatProfile)
+    case dailyLogs(CatProfile)
+    case recordForm(CatProfile)
+    case weightForm(CatProfile)
+}
+
 struct CatProfile: Codable, Identifiable, Hashable {
     var id: String
     var name: String

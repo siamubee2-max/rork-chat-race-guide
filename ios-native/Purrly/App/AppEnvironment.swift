@@ -26,9 +26,11 @@ final class AppEnvironment {
         cats.load()
         community.loadSampleIfNeeded()
 
-        // Mode tests UI : état connecté déterministe, pas d'auth réseau.
+        // Mode tests UI : état connecté déterministe, pas d'auth réseau,
+        // store de chats vide pour que chaque run reparte propre.
         if ProcessInfo.processInfo.arguments.contains("-uiTesting") {
             hasSelectedLanguage = true
+            cats.save([])
             auth.enterUITestMode()
             syncEntitlements()
             return

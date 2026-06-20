@@ -17,6 +17,16 @@ struct CatsListView: View {
         .navigationDestination(for: CatProfile.self) { cat in
             CatDetailView(cat: cat)
         }
+        // Routes des sous-écrans (santé, poids, logs…) — navigation par valeur.
+        .navigationDestination(for: CatRoute.self) { route in
+            switch route {
+            case .health(let c):      CatHealthDashboardView(cat: c)
+            case .weightChart(let c): WeightChartView(cat: c)
+            case .dailyLogs(let c):   DailyLogsView(cat: c)
+            case .recordForm(let c):  RecordFormView(cat: c)
+            case .weightForm(let c):  WeightFormView(cat: c)
+            }
+        }
         .purrlyScreenBackground()
         .navigationTitle(String(localized: "cats.title"))
         .toolbar {
