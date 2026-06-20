@@ -57,7 +57,7 @@ final class BreedScanService {
         struct ScanRequest: Encodable { let imageBase64: String }
         request.httpBody = try JSONEncoder().encode(ScanRequest(imageBase64: base64))
 
-        let (data, response) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await AppHTTP.session.data(for: request)
         guard let http = response as? HTTPURLResponse else {
             throw ScanError.serverError("Réponse réseau invalide.")
         }

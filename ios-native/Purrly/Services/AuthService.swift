@@ -23,6 +23,9 @@ final class AuthService{
     /// Hook réservé aux tests UI (lancé via l'argument `-uiTesting`).
     /// Place l'app dans un état connecté déterministe, sans réseau.
     func enterUITestMode() {
+        // Token factice : les services réseau exigent un accessToken non vide
+        // (le stub StubURLProtocol répond sans le valider).
+        try? KeychainStore.save("uitest-token", for: .accessToken)
         currentUser = UserProfile(
             id: "uitest-user",
             email: "uitest@purrly.app",

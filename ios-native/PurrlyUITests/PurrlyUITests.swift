@@ -191,4 +191,26 @@ final class PurrlyUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Photo Booth 🐱"].waitForExistence(timeout: 5),
                       "L'écran Photo Booth doit s'ouvrir")
     }
+
+    /// Flux profond (réseau mocké) : envoyer un message IA → la réponse s'affiche.
+    func testAssistantChatReturnsReply() {
+        let tabBar = app.tabBars.firstMatch
+        XCTAssertTrue(tabBar.waitForExistence(timeout: 10))
+        tabBar.buttons.element(boundBy: 4).tap() // Plus
+        app.staticTexts["Assistant IA"].tap()
+
+        let composer = app.textFields["assistantComposer"]
+        XCTAssertTrue(composer.waitForExistence(timeout: 5))
+        composer.tap()
+        composer.typeText("Bonjour")
+        app.buttons["assistantSendButton"].tap()
+
+        // Le stub réseau renvoie cette réponse déterministe ; la bulle expose
+        // son contenu via l'accessibilityLabel ("Assistant : <contenu>").
+        let reply = app.staticTexts.containing(
+            NSPredicate(format: "label CONTAINS %@", "Réponse de test IA.")
+        ).firstMatch
+        XCTAssertTrue(reply.waitForExistence(timeout: 8),
+                      "La réponse IA mockée doit apparaître dans le fil")
+    }
 }

@@ -31,6 +31,7 @@ final class AppEnvironment {
         if ProcessInfo.processInfo.arguments.contains("-uiTesting") {
             hasSelectedLanguage = true
             cats.save([])
+            UserDefaults.standard.removeObject(forKey: "assistant_chat_history")
             auth.enterUITestMode()
             syncEntitlements()
             return

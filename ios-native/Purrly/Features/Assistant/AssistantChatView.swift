@@ -98,7 +98,9 @@ struct AssistantChatView: View {
                 )
             if message.role == .assistant { Spacer(minLength: 40) }
         }
-        .accessibilityLabel(message.role == .user ? "Vous" : "Assistant")
+        // Expose le rôle ET le contenu (sinon VoiceOver ne lit pas le message).
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(message.role == .user ? "Vous" : "Assistant") : \(message.content)")
     }
 
     private var composer: some View {
@@ -126,6 +128,7 @@ struct AssistantChatView: View {
                 .buttonStyle(GlassPrimaryButtonStyle())
                 .disabled(input.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || isLoading)
                 .accessibilityLabel(String(localized: "assistant.send"))
+                .accessibilityIdentifier("assistantSendButton")
             }
             .padding(.horizontal, 12)
             .padding(.bottom, 8)

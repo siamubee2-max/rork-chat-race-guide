@@ -51,7 +51,7 @@ struct AIChatService {
         )
         request.httpBody = try JSONEncoder().encode(body)
 
-        let (data, response) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await AppHTTP.session.data(for: request)
         guard let http = response as? HTTPURLResponse else { throw ServiceError.invalidResponse }
 
         if http.statusCode == 401 { throw ServiceError.unauthorized }

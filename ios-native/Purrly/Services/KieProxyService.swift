@@ -77,7 +77,7 @@ struct KieProxyService {
         let payload: [String: Any] = ["imageBase64": imageBase64, "preset": preset]
         request.httpBody = try JSONSerialization.data(withJSONObject: payload)
 
-        let (data, response) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await AppHTTP.session.data(for: request)
         guard let http = response as? HTTPURLResponse else {
             throw ServiceError.invalidResponse
         }
@@ -103,7 +103,7 @@ struct KieProxyService {
     private func downloadImage(from url: URL) async throws -> UIImage {
         var request = URLRequest(url: url)
         request.timeoutInterval = 30
-        let (data, _) = try await URLSession.shared.data(for: request)
+        let (data, _) = try await AppHTTP.session.data(for: request)
         guard let image = UIImage(data: data) else {
             throw ServiceError.downloadFailed
         }
