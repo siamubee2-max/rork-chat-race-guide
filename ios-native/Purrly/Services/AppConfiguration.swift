@@ -47,5 +47,6 @@ enum AppConfiguration {
         return key
     }
 
-    static var isKieConfigured: Bool { kieApiKey != nil }
+    // Proxy backend disponible dès qu'on a une URL d'API — la clé reste côté serveur
+    static var isKieConfigured: Bool { true }
 }

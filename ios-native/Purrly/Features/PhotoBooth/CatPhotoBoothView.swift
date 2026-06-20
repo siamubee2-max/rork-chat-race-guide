@@ -58,9 +58,9 @@ struct CatPhotoBoothView: View {
     @State private var canvasSize: CGSize = .zero
     @State private var showCommunityPost = false
 
-    // kie.ai IA mode
+    // kie.ai IA mode (via proxy backend — clé côté serveur)
     @State private var panelMode: PanelMode = .stickers
-    @State private var kieService = KieAIService()
+    @State private var kieProxy = KieProxyService()
     @State private var kieIsGenerating = false
     @State private var kieProgress: Double = 0
     @State private var kieError: String?
@@ -324,12 +324,20 @@ struct CatPhotoBoothView: View {
 
     private func generateWithKie(preset: KieAIService.AccessoryPreset) async {
         guard let photo = selectedPhoto else { return }
+        guard let token = KeychainStore.read(.accessToken), !token.isEmpty else {
+            kieError = "Connectez-vous pour utiliser IA Booth."
+            return
+        }
         kieIsGenerating = true
         kieError = nil
         kieProgress = 0
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         do {
-            let result = try await kieService.generate(image: photo, preset: preset) { p in
+            let result = try await kieProxy.generate(
+                image: photo,
+                preset: preset,
+                accessToken: token
+            ) { p in
                 kieProgress = p
             }
             kieResultImage = result

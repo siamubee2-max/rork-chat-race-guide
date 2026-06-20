@@ -76,6 +76,7 @@
 		AB925A661EEEA66451DCFBF8 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F4EBA8D37A45944DDED81D /* KeychainStore.swift */; };
 		B00266A12AC544A89CEE1C4A /* FAQView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68615D962928C1A731786DC7 /* FAQView.swift */; };
 		B0A60666A9387FC1F8407B50 /* BreedCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C2289042C4C06826E2EAC8 /* BreedCatalog.swift */; };
+		B0CB2D77C95457093A28DCC2 /* KieProxyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D89C551CF27145742035F34 /* KieProxyService.swift */; };
 		B1B2148C746BA001FEB9EAEA /* CreateAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6368EC7B67F311035673CC66 /* CreateAlertView.swift */; };
 		B2BA1B8BA770BF1939479469 /* InsightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8188667C1E931982020B18FD /* InsightsView.swift */; };
 		B394D2C6D80B45325D016DA0 /* VetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F1F6A3BD8513CAB991E6D5 /* VetsView.swift */; };
@@ -121,6 +122,7 @@
 /* Begin PBXFileReference section */
 		00A2EBF4115EDB6D12ACA7D6 /* ShoppingStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingStore.swift; sourceTree = "<group>"; };
 		0108484CD2C47D06086C2003 /* AssistantChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssistantChatView.swift; sourceTree = "<group>"; };
+		0D89C551CF27145742035F34 /* KieProxyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KieProxyService.swift; sourceTree = "<group>"; };
 		0DD7F1F2CE55E99F0BEFE074 /* DiscussionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionDetailView.swift; sourceTree = "<group>"; };
 		0EC103EA1ED0D174FC3A8505 /* EmergencyStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmergencyStoreTests.swift; sourceTree = "<group>"; };
 		0FF6E2D4566CE8803E36E03C /* RemindersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersView.swift; sourceTree = "<group>"; };
@@ -418,6 +420,7 @@
 				AABFDB4192E8A45C41C05BF3 /* GamificationStore.swift */,
 				F8F4EBA8D37A45944DDED81D /* KeychainStore.swift */,
 				3A0C786B2D0341439A388637 /* KieAIService.swift */,
+				0D89C551CF27145742035F34 /* KieProxyService.swift */,
 				53FE46F00C4FCF41909366A8 /* ReminderStore.swift */,
 				00A2EBF4115EDB6D12ACA7D6 /* ShoppingStore.swift */,
 				9B73583D30F9004785615351 /* UsageLimits.swift */,
@@ -699,6 +702,7 @@
 				B2BA1B8BA770BF1939479469 /* InsightsView.swift in Sources */,
 				AB925A661EEEA66451DCFBF8 /* KeychainStore.swift in Sources */,
 				A7F8513E10C1BE70E4E25E07 /* KieAIService.swift in Sources */,
+				B0CB2D77C95457093A28DCC2 /* KieProxyService.swift in Sources */,
 				C71B5E0DBC9BEF52E79F7C1A /* LanguageSelectView.swift in Sources */,
 				CA849DE2AFD5C1D3E41666E0 /* LeaderboardView.swift in Sources */,
 				56464752A290F0240C89532C /* LoginView.swift in Sources */,
