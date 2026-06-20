@@ -132,9 +132,12 @@ app.get("/", (c) => {
 });
 
 // ---------------------------------------------------------------------------
-// RevenueCat Webhook
-// Vérifie HMAC-SHA256 (X-RevenueCat-Signature) si présent,
-// sinon Bearer statique pour compatibilité ascendante.
+// RevenueCat Webhook — DEPRECATED / NON FONCTIONNEL
+// Ce handler écrit dans une table `users` qui n'existe pas (la source
+// autoritaire est `profiles`) et ce backend hono n'est pas déployé à
+// l'URL que l'app/RevenueCat utilisent (Supabase Edge Functions).
+// → Remplacé par l'Edge Function `supabase/functions/revenuecat-webhook`,
+//   qui écrit dans `profiles`. Ne pas utiliser ce chemin.
 // ---------------------------------------------------------------------------
 app.post("/webhooks/revenuecat", async (c) => {
   const authKey = process.env.REVENUECAT_WEBHOOK_AUTH_KEY;
