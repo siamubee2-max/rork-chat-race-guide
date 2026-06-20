@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-/// Identifies a cat breed from JPEG image data using the backend AI endpoint.
+/// Identifies a cat breed via the tRPC `ai.breedIdentify` proxy (GPT-4o Vision, server-side key).
 @MainActor
 final class BreedScanService {
 
@@ -14,9 +14,9 @@ final class BreedScanService {
 
         var errorDescription: String? {
             switch self {
-            case .noData:           "Impossible d'analyser l'image."
-            case .serverError(let m): m
-            case .unauthorized:    "Connectez-vous pour utiliser le scanner."
+            case .noData:               "Impossible d'analyser l'image."
+            case .serverError(let m):   m
+            case .unauthorized:         "Connectez-vous pour utiliser le scanner."
             }
         }
     }
@@ -25,9 +25,9 @@ final class BreedScanService {
 
     struct ScanResult: Codable {
         let topBreed: String
-        let confidence: String  // "Très probable" | "Probable" | "Possible"
+        let confidence: String      // "Très probable" | "Probable" | "Possible"
         let why: String
-        let alternatives: [String]
+        let alternatives: [String]  // breed characteristics shown as secondary info
     }
 
     // MARK: - Identify
@@ -37,7 +37,7 @@ final class BreedScanService {
             throw ScanError.unauthorized
         }
 
-        // Compress to JPEG at 0.4 quality (mirrors Expo camera.tsx quality:0.4)
+        // Compress to JPEG (mirrors Expo camera.tsx quality:0.4)
         let jpeg: Data
         if let uiImage = UIImage(data: imageData),
            let compressed = uiImage.jpegData(compressionQuality: 0.4) {
@@ -45,17 +45,17 @@ final class BreedScanService {
         } else {
             jpeg = imageData
         }
-        let base64 = jpeg.base64EncodedString()
 
-        // Edge Function breed-scan — sends base64 image directly to GPT-4o Vision
-        var request = URLRequest(url: AppConfiguration.apiBaseURL.appending(path: "/breed-scan"))
+        let url = AppConfiguration.apiBaseURL.appending(path: "/trpc/ai.breedIdentify")
+        var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.timeoutInterval = 45
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 
-        struct ScanRequest: Encodable { let imageBase64: String }
-        request.httpBody = try JSONEncoder().encode(ScanRequest(imageBase64: base64))
+        // tRPC v10 + superjson : {"json": <input>}
+        let payload: [String: Any] = ["json": ["imageBase64": jpeg.base64EncodedString(), "language": "fr"]]
+        request.httpBody = try JSONSerialization.data(withJSONObject: payload)
 
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let http = response as? HTTPURLResponse else {
@@ -69,45 +69,41 @@ final class BreedScanService {
             )
         }
 
-        // 1. Direct decode
-        if let result = try? JSONDecoder().decode(ScanResult.self, from: data) { return result }
-
-        // 2. AIChatService envelope: { content: "<json string>" }
-        struct ContentEnvelope: Decodable { let content: String }
-        if let envelope = try? JSONDecoder().decode(ContentEnvelope.self, from: data),
-           let jsonData = extractJSON(from: envelope.content),
-           let result = try? JSONDecoder().decode(ScanResult.self, from: jsonData) {
-            return result
-        }
-
-        // 3. tRPC envelope: { result: { content: "<json string>" } }
-        struct TRPCEnvelope: Decodable {
-            struct R: Decodable { let content: String }
-            let result: R?
-        }
-        if let envelope = try? JSONDecoder().decode(TRPCEnvelope.self, from: data),
-           let content = envelope.result?.content,
-           let jsonData = extractJSON(from: content),
-           let result = try? JSONDecoder().decode(ScanResult.self, from: jsonData) {
-            return result
-        }
-
-        throw ScanError.noData
+        return try decodeTRPCResponse(data)
     }
 
-    // MARK: - Helpers
+    // MARK: - Private
 
-    /// Extracts the first JSON object `{...}` from a string that may contain prose.
-    private func extractJSON(from text: String) -> Data? {
-        // Try direct parse first
-        if let direct = text.data(using: .utf8),
-           (try? JSONDecoder().decode(ScanResult.self, from: direct)) != nil {
-            return direct
+    private func decodeTRPCResponse(_ data: Data) throws -> ScanResult {
+        // tRPC v10 + superjson envelope: {"result":{"data":{"json":{...}}}}
+        struct Output: Decodable {
+            let breed: String
+            let confidence: String          // "high" | "medium" | "low"
+            let characteristics: [String]?  // breed traits used as secondary info
+            let description: String?
         }
-        // Find first `{` … last `}`
-        guard let start = text.firstIndex(of: "{"),
-              let end = text.lastIndex(of: "}") else { return nil }
-        let slice = String(text[start...end])
-        return slice.data(using: .utf8)
+        struct DataWrapper: Decodable { let json: Output }
+        struct ResultWrapper: Decodable { let data: DataWrapper }
+        struct TRPCResponse: Decodable { let result: ResultWrapper }
+
+        guard let parsed = try? JSONDecoder().decode(TRPCResponse.self, from: data) else {
+            throw ScanError.noData
+        }
+
+        let out = parsed.result.data.json
+
+        let confidenceLabel: String
+        switch out.confidence {
+        case "high":    confidenceLabel = "Très probable"
+        case "medium":  confidenceLabel = "Probable"
+        default:        confidenceLabel = "Possible"
+        }
+
+        return ScanResult(
+            topBreed: out.breed,
+            confidence: confidenceLabel,
+            why: out.description ?? "",
+            alternatives: out.characteristics ?? []
+        )
     }
 }
