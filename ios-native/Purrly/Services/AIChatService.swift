@@ -39,18 +39,17 @@ struct AIChatService {
             throw ServiceError.unauthorized
         }
 
-        // tRPC v10 + superjson : /trpc/ai.chat
-        let url = AppConfiguration.apiBaseURL.appending(path: "/trpc/ai.chat")
-        var request = URLRequest(url: url)
+        var request = URLRequest(url: AppConfiguration.apiBaseURL.appending(path: "/ai-chat"))
         request.httpMethod = "POST"
         request.timeoutInterval = 45
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
 
-        // tRPC v10 + superjson : {"json": <input>}
-        let msgs = messages.map { ["role": $0.role.rawValue, "content": $0.content] }
-        let payload: [String: Any] = ["json": ["messages": msgs, "systemPrompt": systemPrompt]]
-        request.httpBody = try JSONSerialization.data(withJSONObject: payload)
+        let body = ChatRequest(
+            messages: messages.map { ChatPayload(role: $0.role.rawValue, content: $0.content) },
+            systemPrompt: systemPrompt
+        )
+        request.httpBody = try JSONEncoder().encode(body)
 
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let http = response as? HTTPURLResponse else { throw ServiceError.invalidResponse }
@@ -61,14 +60,20 @@ struct AIChatService {
             throw ServiceError.server(message)
         }
 
-        // tRPC v10 + superjson : {"result":{"data":{"json":{"content":"..."}}}}
-        struct TRPCOutput: Decodable { let content: String }
-        struct TRPCDataWrapper: Decodable { let json: TRPCOutput }
-        struct TRPCResult: Decodable { let data: TRPCDataWrapper }
-        struct TRPCResponse: Decodable { let result: TRPCResult }
+        if let decoded = try? JSONDecoder().decode(ChatResponse.self, from: data) {
+            return decoded.content
+        }
 
-        if let parsed = try? JSONDecoder().decode(TRPCResponse.self, from: data) {
-            return parsed.result.data.json.content
+        // tRPC envelope
+        struct TRPCEnvelope: Decodable {
+            struct ResultData: Decodable {
+                let content: String
+            }
+            let result: ResultData?
+        }
+        if let envelope = try? JSONDecoder().decode(TRPCEnvelope.self, from: data),
+           let content = envelope.result?.content {
+            return content
         }
 
         throw ServiceError.invalidResponse
