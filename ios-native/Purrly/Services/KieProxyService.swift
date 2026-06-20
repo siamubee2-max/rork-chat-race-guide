@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-/// Proxy vers le backend `kie.generate` tRPC — la clé KIE ne quitte jamais le serveur.
+/// Proxy vers l'Edge Function Supabase `kie-generate` — la clé KIE ne quitte jamais le serveur.
 @MainActor
 struct KieProxyService {
 
@@ -54,7 +54,7 @@ struct KieProxyService {
         preset: String,
         accessToken: String
     ) async throws -> URL {
-        let url = AppConfiguration.apiBaseURL.appending(path: "/trpc/kie.generate")
+        let url = AppConfiguration.apiBaseURL.appending(path: "/kie-generate")
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -62,8 +62,8 @@ struct KieProxyService {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
 
-        // Format tRPC v10 + superjson : {"json": <input>}
-        let payload: [String: Any] = ["json": ["imageBase64": imageBase64, "preset": preset]]
+        // Edge Function : JSON simple {"imageBase64": ..., "preset": ...}
+        let payload: [String: Any] = ["imageBase64": imageBase64, "preset": preset]
         request.httpBody = try JSONSerialization.data(withJSONObject: payload)
 
         let (data, response) = try await URLSession.shared.data(for: request)
@@ -80,20 +80,10 @@ struct KieProxyService {
             throw ServiceError.serverError(msg)
         }
 
-        // Réponse tRPC v10 + superjson : {"result":{"data":{"json":{"resultUrl":"..."}}}}
-        struct TRPCResponse: Decodable {
-            struct Result: Decodable {
-                struct DataWrapper: Decodable {
-                    struct Output: Decodable { let resultUrl: String }
-                    let json: Output
-                }
-                let data: DataWrapper
-            }
-            let result: Result
-        }
-
-        if let parsed = try? JSONDecoder().decode(TRPCResponse.self, from: data),
-           let resultUrl = URL(string: parsed.result.data.json.resultUrl) {
+        // Réponse Edge Function : {"resultUrl":"..."}
+        struct ProxyResponse: Decodable { let resultUrl: String }
+        if let parsed = try? JSONDecoder().decode(ProxyResponse.self, from: data),
+           let resultUrl = URL(string: parsed.resultUrl) {
             return resultUrl
         }
         throw ServiceError.invalidResponse
