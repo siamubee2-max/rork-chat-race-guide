@@ -3,6 +3,10 @@ import UIKit
 
 /// Client pour l'API kie.ai — génération d'images IA (ajout d'accessoires sur photos de chats).
 /// Doc: https://docs.kie.ai/
+///
+/// SECURITY TODO: Migrate to the backend proxy (kie.generate tRPC mutation) so the
+/// KIE_API_KEY is served from the server environment instead of the app bundle.
+/// Until then, AppConfiguration.kieApiKey must NOT be committed (gitignored via Secrets.xcconfig).
 @MainActor
 final class KieAIService {
 
@@ -150,6 +154,7 @@ final class KieAIService {
 
         var request = URLRequest(url: Self.uploadURL)
         request.httpMethod = "POST"
+        request.timeoutInterval = 30
         request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
 
         let boundary = UUID().uuidString
@@ -190,6 +195,7 @@ final class KieAIService {
     private func createTask(imageURL: String, preset: AccessoryPreset, apiKey: String) async throws -> String {
         var request = URLRequest(url: Self.createTaskURL)
         request.httpMethod = "POST"
+        request.timeoutInterval = 15
         request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
@@ -235,6 +241,7 @@ final class KieAIService {
             throw KieError.invalidResponse
         }
         var request = URLRequest(url: url)
+        request.timeoutInterval = 10
         request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
 
         let maxAttempts = 60  // 60 × 3s = 3 minutes max
@@ -282,7 +289,9 @@ final class KieAIService {
     }
 
     private func downloadImage(from url: URL) async throws -> UIImage {
-        let (data, _) = try await URLSession.shared.data(from: url)
+        var request = URLRequest(url: url)
+        request.timeoutInterval = 30
+        let (data, _) = try await URLSession.shared.data(for: request)
         guard let image = UIImage(data: data) else {
             throw KieError.invalidResponse
         }

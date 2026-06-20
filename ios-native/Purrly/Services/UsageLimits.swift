@@ -1,5 +1,8 @@
 import Foundation
 
+// SECURITY NOTE: isPremium and aiMessagesThisMonth are stored in UserDefaults (client-side).
+// These are UI-only guards — they can be bypassed by a rooted device or memory editor.
+// The authoritative subscription gate lives server-side in verifySubscriptionTier() (ai.ts).
 @Observable
 @MainActor
 final class UsageLimits{

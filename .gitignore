@@ -3,7 +3,9 @@ node_modules
 .expo
 
 # iOS native (Purrly)
-ios-native/RaceGuide/Resources/Secrets.xcconfig
+ios-native/Purrly/Resources/Secrets.xcconfig
+# Glob fallback: covers future renames
+**/Resources/Secrets.xcconfig
 ios-native/DerivedData/
 ios-native/.swiftpm/
 ios-native/build/

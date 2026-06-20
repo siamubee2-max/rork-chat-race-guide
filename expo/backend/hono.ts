@@ -6,6 +6,40 @@ import { createClient } from "@supabase/supabase-js";
 import { appRouter } from "./trpc/app-router";
 import { createContext } from "./trpc/create-context";
 
+// ---------------------------------------------------------------------------
+// In-memory rate limiter — guards tRPC AI routes against abuse.
+// NOTE: state resets on process restart; upgrade to a shared store (Redis/KV)
+// for multi-instance or serverless deployments.
+// ---------------------------------------------------------------------------
+interface RateLimitEntry { count: number; resetAt: number }
+const _rlMap = new Map<string, RateLimitEntry>();
+
+function makeRateLimit(maxRequests: number, windowMs: number) {
+  return async (c: any, next: any) => {
+    const ip =
+      c.req.header("x-forwarded-for")?.split(",")[0].trim() ??
+      c.req.header("x-real-ip") ??
+      "unknown";
+    const now = Date.now();
+    const entry = _rlMap.get(ip);
+    if (!entry || now > entry.resetAt) {
+      _rlMap.set(ip, { count: 1, resetAt: now + windowMs });
+    } else if (entry.count >= maxRequests) {
+      c.header("Retry-After", String(Math.ceil((entry.resetAt - now) / 1000)));
+      return c.json({ error: "Too many requests" }, 429);
+    } else {
+      entry.count++;
+    }
+    // Prune stale entries when the map grows large
+    if (_rlMap.size > 10_000) {
+      for (const [k, v] of _rlMap) {
+        if (now > v.resetAt) _rlMap.delete(k);
+      }
+    }
+    await next();
+  };
+}
+
 const app = new Hono();
 
 const allowedOrigins = (process.env.CORS_ALLOWED_ORIGINS ?? "")
@@ -47,6 +81,9 @@ app.use(
     maxAge: 600,
   }),
 );
+
+// 60 tRPC requests / minute per IP — covers all AI endpoints
+app.use("/trpc/*", makeRateLimit(60, 60_000));
 
 app.use(
   "/trpc/*",

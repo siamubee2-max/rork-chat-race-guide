@@ -166,7 +166,7 @@ export const aiRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) => {
       // Subscription verification - pro tier required for audio transcription
-      await verifySubscriptionTier(ctx.supabase, ctx.user.id, 'pro');
+      await verifySubscriptionTier(ctx, 'pro');
 
       const openai = getClient();
 
