@@ -42,6 +42,7 @@ struct EmergencyHomeView: View {
                     Image(systemName: "plus")
                 }
                 .tint(AppTheme.primary)
+                .accessibilityIdentifier("createAlertButton")
             }
         }
         .sheet(isPresented: $showCreate) { CreateAlertView() }

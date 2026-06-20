@@ -81,4 +81,47 @@ final class PurrlyUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Suivi du poids"].waitForExistence(timeout: 5),
                       "Le tableau de bord santé doit s'afficher")
     }
+
+    /// Onglet Plus → Assistant IA : l'écran de chat et son composer s'ouvrent.
+    func testMoreMenuOpensAssistantChat() {
+        let tabBar = app.tabBars.firstMatch
+        XCTAssertTrue(tabBar.waitForExistence(timeout: 10))
+        tabBar.buttons.element(boundBy: 4).tap() // Plus
+
+        let assistantRow = app.staticTexts["Assistant IA"]
+        XCTAssertTrue(assistantRow.waitForExistence(timeout: 5), "La ligne Assistant IA doit être listée")
+        assistantRow.tap()
+
+        XCTAssertTrue(app.textFields["assistantComposer"].waitForExistence(timeout: 5),
+                      "Le composer de chat doit s'afficher")
+    }
+
+    /// Onglet Plus → Analyser une photo : l'écran d'analyse s'ouvre.
+    func testMoreMenuOpensPhotoAnalyzer() {
+        let tabBar = app.tabBars.firstMatch
+        XCTAssertTrue(tabBar.waitForExistence(timeout: 10))
+        tabBar.buttons.element(boundBy: 4).tap() // Plus
+
+        let row = app.staticTexts["Analyser une photo"]
+        XCTAssertTrue(row.waitForExistence(timeout: 5))
+        row.tap()
+
+        // PhotoAnalyzerView a pour titre "Analyser une photo".
+        XCTAssertTrue(app.navigationBars["Analyser une photo"].waitForExistence(timeout: 5),
+                      "L'écran d'analyse photo doit s'ouvrir")
+    }
+
+    /// Onglet Urgence → bouton + : le formulaire de création d'alerte s'ouvre.
+    func testEmergencyCreateAlertSheet() {
+        let tabBar = app.tabBars.firstMatch
+        XCTAssertTrue(tabBar.waitForExistence(timeout: 10))
+        tabBar.buttons.element(boundBy: 2).tap() // Urgence
+
+        let addButton = app.buttons["createAlertButton"]
+        XCTAssertTrue(addButton.waitForExistence(timeout: 5), "Le bouton + d'urgence doit être présent")
+        addButton.tap()
+
+        XCTAssertTrue(app.textFields.firstMatch.waitForExistence(timeout: 5),
+                      "Le formulaire de création d'alerte doit s'ouvrir")
+    }
 }

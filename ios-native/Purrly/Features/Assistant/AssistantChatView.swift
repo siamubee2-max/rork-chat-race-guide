@@ -113,6 +113,7 @@ struct AssistantChatView: View {
                 TextField(String(localized: "assistant.placeholder"), text: $input, axis: .vertical)
                     .lineLimit(1 ... 4)
                     .focused($focused)
+                    .accessibilityIdentifier("assistantComposer")
                     .foregroundStyle(AppTheme.ivory)
                     .padding(12)
                     .background(AppTheme.backgroundCard, in: RoundedRectangle(cornerRadius: 14))
