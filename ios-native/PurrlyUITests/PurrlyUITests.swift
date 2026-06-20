@@ -153,4 +153,42 @@ final class PurrlyUITests: XCTestCase {
         XCTAssertTrue(app.buttons["Nouvel événement"].waitForExistence(timeout: 5),
                       "Le FAB d'événement doit apparaître après bascule de segment")
     }
+
+    /// Flux CRUD complet : créer une alerte urgence et la voir dans la liste.
+    func testEmergencyCreateAlertEndToEnd() {
+        let tabBar = app.tabBars.firstMatch
+        XCTAssertTrue(tabBar.waitForExistence(timeout: 10))
+        tabBar.buttons.element(boundBy: 2).tap() // Urgence
+
+        app.buttons["createAlertButton"].tap()
+
+        let nameField = app.textFields["alertCatNameField"]
+        XCTAssertTrue(nameField.waitForExistence(timeout: 5))
+        nameField.tap()
+        nameField.typeText("Filou-UITest")
+
+        let locationField = app.textFields["alertLocationField"]
+        locationField.tap()
+        locationField.typeText("Lyon")
+
+        app.buttons["publishAlertButton"].tap()
+
+        // De retour sur la liste, l'alerte créée apparaît.
+        XCTAssertTrue(app.staticTexts["Filou-UITest"].waitForExistence(timeout: 5),
+                      "L'alerte créée doit apparaître dans la liste d'urgence")
+    }
+
+    /// Onglet Plus → Photo Booth : l'écran s'ouvre.
+    func testMoreOpensPhotoBooth() {
+        let tabBar = app.tabBars.firstMatch
+        XCTAssertTrue(tabBar.waitForExistence(timeout: 10))
+        tabBar.buttons.element(boundBy: 4).tap() // Plus
+
+        let row = app.staticTexts["Photo Booth"]
+        XCTAssertTrue(row.waitForExistence(timeout: 5))
+        row.tap()
+
+        XCTAssertTrue(app.navigationBars["Photo Booth 🐱"].waitForExistence(timeout: 5),
+                      "L'écran Photo Booth doit s'ouvrir")
+    }
 }

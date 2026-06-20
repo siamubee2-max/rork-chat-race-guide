@@ -26,7 +26,9 @@ struct CreateAlertView: View {
 
                 Section(String(localized: "emergency.form.info")) {
                     TextField(String(localized: "emergency.form.catName"), text: $catName)
+                        .accessibilityIdentifier("alertCatNameField")
                     TextField(String(localized: "emergency.form.location"), text: $location)
+                        .accessibilityIdentifier("alertLocationField")
                     TextField(String(localized: "emergency.form.description"), text: $description, axis: .vertical)
                         .lineLimit(3...6)
                     TextField(String(localized: "emergency.form.phone"), text: $contactPhone)
@@ -52,6 +54,7 @@ struct CreateAlertView: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button(String(localized: "common.publish")) { submit() }
                         .tint(AppTheme.primary)
+                        .accessibilityIdentifier("publishAlertButton")
                 }
             }
         }
