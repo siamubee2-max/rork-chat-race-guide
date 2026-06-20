@@ -6,6 +6,13 @@ import UIKit
 /// chaque load/save).
 enum CatImageStore {
 
+    // Cache mémoire : `load()` est appelé depuis `body` (CatRow, CatDetailView),
+    // ré-évalué à chaque rendu/scroll. Sans cache, on relit + redécode le JPEG
+    // disque sur le main thread à chaque passe → jank. Le cache rend les appels
+    // répétés quasi-gratuits.
+    // NSCache est thread-safe en interne ; nonisolated(unsafe) satisfait Swift 6.
+    nonisolated(unsafe) private static let cache = NSCache<NSString, UIImage>()
+
     private static var documents: URL {
         FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
     }
@@ -22,6 +29,7 @@ enum CatImageStore {
         let fileName = "cat-\(catId).jpg"
         do {
             try data.write(to: url(for: fileName), options: .atomic)
+            cache.setObject(resized, forKey: fileName as NSString)  // garde le cache cohérent
             return fileName
         } catch {
             return nil
@@ -29,13 +37,19 @@ enum CatImageStore {
     }
 
     /// Charge l'image depuis son nom de fichier (valeur de `imageUri`).
+    /// Sûr à appeler depuis `body` : sert le cache mémoire après le 1er décodage.
     static func load(_ fileName: String?) -> UIImage? {
         guard let fileName, !fileName.isEmpty else { return nil }
-        return UIImage(contentsOfFile: url(for: fileName).path)
+        let key = fileName as NSString
+        if let cached = cache.object(forKey: key) { return cached }
+        guard let image = UIImage(contentsOfFile: url(for: fileName).path) else { return nil }
+        cache.setObject(image, forKey: key)
+        return image
     }
 
     static func delete(_ fileName: String?) {
         guard let fileName, !fileName.isEmpty else { return }
+        cache.removeObject(forKey: fileName as NSString)
         try? FileManager.default.removeItem(at: url(for: fileName))
     }
 

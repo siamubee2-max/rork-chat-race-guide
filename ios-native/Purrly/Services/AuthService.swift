@@ -40,8 +40,17 @@ final class AuthService{
             let session = try await client.auth.session
             await loadProfile(userId: session.user.id, email: session.user.email ?? "")
         } catch {
-            KeychainStore.clearSession()
-            currentUser = nil
+            // Ne PAS détruire la session sur une erreur réseau transitoire :
+            // un simple hoquet déconnecterait un utilisateur parfaitement valide.
+            // On n'efface le keychain que pour une vraie erreur d'auth.
+            if error is URLError {
+                lastError = "Connexion impossible — réessayez."
+                // currentUser reste nil pour cette session, mais les tokens sont
+                // préservés : un relancement réseau OK ré-authentifiera.
+            } else {
+                KeychainStore.clearSession()
+                currentUser = nil
+            }
         }
     }
 
