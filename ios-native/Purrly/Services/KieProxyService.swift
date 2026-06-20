@@ -7,20 +7,31 @@ struct KieProxyService {
 
     enum ServiceError: LocalizedError {
         case unauthorized
-        case rateLimited
+        case tierRequired(String)   // 402 — abonnement insuffisant
+        case quotaExceeded(String)  // 429 — limite quotidienne
         case serverError(String)
         case invalidResponse
         case downloadFailed
 
         var errorDescription: String? {
             switch self {
-            case .unauthorized:         return "Connectez-vous pour utiliser IA Booth."
-            case .rateLimited:          return "Trop de requêtes — réessaie dans une minute."
-            case .serverError(let msg): return "Erreur serveur : \(msg)"
-            case .invalidResponse:      return "Réponse serveur inattendue."
-            case .downloadFailed:       return "Impossible de télécharger l'image générée."
+            case .unauthorized:          return "Connectez-vous pour utiliser IA Booth."
+            case .tierRequired(let msg): return msg
+            case .quotaExceeded(let msg): return msg
+            case .serverError(let msg):  return "Erreur serveur : \(msg)"
+            case .invalidResponse:       return "Réponse serveur inattendue."
+            case .downloadFailed:        return "Impossible de télécharger l'image générée."
             }
         }
+    }
+
+    /// Extrait le champ `error` du JSON serveur, sinon un repli lisible.
+    private func serverMessage(_ data: Data, fallback: String) -> String {
+        struct ErrorBody: Decodable { let error: String }
+        if let body = try? JSONDecoder().decode(ErrorBody.self, from: data) {
+            return body.error
+        }
+        return fallback
     }
 
     /// Génère une photo de chat avec accessoire via le proxy backend.
@@ -74,10 +85,10 @@ struct KieProxyService {
         switch http.statusCode {
         case 200...299: break
         case 401: throw ServiceError.unauthorized
-        case 429: throw ServiceError.rateLimited
+        case 402: throw ServiceError.tierRequired(serverMessage(data, fallback: "Abonnement Pro requis."))
+        case 429: throw ServiceError.quotaExceeded(serverMessage(data, fallback: "Limite quotidienne atteinte."))
         default:
-            let msg = String(data: data, encoding: .utf8) ?? "HTTP \(http.statusCode)"
-            throw ServiceError.serverError(msg)
+            throw ServiceError.serverError(serverMessage(data, fallback: "HTTP \(http.statusCode)"))
         }
 
         // Réponse Edge Function : {"resultUrl":"..."}

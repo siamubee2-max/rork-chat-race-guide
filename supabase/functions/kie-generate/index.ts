@@ -2,11 +2,25 @@
 // Proxies a KIE AI image-generation request server-side so KIE_API_KEY never
 // ships in the iOS app bundle. Mirrors expo/backend/trpc/routes/kie.ts.
 //
-// Auth: deployed with verify_jwt=true — Supabase validates the caller's JWT
-// (the user's access token) before this code runs.
+// Auth & authorization (defence in depth — client UsageLimits is bypassable):
+//   1. verify_jwt=true — Supabase validates the caller's JWT before this runs.
+//   2. Subscription gate — caller must be tier 'pro' or higher AND not expired
+//      (mirrors verifySubscriptionTier in ai.ts), read from profiles.
+//   3. Per-user daily quota — atomic check_and_increment_kie_usage(), caps
+//      generations/day to prevent KIE cost-explosion.
 //
 // Request  (POST, application/json): { "imageBase64": string, "preset": string }
 // Response (200, application/json):   { "resultUrl": string }
+//          (402 tier required | 429 quota exceeded | 401 | 400 | 500)
+
+import { createClient } from "jsr:@supabase/supabase-js@2";
+
+// Tier gate + daily cap (decisions: Pro and above, 5/day)
+const REQUIRED_TIER_RANK = 1; // pro
+const DAILY_LIMIT = 5;
+const TIER_RANK: Record<string, number> = {
+  free: 0, pro: 1, premium: 2, premium_plus: 3, family: 4,
+};
 
 const KIE_UPLOAD_URL = "https://kieai.redpandaai.co/api/file-stream-upload";
 const KIE_CREATE_TASK_URL = "https://api.kie.ai/api/v1/jobs/createTask";
@@ -118,7 +132,49 @@ Deno.serve(async (req: Request) => {
   if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
 
   const apiKey = Deno.env.get("KIE_API_KEY");
-  if (!apiKey) return json({ error: "KIE_API_KEY is not configured on the server." }, 500);
+  const supabaseUrl = Deno.env.get("SUPABASE_URL");
+  const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  if (!apiKey || !supabaseUrl || !serviceKey) {
+    return json({ error: "Server not configured." }, 500);
+  }
+
+  // --- Identify the caller from the (already verify_jwt-validated) token ---
+  const token = req.headers.get("Authorization")?.replace(/^Bearer\s+/i, "");
+  if (!token) return json({ error: "Unauthorized" }, 401);
+
+  const admin = createClient(supabaseUrl, serviceKey, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  });
+
+  const { data: userData, error: userErr } = await admin.auth.getUser(token);
+  const userId = userData?.user?.id;
+  if (userErr || !userId) return json({ error: "Unauthorized" }, 401);
+
+  // --- Subscription gate: tier 'pro'+ and not expired (mirrors ai.ts) ---
+  const { data: profile, error: profErr } = await admin
+    .from("profiles")
+    .select("subscription_tier, subscription_expiry")
+    .eq("id", userId)
+    .single();
+
+  if (profErr || !profile) return json({ error: "Profile not found." }, 403);
+
+  const rank = TIER_RANK[profile.subscription_tier as string] ?? 0;
+  const expiry = profile.subscription_expiry ? new Date(profile.subscription_expiry as string) : null;
+  const active = expiry ? expiry.getTime() > Date.now() : false;
+  if (rank < REQUIRED_TIER_RANK || !active) {
+    return json({ error: "Le Photo Booth nécessite un abonnement Pro actif." }, 402);
+  }
+
+  // --- Per-user daily quota (atomic) ---
+  const { data: allowed, error: quotaErr } = await admin.rpc(
+    "check_and_increment_kie_usage",
+    { p_user_id: userId, p_limit: DAILY_LIMIT },
+  );
+  if (quotaErr) return json({ error: "Quota check failed." }, 500);
+  if (allowed !== true) {
+    return json({ error: `Limite quotidienne atteinte (${DAILY_LIMIT}/jour).` }, 429);
+  }
 
   let imageBase64: string;
   let preset: string;
@@ -147,6 +203,8 @@ Deno.serve(async (req: Request) => {
     const resultUrl = await kiePollTask(taskId, apiKey);
     return json({ resultUrl }, 200);
   } catch (err) {
-    return json({ error: String(err instanceof Error ? err.message : err) }, 500);
+    // Log detail server-side only; never leak internal/upstream errors to client.
+    console.error("kie-generate failed:", err instanceof Error ? err.message : err);
+    return json({ error: "La génération a échoué. Réessaie plus tard." }, 500);
   }
 });
