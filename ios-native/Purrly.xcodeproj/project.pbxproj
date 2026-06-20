@@ -31,6 +31,7 @@
 		4A93892FF64FA2760542FF84 /* AssistantChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0108484CD2C47D06086C2003 /* AssistantChatView.swift */; };
 		4B08E4666450488CA42160EC /* CatHealthDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E159063D8BF4319BC8EA46 /* CatHealthDashboardView.swift */; };
 		53516232160ED8329DB3D22C /* NewDiscussionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9617FA2496B1E5CA8BB678 /* NewDiscussionView.swift */; };
+		55A7ADC5730B04ED5AD92A32 /* CatImageStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DCD3A50C3EA3305C5480D22 /* CatImageStore.swift */; };
 		56464752A290F0240C89532C /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C622AB473ACA324AD1AA09 /* LoginView.swift */; };
 		5A24780F84B3F3B16361FEAD /* CatPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38250F44DF08A683BBC75A8 /* CatPersistence.swift */; };
 		5C6C95788DAAC13E21E04A3E /* AchievementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CB7DBA4D7FF4986855E6FE /* AchievementsView.swift */; };
@@ -129,6 +130,7 @@
 		119195BCB56619245C8CD152 /* ScanResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResultView.swift; sourceTree = "<group>"; };
 		19C5B2BC5A57DEFA91CFEE97 /* CommunityPostWithImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPostWithImageView.swift; sourceTree = "<group>"; };
 		1AE9116DA914F77F6E60FA90 /* TermsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsView.swift; sourceTree = "<group>"; };
+		1DCD3A50C3EA3305C5480D22 /* CatImageStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatImageStore.swift; sourceTree = "<group>"; };
 		2191D0DE2A473F3196DAFEA6 /* CatFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatFormView.swift; sourceTree = "<group>"; };
 		2246A54C9DB7E1947FCE23DB /* DiscussionsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionsListView.swift; sourceTree = "<group>"; };
 		22E159063D8BF4319BC8EA46 /* CatHealthDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatHealthDashboardView.swift; sourceTree = "<group>"; };
@@ -412,6 +414,7 @@
 				2F638671056BDB838A763CE0 /* AuthService.swift */,
 				D8C2289042C4C06826E2EAC8 /* BreedCatalog.swift */,
 				F3CA46E99E6B23F9DB166634 /* BreedScanService.swift */,
+				1DCD3A50C3EA3305C5480D22 /* CatImageStore.swift */,
 				B38250F44DF08A683BBC75A8 /* CatPersistence.swift */,
 				E4CE5BD437518275FAA3C022 /* CommunityStore.swift */,
 				B26BC3DA4AC5F6CDFAC3C073 /* DiscussionsStore.swift */,
@@ -668,6 +671,7 @@
 				B5D7339447A1E186C240267D /* CatDetailView.swift in Sources */,
 				3164E3A49989D632FF5A06F6 /* CatFormView.swift in Sources */,
 				4B08E4666450488CA42160EC /* CatHealthDashboardView.swift in Sources */,
+				55A7ADC5730B04ED5AD92A32 /* CatImageStore.swift in Sources */,
 				5A24780F84B3F3B16361FEAD /* CatPersistence.swift in Sources */,
 				C458A5A89AD45EDC4C276EBF /* CatPhotoBoothView.swift in Sources */,
 				165993650D21FF0D408EDA79 /* CatProfile.swift in Sources */,

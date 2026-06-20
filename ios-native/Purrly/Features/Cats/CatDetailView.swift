@@ -13,6 +13,15 @@ struct CatDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
+                if let photo = CatImageStore.load(liveCat.imageUri) {
+                    Image(uiImage: photo)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 240)
+                        .clipped()
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                }
                 GlassChrome.card(tint: AppTheme.primary.opacity(0.2), interactive: true) {
                     VStack(alignment: .leading, spacing: 8) {
                         Text(liveCat.name)

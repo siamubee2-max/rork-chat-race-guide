@@ -12,6 +12,11 @@ struct CatsListView: View {
                 list
             }
         }
+        // navigationDestination DOIT être sur un conteneur stable, pas dans la List
+        // (lazy) — sinon navigation bloquée/instable.
+        .navigationDestination(for: CatProfile.self) { cat in
+            CatDetailView(cat: cat)
+        }
         .purrlyScreenBackground()
         .navigationTitle(String(localized: "cats.title"))
         .toolbar {
@@ -60,15 +65,13 @@ struct CatsListView: View {
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
-        .navigationDestination(for: CatProfile.self) { cat in
-            CatDetailView(cat: cat)
-        }
     }
 
     private func delete(at offsets: IndexSet) {
         for index in offsets {
-            let id = environment.cats.cats[index].id
-            environment.cats.delete(id: id)
+            let cat = environment.cats.cats[index]
+            CatImageStore.delete(cat.imageUri)
+            environment.cats.delete(id: cat.id)
         }
     }
 }
@@ -83,8 +86,16 @@ private struct CatRow: View {
                 RoundedRectangle(cornerRadius: 14)
                     .fill(AppTheme.backgroundSecondary)
                     .frame(width: 56, height: 56)
-                Image(systemName: "cat.fill")
-                    .foregroundStyle(AppTheme.textMuted)
+                if let photo = CatImageStore.load(cat.imageUri) {
+                    Image(uiImage: photo)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 56, height: 56)
+                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                } else {
+                    Image(systemName: "cat.fill")
+                        .foregroundStyle(AppTheme.textMuted)
+                }
             }
             VStack(alignment: .leading, spacing: 4) {
                 Text(cat.name)

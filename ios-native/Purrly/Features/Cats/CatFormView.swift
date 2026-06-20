@@ -1,4 +1,5 @@
 import SwiftUI
+import PhotosUI
 
 struct CatFormView: View {
     @Environment(\.dismiss) private var dismiss
@@ -11,9 +12,35 @@ struct CatFormView: View {
     @State private var microchip = ""
     @State private var notes = ""
 
+    @State private var pickerItem: PhotosPickerItem?
+    @State private var photo: UIImage?
+
     var body: some View {
         NavigationStack {
             Form {
+                Section {
+                    PhotosPicker(selection: $pickerItem, matching: .images) {
+                        HStack(spacing: 14) {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(AppTheme.backgroundSecondary)
+                                    .frame(width: 64, height: 64)
+                                if let photo {
+                                    Image(uiImage: photo)
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 64, height: 64)
+                                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                                } else {
+                                    Image(systemName: "camera.fill")
+                                        .foregroundStyle(AppTheme.textMuted)
+                                }
+                            }
+                            Text(photo == nil ? "Ajouter une photo" : "Changer la photo")
+                                .foregroundStyle(AppTheme.primary)
+                        }
+                    }
+                }
                 Section {
                     TextField(String(localized: "cats.name"), text: $name)
                     Picker(String(localized: "cats.breed"), selection: $breedId) {
@@ -40,6 +67,13 @@ struct CatFormView: View {
                 }
             }
             .onAppear(perform: populate)
+            .onChange(of: pickerItem) { _, item in
+                Task {
+                    guard let data = try? await item?.loadTransferable(type: Data.self),
+                          let img = UIImage(data: data) else { return }
+                    photo = img
+                }
+            }
         }
     }
 
@@ -50,6 +84,7 @@ struct CatFormView: View {
         breedId = cat.breedId
         microchip = cat.microchip
         notes = cat.notes ?? ""
+        photo = CatImageStore.load(cat.imageUri)
     }
 
     private func save() {
@@ -58,6 +93,10 @@ struct CatFormView: View {
         profile.breedId = breedId
         profile.microchip = microchip
         profile.notes = notes.isEmpty ? nil : notes
+        // Persiste la photo comme fichier ; imageUri ne contient que le nom de fichier.
+        if let photo {
+            profile.imageUri = CatImageStore.save(photo, catId: profile.id)
+        }
         environment.cats.upsert(profile)
         dismiss()
     }
