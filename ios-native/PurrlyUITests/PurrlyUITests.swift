@@ -124,4 +124,33 @@ final class PurrlyUITests: XCTestCase {
         XCTAssertTrue(app.textFields.firstMatch.waitForExistence(timeout: 5),
                       "Le formulaire de création d'alerte doit s'ouvrir")
     }
+
+    /// Onglet Accueil : l'écran de scan/édition se charge.
+    func testScanHomeLoads() {
+        let tabBar = app.tabBars.firstMatch
+        XCTAssertTrue(tabBar.waitForExistence(timeout: 10))
+        tabBar.buttons.element(boundBy: 0).tap() // Accueil
+
+        XCTAssertTrue(app.staticTexts["ÉDITION LUXE"].waitForExistence(timeout: 5),
+                      "L'écran d'accueil doit afficher la section édition")
+    }
+
+    /// Onglet Social : la bascule de segment (Fil → Événements) change le FAB.
+    func testCommunitySegmentSwitch() {
+        let tabBar = app.tabBars.firstMatch
+        XCTAssertTrue(tabBar.waitForExistence(timeout: 10))
+        tabBar.buttons.element(boundBy: 3).tap() // Social
+
+        // En "Fil", le FAB de publication est présent.
+        XCTAssertTrue(app.buttons["Nouvelle publication"].waitForExistence(timeout: 5),
+                      "Le FAB de publication doit être présent en mode Fil")
+
+        // Bascule vers "Événements".
+        let segments = app.segmentedControls.firstMatch
+        XCTAssertTrue(segments.waitForExistence(timeout: 5))
+        segments.buttons.element(boundBy: 1).tap()
+
+        XCTAssertTrue(app.buttons["Nouvel événement"].waitForExistence(timeout: 5),
+                      "Le FAB d'événement doit apparaître après bascule de segment")
+    }
 }
