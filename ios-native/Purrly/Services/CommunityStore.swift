@@ -8,6 +8,9 @@ final class CommunityStore {
     private(set) var events: [CommunityEvent] = []
     private(set) var conversations: [Conversation] = []
     private(set) var isLoading = false
+    /// Dernière erreur de synchro (publication/like non remontée au serveur).
+    /// Permet à l'UI de signaler "non synchronisé" au lieu d'un échec silencieux.
+    private(set) var lastSyncError: String?
 
     private var client: SupabaseClient? {
         guard let url = AppConfiguration.supabaseURL,
@@ -78,7 +81,10 @@ final class CommunityStore {
                     Insert(id: post.id, author_name: authorName, content: content,
                            author_id: session?.user.id.uuidString)
                 ).execute()
-            } catch { /* keep local */ }
+                lastSyncError = nil
+            } catch {
+                lastSyncError = "Publication non synchronisée : \(error.localizedDescription)"
+            }
         }
     }
 
@@ -88,6 +94,23 @@ final class CommunityStore {
         post.isLiked.toggle()
         post.likes += post.isLiked ? 1 : -1
         posts[index] = post
+
+        // Persiste le compteur (best-effort). Sans ça, le like se réinitialise
+        // au prochain load() depuis le serveur.
+        let newLikes = post.likes
+        Task {
+            guard let db = client else { return }
+            do {
+                struct LikeUpdate: Encodable { let likes: Int }
+                try await db.from("community_posts")
+                    .update(LikeUpdate(likes: newLikes))
+                    .eq("id", value: postId)
+                    .execute()
+                lastSyncError = nil
+            } catch {
+                lastSyncError = "Like non synchronisé : \(error.localizedDescription)"
+            }
+        }
     }
 
     // MARK: - Events
@@ -111,7 +134,10 @@ final class CommunityStore {
                            type: event.type, max_attendees: event.maxAttendees, price: event.price,
                            author_id: session?.user.id.uuidString)
                 ).execute()
-            } catch { /* keep local */ }
+                lastSyncError = nil
+            } catch {
+                lastSyncError = "Événement non synchronisé : \(error.localizedDescription)"
+            }
         }
     }
 

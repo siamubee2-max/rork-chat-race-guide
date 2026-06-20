@@ -61,6 +61,9 @@ struct SignupView: View {
         isBusy = true
         defer { isBusy = false }
         let ok = await environment.auth.signUp(email: email, password: password, name: name)
-        if ok { dismiss() }
+        if ok {
+            environment.syncEntitlements()
+            dismiss()
+        }
     }
 }

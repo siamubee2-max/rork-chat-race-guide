@@ -26,5 +26,12 @@ final class AppEnvironment {
         cats.load()
         community.loadSampleIfNeeded()
         await auth.bootstrap()
+        syncEntitlements()
+    }
+
+    /// Aligne le flag UI `limits.isPremium` sur le vrai palier d'abonnement.
+    /// À appeler après bootstrap et après une connexion/inscription.
+    func syncEntitlements() {
+        limits.isPremium = (auth.currentUser?.subscriptionTier ?? .free) != .free
     }
 }
