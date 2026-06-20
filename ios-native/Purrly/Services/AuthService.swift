@@ -20,6 +20,19 @@ final class AuthService{
 
     var isAuthenticated: Bool { currentUser != nil }
 
+    /// Hook réservé aux tests UI (lancé via l'argument `-uiTesting`).
+    /// Place l'app dans un état connecté déterministe, sans réseau.
+    func enterUITestMode() {
+        currentUser = UserProfile(
+            id: "uitest-user",
+            email: "uitest@purrly.app",
+            name: "UITest",
+            subscriptionTier: .pro,
+            subscriptionExpiry: nil
+        )
+        isLoading = false
+    }
+
     func bootstrap() async {
         defer { isLoading = false }
         guard let client else {

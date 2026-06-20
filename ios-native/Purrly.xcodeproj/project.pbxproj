@@ -96,6 +96,7 @@
 		CA849DE2AFD5C1D3E41666E0 /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2D57545A8A740E59AC3675 /* LeaderboardView.swift */; };
 		CFA33CA5EE0E9223C90F4FF3 /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5CBD45CFAB1051CA978D056 /* AppConfiguration.swift */; };
 		CFF72C089C46F6634CAD6483 /* MoreMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1178DBDD911E0A9C8FED7E9 /* MoreMenuView.swift */; };
+		D39FC49F9C16AFA9E1F3650B /* PurrlyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11544EF115051E4AFF5D7BDE /* PurrlyUITests.swift */; };
 		D91F9650D2A651AFE1407B85 /* DailyLogFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED141BF9BFD50F0845374955 /* DailyLogFormView.swift */; };
 		DBC3847121605A2272887E4D /* Secrets.xcconfig.example in Resources */ = {isa = PBXBuildFile; fileRef = D1109440970DA651D3FFFB71 /* Secrets.xcconfig.example */; };
 		DC76A65116C142B3B04B6DD4 /* RecordFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4190C08400AF9DD9BF81B17F /* RecordFormView.swift */; };
@@ -111,6 +112,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		3F13653B1D724D92A8D5D000 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DB772A2476A433733D8363D1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C95904595FA2ED79019B860C;
+			remoteInfo = Purrly;
+		};
 		8F26AF7FECD68CADE2ABD418 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DB772A2476A433733D8363D1 /* Project object */;
@@ -127,6 +135,7 @@
 		0DD7F1F2CE55E99F0BEFE074 /* DiscussionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionDetailView.swift; sourceTree = "<group>"; };
 		0EC103EA1ED0D174FC3A8505 /* EmergencyStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmergencyStoreTests.swift; sourceTree = "<group>"; };
 		0FF6E2D4566CE8803E36E03C /* RemindersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersView.swift; sourceTree = "<group>"; };
+		11544EF115051E4AFF5D7BDE /* PurrlyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurrlyUITests.swift; sourceTree = "<group>"; };
 		119195BCB56619245C8CD152 /* ScanResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResultView.swift; sourceTree = "<group>"; };
 		19C5B2BC5A57DEFA91CFEE97 /* CommunityPostWithImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPostWithImageView.swift; sourceTree = "<group>"; };
 		1AE9116DA914F77F6E60FA90 /* TermsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsView.swift; sourceTree = "<group>"; };
@@ -155,6 +164,7 @@
 		54A6A10DDA4E84FD940CE87A /* ForgotPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordView.swift; sourceTree = "<group>"; };
 		56BF1AFF6BDAFCAE15759095 /* ChallengesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengesView.swift; sourceTree = "<group>"; };
 		5CF2044B811A18532ACE77D7 /* ExpenseFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseFormView.swift; sourceTree = "<group>"; };
+		5D77EEB8B87C1F16AC4D285D /* PurrlyUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PurrlyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F418566A00CCD08661EB910 /* DailyLogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyLogsView.swift; sourceTree = "<group>"; };
 		5FE89A99E0C3CECFF327A780 /* UsageLimitsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageLimitsTests.swift; sourceTree = "<group>"; };
 		6368EC7B67F311035673CC66 /* CreateAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAlertView.swift; sourceTree = "<group>"; };
@@ -366,6 +376,14 @@
 			path = Breeds;
 			sourceTree = "<group>";
 		};
+		8FE8E41E6B1FDF560B3CA44C /* PurrlyUITests */ = {
+			isa = PBXGroup;
+			children = (
+				11544EF115051E4AFF5D7BDE /* PurrlyUITests.swift */,
+			);
+			path = PurrlyUITests;
+			sourceTree = "<group>";
+		};
 		8FFBFF9588A04928D8320B0C /* Cats */ = {
 			isa = PBXGroup;
 			children = (
@@ -447,6 +465,7 @@
 			children = (
 				73E156820BBA07F1AC2E24EC /* Purrly */,
 				C45C5EB57B969EC7C5EDEF03 /* PurrlyTests */,
+				8FE8E41E6B1FDF560B3CA44C /* PurrlyUITests */,
 				EFC30B9D3F711A5D529FE365 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -513,6 +532,7 @@
 			children = (
 				543D061E7BEC5435C5B38472 /* Purrly.app */,
 				B4FCBF386097939454CF2E82 /* PurrlyTests.xctest */,
+				5D77EEB8B87C1F16AC4D285D /* PurrlyUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -582,6 +602,24 @@
 			productReference = 543D061E7BEC5435C5B38472 /* Purrly.app */;
 			productType = "com.apple.product-type.application";
 		};
+		DBBE053BE972F2D0BA2F8A63 /* PurrlyUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8359FBC33C9295A6BF4F270C /* Build configuration list for PBXNativeTarget "PurrlyUITests" */;
+			buildPhases = (
+				9E0221F4F7B58FE38216CFA7 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C14EBF62B94BC6AC0DE873D1 /* PBXTargetDependency */,
+			);
+			name = PurrlyUITests;
+			packageProductDependencies = (
+			);
+			productName = PurrlyUITests;
+			productReference = 5D77EEB8B87C1F16AC4D285D /* PurrlyUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -598,6 +636,11 @@
 					C95904595FA2ED79019B860C = {
 						DevelopmentTeam = SPLML3CN76;
 						ProvisioningStyle = Automatic;
+					};
+					DBBE053BE972F2D0BA2F8A63 = {
+						DevelopmentTeam = SPLML3CN76;
+						ProvisioningStyle = Automatic;
+						TestTargetID = C95904595FA2ED79019B860C;
 					};
 				};
 			};
@@ -628,6 +671,7 @@
 			targets = (
 				C95904595FA2ED79019B860C /* Purrly */,
 				AB70A36D74573EB27E5775F3 /* PurrlyTests */,
+				DBBE053BE972F2D0BA2F8A63 /* PurrlyUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -747,6 +791,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9E0221F4F7B58FE38216CFA7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D39FC49F9C16AFA9E1F3650B /* PurrlyUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F6834F27E21A0DEB1D9D62C3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -760,6 +812,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		C14EBF62B94BC6AC0DE873D1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C95904595FA2ED79019B860C /* Purrly */;
+			targetProxy = 3F13653B1D724D92A8D5D000 /* PBXContainerItemProxy */;
+		};
 		C3BAD6A5D60CD250983FDAAA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C95904595FA2ED79019B860C /* Purrly */;
@@ -783,6 +840,40 @@
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		2E7515C6BD886D0B17C0F6D1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = app.purrly.raceguide.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Purrly;
+			};
+			name = Debug;
+		};
+		3224251C5C66C975C54B6DD1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = app.purrly.raceguide.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Purrly;
 			};
 			name = Release;
 		};
@@ -994,6 +1085,15 @@
 			buildConfigurations = (
 				C62EBCE9E27E293E2BD48421 /* Debug */,
 				C909399501DF697CA949C9A3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		8359FBC33C9295A6BF4F270C /* Build configuration list for PBXNativeTarget "PurrlyUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2E7515C6BD886D0B17C0F6D1 /* Debug */,
+				3224251C5C66C975C54B6DD1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

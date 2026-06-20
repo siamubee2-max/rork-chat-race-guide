@@ -27,6 +27,7 @@ struct CatsListView: View {
                     Image(systemName: "plus")
                 }
                 .accessibilityLabel(String(localized: "cats.add"))
+                .accessibilityIdentifier("addCatButton")
             }
         }
         .sheet(isPresented: $showForm) {

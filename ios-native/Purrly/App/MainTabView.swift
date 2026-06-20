@@ -56,6 +56,7 @@ struct MainTabView: View {
                 .tabItem { Label(MainTab.more.title, systemImage: MainTab.more.symbol) }
         }
         .tint(AppTheme.primaryLight)
+        .accessibilityIdentifier("mainTabView")
         .toolbarBackground(.ultraThinMaterial, for: .tabBar)
         .toolbarBackground(.visible, for: .tabBar)
     }

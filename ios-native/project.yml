@@ -74,3 +74,16 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: app.purrly.raceguide.tests
         GENERATE_INFOPLIST_FILE: YES
+
+  PurrlyUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: PurrlyUITests
+    dependencies:
+      - target: Purrly
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.purrly.raceguide.uitests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: Purrly

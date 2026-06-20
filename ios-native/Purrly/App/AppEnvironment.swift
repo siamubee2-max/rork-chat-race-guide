@@ -25,6 +25,15 @@ final class AppEnvironment {
         breeds.loadIfNeeded()
         cats.load()
         community.loadSampleIfNeeded()
+
+        // Mode tests UI : état connecté déterministe, pas d'auth réseau.
+        if ProcessInfo.processInfo.arguments.contains("-uiTesting") {
+            hasSelectedLanguage = true
+            auth.enterUITestMode()
+            syncEntitlements()
+            return
+        }
+
         await auth.bootstrap()
         syncEntitlements()
     }
