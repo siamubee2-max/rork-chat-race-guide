@@ -229,4 +229,22 @@ final class PurrlyUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Européen"].waitForExistence(timeout: 8),
                       "Le résultat de scan mocké doit afficher la race")
     }
+
+    /// Flux profond (réseau mocké) : Photo Booth → génération KIE → image résultat.
+    /// Le bouton "uiTestKieButton" injecte une image et lance la génération.
+    func testPhotoBoothKieGeneration() {
+        let tabBar = app.tabBars.firstMatch
+        XCTAssertTrue(tabBar.waitForExistence(timeout: 10))
+        tabBar.buttons.element(boundBy: 4).tap() // Plus
+        app.staticTexts["Photo Booth"].tap()
+
+        let kieButton = app.buttons["uiTestKieButton"]
+        XCTAssertTrue(kieButton.waitForExistence(timeout: 5))
+        kieButton.tap()
+
+        // Le stub /kie-generate + le téléchargement PNG produisent l'image résultat,
+        // dont le bouton "retour" n'apparaît qu'une fois kieResultImage défini.
+        XCTAssertTrue(app.buttons["kieResultBackButton"].waitForExistence(timeout: 10),
+                      "L'image générée par KIE (mockée) doit s'afficher")
+    }
 }

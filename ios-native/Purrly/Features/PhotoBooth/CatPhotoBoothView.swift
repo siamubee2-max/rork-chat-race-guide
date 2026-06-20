@@ -71,6 +71,21 @@ struct CatPhotoBoothView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
+                #if DEBUG
+                // Hook tests UI : seed une image + lance KIE sans PhotosPicker.
+                if ProcessInfo.processInfo.arguments.contains("-uiTesting") {
+                    Button("UITest KIE") {
+                        let renderer = UIGraphicsImageRenderer(size: CGSize(width: 64, height: 64))
+                        selectedPhoto = renderer.image { ctx in
+                            UIColor.gray.setFill()
+                            ctx.fill(CGRect(x: 0, y: 0, width: 64, height: 64))
+                        }
+                        Task { await generateWithKie(preset: .crown) }
+                    }
+                    .accessibilityIdentifier("uiTestKieButton")
+                }
+                #endif
+
                 // Canvas (shows kie result if available)
                 canvas
 
@@ -167,6 +182,7 @@ struct CatPhotoBoothView: View {
                                     .font(.title2).foregroundStyle(AppTheme.primary)
                                     .padding(12)
                             }
+                            .accessibilityIdentifier("kieResultBackButton")
                         }
                 } else if let photo = selectedPhoto {
                     Image(uiImage: photo)
