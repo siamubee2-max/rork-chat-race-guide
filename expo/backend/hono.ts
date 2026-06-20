@@ -1,3 +1,4 @@
+import { createHmac, timingSafeEqual } from "node:crypto";
 import { trpcServer } from "@hono/trpc-server";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
@@ -5,6 +6,7 @@ import { createClient } from "@supabase/supabase-js";
 
 import { appRouter } from "./trpc/app-router";
 import { createContext } from "./trpc/create-context";
+import { log } from "./lib/logger";
 
 // ---------------------------------------------------------------------------
 // In-memory rate limiter — guards tRPC AI routes against abuse.
@@ -25,6 +27,7 @@ function makeRateLimit(maxRequests: number, windowMs: number) {
     if (!entry || now > entry.resetAt) {
       _rlMap.set(ip, { count: 1, resetAt: now + windowMs });
     } else if (entry.count >= maxRequests) {
+      log("warn", "rate-limiter", "429 Too Many Requests", { ip, path: c.req.path });
       c.header("Retry-After", String(Math.ceil((entry.resetAt - now) / 1000)));
       return c.json({ error: "Too many requests" }, 429);
     } else {
@@ -40,6 +43,24 @@ function makeRateLimit(maxRequests: number, windowMs: number) {
   };
 }
 
+// ---------------------------------------------------------------------------
+// HMAC-SHA256 verification for RevenueCat webhook signatures.
+// Header format: "X-RevenueCat-Signature: v1=<64 lowercase hex chars>"
+// ---------------------------------------------------------------------------
+function verifyRevenueCatSignature(
+  rawBody: Buffer,
+  secret: string,
+  signatureHeader: string | undefined
+): boolean {
+  if (!signatureHeader) return false;
+  const match = signatureHeader.match(/^v1=([a-f0-9]{64})$/);
+  if (!match) return false;
+  const expected = createHmac("sha256", secret).update(rawBody).digest();
+  const received = Buffer.from(match[1], "hex");
+  if (expected.length !== received.length) return false;
+  return timingSafeEqual(expected, received);
+}
+
 const app = new Hono();
 
 const allowedOrigins = (process.env.CORS_ALLOWED_ORIGINS ?? "")
@@ -53,21 +74,17 @@ const resolveCorsOrigin = (origin?: string | null) => {
   if (!origin) {
     return allowAllOrigins ? "*" : allowedOrigins[0] ?? "";
   }
-
   if (allowAllOrigins || allowedOrigins.includes(origin)) {
     return origin;
   }
-
   return "";
 };
 
 app.use("*", async (c, next) => {
   const origin = c.req.header("Origin");
-
   if (origin && !allowAllOrigins && !allowedOrigins.includes(origin)) {
     return c.json({ error: "Origin not allowed" }, 403);
   }
-
   await next();
 });
 
@@ -81,6 +98,22 @@ app.use(
     maxAge: 600,
   }),
 );
+
+// Request logging — après CORS, avant rate limiter
+app.use("*", async (c, next) => {
+  const start = Date.now();
+  await next();
+  const ms = Date.now() - start;
+  const ip =
+    c.req.header("x-forwarded-for")?.split(",")[0].trim() ??
+    c.req.header("x-real-ip") ??
+    "unknown";
+  log("info", "http", `${c.req.method} ${c.req.path}`, {
+    status: c.res.status,
+    ms,
+    ip,
+  });
+});
 
 // 60 tRPC requests / minute per IP — covers all AI endpoints
 app.use("/trpc/*", makeRateLimit(60, 60_000));
@@ -98,55 +131,66 @@ app.get("/", (c) => {
   return c.json({ status: "ok", message: "API is running" });
 });
 
-// RevenueCat Webhook Handler
-// Verifies webhook signatures and syncs subscription status to Supabase
+// ---------------------------------------------------------------------------
+// RevenueCat Webhook
+// Vérifie HMAC-SHA256 (X-RevenueCat-Signature) si présent,
+// sinon Bearer statique pour compatibilité ascendante.
+// ---------------------------------------------------------------------------
 app.post("/webhooks/revenuecat", async (c) => {
   const authKey = process.env.REVENUECAT_WEBHOOK_AUTH_KEY;
 
   if (!authKey) {
-    console.error("[RevenueCat Webhook] Missing REVENUECAT_WEBHOOK_AUTH_KEY");
+    log("error", "revenuecat", "missing REVENUECAT_WEBHOOK_AUTH_KEY");
     return c.json({ error: "Webhook not configured" }, 500);
   }
 
-  // Verify Authorization header
+  // Read raw body once — needed for HMAC and JSON parsing
+  const rawBody = Buffer.from(await c.req.arrayBuffer());
+
+  const sigHeader = c.req.header("X-RevenueCat-Signature");
   const authHeader = c.req.header("Authorization");
-  if (!authHeader || authHeader !== `Bearer ${authKey}`) {
-    console.warn("[RevenueCat Webhook] Invalid authorization attempt");
+
+  const isHmacValid = sigHeader
+    ? verifyRevenueCatSignature(rawBody, authKey, sigHeader)
+    : false;
+  const isBearerValid = !sigHeader && authHeader === `Bearer ${authKey}`;
+
+  if (!isHmacValid && !isBearerValid) {
+    const ip = c.req.header("x-forwarded-for") ?? "unknown";
+    log("warn", "revenuecat", "invalid auth", {
+      ip,
+      method: sigHeader ? "hmac" : "bearer",
+    });
     return c.json({ error: "Unauthorized" }, 401);
   }
 
   try {
-    const body = await c.req.json();
+    const body = JSON.parse(rawBody.toString("utf8"));
     const { event } = body;
 
     if (!event || !event.type) {
-      console.warn("[RevenueCat Webhook] Invalid payload structure");
+      log("warn", "revenuecat", "invalid payload structure");
       return c.json({ error: "Invalid payload" }, 400);
     }
 
-    console.log(`[RevenueCat Webhook] Received event: ${event.type}`, {
+    log("info", "revenuecat", event.type, {
       event_id: event.event_id,
       app_user_id: event.app_user_id,
       product_id: event.product_id,
     });
 
-    // Initialize Supabase admin client
     const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL;
     const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
     if (!supabaseUrl || !serviceRoleKey) {
-      console.error("[RevenueCat Webhook] Missing Supabase configuration");
+      log("error", "revenuecat", "missing Supabase config");
       return c.json({ error: "Database not configured" }, 500);
     }
 
     const supabase = createClient(supabaseUrl, serviceRoleKey, {
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false,
-      },
+      auth: { autoRefreshToken: false, persistSession: false },
     });
 
-    // Map RevenueCat event types to subscription status
     const getSubscriptionStatus = (eventType: string): string => {
       switch (eventType) {
         case "INITIAL_PURCHASE":
@@ -166,9 +210,7 @@ app.post("/webhooks/revenuecat", async (c) => {
     const subscriptionStatus = getSubscriptionStatus(event.type);
     const appUserId = event.app_user_id;
     const productId = event.product_id;
-    const transactionId = event.transaction_id || event.event_id;
 
-    // Update user subscription in database
     const { error: updateError } = await supabase
       .from("users")
       .update({
@@ -180,18 +222,18 @@ app.post("/webhooks/revenuecat", async (c) => {
       .eq("id", appUserId);
 
     if (updateError) {
-      console.error("[RevenueCat Webhook] Database update failed:", updateError);
+      log("error", "revenuecat", "db update failed", { error: updateError.message });
       return c.json({ error: "Database update failed" }, 500);
     }
 
-    console.log(`[RevenueCat Webhook] Successfully processed ${event.type}`, {
+    log("info", "revenuecat", "processed", {
       app_user_id: appUserId,
       subscription_status: subscriptionStatus,
     });
 
     return c.json({ received: true, status: subscriptionStatus }, 200);
   } catch (error) {
-    console.error("[RevenueCat Webhook] Unexpected error:", error);
+    log("error", "revenuecat", "unexpected error", { error: String(error) });
     return c.json({ error: "Internal server error" }, 500);
   }
 });
