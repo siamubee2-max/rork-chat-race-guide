@@ -58,6 +58,11 @@ targets:
         NSLocationWhenInUseUsageDescription: "Purrly utilise votre position pour trouver des vétérinaires et éleveurs à proximité."
         NSPhotoLibraryAddUsageDescription: "Purrly sauvegarde vos photos Photo Booth dans votre galerie."
         KIE_API_KEY: $(KIE_API_KEY)
+        SUPABASE_URL: $(SUPABASE_URL)
+        SUPABASE_ANON_KEY: $(SUPABASE_ANON_KEY)
+        RORK_API_BASE_URL: $(RORK_API_BASE_URL)
+        VIP_EMAILS: $(VIP_EMAILS)
+        DEMO_EMAIL: $(DEMO_EMAIL)
   PurrlyTests:
     type: bundle.unit-test
     platform: iOS

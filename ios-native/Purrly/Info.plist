@@ -18,6 +18,8 @@
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>DEMO_EMAIL</key>
+	<string>$(DEMO_EMAIL)</string>
 	<key>KIE_API_KEY</key>
 	<string>$(KIE_API_KEY)</string>
 	<key>NSCameraUsageDescription</key>
@@ -28,6 +30,12 @@
 	<string>Purrly sauvegarde vos photos Photo Booth dans votre galerie.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Purrly accède à vos photos pour analyser la race de votre chat.</string>
+	<key>RORK_API_BASE_URL</key>
+	<string>$(RORK_API_BASE_URL)</string>
+	<key>SUPABASE_ANON_KEY</key>
+	<string>$(SUPABASE_ANON_KEY)</string>
+	<key>SUPABASE_URL</key>
+	<string>$(SUPABASE_URL)</string>
 	<key>UILaunchScreen</key>
 	<dict/>
 	<key>UIRequiresFullScreen</key>
@@ -40,5 +48,7 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>VIP_EMAILS</key>
+	<string>$(VIP_EMAILS)</string>
 </dict>
 </plist>
