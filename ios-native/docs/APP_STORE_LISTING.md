@@ -130,3 +130,19 @@ Terms: https://purrly.app/terms · Privacy: https://purrly.app/privacy
 
 > Captures générées depuis le simulateur (mode `-uiTesting`, état déterministe).
 > Fichiers dans `ios-native/docs/screenshots/`.
+
+---
+
+## État dans App Store Connect (21 juin 2026)
+
+App Purrly `6758865155`, version 1.0.
+
+| Élément | État ASC |
+|---|---|
+| Localisation **Anglais** (fiche, 10 captures, identifiants de review) | ✅ préexistante |
+| Localisation **Française** | ✅ ajoutée |
+| **Captures 6,9″ FR** (les 6 ci-dessus) | ✅ **uploadées** dans la locale Français (média manager, 6/10, auto-sauvegardées) |
+| **Texte FR** (description / promo / mots-clés) | 🟡 **à coller manuellement** depuis ce fichier — les champs React d'ASC n'acceptent pas la saisie programmatique fiable (≈ 2 min) |
+| **Nom + sous-titre FR** | 🟡 à saisir dans *Informations sur l'app* (niveau app, par langue) |
+
+> Note technique : dans ASC, l'**upload de fichier** persiste (événement `change` natif), mais la **saisie texte** automatisée ne valide pas l'état React — d'où le copier-coller manuel pour les textes.
