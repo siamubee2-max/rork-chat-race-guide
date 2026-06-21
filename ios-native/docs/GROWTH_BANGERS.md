@@ -26,15 +26,22 @@ Câblage natif complet (paywall stub → vrai tunnel d'achat).
 ## 2. Scanner on-device Core ML — ✅ code livré (modèle à fournir)
 
 `Services/BreedClassifierService.swift` (Vision + Core ML) branché en **fallback hors-ligne**
-de `BreedScanService` (`Features/Scan/ScanResultView.swift`). No-op tant qu'aucun modèle.
+de `BreedScanService` (`Features/Scan/ScanResultView.swift`).
 
-### Reste à faire
-- Entraîner / récupérer un classifieur de races et l'ajouter au bundle sous le nom
-  **`CatBreedClassifier.mlmodel`** (Xcode le compile en `.mlmodelc`).
-  - Piste rapide : Create ML (Image Classifier) sur un dataset de races, labels =
-    noms/ids alignés sur `Resources/breeds.json` (le fuzzy-match `findBreed` fait le pont).
-  - Ou Hugging Face (skill `huggingface-vision-trainer`) puis export `coremltools`.
-- Dès le modèle présent, `classify()` renvoie des hypothèses → résultat instantané + offline.
+### ✅ Modèle livré (21 juin)
+- **`Resources/CatBreedClassifier.mlmodel`** (68 Ko) — entraîné via **Create ML**
+  (`MLImageClassifier`, scenePrint transfer-learning) sur **Oxford-IIIT Pet, 12 races
+  de chats** (2400 images). Labels = ids du catalogue (`persian`, `siamese`, `bengal`,
+  `maine-coon`, `ragdoll`, `sphynx`, `abyssinian`, `bombay`, `british-shorthair`,
+  `egyptian-mau`, `russian-blue`, `birman`).
+- Métriques : **97,9 % train / 84,2 % validation** ; vérifié via Vision **6/6 top-1**
+  sur images de test, confiances ~1.00, labels = ids catalogue (mappés par `findBreed`).
+- Xcode compile le `.mlmodel` en `.mlmodelc` au build (présent dans le bundle, vérifié).
+
+### Pour étendre la couverture (au-delà des 12 races)
+- Ré-entraîner sur un dataset plus large (ex. +races via images supplémentaires nommées
+  par id catalogue) avec le même pipeline Create ML. Les races hors-modèle continuent
+  d'utiliser le scan cloud (dégradation propre déjà en place).
 
 ## 3. Engagement : Widget + App Intents — ✅ code livré
 
