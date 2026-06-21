@@ -66,7 +66,9 @@ struct ScanHomeView: View {
                     AppTheme.backgroundSecondary
                 }
             }
-            .frame(height: horizontalSizeClass == .regular ? 460 : 320)
+            // Cadrage ancré en haut : la tête du chat (partie supérieure) reste
+            // toujours visible, même sur les formats larges/courts (iPad).
+            .frame(maxWidth: .infinity, height: horizontalSizeClass == .regular ? 460 : 320, alignment: .top)
             .clipped()
             .accessibilityLabel(String(localized: "scan.hero.a11y"))
 
