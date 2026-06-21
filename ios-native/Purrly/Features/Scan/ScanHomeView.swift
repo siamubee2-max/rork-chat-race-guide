@@ -114,7 +114,9 @@ struct ScanHomeView: View {
 
             #if DEBUG
             // Hook tests UI : seed une image et déclenche le scan sans PhotosPicker.
-            if ProcessInfo.processInfo.arguments.contains("-uiTesting") {
+            // Masqué en mode captures (`-screenshots`) pour des visuels App Store propres.
+            if ProcessInfo.processInfo.arguments.contains("-uiTesting"),
+               !ProcessInfo.processInfo.arguments.contains("-screenshots") {
                 Button("UITest Scan") {
                     let renderer = UIGraphicsImageRenderer(size: CGSize(width: 64, height: 64))
                     let img = renderer.image { ctx in

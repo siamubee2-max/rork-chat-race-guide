@@ -28,6 +28,7 @@
 		34C04F0A05772BD610954891 /* PurrlyWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C216B0E2126506AB1166EAD0 /* PurrlyWidget.swift */; };
 		3642F1C977DD86B7BD319DDC /* BreedClassifierService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 740FFE4B092812E018DC66EA /* BreedClassifierService.swift */; };
 		37887FDAF3F6A91AA5858096 /* GlassChrome.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDBB695EF3FF18464ABFCC69 /* GlassChrome.swift */; };
+		3C5ED93D5CE731933CC0383C /* ScreenshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD70640C105D98EC11A190A5 /* ScreenshotTests.swift */; };
 		426011E5E038AB384CAB6748 /* CatBreedClassifier.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = E0CA5B25039C557C6830B438 /* CatBreedClassifier.mlmodel */; };
 		44BA4AB388149D6F6E8DCFEE /* ExpenseStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF9131DCC73A7AC4023CCE7 /* ExpenseStore.swift */; };
 		4708D8004DBED8FD71B0DFEE /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57665E6E60FBFC2232E6CED /* AppEnvironment.swift */; };
@@ -251,6 +252,7 @@
 		C216B0E2126506AB1166EAD0 /* PurrlyWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurrlyWidget.swift; sourceTree = "<group>"; };
 		C5CBD45CFAB1051CA978D056 /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
 		C965111454B8478AD59E20D5 /* CatProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatProfile.swift; sourceTree = "<group>"; };
+		CD70640C105D98EC11A190A5 /* ScreenshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotTests.swift; sourceTree = "<group>"; };
 		CF88511C6D8412F1FCA20226 /* PrivacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyView.swift; sourceTree = "<group>"; };
 		D1109440970DA651D3FFFB71 /* Secrets.xcconfig.example */ = {isa = PBXFileReference; path = Secrets.xcconfig.example; sourceTree = "<group>"; };
 		D492053F9F5417544E0531F8 /* FoodCalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodCalculatorView.swift; sourceTree = "<group>"; };
@@ -448,6 +450,7 @@
 			isa = PBXGroup;
 			children = (
 				11544EF115051E4AFF5D7BDE /* PurrlyUITests.swift */,
+				CD70640C105D98EC11A190A5 /* ScreenshotTests.swift */,
 			);
 			path = PurrlyUITests;
 			sourceTree = "<group>";
@@ -905,6 +908,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D39FC49F9C16AFA9E1F3650B /* PurrlyUITests.swift in Sources */,
+				3C5ED93D5CE731933CC0383C /* ScreenshotTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
