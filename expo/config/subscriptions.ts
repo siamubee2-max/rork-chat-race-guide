@@ -23,7 +23,7 @@ export const SUBSCRIPTION_CONFIG = {
     
     premium_yearly: {
       id: 'premium_yearly',
-      revenueCatId: 'com.purrly.premium.yearly',
+      revenueCatId: 'premium_yearly',
       stripeId: 'price_premium_yearly',
       price: 149.99,
       currency: 'EUR',
@@ -33,7 +33,7 @@ export const SUBSCRIPTION_CONFIG = {
     
     family_monthly: {
       id: 'family_monthly',
-      revenueCatId: 'com.purrly.family.monthly',
+      revenueCatId: 'family_monthly',
       stripeId: 'price_family_monthly',
       price: 24.99,
       currency: 'EUR',
@@ -42,7 +42,7 @@ export const SUBSCRIPTION_CONFIG = {
     
     family_yearly: {
       id: 'family_yearly',
-      revenueCatId: 'com.purrly.family.yearly',
+      revenueCatId: 'family_yearly',
       stripeId: 'price_family_yearly',
       price: 239.99,
       currency: 'EUR',
@@ -52,7 +52,7 @@ export const SUBSCRIPTION_CONFIG = {
     
     pro_monthly: {
       id: 'pro_monthly',
-      revenueCatId: 'com.purrly.pro.monthly',
+      revenueCatId: 'pro_monthly',
       stripeId: 'price_pro_monthly',
       price: 49.99,
       currency: 'EUR',
@@ -61,7 +61,7 @@ export const SUBSCRIPTION_CONFIG = {
     
     pro_yearly: {
       id: 'pro_yearly',
-      revenueCatId: 'com.purrly.pro.yearly',
+      revenueCatId: 'pro_yearly',
       stripeId: 'price_pro_yearly',
       price: 499.99,
       currency: 'EUR',
