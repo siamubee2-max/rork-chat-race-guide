@@ -4,6 +4,7 @@ import UIKit
 
 struct ScanHomeView: View {
     @Environment(AppEnvironment.self) private var environment
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @State private var router = AppRouter.shared
     @State private var pickerItem: PhotosPickerItem?
     @State private var showCamera = false
@@ -17,6 +18,7 @@ struct ScanHomeView: View {
             VStack(spacing: 0) {
                 hero
                 content
+                    .purrlyReadableWidth()
             }
         }
         .scrollIndicators(.hidden)
@@ -64,7 +66,7 @@ struct ScanHomeView: View {
                     AppTheme.backgroundSecondary
                 }
             }
-            .frame(height: 320)
+            .frame(height: horizontalSizeClass == .regular ? 460 : 320)
             .clipped()
             .accessibilityLabel(String(localized: "scan.hero.a11y"))
 

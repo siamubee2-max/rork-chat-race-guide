@@ -12,13 +12,18 @@ struct LanguageSelectView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 24) {
-                VStack(alignment: .leading, spacing: 8) {
+            VStack(spacing: 28) {
+                VStack(spacing: 12) {
+                    Image(systemName: "cat.fill")
+                        .font(.system(size: 64))
+                        .foregroundStyle(AppTheme.primary)
+                        .accessibilityHidden(true)
                     Text("Purrly")
                         .font(.largeTitle.weight(.black))
                         .foregroundStyle(AppTheme.ivory)
                     Text(String(localized: "language.subtitle"))
                         .foregroundStyle(AppTheme.textSecondary)
+                        .multilineTextAlignment(.center)
                 }
 
                 if #available(iOS 26.0, *) {
@@ -57,6 +62,9 @@ struct LanguageSelectView: View {
                 }
             }
             .padding(24)
+            .purrlyReadableWidth(520)
+            .frame(maxWidth: .infinity)
+            .containerRelativeFrame(.vertical, alignment: .center)
         }
         .purrlyScreenBackground()
     }

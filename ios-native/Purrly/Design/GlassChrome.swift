@@ -81,4 +81,21 @@ extension View {
     func purrlyScreenBackground() -> some View {
         background(AppTheme.background.ignoresSafeArea())
     }
+
+    /// Borne la largeur du contenu sur les écrans larges (iPad / size class regular)
+    /// en le centrant, pour éviter la mise en page iPhone étirée. Sans effet sur iPhone.
+    func purrlyReadableWidth(_ maxWidth: CGFloat = 680) -> some View {
+        modifier(ReadableWidthModifier(maxWidth: maxWidth))
+    }
+}
+
+private struct ReadableWidthModifier: ViewModifier {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    let maxWidth: CGFloat
+
+    func body(content: Content) -> some View {
+        content
+            .frame(maxWidth: horizontalSizeClass == .regular ? maxWidth : .infinity)
+            .frame(maxWidth: .infinity) // centre la colonne bornée dans l'espace disponible
+    }
 }
