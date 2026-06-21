@@ -87,3 +87,45 @@ npx skills add eronred/aso-skills@monetization-strategy -g -y
 ```
 
 Puis on s'en sert pour optimiser fiche App Store + écran paywall.
+
+## 6. Rejet App Store 2.1(a) — diagnostic & resoumission
+
+**Motif (soumission 14 avr. 2026, build 1.0.0 (29) — ancien build Expo) :**
+> Guideline 2.1(a) Performance – App Completeness. « an error message showed
+> upon launch and we were unable to proceed further. »
+> Device reviewer : **iPad Air 11-inch (M3), iPadOS 26.4**, connexion active.
+
+**Vérifié (21 juin) :** le **build natif** lancé sur le **même device** (iPad Air M3
+simulateur) **démarre proprement** → écran de sélection de langue, aucune erreur.
+Le code natif n'a ni `fatalError` ni alerte bloquante au lancement ; `bootstrap()`
+dégrade proprement (réseau KO = message non bloquant, pas d'écran figé).
+→ **Le natif corrige la cause du rejet.**
+
+**Checklist resoumission :**
+1. Soumettre le **build natif** (pas l'Expo) — c'est lui qui passe le lancement iPad.
+2. **Notes de vérification** : fournir un **compte démo fonctionnel**
+   (ex. `demo@purrly.app` + mot de passe) pour que le reviewer dépasse le login,
+   sinon risque « unable to proceed » même sans bug.
+3. Vérifier le rendu iPad de chaque écran clé (portrait verrouillé = OK App Store).
+4. Tester sur iPad **après install propre** (désinstaller toute version précédente).
+
+## 7. PPP pricing — tableau prêt-à-appliquer (À FAIRE quand l'app est live)
+
+Prix de base FR = 14,99 €/mois, 149,99 €/an. Appliquer des prix manuels par
+territoire (désactiver la conversion auto Apple). Équivalents indicatifs :
+
+| Territoire | premium_monthly | premium_yearly |
+|---|---|---|
+| 🇫🇷🇧🇪🇨🇭🇨🇦🇱🇺 (référence) | 14,99 € | 149,99 € |
+| 🇲🇦 Maroc / 🇹🇳 Tunisie / 🇩🇿 Algérie | ≈ 5,49 € | ≈ 54,99 € |
+| 🇸🇳🇨🇮🇨🇲🇧🇫🇲🇱 Afrique francophone | ≈ 4,99 € | ≈ 49,99 € |
+
+Même logique (×0,33–0,37) pour family_* et pro_*. Exécution = App Store Connect,
+produit par produit (autorisation explicite requise — commerce live).
+
+### ⚠️ À corriger AVANT le PPP (anomalies détectées dans ASC le 21 juin)
+- **Mismatch d'ID annuel** : `revenuecat.json` déclare `com.purrly.premium.yearly`
+  mais ASC a créé le produit en **`premium_yearly`**. Réconcilier côté RevenueCat
+  (sinon le produit annuel ne se résout pas dans l'offering).
+- **Groupe doublon** : `Premium_Plan` (5 abos) vs `Purrly Premium` (6 abos).
+  Garder un seul groupe.
