@@ -123,9 +123,27 @@ territoire (désactiver la conversion auto Apple). Équivalents indicatifs :
 Même logique (×0,33–0,37) pour family_* et pro_*. Exécution = App Store Connect,
 produit par produit (autorisation explicite requise — commerce live).
 
-### ⚠️ À corriger AVANT le PPP (anomalies détectées dans ASC le 21 juin)
-- **Mismatch d'ID annuel** : `revenuecat.json` déclare `com.purrly.premium.yearly`
-  mais ASC a créé le produit en **`premium_yearly`**. Réconcilier côté RevenueCat
-  (sinon le produit annuel ne se résout pas dans l'offering).
-- **Groupe doublon** : `Premium_Plan` (5 abos) vs `Purrly Premium` (6 abos).
-  Garder un seul groupe.
+## 8. Mismatch d'IDs produits RevenueCat ↔ ASC — ✅ RÉSOLU (21 juin)
+
+**Diagnostic (live RevenueCat, projet « cat » c539013d) :** 5 des 6 produits iOS
+référençaient des ids `com.purrly.*` (premium.yearly, family.monthly/yearly,
+pro.monthly/yearly) **inexistants** dans le groupe ASC canonique « Purrly Premium »
+(qui utilise les formes courtes). Seul `premium_monthly` matchait. Conséquence :
+sur iOS, seul le mensuel premium se résolvait ; annuel/family/pro auraient échoué.
+(Les `com.purrly.*` existaient dans un **2ᵉ groupe ASC doublon « Premium_Plan »**.)
+
+**Correctif appliqué (convention = ids courts) :**
+1. Créé 5 produits iOS courts (`premium_yearly`, `family_monthly`, `family_yearly`,
+   `pro_monthly`, `pro_yearly`) et attachés à l'entitlement `premium`.
+2. Offering `default` : les 6 packages repointés sur les ids courts iOS
+   (0 `com.purrly.*` restant — vérifié).
+3. Config locale alignée (`revenuecat.json`, `subscriptions.ts`).
+
+**Reste optionnel (non bloquant) :**
+- Désactiver les 5 anciens produits `com.purrly.*` iOS (Products → ⋯ → Make Inactive) —
+  cosmétique, ils sont déjà hors de l'offering.
+- Configurer la **clé In-App Purchase (.p8)** de l'app iOS dans RevenueCat
+  (ASC → Users and Access → Integrations → In-App Purchase) pour lever les
+  statuts « Could not check » et activer la validation StoreKit 2.
+- Groupe ASC doublon « Premium_Plan » : laissé inactif (Apple interdit la suppression
+  d'abonnements).
