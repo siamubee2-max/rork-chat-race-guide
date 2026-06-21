@@ -133,16 +133,22 @@ Terms: https://purrly.app/terms · Privacy: https://purrly.app/privacy
 
 ---
 
-## État dans App Store Connect (21 juin 2026)
+## État dans App Store Connect (21 juin 2026 — COMPLET ✅)
 
-App Purrly `6758865155`, version 1.0.
+App Purrly `6758865155`, version 1.0. Fiche **française saisie de bout en bout**.
 
 | Élément | État ASC |
 |---|---|
-| Localisation **Anglais** (fiche, 10 captures, identifiants de review) | ✅ préexistante |
+| Localisation **Anglais** (fiche, captures, identifiants de review) | ✅ préexistante |
 | Localisation **Française** | ✅ ajoutée |
-| **Captures 6,9″ FR** (les 6 ci-dessus) | ✅ **uploadées** dans la locale Français (média manager, 6/10, auto-sauvegardées) |
-| **Texte FR** (description / promo / mots-clés) | 🟡 **à coller manuellement** depuis ce fichier — les champs React d'ASC n'acceptent pas la saisie programmatique fiable (≈ 2 min) |
-| **Nom + sous-titre FR** | 🟡 à saisir dans *Informations sur l'app* (niveau app, par langue) |
+| **Captures 6,9″ FR** (les 6 ci-dessus, UI cat-forward) | ✅ uploadées (locale Français, 6/10) |
+| **Texte FR** (texte promo / description / mots-clés) | ✅ **enregistré** |
+| **Nom + sous-titre FR** | ✅ `Purrly – Race & Soin du Chat` / `Scanner IA, véto & santé` |
 
-> Note technique : dans ASC, l'**upload de fichier** persiste (événement `change` natif), mais la **saisie texte** automatisée ne valide pas l'état React — d'où le copier-coller manuel pour les textes.
+### ⚠️ Contraintes ASC apprises (pour les prochaines saisies)
+- **Pas d'emoji dans la Description** : ASC rejette (« caractères non valides »). La
+  version en ligne est **sans emoji**, puces `•` remplacées par `-`. (La version
+  ci-dessus garde les emoji à titre de maquette ; les retirer avant toute resaisie.)
+- **Saisie texte** : `fill` / setter natif n'enregistrent pas (état React) ;
+  seul `document.execCommand('insertText')` (focus + select + insert) déclenche
+  la validation React et active « Enregistrer ». L'**upload de fichier** marche nativement.
