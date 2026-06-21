@@ -49,4 +49,14 @@ enum AppConfiguration {
 
     // Proxy backend disponible dès qu'on a une URL d'API — la clé reste côté serveur
     static var isKieConfigured: Bool { true }
+
+    /// Clé SDK publique iOS RevenueCat (préfixe `appl_`). Sûre côté client.
+    static var revenueCatIOSKey: String? {
+        guard let key = Bundle.main.object(forInfoDictionaryKey: "REVENUECAT_IOS_API_KEY") as? String,
+              !key.isEmpty,
+              key.hasPrefix("appl_") else { return nil }
+        return key
+    }
+
+    static var isRevenueCatConfigured: Bool { revenueCatIOSKey != nil }
 }

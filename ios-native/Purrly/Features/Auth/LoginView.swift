@@ -102,6 +102,6 @@ struct LoginView: View {
         isBusy = true
         defer { isBusy = false }
         _ = await environment.auth.signIn(email: email, password: password)
-        environment.syncEntitlements()
+        await environment.refreshSubscriberIdentity()
     }
 }

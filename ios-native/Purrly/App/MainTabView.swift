@@ -31,10 +31,10 @@ enum MainTab: String, CaseIterable, Identifiable {
 }
 
 struct MainTabView: View {
-    @State private var selection: MainTab = .home
+    @Bindable private var router = AppRouter.shared
 
     var body: some View {
-        TabView(selection: $selection) {
+        TabView(selection: $router.selectedTab) {
             NavigationStack { ScanHomeView() }
                 .tag(MainTab.home)
                 .tabItem { Label(MainTab.home.title, systemImage: MainTab.home.symbol) }

@@ -4,6 +4,7 @@ import UIKit
 
 struct ScanHomeView: View {
     @Environment(AppEnvironment.self) private var environment
+    @State private var router = AppRouter.shared
     @State private var pickerItem: PhotosPickerItem?
     @State private var showCamera = false
     @State private var showBreeds = false
@@ -37,6 +38,19 @@ struct ScanHomeView: View {
         .onChange(of: pickerItem) { _, item in
             guard let item else { return }
             Task { await handlePhoto(item) }
+        }
+        // Déclenchement externe (Siri/Spotlight « scanne mon chat », widget).
+        .onChange(of: router.pendingScan) { _, pending in
+            if pending {
+                showCamera = true
+                router.pendingScan = false
+            }
+        }
+        .onAppear {
+            if router.pendingScan {
+                showCamera = true
+                router.pendingScan = false
+            }
         }
     }
 

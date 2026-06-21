@@ -62,7 +62,7 @@ struct SignupView: View {
         defer { isBusy = false }
         let ok = await environment.auth.signUp(email: email, password: password, name: name)
         if ok {
-            environment.syncEntitlements()
+            await environment.refreshSubscriberIdentity()
             dismiss()
         }
     }

@@ -205,7 +205,20 @@ struct ScanResultView: View {
             )
             environment.gamification.checkAndUnlockScan()
         } catch {
-            errorText = error.localizedDescription
+            // Fallback hors-ligne : classification on-device (réseau indisponible,
+            // serveur en erreur, ou non connecté). No-op si aucun modèle embarqué.
+            if let guesses = environment.breedClassifier.classify(imageData: imageData),
+               let top = guesses.first {
+                result = BreedScanService.ScanResult(
+                    topBreed: top.label,
+                    confidence: BreedClassifierService.confidenceLabel(top.confidence),
+                    why: "Identifié hors-ligne sur votre appareil.",
+                    alternatives: guesses.dropFirst().map(\.label)
+                )
+                environment.gamification.checkAndUnlockScan()
+            } else {
+                errorText = error.localizedDescription
+            }
         }
         isLoading = false
     }

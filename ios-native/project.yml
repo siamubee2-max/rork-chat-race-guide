@@ -1,6 +1,6 @@
 name: Purrly
 options:
-  bundleIdPrefix: app.purrly
+  bundleIdPrefix: app.rork
   deploymentTarget:
     iOS: "26.0"
   createIntermediateGroups: true
@@ -17,6 +17,9 @@ packages:
   Supabase:
     url: https://github.com/supabase/supabase-swift
     from: 2.5.1
+  RevenueCat:
+    url: https://github.com/RevenueCat/purchases-ios
+    from: 5.0.0
 targets:
   Purrly:
     type: application
@@ -32,10 +35,19 @@ targets:
     dependencies:
       - package: Supabase
         product: Supabase
+      - package: RevenueCat
+        product: RevenueCat
+      # RevenueCatUI : à réactiver pour des paywalls pilotés depuis le tableau de bord
+      # (A/B testing sans rebuild). Non requis par le paywall custom actuel.
+      # - package: RevenueCat
+      #   product: RevenueCatUI
+      - target: PurrlyWidget
+        embed: true
     settings:
       base:
         INFOPLIST_FILE: Purrly/Info.plist
-        PRODUCT_BUNDLE_IDENTIFIER: app.purrly.raceguide
+        PRODUCT_BUNDLE_IDENTIFIER: app.rork.chat-race-guide
+        CODE_SIGN_ENTITLEMENTS: Purrly/Purrly.entitlements
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         SWIFT_EMIT_LOC_STRINGS: YES
       configs:
@@ -63,6 +75,31 @@ targets:
         RORK_API_BASE_URL: $(RORK_API_BASE_URL)
         VIP_EMAILS: $(VIP_EMAILS)
         DEMO_EMAIL: $(DEMO_EMAIL)
+        REVENUECAT_IOS_API_KEY: $(REVENUECAT_IOS_API_KEY)
+        CFBundleURLTypes:
+          - CFBundleURLName: app.rork.chat-race-guide
+            CFBundleURLSchemes:
+              - purrly
+  PurrlyWidget:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: PurrlyWidget
+        excludes:
+          - Info.plist
+          - PurrlyWidget.entitlements
+      - path: Purrly/Shared/WidgetSnapshot.swift
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.rork.chat-race-guide.PurrlyWidget
+        CODE_SIGN_ENTITLEMENTS: PurrlyWidget/PurrlyWidget.entitlements
+        SWIFT_EMIT_LOC_STRINGS: YES
+    info:
+      path: PurrlyWidget/Info.plist
+      properties:
+        CFBundleDisplayName: Purrly
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
   PurrlyTests:
     type: bundle.unit-test
     platform: iOS
@@ -72,7 +109,7 @@ targets:
       - target: Purrly
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: app.purrly.raceguide.tests
+        PRODUCT_BUNDLE_IDENTIFIER: app.rork.chat-race-guide.tests
         GENERATE_INFOPLIST_FILE: YES
 
   PurrlyUITests:
@@ -84,6 +121,6 @@ targets:
       - target: Purrly
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: app.purrly.raceguide.uitests
+        PRODUCT_BUNDLE_IDENTIFIER: app.rork.chat-race-guide.uitests
         GENERATE_INFOPLIST_FILE: YES
         TEST_TARGET_NAME: Purrly

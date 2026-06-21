@@ -83,7 +83,10 @@ struct MoreMenuView: View {
 
             Section {
                 Button(role: .destructive) {
-                    Task { await environment.auth.signOut() }
+                    Task {
+                        await environment.auth.signOut()
+                        await environment.signOutSubscriber()
+                    }
                 } label: {
                     MoreRow(symbol: "rectangle.portrait.and.arrow.right",
                             title: "Se déconnecter", subtitle: nil, tint: .red)
