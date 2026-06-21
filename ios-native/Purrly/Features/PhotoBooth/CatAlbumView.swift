@@ -42,7 +42,8 @@ struct CatAlbumView: View {
                                 .scaledToFill()
                                 .frame(
                                     width: UIScreen.main.bounds.width / 3 - 2,
-                                    height: UIScreen.main.bounds.width / 3 - 2
+                                    height: UIScreen.main.bounds.width / 3 - 2,
+                                    alignment: .top
                                 )
                                 .clipped()
                                 .onTapGesture { selectedPhoto = item }

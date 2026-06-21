@@ -29,7 +29,7 @@ struct CatFormView: View {
                                     Image(uiImage: photo)
                                         .resizable()
                                         .scaledToFill()
-                                        .frame(width: 64, height: 64)
+                                        .frame(width: 64, height: 64, alignment: .top)
                                         .clipShape(RoundedRectangle(cornerRadius: 16))
                                 } else {
                                     Image(systemName: "camera.fill")

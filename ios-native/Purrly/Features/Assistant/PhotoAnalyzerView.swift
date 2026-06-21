@@ -18,7 +18,7 @@ struct PhotoAnalyzerView: View {
                         Image(uiImage: img)
                             .resizable()
                             .scaledToFill()
-                            .frame(height: 240)
+                            .frame(height: 240, alignment: .top)
                             .clipped()
                             .clipShape(RoundedRectangle(cornerRadius: 16))
                     } else {

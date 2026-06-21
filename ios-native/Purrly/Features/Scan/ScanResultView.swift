@@ -22,7 +22,7 @@ struct ScanResultView: View {
                         .resizable()
                         .scaledToFill()
                         .frame(maxWidth: .infinity)
-                        .frame(height: 280)
+                        .frame(height: 280, alignment: .top)
                         .clipped()
                         .clipShape(RoundedRectangle(cornerRadius: 20))
                         .overlay(

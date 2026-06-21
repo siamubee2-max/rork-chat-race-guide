@@ -101,7 +101,7 @@ private struct CatRow: View {
                     Image(uiImage: photo)
                         .resizable()
                         .scaledToFill()
-                        .frame(width: 56, height: 56)
+                        .frame(width: 56, height: 56, alignment: .top)
                         .clipShape(RoundedRectangle(cornerRadius: 14))
                 } else {
                     Image(systemName: "cat.fill")

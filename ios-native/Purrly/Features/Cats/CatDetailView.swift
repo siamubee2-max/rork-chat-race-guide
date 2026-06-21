@@ -18,7 +18,7 @@ struct CatDetailView: View {
                         .resizable()
                         .scaledToFill()
                         .frame(maxWidth: .infinity)
-                        .frame(height: 240)
+                        .frame(height: 240, alignment: .top)
                         .clipped()
                         .clipShape(RoundedRectangle(cornerRadius: 20))
                 }
