@@ -72,6 +72,26 @@ Garder la valeur perçue premium **tout en abaissant la barrière** :
 > réduit les « free riders » qui annulent après usage, et raccourcit le cycle de
 > conversion. Le free-trial double la conversion vs paywall sec.
 
+### 5.2bis — Tarifs appliqués en App Store Connect (22 juin 2026 ✅)
+
+Prix de base France/Europe (EUR) saisis, recalcul auto Apple sur les 175 territoires.
+Groupe d'abonnement **Purrly Premium** (`21971447`).
+
+| Produit | Apple ID | Prix EUR | Essai 3 j |
+|---|---|---|---|
+| Premium Annuel | 6760370604 | **59,99 €** | ✅ illimité, dès 22/06/2026 |
+| Premium Mensuel | 6760370744 | **9,99 €** | — |
+| Family Annuel | 6760370584 | **89,99 €** | ✅ illimité, dès 22/06/2026 |
+| Family Mensuel | 6760370522 | **14,99 €** | — |
+| Pro Annuel | 6760370689 | **199,99 €** | ✅ illimité, dès 22/06/2026 |
+| Pro Mensuel | 6760370472 | **39,99 €** | — |
+
+> Les mensuels Family/Pro (14,99 € / 39,99 €) confirmés hors grille initiale sur
+> décision explicite (porte d'entrée mensuelle des tiers Family/Pro). Essai gratuit
+> de type *Free trial 3 jours*, durée d'offre **illimitée** (offre permanente aux
+> nouveaux abonnés), sur les 3 annuels uniquement. Saisie via automation navigateur
+> (combobox React pilotés par séquence d'événements pointeur + setter natif).
+
 ### 5.3 Tactiques de conversion
 1. **Confiance avant conversion** (principe produit n°5) : laisser **1 scan + 15
    questions IA gratuites** pour démontrer la valeur, paywall **après** le 1er résultat.
