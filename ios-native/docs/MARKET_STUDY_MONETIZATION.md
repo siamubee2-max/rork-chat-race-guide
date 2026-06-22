@@ -66,8 +66,11 @@ Garder la valeur perçue premium **tout en abaissant la barrière** :
 | Family | 24,99 € | **89,99 €/an** | Multi-chats / foyer (éleveurs amateurs) |
 | Pro | 49,99 € | **199,99 €/an** | Éleveurs / pros (gestion portées, visibilité annuaire) |
 
-> **Essai gratuit 7 jours** sur l'annuel + **offre d'intro** (1er mois -50 %) pour
-> doper la conversion (le free-trial double la conversion vs paywall sec).
+> **Grille validée (juin 2026).** **Essai gratuit 3 jours** sur l'annuel (minimum
+> Apple). Choix du 3 jours plutôt que 7 : la valeur est démontrée **immédiatement**
+> (1er scan = résultat instantané), donc une fenêtre courte pousse une décision rapide,
+> réduit les « free riders » qui annulent après usage, et raccourcit le cycle de
+> conversion. Le free-trial double la conversion vs paywall sec.
 
 ### 5.3 Tactiques de conversion
 1. **Confiance avant conversion** (principe produit n°5) : laisser **1 scan + 15
