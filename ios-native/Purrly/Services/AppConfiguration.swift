@@ -23,15 +23,6 @@ enum AppConfiguration {
         return URL(string: raw) ?? URL(string: "http://localhost:3000")!
     }
 
-    static var vipEmails: Set<String> {
-        let raw = Bundle.main.object(forInfoDictionaryKey: "VIP_EMAILS") as? String ?? ""
-        return Set(
-            raw.split(separator: ",")
-                .map { $0.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }
-                .filter { !$0.isEmpty }
-        )
-    }
-
     static var demoEmail: String {
         (Bundle.main.object(forInfoDictionaryKey: "DEMO_EMAIL") as? String) ?? "demo@purrly.app"
     }
@@ -40,14 +31,8 @@ enum AppConfiguration {
         supabaseURL != nil && supabaseAnonKey != nil
     }
 
-    static var kieApiKey: String? {
-        guard let key = Bundle.main.object(forInfoDictionaryKey: "KIE_API_KEY") as? String,
-              !key.isEmpty,
-              key != "your_kie_api_key_here" else { return nil }
-        return key
-    }
-
-    // Proxy backend disponible dès qu'on a une URL d'API — la clé reste côté serveur
+    // La clé KIE ne vit QUE côté serveur (Edge Function `kie-generate`) ; le client
+    // appelle le proxy avec le JWT utilisateur et ne lit jamais KIE_API_KEY.
     static var isKieConfigured: Bool { true }
 
     /// Clé SDK publique iOS RevenueCat (préfixe `appl_`). Sûre côté client.

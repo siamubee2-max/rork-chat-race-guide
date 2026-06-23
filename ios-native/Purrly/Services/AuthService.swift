@@ -81,7 +81,7 @@ final class AuthService{
                 id: "local-\(normalized)",
                 email: normalized,
                 name: normalized.components(separatedBy: "@").first ?? "Utilisateur",
-                subscriptionTier: AppConfiguration.vipEmails.contains(normalized) ? .pro : .premium,
+                subscriptionTier: .premium,   // démo hors-ligne uniquement (Supabase non configuré)
                 subscriptionExpiry: nil
             )
             return true
@@ -108,7 +108,7 @@ final class AuthService{
                 id: "local-\(normalized)",
                 email: normalized,
                 name: name.isEmpty ? normalized.components(separatedBy: "@").first ?? "Utilisateur" : name,
-                subscriptionTier: AppConfiguration.vipEmails.contains(normalized) ? .pro : .free,
+                subscriptionTier: .free,
                 subscriptionExpiry: nil
             )
             return true
@@ -141,16 +141,8 @@ final class AuthService{
 
     private func loadProfile(userId: UUID, email: String) async {
         guard let client else { return }
-        let isVIP = AppConfiguration.vipEmails.contains(email.lowercased())
-
-        if isVIP {
-            _ = try? await client
-                .from("profiles")
-                .update(["subscription_tier": "pro", "subscription_expiry": "2125-01-01T00:00:00Z"])
-                .eq("id", value: userId.uuidString)
-                .execute()
-        }
-
+        // L'abonnement (tier/expiry) est décidé EXCLUSIVEMENT côté serveur
+        // (webhook RevenueCat → table `profiles`). Le client ne l'écrit jamais.
         do {
             let rows: [ProfileRow] = try await client
                 .from("profiles")
@@ -164,7 +156,7 @@ final class AuthService{
                     id: userId.uuidString,
                     email: email,
                     name: email.components(separatedBy: "@").first ?? "",
-                    subscriptionTier: isVIP ? .pro : .free,
+                    subscriptionTier: .free,
                     subscriptionExpiry: nil
                 )
                 return
@@ -181,7 +173,7 @@ final class AuthService{
                 id: userId.uuidString,
                 email: email,
                 name: email.components(separatedBy: "@").first ?? "",
-                subscriptionTier: isVIP ? .pro : .free,
+                subscriptionTier: .free,
                 subscriptionExpiry: nil
             )
         }

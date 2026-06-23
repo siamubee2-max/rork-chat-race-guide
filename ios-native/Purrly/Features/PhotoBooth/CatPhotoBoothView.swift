@@ -293,14 +293,7 @@ struct CatPhotoBoothView: View {
 
     private var aiPanel: some View {
         VStack(spacing: 12) {
-            if !AppConfiguration.isKieConfigured {
-                HStack(spacing: 8) {
-                    Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(.orange)
-                    Text("Ajoute ta clé API kie.ai dans Secrets.xcconfig → KIE_API_KEY")
-                        .font(.caption).foregroundStyle(AppTheme.textMuted).multilineTextAlignment(.leading)
-                }
-                .padding(12)
-            } else if selectedPhoto == nil {
+            if selectedPhoto == nil {
                 Text("📸 Choisis d'abord une photo de ton chat")
                     .font(.subheadline).foregroundStyle(AppTheme.textMuted)
                     .padding(12)
@@ -317,7 +310,7 @@ struct CatPhotoBoothView: View {
                 }
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 10) {
-                        ForEach(KieAIService.AccessoryPreset.allCases) { preset in
+                        ForEach(AccessoryPreset.allCases) { preset in
                             Button { Task { await generateWithKie(preset: preset) } } label: {
                                 VStack(spacing: 4) {
                                     Text(preset.emoji).font(.system(size: 32))
@@ -338,7 +331,7 @@ struct CatPhotoBoothView: View {
         }
     }
 
-    private func generateWithKie(preset: KieAIService.AccessoryPreset) async {
+    private func generateWithKie(preset: AccessoryPreset) async {
         guard let photo = selectedPhoto else { return }
         guard let token = KeychainStore.read(.accessToken), !token.isEmpty else {
             kieError = "Connectez-vous pour utiliser IA Booth."

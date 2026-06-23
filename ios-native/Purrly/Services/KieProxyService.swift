@@ -37,7 +37,7 @@ struct KieProxyService {
     /// Génère une photo de chat avec accessoire via le proxy backend.
     func generate(
         image: UIImage,
-        preset: KieAIService.AccessoryPreset,
+        preset: AccessoryPreset,
         accessToken: String,
         progressHandler: ((Double) -> Void)? = nil
     ) async throws -> UIImage {
