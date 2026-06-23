@@ -33,7 +33,7 @@ tables + RPCs.
 supabase secrets set --project-ref <NEW_REF> \
   KIE_API_KEY=<the rotated key> \
   OPENAI_API_KEY=<openai key> \
-  REVENUECAT_WEBHOOK_SECRET=<same secret used by revenuecat-webhook>
+  REVENUECAT_WEBHOOK_AUTH_KEY=<same Authorization value configured in RevenueCat>
 ```
 (`SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_ANON_KEY` are auto-injected.)
 
