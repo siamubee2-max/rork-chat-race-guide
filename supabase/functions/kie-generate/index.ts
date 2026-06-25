@@ -1,13 +1,17 @@
 // Supabase Edge Function: kie-generate
 // Proxies a KIE AI image-generation request server-side so KIE_API_KEY never
-// ships in the iOS app bundle. Mirrors expo/backend/trpc/routes/kie.ts.
+// ships in the iOS app bundle.
 //
 // Auth & authorization (defence in depth — client UsageLimits is bypassable):
 //   1. verify_jwt=true — Supabase validates the caller's JWT before this runs.
-//   2. Subscription gate — caller must be tier 'pro' or higher AND not expired
-//      (mirrors verifySubscriptionTier in ai.ts), read from profiles.
+//   2. Subscription gate — caller must be tier 'pro' or higher AND not expired.
 //   3. Per-user daily quota — atomic check_and_increment_kie_usage(), caps
 //      generations/day to prevent KIE cost-explosion.
+//
+// KIE API contract (verified live 2026-06): upload requires uploadPath+fileName
+// and returns data.downloadUrl; createTask uses model gpt-image-2-image-to-image
+// with input{prompt,input_urls[],aspect_ratio} and returns data.taskId; poll
+// recordInfo returns data.state + data.resultJson({resultUrls[]}).
 //
 // Request  (POST, application/json): { "imageBase64": string, "preset": string }
 // Response (200, application/json):   { "resultUrl": string }
@@ -15,7 +19,6 @@
 
 import { createClient } from "jsr:@supabase/supabase-js@2";
 
-// Tier gate + daily cap (decisions: Pro and above, 5/day)
 const REQUIRED_TIER_RANK = 1; // pro
 const DAILY_LIMIT = 5;
 const TIER_RANK: Record<string, number> = {
@@ -25,12 +28,13 @@ const TIER_RANK: Record<string, number> = {
 const KIE_UPLOAD_URL = "https://kieai.redpandaai.co/api/file-stream-upload";
 const KIE_CREATE_TASK_URL = "https://api.kie.ai/api/v1/jobs/createTask";
 const KIE_RECORD_INFO_BASE = "https://api.kie.ai/api/v1/jobs/recordInfo";
+const KIE_MODEL = "gpt-image-2-image-to-image";
+const KIE_UPLOAD_PATH = "images/cat-photobooth";
 
 const MAX_IMAGE_BASE64 = 7_000_000;
 const POLL_MAX_ATTEMPTS = 60;
 const POLL_INTERVAL_MS = 3_000;
 
-// Prompt lookup — mirrors AccessoryPreset.prompt in KieAIService.swift
 const PRESET_PROMPTS: Record<string, string> = {
   cowboy_hat:    "Add a realistic brown cowboy hat on top of this cat's head. Keep the cat exactly as-is, only add the hat. Photorealistic, fun.",
   crown:         "Place a golden royal crown on this cat's head. The cat stays the same, only add the crown. Photorealistic, regal look.",
@@ -67,6 +71,8 @@ function base64ToBytes(base64: string): Uint8Array {
 async function kieUpload(imageBase64: string, apiKey: string): Promise<string> {
   const form = new FormData();
   form.append("file", new Blob([base64ToBytes(imageBase64)], { type: "image/jpeg" }), "cat.jpg");
+  form.append("uploadPath", KIE_UPLOAD_PATH);
+  form.append("fileName", "cat.jpg");
 
   // Do NOT set Content-Type manually — fetch adds the multipart boundary.
   const res = await fetch(KIE_UPLOAD_URL, {
@@ -75,11 +81,11 @@ async function kieUpload(imageBase64: string, apiKey: string): Promise<string> {
     body: form,
     signal: AbortSignal.timeout(30_000),
   });
-  if (!res.ok) throw new Error(`KIE upload failed: ${res.status}`);
+  if (!res.ok) throw new Error(`KIE upload HTTP ${res.status}`);
 
   const data = await res.json() as Record<string, any>;
-  const url: string | undefined = data?.url ?? data?.fileUrl ?? data?.data?.url;
-  if (!url) throw new Error("KIE upload: no URL in response");
+  const url: string | undefined = data?.data?.downloadUrl ?? data?.data?.fileUrl;
+  if (!url) throw new Error(`KIE upload: no downloadUrl (${data?.msg ?? "unknown"})`);
   return url;
 }
 
@@ -87,14 +93,17 @@ async function kieCreateTask(imageURL: string, prompt: string, apiKey: string): 
   const res = await fetch(KIE_CREATE_TASK_URL, {
     method: "POST",
     headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ model: "gpt-4o-image", input: { prompt, image: imageURL, action: "edit" } }),
-    signal: AbortSignal.timeout(15_000),
+    body: JSON.stringify({
+      model: KIE_MODEL,
+      input: { prompt, input_urls: [imageURL], aspect_ratio: "auto" },
+    }),
+    signal: AbortSignal.timeout(20_000),
   });
-  if (!res.ok) throw new Error(`KIE createTask failed: ${res.status}`);
+  if (!res.ok) throw new Error(`KIE createTask HTTP ${res.status}`);
 
   const data = await res.json() as Record<string, any>;
-  const taskId: string | undefined = data?.body?.taskId;
-  if (!taskId) throw new Error("KIE createTask: no taskId in response");
+  const taskId: string | undefined = data?.data?.taskId;
+  if (!taskId) throw new Error(`KIE createTask: no taskId (${data?.msg ?? "unknown"})`);
   return taskId;
 }
 
@@ -111,17 +120,19 @@ async function kiePollTask(taskId: string, apiKey: string): Promise<string> {
     if (!res.ok) continue;
 
     const data = await res.json() as Record<string, any>;
-    const body = data?.body as Record<string, any> | undefined;
-    const state: string = body?.state ?? "";
+    const d = data?.data as Record<string, any> | undefined;
+    const state: string = d?.state ?? "";
 
-    if (state === "success" || state === "completed") {
-      const resultUrl: string | undefined =
-        body?.result?.url ?? body?.result?.imageUrl ?? body?.result?.images?.[0]?.url;
-      if (!resultUrl) throw new Error("KIE poll: success but no result URL");
+    if (state === "success") {
+      let resultUrl: string | undefined;
+      try {
+        resultUrl = (JSON.parse(d?.resultJson ?? "{}")?.resultUrls ?? [])[0];
+      } catch { /* fallthrough */ }
+      if (!resultUrl) throw new Error("KIE poll: success but no resultUrls");
       return resultUrl;
     }
     if (state === "fail" || state === "failed" || state === "error") {
-      throw new Error("KIE generation failed");
+      throw new Error(`KIE generation failed: ${d?.failMsg ?? "unknown"}`);
     }
   }
   throw new Error("KIE generation timed out after 3 minutes");
@@ -138,7 +149,6 @@ Deno.serve(async (req: Request) => {
     return json({ error: "Server not configured." }, 500);
   }
 
-  // --- Identify the caller from the (already verify_jwt-validated) token ---
   const token = req.headers.get("Authorization")?.replace(/^Bearer\s+/i, "");
   if (!token) return json({ error: "Unauthorized" }, 401);
 
@@ -150,7 +160,7 @@ Deno.serve(async (req: Request) => {
   const userId = userData?.user?.id;
   if (userErr || !userId) return json({ error: "Unauthorized" }, 401);
 
-  // --- Subscription gate: tier 'pro'+ and not expired (mirrors ai.ts) ---
+  // --- Subscription gate: tier 'pro'+ and not expired ---
   const { data: profile, error: profErr } = await admin
     .from("profiles")
     .select("subscription_tier, subscription_expiry")
