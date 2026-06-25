@@ -72,6 +72,7 @@
 		958644BF4120CAE44AD79F06 /* TermsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE9116DA914F77F6E60FA90 /* TermsView.swift */; };
 		95FDCF3082D23BB88D4A1253 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD8E32F310AAD2C4329FDE7 /* RootView.swift */; };
 		967697B693B90A49688C96E8 /* EventDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96893A37AE9D91A040C1F7AA /* EventDetailView.swift */; };
+		97D7CC18CCBD5F2A71B1DC76 /* AccessoryPreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFF5D0C28D78A7CCF7DEC78 /* AccessoryPreset.swift */; };
 		9904FCB61CD784344CC32CEA /* AIChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9162B2354C162F2AB894EB /* AIChatService.swift */; };
 		9D2E459DCD986FEEF6CC3D98 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF52453CC28BB6CD3D7A7C3 /* UserProfileView.swift */; };
 		9DFBDB774489545E07DD33BE /* EmergencyStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC103EA1ED0D174FC3A8505 /* EmergencyStoreTests.swift */; };
@@ -81,7 +82,6 @@
 		A29AEFB9CF484CAEF27005F2 /* EmergencyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E56CFD35E6A40581EB0F929 /* EmergencyStore.swift */; };
 		A2FECC01396D5D86E2F7B2AB /* TravelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357BF43F8D35B0ED2F8F0325 /* TravelView.swift */; };
 		A5BE704415A7046F2D4C7C96 /* Breed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC1270F8F3C6F4AEC1275D8 /* Breed.swift */; };
-		A7F8513E10C1BE70E4E25E07 /* KieAIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0C786B2D0341439A388637 /* KieAIService.swift */; };
 		A8100187A9F69EDF8AE6A67D /* ScanHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338D8088855C3DC69FB2FB08 /* ScanHomeView.swift */; };
 		AB925A661EEEA66451DCFBF8 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F4EBA8D37A45944DDED81D /* KeychainStore.swift */; };
 		AC862B5E289888DE92F5EF21 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = AC9C20DE41D22F035FD41B79 /* RevenueCat */; };
@@ -188,7 +188,6 @@
 		330C09CB414B4895C19FD3FA /* GamificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamificationView.swift; sourceTree = "<group>"; };
 		338D8088855C3DC69FB2FB08 /* ScanHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanHomeView.swift; sourceTree = "<group>"; };
 		357BF43F8D35B0ED2F8F0325 /* TravelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelView.swift; sourceTree = "<group>"; };
-		3A0C786B2D0341439A388637 /* KieAIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KieAIService.swift; sourceTree = "<group>"; };
 		3EC1270F8F3C6F4AEC1275D8 /* Breed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Breed.swift; sourceTree = "<group>"; };
 		40AA757FA0C83872C9F5D7FC /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
 		4190C08400AF9DD9BF81B17F /* RecordFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFormView.swift; sourceTree = "<group>"; };
@@ -252,6 +251,7 @@
 		C216B0E2126506AB1166EAD0 /* PurrlyWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurrlyWidget.swift; sourceTree = "<group>"; };
 		C5CBD45CFAB1051CA978D056 /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
 		C965111454B8478AD59E20D5 /* CatProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatProfile.swift; sourceTree = "<group>"; };
+		CCFF5D0C28D78A7CCF7DEC78 /* AccessoryPreset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessoryPreset.swift; sourceTree = "<group>"; };
 		CD70640C105D98EC11A190A5 /* ScreenshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotTests.swift; sourceTree = "<group>"; };
 		CF88511C6D8412F1FCA20226 /* PrivacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyView.swift; sourceTree = "<group>"; };
 		D1109440970DA651D3FFFB71 /* Secrets.xcconfig.example */ = {isa = PBXFileReference; path = Secrets.xcconfig.example; sourceTree = "<group>"; };
@@ -498,6 +498,7 @@
 		B88B4DABA8A27884D7532285 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				CCFF5D0C28D78A7CCF7DEC78 /* AccessoryPreset.swift */,
 				BA9162B2354C162F2AB894EB /* AIChatService.swift */,
 				C5CBD45CFAB1051CA978D056 /* AppConfiguration.swift */,
 				DD074D1B0FC706ABEB90371E /* AppHTTP.swift */,
@@ -513,7 +514,6 @@
 				ABF9131DCC73A7AC4023CCE7 /* ExpenseStore.swift */,
 				AABFDB4192E8A45C41C05BF3 /* GamificationStore.swift */,
 				F8F4EBA8D37A45944DDED81D /* KeychainStore.swift */,
-				3A0C786B2D0341439A388637 /* KieAIService.swift */,
 				0D89C551CF27145742035F34 /* KieProxyService.swift */,
 				53FE46F00C4FCF41909366A8 /* ReminderStore.swift */,
 				00A2EBF4115EDB6D12ACA7D6 /* ShoppingStore.swift */,
@@ -801,6 +801,7 @@
 			files = (
 				9904FCB61CD784344CC32CEA /* AIChatService.swift in Sources */,
 				61A06226B1A22EE5F1C1B41F /* AboutView.swift in Sources */,
+				97D7CC18CCBD5F2A71B1DC76 /* AccessoryPreset.swift in Sources */,
 				71F43B3D9F8C86C64DF9FCAC /* Achievement.swift in Sources */,
 				5C6C95788DAAC13E21E04A3E /* AchievementsView.swift in Sources */,
 				CFA33CA5EE0E9223C90F4FF3 /* AppConfiguration.swift in Sources */,
@@ -857,7 +858,6 @@
 				37887FDAF3F6A91AA5858096 /* GlassChrome.swift in Sources */,
 				B2BA1B8BA770BF1939479469 /* InsightsView.swift in Sources */,
 				AB925A661EEEA66451DCFBF8 /* KeychainStore.swift in Sources */,
-				A7F8513E10C1BE70E4E25E07 /* KieAIService.swift in Sources */,
 				B0CB2D77C95457093A28DCC2 /* KieProxyService.swift in Sources */,
 				C71B5E0DBC9BEF52E79F7C1A /* LanguageSelectView.swift in Sources */,
 				CA849DE2AFD5C1D3E41666E0 /* LeaderboardView.swift in Sources */,
