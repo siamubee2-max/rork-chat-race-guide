@@ -56,7 +56,12 @@ final class UsageLimits{
     }
 
     private static func currentDayKey() -> String {
-        let c = Calendar.current.dateComponents([.year, .month, .day], from: Date())
+        // UTC, not device-local: the server quota counts per Postgres `current_date`
+        // and the DB runs in UTC, so the client window must roll over at the same
+        // instant to predict the server 429 accurately.
+        var cal = Calendar(identifier: .gregorian)
+        cal.timeZone = TimeZone(identifier: "UTC") ?? .gmt
+        let c = cal.dateComponents([.year, .month, .day], from: Date())
         return "\(c.year ?? 0)-\(c.month ?? 0)-\(c.day ?? 0)"
     }
 }
