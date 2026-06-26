@@ -22,6 +22,7 @@ struct LoginView: View {
                 actions
             }
             .padding(24)
+            .purrlyReadableWidth(480)
         }
         .purrlyScreenBackground()
         .sheet(isPresented: $showSignup) {

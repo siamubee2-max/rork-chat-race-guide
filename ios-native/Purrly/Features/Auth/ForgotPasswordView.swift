@@ -62,6 +62,7 @@ struct ForgotPasswordView: View {
                 Spacer()
             }
             .padding(28)
+            .purrlyReadableWidth(480)
             .purrlyScreenBackground()
             .navigationTitle("Mot de passe oublié")
             .navigationBarTitleDisplayMode(.inline)

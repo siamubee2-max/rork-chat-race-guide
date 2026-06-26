@@ -46,6 +46,7 @@ struct SignupView: View {
                     .disabled(isBusy || name.isEmpty || email.isEmpty || password.count < 8)
                 }
                 .padding(24)
+                .purrlyReadableWidth(480)
             }
             .purrlyScreenBackground()
             .navigationTitle(String(localized: "auth.signup.title"))
