@@ -116,6 +116,7 @@ struct ScanHomeView: View {
                     .frame(maxWidth: .infinity, minHeight: AppTheme.minTouch)
             }
             .buttonStyle(GlassSecondaryButtonStyle())
+            .accessibilityIdentifier("browseBreedsButton")
 
             #if DEBUG
             // Hook tests UI : seed une image et déclenche le scan sans PhotosPicker.

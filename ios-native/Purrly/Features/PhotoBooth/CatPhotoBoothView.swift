@@ -73,7 +73,9 @@ struct CatPhotoBoothView: View {
             VStack(spacing: 0) {
                 #if DEBUG
                 // Hook tests UI : seed une image + lance KIE sans PhotosPicker.
-                if ProcessInfo.processInfo.arguments.contains("-uiTesting") {
+                // Masqué en mode captures (`-screenshots`).
+                if ProcessInfo.processInfo.arguments.contains("-uiTesting"),
+                   !ProcessInfo.processInfo.arguments.contains("-screenshots") {
                     Button("UITest KIE") {
                         let renderer = UIGraphicsImageRenderer(size: CGSize(width: 64, height: 64))
                         selectedPhoto = renderer.image { ctx in

@@ -18,3 +18,10 @@ ios-native/build/
 
 # Supabase CLI temp
 supabase/.temp/
+
+# Fastlane artefacts générés
+ios-native/fastlane/report.xml
+ios-native/fastlane/README.md
+ios-native/fastlane/test_output/
+ios-native/fastlane/Preview.html
+**/fastlane/report.xml

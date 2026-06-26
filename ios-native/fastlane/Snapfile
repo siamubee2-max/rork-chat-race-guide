@@ -1,0 +1,26 @@
+# Snapfile — configuration des captures d'écran App Store (fastlane snapshot).
+
+# Appareil 6.9" requis par l'App Store (le plus grand iPhone Pro Max).
+devices([
+  "iPhone 17 Pro Max"
+])
+
+languages([
+  "fr-FR",
+  "en-US"
+])
+
+# Cible de test UI dédiée aux captures.
+scheme("Purrly")
+only_testing(["PurrlyUITests/PurrlyScreenshots"])
+
+output_directory("./fastlane/screenshots")
+clear_previous_screenshots(true)
+
+# La barre d'état est figée (9:41, batterie pleine, réseau plein) pour des captures propres.
+override_status_bar(true)
+
+# Relance le test au besoin et garde les logs.
+number_of_retries(2)
+concurrent_simulators(false)
+stop_after_first_error(false)

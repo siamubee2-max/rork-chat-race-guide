@@ -1,0 +1,48 @@
+# Fastfile — automatisation ASO (métadonnées + captures) pour Purrly.
+#
+# Auth App Store Connect : préférez une clé API ASC (App Store Connect API key).
+#   export ASC_KEY_ID=...  ASC_ISSUER_ID=...  ASC_KEY_PATH=/abs/AuthKey_XXX.p8
+# Sinon, FASTLANE_USER / FASTLANE_PASSWORD (mot de passe app-specific).
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Génère les captures d'écran App Store (snapshot) pour fr-FR + en-US"
+  lane :screenshots do
+    capture_screenshots(scheme: "Purrly")
+    UI.success("Captures générées dans fastlane/screenshots — relisez-les avant upload.")
+  end
+
+  desc "Pousse UNIQUEMENT les métadonnées texte (ASO) vers App Store Connect"
+  lane :upload_metadata do
+    deliver(
+      skip_screenshots: true,
+      skip_binary_upload: true,
+      skip_app_version_update: false,
+      force: true,            # pas de prompt de confirmation HTML
+      run_precheck_before_submit: false
+    )
+  end
+
+  desc "Pousse UNIQUEMENT les captures d'écran vers App Store Connect"
+  lane :upload_screenshots do
+    deliver(
+      skip_metadata: true,
+      skip_binary_upload: true,
+      overwrite_screenshots: true,
+      force: true,
+      run_precheck_before_submit: false
+    )
+  end
+
+  desc "Métadonnées + captures (sans binaire, sans soumission review)"
+  lane :upload_aso do
+    deliver(
+      skip_binary_upload: true,
+      overwrite_screenshots: true,
+      force: true,
+      submit_for_review: false,
+      run_precheck_before_submit: false
+    )
+  end
+end
