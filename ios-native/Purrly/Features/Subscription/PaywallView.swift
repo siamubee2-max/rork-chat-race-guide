@@ -35,6 +35,8 @@ struct PaywallView: View {
     let feature: PurrlyFeature
     @Environment(\.dismiss) private var dismiss
     @Environment(AppEnvironment.self) private var env
+    @State private var showTerms = false
+    @State private var showPrivacy = false
 
     private var subscriptions: SubscriptionService { env.subscriptions }
 
@@ -64,6 +66,13 @@ struct PaywallView: View {
 
                 packagesSection
 
+                // Divulgation requise (Guideline 3.1.2) : renouvellement auto + durée.
+                Text("Abonnement à renouvellement automatique. Le paiement est débité sur votre compte Apple à la confirmation. L'abonnement se renouvelle automatiquement sauf annulation au moins 24 h avant la fin de la période en cours. Gérez ou résiliez à tout moment dans les réglages de l'App Store.")
+                    .font(.caption2)
+                    .foregroundStyle(AppTheme.textMuted)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 4)
+
                 if let message = subscriptions.lastErrorMessage {
                     Text(message)
                         .font(.footnote)
@@ -86,10 +95,21 @@ struct PaywallView: View {
                     .font(.subheadline)
                     .foregroundStyle(AppTheme.textMuted)
 
+                // Liens légaux requis sur l'écran d'achat (Guideline 3.1.2).
+                HStack(spacing: 16) {
+                    Button("Conditions d'utilisation") { showTerms = true }
+                    Text("·").foregroundStyle(AppTheme.textMuted)
+                    Button("Politique de confidentialité") { showPrivacy = true }
+                }
+                .font(.caption)
+                .foregroundStyle(AppTheme.textSecondary)
+
                 Spacer(minLength: 8)
             }
             .padding(.horizontal, 28)
         }
+        .sheet(isPresented: $showTerms) { NavigationStack { TermsView() } }
+        .sheet(isPresented: $showPrivacy) { NavigationStack { PrivacyView() } }
         .background(AppTheme.backgroundSecondary)
         .presentationDetents([.large])
         .presentationDragIndicator(.hidden)

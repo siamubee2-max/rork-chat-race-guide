@@ -22,6 +22,7 @@ struct BehaviorView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
+                VetDisclaimerBanner()
                 // Cat selector
                 if !cats.isEmpty {
                     VStack(alignment: .leading, spacing: 8) {

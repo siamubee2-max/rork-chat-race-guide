@@ -18,6 +18,7 @@ struct InsightsView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
+                VetDisclaimerBanner()
                 if environment.cats.cats.isEmpty {
                     VStack(spacing: 12) {
                         Image(systemName: "lightbulb.slash")

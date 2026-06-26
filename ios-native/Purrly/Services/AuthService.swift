@@ -139,6 +139,32 @@ final class AuthService{
         currentUser = nil
     }
 
+    /// Supprime définitivement le compte (Edge Function delete-account) puis
+    /// déconnecte localement. Exigence App Store 5.1.1(v).
+    func deleteAccount() async -> Bool {
+        guard let token = KeychainStore.read(.accessToken), !token.isEmpty else {
+            // Mode démo hors-ligne : pas de compte serveur, on déconnecte juste.
+            await signOut()
+            return true
+        }
+        var request = URLRequest(url: AppConfiguration.apiBaseURL.appending(path: "/delete-account"))
+        request.httpMethod = "POST"
+        request.timeoutInterval = 30
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        do {
+            let (_, response) = try await AppHTTP.session.data(for: request)
+            guard let http = response as? HTTPURLResponse, (200...299).contains(http.statusCode) else {
+                lastError = "La suppression du compte a échoué. Réessaie plus tard."
+                return false
+            }
+            await signOut()
+            return true
+        } catch {
+            lastError = error.localizedDescription
+            return false
+        }
+    }
+
     private func loadProfile(userId: UUID, email: String) async {
         guard let client else { return }
         // L'abonnement (tier/expiry) est décidé EXCLUSIVEMENT côté serveur

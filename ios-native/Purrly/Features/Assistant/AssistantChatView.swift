@@ -22,6 +22,7 @@ struct AssistantChatView: View {
             } else {
                 transcript
             }
+            VetDisclaimerBanner()
             composer
         }
         .purrlyScreenBackground()

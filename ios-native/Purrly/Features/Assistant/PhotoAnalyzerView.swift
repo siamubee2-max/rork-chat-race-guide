@@ -12,6 +12,7 @@ struct PhotoAnalyzerView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
+                VetDisclaimerBanner()
                 // Photo picker
                 PhotosPicker(selection: $pickerItem, matching: .images) {
                     if let img = selectedImage {

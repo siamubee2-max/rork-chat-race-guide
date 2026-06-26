@@ -3,6 +3,8 @@ import SwiftUI
 struct MoreMenuView: View {
     @Environment(AppEnvironment.self) private var environment
     @State private var showPaywall = false
+    @State private var showDeleteConfirm = false
+    @State private var isDeleting = false
 
     var body: some View {
         List {
@@ -91,12 +93,35 @@ struct MoreMenuView: View {
                     MoreRow(symbol: "rectangle.portrait.and.arrow.right",
                             title: "Se déconnecter", subtitle: nil, tint: .red)
                 }
+                Button(role: .destructive) {
+                    showDeleteConfirm = true
+                } label: {
+                    MoreRow(symbol: "trash",
+                            title: isDeleting ? "Suppression…" : "Supprimer mon compte",
+                            subtitle: "Efface définitivement votre compte et vos données",
+                            tint: .red)
+                }
+                .disabled(isDeleting)
             }
             .listRowBackground(AppTheme.backgroundCard)
         }
         .listStyle(.insetGrouped)
         .scrollContentBackground(.hidden)
         .navigationTitle("Plus")
+        .alert("Supprimer le compte ?", isPresented: $showDeleteConfirm) {
+            Button("Annuler", role: .cancel) {}
+            Button("Supprimer", role: .destructive) {
+                isDeleting = true
+                Task {
+                    let ok = await environment.auth.deleteAccount()
+                    await environment.signOutSubscriber()
+                    isDeleting = false
+                    _ = ok
+                }
+            }
+        } message: {
+            Text("Cette action est définitive. Votre compte, vos chats et vos données seront supprimés et ne pourront pas être récupérés.")
+        }
         .sheet(isPresented: $showPaywall) {
             PaywallView(feature: .extraCat)
         }
