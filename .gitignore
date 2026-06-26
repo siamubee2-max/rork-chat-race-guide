@@ -15,3 +15,6 @@ ios-native/build/
 
 # Xcode per-user state (should never be tracked)
 **/xcuserdata/
+
+# Supabase CLI temp
+supabase/.temp/
