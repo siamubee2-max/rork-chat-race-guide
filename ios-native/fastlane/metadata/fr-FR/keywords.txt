@@ -1,1 +1,1 @@
-félin,chaton,vétérinaire,animal,éleveur,maine,coon,persan,siamois,bengal,sphynx,ragdoll,adoption
+félin,chaton,vétérinaire,vaccin,éleveur,maine,coon,persan,siamois,bengal,sphynx,ragdoll,adoption

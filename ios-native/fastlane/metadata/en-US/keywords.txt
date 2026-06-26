@@ -1,1 +1,1 @@
-feline,kitten,veterinary,animal,breeder,maine,coon,persian,siamese,bengal,sphynx,ragdoll,adoption
+feline,kitten,veterinary,vaccine,breeder,maine,coon,persian,siamese,bengal,sphynx,ragdoll,adoption
