@@ -1,21 +1,21 @@
 Purrly is the #1 super-app for cat lovers. AI breed scanner, vet assistant, health & expense tracking, community and a vet directory — everything your cat needs, in one calm, elegant app.
 
-🐱 AI BREED SCANNER — 400+ breeds
+AI BREED SCANNER — 400+ breeds
 Snap a photo and Purrly identifies your cat's breed instantly. Recognition works even offline, right on your iPhone — handy at the vet or with no signal.
 
-💬 AI VET ASSISTANT
+AI VET ASSISTANT
 A question about your cat's health, behaviour or diet? The assistant answers 24/7, kindly and precisely. To reassure you between visits — never to replace your vet.
 
-❤️ HEALTH & EXPENSE TRACKING
+HEALTH & EXPENSE TRACKING
 Health record, vaccine and deworming reminders, weight charts, expense tracking. Your cat's whole history, organised and at hand.
 
-🚨 LOST CAT ALERTS
+LOST CAT ALERTS
 Raise an alert if your cat goes missing and rally the community around you.
 
-👥 COMMUNITY & VET DIRECTORY
+COMMUNITY & VET DIRECTORY
 Connect with other owners, share discoveries, and find a vet near you.
 
-✨ MADE TO REASSURE YOU
+MADE TO REASSURE YOU
 A calm app by default that supports without stressing. Your cat's content and photos come before the interface.
 
 PREMIUM
@@ -27,4 +27,4 @@ Purrly is free to explore. Premium unlocks unlimited scans, the unlimited AI ass
 Terms: https://purrly.app/terms
 Privacy: https://purrly.app/privacy
 
-Download Purrly and give your cat the attention they deserve. 🐾
+Download Purrly and give your cat the attention they deserve.

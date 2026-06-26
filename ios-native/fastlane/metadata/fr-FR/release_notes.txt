@@ -1,4 +1,4 @@
-Bienvenue dans Purrly ! 🐱
+Bienvenue dans Purrly !
 • Scanner de races par IA, 400+ races, fonctionne hors-ligne
 • Assistant vétérinaire IA
 • Suivi de santé, rappels et dépenses

@@ -1,4 +1,4 @@
-Welcome to Purrly! 🐱
+Welcome to Purrly!
 • AI breed scanner, 400+ breeds, works offline
 • AI vet assistant
 • Health tracking, reminders and expenses
