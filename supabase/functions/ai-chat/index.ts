@@ -7,12 +7,13 @@
 //   3. input validation (message count/size)
 //   4. masked errors (never leak upstream/internal detail to the client)
 //
-// Quota is tier-aware: free users get FREE_DAILY, pro+ get PRO_DAILY. These are
-// COST-PROTECTION caps (generous), tune to the product's intended free limit.
+// Quota is tier-aware: free users get FREE_DAILY, pro+ get PRO_DAILY. FREE_DAILY
+// is the product's intended free limit (must match the client UI guard in
+// UsageLimits.swift: freeAILimit, daily window). PRO_DAILY is a generous cost cap.
 
 import { createClient } from "jsr:@supabase/supabase-js@2";
 
-const FREE_DAILY = 20;
+const FREE_DAILY = 15;
 const PRO_DAILY = 200;
 const TIER_RANK: Record<string, number> = { free: 0, pro: 1, premium: 2, premium_plus: 3, family: 4 };
 

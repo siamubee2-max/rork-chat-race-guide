@@ -159,9 +159,9 @@ struct AssistantChatView: View {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
 
-        // Garde UX (le vrai gate est serveur) : limite mensuelle gratuite.
+        // Garde UX (le vrai gate est serveur) : limite quotidienne gratuite.
         guard environment.limits.canSendAIMessage else {
-            errorText = "Limite gratuite atteinte (\(UsageLimits.freeAILimit) messages/mois). Passe Pro pour continuer."
+            errorText = "Limite gratuite atteinte (\(UsageLimits.freeAILimit) messages/jour). Passe Pro pour continuer."
             return
         }
 

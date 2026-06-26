@@ -14,13 +14,13 @@ final class UsageLimitsTests: XCTestCase {
 
     func testFreshUserCanSendAIMessage() {
         XCTAssertTrue(sut.canSendAIMessage)
-        XCTAssertEqual(sut.aiMessagesThisMonth, 0)
+        XCTAssertEqual(sut.aiMessagesToday, 0)
     }
 
     func testAfter15MessagesCannotSend() {
         for _ in 0..<15 { sut.recordAIMessage() }
         XCTAssertFalse(sut.canSendAIMessage)
-        XCTAssertEqual(sut.aiMessagesThisMonth, 15)
+        XCTAssertEqual(sut.aiMessagesToday, 15)
     }
 
     func testCanAddFirstCat() {
