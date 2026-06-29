@@ -32,7 +32,10 @@ final class ModerationStore {
 
     init() {
         let d = UserDefaults.standard
-        hasAcceptedTerms = d.bool(forKey: termsKey)
+        // En mode tests UI / captures, on considère les règles acceptées dès l'init
+        // (synchronement, avant toute vue) pour que le fullScreenCover ne bloque pas.
+        let uiTesting = ProcessInfo.processInfo.arguments.contains("-uiTesting")
+        hasAcceptedTerms = uiTesting || d.bool(forKey: termsKey)
         if let arr = d.stringArray(forKey: blockedKey) { blockedAuthors = Set(arr) }
         if let arr = d.stringArray(forKey: reportedKey) { reportedIDs = Set(arr) }
     }

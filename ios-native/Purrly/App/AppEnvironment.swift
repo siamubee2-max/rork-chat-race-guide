@@ -44,6 +44,9 @@ final class AppEnvironment {
             cats.save([])
             UserDefaults.standard.removeObject(forKey: "assistant_chat_history")
             auth.enterUITestMode()
+            // Bypass la porte de règles communautaires (sinon le fullScreenCover
+            // bloque l'accès à l'app sur un simulateur neuf pendant les captures).
+            moderation.acceptTerms()
             syncEntitlements()
             updateWidgetSnapshot()
             return

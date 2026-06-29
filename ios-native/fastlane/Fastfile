@@ -40,7 +40,9 @@ platform :ios do
 
   desc "Pousse UNIQUEMENT les captures d'écran vers App Store Connect"
   lane :upload_screenshots do
+    key = asc_key
     deliver(
+      api_key: key,
       skip_metadata: true,
       skip_binary_upload: true,
       overwrite_screenshots: true,
