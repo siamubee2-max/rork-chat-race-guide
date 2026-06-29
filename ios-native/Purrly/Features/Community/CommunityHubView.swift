@@ -90,7 +90,11 @@ struct CommunityHubView: View {
 
     @ViewBuilder
     private var feed: some View {
-        ForEach(environment.community.posts) { post in
+        let me = environment.auth.currentUser?.name ?? ""
+        let visiblePosts = environment.community.posts.filter {
+            !environment.moderation.isHidden(id: $0.id, author: $0.authorName)
+        }
+        ForEach(visiblePosts) { post in
             NavigationLink(value: post) {
                 GlassChrome.card(interactive: true) {
                     VStack(alignment: .leading, spacing: 10) {
@@ -122,6 +126,7 @@ struct CommunityHubView: View {
                 }
             }
             .buttonStyle(.plain)
+            .moderationContextMenu(author: post.authorName, itemId: post.id, currentUserName: me)
         }
     }
 

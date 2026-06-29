@@ -96,10 +96,15 @@ struct PaywallView: View {
                     .foregroundStyle(AppTheme.textMuted)
 
                 // Liens légaux requis sur l'écran d'achat (Guideline 3.1.2).
-                HStack(spacing: 16) {
-                    Button("Conditions d'utilisation") { showTerms = true }
-                    Text("·").foregroundStyle(AppTheme.textMuted)
-                    Button("Politique de confidentialité") { showPrivacy = true }
+                VStack(spacing: 8) {
+                    HStack(spacing: 16) {
+                        Button("Conditions d'utilisation") { showTerms = true }
+                        Text("·").foregroundStyle(AppTheme.textMuted)
+                        Button("Politique de confidentialité") { showPrivacy = true }
+                    }
+                    // EULA standard Apple requise sur l'écran d'achat (Guideline 3.1.2(c)).
+                    Link("Contrat de licence (EULA)",
+                         destination: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!)
                 }
                 .font(.caption)
                 .foregroundStyle(AppTheme.textSecondary)

@@ -8,14 +8,27 @@ struct DiscussionDetailView: View {
     private var store: DiscussionsStore { environment.discussions }
     private var live: DiscussionThread? { store.threads.first { $0.id == thread.id } }
 
+    private var currentUserName: String {
+        environment.auth.currentUser?.name ?? ""
+    }
+
+    /// Messages affichés : ceux dont l'auteur n'est pas bloqué.
+    private var visibleMessages: [DiscussionMessage] {
+        (live?.messages ?? thread.messages).filter {
+            !environment.moderation.isBlocked($0.authorName)
+        }
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             ScrollViewReader { proxy in
                 ScrollView {
                     LazyVStack(spacing: 12) {
-                        ForEach(live?.messages ?? thread.messages) { msg in
+                        ForEach(visibleMessages) { msg in
                             MessageBubble(message: msg)
                                 .id(msg.id)
+                                .moderationContextMenu(author: msg.authorName, itemId: msg.id,
+                                                       currentUserName: currentUserName)
                         }
                     }
                     .padding(16)
@@ -50,6 +63,15 @@ struct DiscussionDetailView: View {
         .navigationTitle(thread.title)
         .navigationBarTitleDisplayMode(.inline)
         .purrlyScreenBackground()
+        .toolbar {
+            if thread.authorName != currentUserName {
+                ToolbarItem(placement: .primaryAction) {
+                    ModerationToolbarMenu(author: thread.authorName,
+                                          itemId: thread.id,
+                                          currentUserName: currentUserName)
+                }
+            }
+        }
     }
 
     private func send() {

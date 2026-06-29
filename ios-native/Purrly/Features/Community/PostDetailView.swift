@@ -7,8 +7,14 @@ struct PostDetailView: View {
     @State private var commentText: String = ""
     @FocusState private var commentFocused: Bool
 
+    private var currentUserName: String {
+        environment.auth.currentUser?.name ?? ""
+    }
+
     private var comments: [CommunityComment] {
-        environment.community.commentsFor(postId: post.id)
+        environment.community.commentsFor(postId: post.id).filter {
+            !environment.moderation.isHidden(id: $0.id, author: $0.authorName)
+        }
     }
 
     var body: some View {
@@ -41,6 +47,15 @@ struct PostDetailView: View {
         .purrlyScreenBackground()
         .navigationTitle(String(localized: "community.post.title"))
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            if post.authorName != currentUserName {
+                ToolbarItem(placement: .primaryAction) {
+                    ModerationToolbarMenu(author: post.authorName,
+                                          itemId: post.id,
+                                          currentUserName: currentUserName)
+                }
+            }
+        }
     }
 
     // MARK: - Sub-views
@@ -93,6 +108,9 @@ struct PostDetailView: View {
             } else {
                 ForEach(comments) { comment in
                     commentRow(comment)
+                        .moderationContextMenu(author: comment.authorName,
+                                               itemId: comment.id,
+                                               currentUserName: currentUserName)
                 }
             }
         }

@@ -8,6 +8,12 @@ struct UserProfileView: View {
     @State private var isFollowing = false
     @State private var showConversation = false
 
+    private var currentUserName: String {
+        environment.auth.currentUser?.name ?? ""
+    }
+
+    private var isOwnProfile: Bool { userName == currentUserName }
+
     private var userPosts: [CommunityPost] {
         environment.community.posts.filter { $0.authorName == userName }
     }
@@ -53,6 +59,35 @@ struct UserProfileView: View {
                             .foregroundStyle(AppTheme.primary)
                     }
                     .accessibilityLabel("Envoyer un message à \(userName)")
+                }
+
+                // Modération — Guideline 1.2 : signaler / bloquer un autre utilisateur.
+                if !isOwnProfile {
+                    HStack(spacing: 12) {
+                        Button(role: .destructive) {
+                            environment.moderation.block(author: userName)
+                        } label: {
+                            Label("Bloquer", systemImage: "person.fill.xmark")
+                                .frame(maxWidth: .infinity, minHeight: AppTheme.minTouch)
+                        }
+                        .buttonStyle(GlassSecondaryButtonStyle())
+                        .accessibilityLabel("Bloquer \(userName)")
+
+                        Button(role: .destructive) {
+                            if let first = userPosts.first {
+                                environment.moderation.report(id: first.id, author: userName,
+                                                              reason: "Profil signalé")
+                            } else {
+                                environment.moderation.report(id: "profile-\(userName)", author: userName,
+                                                              reason: "Profil signalé")
+                            }
+                        } label: {
+                            Label("Signaler", systemImage: "flag")
+                                .frame(maxWidth: .infinity, minHeight: AppTheme.minTouch)
+                        }
+                        .buttonStyle(GlassSecondaryButtonStyle())
+                        .accessibilityLabel("Signaler \(userName)")
+                    }
                 }
 
                 // Recent posts

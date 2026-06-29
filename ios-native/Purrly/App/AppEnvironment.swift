@@ -9,6 +9,7 @@ final class AppEnvironment {
     let breeds = BreedCatalog()
     let cats = CatPersistence()
     let community = CommunityStore()
+    let moderation = ModerationStore()
     let aiChat = AIChatService()
     let limits = UsageLimits()
     let emergency = EmergencyStore()

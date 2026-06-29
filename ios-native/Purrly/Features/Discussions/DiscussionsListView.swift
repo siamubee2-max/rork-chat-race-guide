@@ -6,8 +6,18 @@ struct DiscussionsListView: View {
 
     private var store: DiscussionsStore { environment.discussions }
 
+    private var currentUserName: String {
+        environment.auth.currentUser?.name ?? ""
+    }
+
+    private var visibleThreads: [DiscussionThread] {
+        store.threads.filter {
+            !environment.moderation.isHidden(id: $0.id, author: $0.authorName)
+        }
+    }
+
     var body: some View {
-        List(store.threads) { thread in
+        List(visibleThreads) { thread in
             NavigationLink(destination: DiscussionDetailView(thread: thread)) {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(thread.title)
@@ -29,6 +39,8 @@ struct DiscussionsListView: View {
             }
             .listRowBackground(AppTheme.backgroundCard)
             .listRowSeparatorTint(AppTheme.border)
+            .moderationContextMenu(author: thread.authorName, itemId: thread.id,
+                                   currentUserName: currentUserName)
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)

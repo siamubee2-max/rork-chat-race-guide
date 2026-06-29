@@ -32,6 +32,7 @@ enum MainTab: String, CaseIterable, Identifiable {
 
 struct MainTabView: View {
     @Bindable private var router = AppRouter.shared
+    @Environment(AppEnvironment.self) private var environment
 
     var body: some View {
         TabView(selection: $router.selectedTab) {
@@ -59,5 +60,21 @@ struct MainTabView: View {
         .accessibilityIdentifier("mainTabView")
         .toolbarBackground(.ultraThinMaterial, for: .tabBar)
         .toolbarBackground(.visible, for: .tabBar)
+        // Guideline 1.2 — règles communautaires acceptées avant tout accès à l'app.
+        .fullScreenCover(isPresented: Binding(
+            get: { !environment.moderation.hasAcceptedTerms },
+            set: { _ in }
+        )) {
+            CommunityRulesGate()
+        }
+        // Confirmation unique après un signalement / blocage, où qu'il survienne.
+        .alert("Information", isPresented: Binding(
+            get: { environment.moderation.lastActionMessage != nil },
+            set: { if !$0 { environment.moderation.lastActionMessage = nil } }
+        )) {
+            Button("OK") { environment.moderation.lastActionMessage = nil }
+        } message: {
+            Text(environment.moderation.lastActionMessage ?? "")
+        }
     }
 }

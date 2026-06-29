@@ -28,6 +28,7 @@
 		34C04F0A05772BD610954891 /* PurrlyWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C216B0E2126506AB1166EAD0 /* PurrlyWidget.swift */; };
 		3642F1C977DD86B7BD319DDC /* BreedClassifierService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 740FFE4B092812E018DC66EA /* BreedClassifierService.swift */; };
 		37887FDAF3F6A91AA5858096 /* GlassChrome.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDBB695EF3FF18464ABFCC69 /* GlassChrome.swift */; };
+		395A934AA42D6679F529B498 /* ModerationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68199D91E536576397D85600 /* ModerationStore.swift */; };
 		3C5ED93D5CE731933CC0383C /* ScreenshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD70640C105D98EC11A190A5 /* ScreenshotTests.swift */; };
 		426011E5E038AB384CAB6748 /* CatBreedClassifier.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = E0CA5B25039C557C6830B438 /* CatBreedClassifier.mlmodel */; };
 		44BA4AB388149D6F6E8DCFEE /* ExpenseStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF9131DCC73A7AC4023CCE7 /* ExpenseStore.swift */; };
@@ -41,6 +42,7 @@
 		55A7ADC5730B04ED5AD92A32 /* CatImageStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DCD3A50C3EA3305C5480D22 /* CatImageStore.swift */; };
 		56464752A290F0240C89532C /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C622AB473ACA324AD1AA09 /* LoginView.swift */; };
 		5A24780F84B3F3B16361FEAD /* CatPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38250F44DF08A683BBC75A8 /* CatPersistence.swift */; };
+		5B76EB2E844872233A442E32 /* ModerationViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17234C798E47B29F43761DC9 /* ModerationViews.swift */; };
 		5C6C95788DAAC13E21E04A3E /* AchievementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CB7DBA4D7FF4986855E6FE /* AchievementsView.swift */; };
 		5CC143648B149AE1C1DB5F31 /* CatsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54211531D4ADF28E875ECC3C /* CatsListView.swift */; };
 		60428CE82A7C80C6E3E2A6BA /* RemindersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FF6E2D4566CE8803E36E03C /* RemindersView.swift */; };
@@ -175,6 +177,7 @@
 		0FF6E2D4566CE8803E36E03C /* RemindersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersView.swift; sourceTree = "<group>"; };
 		11544EF115051E4AFF5D7BDE /* PurrlyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurrlyUITests.swift; sourceTree = "<group>"; };
 		119195BCB56619245C8CD152 /* ScanResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResultView.swift; sourceTree = "<group>"; };
+		17234C798E47B29F43761DC9 /* ModerationViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ModerationViews.swift; sourceTree = "<group>"; };
 		19C5B2BC5A57DEFA91CFEE97 /* CommunityPostWithImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPostWithImageView.swift; sourceTree = "<group>"; };
 		1AE9116DA914F77F6E60FA90 /* TermsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsView.swift; sourceTree = "<group>"; };
 		1DCD3A50C3EA3305C5480D22 /* CatImageStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatImageStore.swift; sourceTree = "<group>"; };
@@ -208,6 +211,7 @@
 		5FE89A99E0C3CECFF327A780 /* UsageLimitsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageLimitsTests.swift; sourceTree = "<group>"; };
 		6368EC7B67F311035673CC66 /* CreateAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAlertView.swift; sourceTree = "<group>"; };
 		640490869BE4B601E5C71D9B /* CatAlbumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatAlbumView.swift; sourceTree = "<group>"; };
+		68199D91E536576397D85600 /* ModerationStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ModerationStore.swift; sourceTree = "<group>"; };
 		68615D962928C1A731786DC7 /* FAQView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQView.swift; sourceTree = "<group>"; };
 		6D8B6563EE80F818D4B0AFE6 /* PracticalHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticalHomeView.swift; sourceTree = "<group>"; };
 		6E123E461F20E927C002B5AE /* BehaviorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BehaviorView.swift; sourceTree = "<group>"; };
@@ -362,6 +366,7 @@
 				2E2716FEEA750C5D122D1C22 /* Scan */,
 				B10AFC78FC1E4AFE3722D016 /* Subscription */,
 				71CF528A53EFF2C68FFADC8A /* Vets */,
+				74F2DD93337A562111AF13E7 /* Moderation */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -427,6 +432,15 @@
 				4368A8D6D5D3D5BE2CE95D9E /* Shared */,
 			);
 			path = Purrly;
+			sourceTree = "<group>";
+		};
+		74F2DD93337A562111AF13E7 /* Moderation */ = {
+			isa = PBXGroup;
+			children = (
+				17234C798E47B29F43761DC9 /* ModerationViews.swift */,
+			);
+			name = Moderation;
+			path = Moderation;
 			sourceTree = "<group>";
 		};
 		77CACB1CB790062AC82D0715 /* App */ = {
@@ -528,6 +542,7 @@
 				E33F9884D56F5787E84C5045 /* StubURLProtocol.swift */,
 				AC54478A0597ABCB0141157E /* SubscriptionService.swift */,
 				9B73583D30F9004785615351 /* UsageLimits.swift */,
+				68199D91E536576397D85600 /* ModerationStore.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -662,8 +677,6 @@
 			dependencies = (
 			);
 			name = PurrlyWidget;
-			packageProductDependencies = (
-			);
 			productName = PurrlyWidget;
 			productReference = 22CB315BB2A2A1CADA6AA6B5 /* PurrlyWidget.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -680,8 +693,6 @@
 				C3BAD6A5D60CD250983FDAAA /* PBXTargetDependency */,
 			);
 			name = PurrlyTests;
-			packageProductDependencies = (
-			);
 			productName = PurrlyTests;
 			productReference = B4FCBF386097939454CF2E82 /* PurrlyTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -721,8 +732,6 @@
 				C14EBF62B94BC6AC0DE873D1 /* PBXTargetDependency */,
 			);
 			name = PurrlyUITests;
-			packageProductDependencies = (
-			);
 			productName = PurrlyUITests;
 			productReference = 5D77EEB8B87C1F16AC4D285D /* PurrlyUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -910,6 +919,8 @@
 				FEF22560AA575499D0E2319E /* WeightChartView.swift in Sources */,
 				949E225B56F31A47984C4388 /* WeightFormView.swift in Sources */,
 				743C1A50F7544893A9521DF3 /* WidgetSnapshot.swift in Sources */,
+				395A934AA42D6679F529B498 /* ModerationStore.swift in Sources */,
+				5B76EB2E844872233A442E32 /* ModerationViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
