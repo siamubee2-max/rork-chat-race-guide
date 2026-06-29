@@ -6,6 +6,7 @@ import { Platform, StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useTranslation } from "react-i18next";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { trpc, trpcClient } from "@/lib/trpc";
 
 let Purchases: any = null;
 try {
@@ -189,15 +190,17 @@ export default function RootLayout() {
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <GestureHandlerRootView style={styles.root}>
-        <ErrorBoundary>
-          <AppProviders>
-            <RootLayoutNav />
-          </AppProviders>
-        </ErrorBoundary>
-      </GestureHandlerRootView>
-    </QueryClientProvider>
+    <trpc.Provider client={trpcClient} queryClient={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <GestureHandlerRootView style={styles.root}>
+          <ErrorBoundary>
+            <AppProviders>
+              <RootLayoutNav />
+            </AppProviders>
+          </ErrorBoundary>
+        </GestureHandlerRootView>
+      </QueryClientProvider>
+    </trpc.Provider>
   );
 }
 
