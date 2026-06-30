@@ -7,13 +7,14 @@ struct LoginView: View {
     @State private var isBusy = false
     @State private var showSignup = false
     @State private var showForgotPassword = false
+    @State private var inlineError: String?
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 header
                 form
-                if let error = environment.auth.lastError {
+                if let error = inlineError ?? environment.auth.lastError {
                     Text(error)
                         .font(.footnote)
                         .foregroundStyle(AppTheme.error)
@@ -74,7 +75,12 @@ struct LoginView: View {
                 }
             }
             .buttonStyle(GlassPrimaryButtonStyle())
-            .disabled(isBusy || email.isEmpty || password.isEmpty)
+            // Disable only while a sign-in is in flight. Validate the fields when
+            // tapped instead of disabling the button — App Review rejected an
+            // earlier build with "app did not respond when we tapped on Sign In"
+            // because the button looked enabled but did nothing when the form was
+            // empty.
+            .disabled(isBusy)
 
             Button(String(localized: "auth.signup.link")) {
                 showSignup = true
@@ -100,9 +106,15 @@ struct LoginView: View {
     }
 
     private func signIn() async {
+        let trimmedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmedEmail.isEmpty, !password.isEmpty else {
+            inlineError = String(localized: "auth.login.fields_required")
+            return
+        }
+        inlineError = nil
         isBusy = true
         defer { isBusy = false }
-        _ = await environment.auth.signIn(email: email, password: password)
+        _ = await environment.auth.signIn(email: trimmedEmail, password: password)
         await environment.refreshSubscriberIdentity()
     }
 }
