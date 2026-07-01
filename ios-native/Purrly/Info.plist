@@ -31,6 +31,8 @@
 	<string>33</string>
 	<key>DEMO_EMAIL</key>
 	<string>$(DEMO_EMAIL)</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>NSCameraUsageDescription</key>
 	<string>Purrly utilise la caméra pour identifier la race de votre chat.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
