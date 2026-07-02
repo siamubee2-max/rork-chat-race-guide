@@ -114,7 +114,7 @@ export default function CatsListScreen() {
           pressed && { opacity: 0.9, transform: [{ scale: 0.98 }] }
         ]}
       >
-        <Plus color="#fff" size={20} />
+        <Plus color="#0C0A09" size={20} />
         <Text style={styles.emptyBtnText}>{t("cats.addCat")}</Text>
       </Pressable>
     </View>
@@ -158,7 +158,7 @@ export default function CatsListScreen() {
               pressed && { transform: [{ scale: 0.95 }] }
             ]}
           >
-            <Plus color="#fff" size={24} />
+            <Plus color="#0C0A09" size={24} />
           </Pressable>
         </View>
         )}
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   emptyBtnText: {
-    color: "#fff",
+    color: "#0C0A09",
     fontWeight: "700",
     fontSize: 16,
   },

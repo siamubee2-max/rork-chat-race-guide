@@ -1,0 +1,85 @@
+# Fastfile — automatisation ASO (métadonnées + captures) pour Purrly.
+#
+# Auth App Store Connect : préférez une clé API ASC (App Store Connect API key).
+#   export ASC_KEY_ID=...  ASC_ISSUER_ID=...  ASC_KEY_PATH=/abs/AuthKey_XXX.p8
+# Sinon, FASTLANE_USER / FASTLANE_PASSWORD (mot de passe app-specific).
+
+require "json"
+
+default_platform(:ios)
+
+# Charge la clé API App Store Connect depuis l'env, sinon depuis
+# ~/.appstoreconnect/config.json (config du CLI `asc`). Aucun secret dans le repo.
+def asc_key
+  cfg_path = File.expand_path("~/.appstoreconnect/config.json")
+  cfg = File.exist?(cfg_path) ? JSON.parse(File.read(cfg_path)) : {}
+  key_id = ENV["ASC_KEY_ID"] || cfg["key_id"]
+  issuer = ENV["ASC_ISSUER_ID"] || cfg["issuer_id"]
+  key_path = ENV["ASC_KEY_PATH"] || cfg["key_path"]
+  key_path = File.expand_path("~/.appstoreconnect/private_keys/AuthKey_#{key_id}.p8") unless key_path && File.exist?(key_path)
+  app_store_connect_api_key(key_id: key_id, issuer_id: issuer, key_filepath: key_path, duration: 1200)
+end
+
+platform :ios do
+  desc "Génère les captures d'écran App Store (snapshot) pour fr-FR + en-US"
+  lane :screenshots do
+    capture_screenshots(scheme: "Purrly")
+    UI.success("Captures générées dans fastlane/screenshots — relisez-les avant upload.")
+  end
+
+  desc "Pousse UNIQUEMENT les métadonnées texte (ASO) vers App Store Connect"
+  lane :upload_metadata do
+    deliver(
+      skip_screenshots: true,
+      skip_binary_upload: true,
+      skip_app_version_update: false,
+      force: true,            # pas de prompt de confirmation HTML
+      run_precheck_before_submit: false
+    )
+  end
+
+  desc "Pousse UNIQUEMENT les captures d'écran vers App Store Connect"
+  lane :upload_screenshots do
+    key = asc_key
+    deliver(
+      api_key: key,
+      skip_metadata: true,
+      skip_binary_upload: true,
+      overwrite_screenshots: true,
+      force: true,
+      run_precheck_before_submit: false
+    )
+  end
+
+  desc "Archive Release + upload de la build vers App Store Connect (TestFlight)"
+  lane :release do
+    key = asc_key
+    build_app(
+      project: "Purrly.xcodeproj",
+      scheme: "Purrly",
+      configuration: "Release",
+      export_method: "app-store",
+      output_directory: "./build",
+      output_name: "Purrly.ipa",
+      clean: true,
+      xcargs: "-allowProvisioningUpdates"   # signature auto (team SPLML3CN76)
+    )
+    upload_to_testflight(
+      api_key: key,
+      skip_waiting_for_build_processing: true,  # n'attend pas le traitement Apple
+      skip_submission: true                     # pas de soumission review auto
+    )
+    UI.success("Build uploadée. Une fois traitée dans ASC : attache-la à la version 1.0, réponds au reviewer, puis resoumets.")
+  end
+
+  desc "Métadonnées + captures (sans binaire, sans soumission review)"
+  lane :upload_aso do
+    deliver(
+      skip_binary_upload: true,
+      overwrite_screenshots: true,
+      force: true,
+      submit_for_review: false,
+      run_precheck_before_submit: false
+    )
+  end
+end

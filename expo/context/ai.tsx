@@ -109,7 +109,7 @@ export const [AIContext, useAI] = createContextHook(() => {
         medicalRecords: cat.medicalRecords || [],
       });
 
-      const newInsights: HealthInsight[] = result.insights.map((insight, index) => ({
+      const newInsights: HealthInsight[] = (result.insights || []).map((insight: any, index: number) => ({
         id: `${cat.id}-${Date.now()}-${index}`,
         catId: cat.id,
         type: insight.type as HealthInsight["type"],

@@ -1,3 +1,27 @@
 node_modules
 .env
 .expo
+
+# iOS native (Purrly)
+ios-native/Purrly/Resources/Secrets.xcconfig
+# Glob fallback: covers future renames
+**/Resources/Secrets.xcconfig
+ios-native/DerivedData/
+ios-native/.swiftpm/
+ios-native/build/
+
+# Claude Code local secrets/overrides
+.claude/settings.local.json
+
+# Xcode per-user state (should never be tracked)
+**/xcuserdata/
+
+# Supabase CLI temp
+supabase/.temp/
+
+# Fastlane artefacts générés
+ios-native/fastlane/report.xml
+ios-native/fastlane/README.md
+ios-native/fastlane/test_output/
+ios-native/fastlane/Preview.html
+**/fastlane/report.xml

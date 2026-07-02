@@ -1,0 +1,13 @@
+# Deliverfile — configuration de l'upload des métadonnées/captures vers App Store Connect.
+app_identifier("app.rork.chat-race-guide")
+
+# Les métadonnées vivent dans ./fastlane/metadata (format deliver, par locale).
+# Les captures dans ./fastlane/screenshots.
+
+# Sécurité : ne jamais soumettre automatiquement pour review.
+submit_for_review(false)
+automatic_release(false)
+
+# Évite d'écraser des champs non gérés ici.
+overwrite_screenshots(true)
+run_precheck_before_submit(false)

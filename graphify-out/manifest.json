@@ -1,0 +1,746 @@
+{
+  "/Volumes/EVO/rork-chat-race-guide/expo/babel.config.js": {
+    "mtime": 1780349786.0,
+    "hash": "7ddd767bb93a274950f343b2e0672d0b"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/eslint.config.js": {
+    "mtime": 1780349786.0,
+    "hash": "2d954876fa0a804e836b7888807efd82"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/expo-env.d.ts": {
+    "mtime": 1780525044.0,
+    "hash": "0dd9dccdb4b08595bc83df70d6a154d3"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/metro.config.js": {
+    "mtime": 1780349786.0,
+    "hash": "25dc6d79b0048d4f250c21e6bef19bad"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/+native-intent.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "0d9e50cdda9126fca3b314da4529058f"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/+not-found.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "b5f6d0d79ed2b6be35cca810bdb14a85"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/_layout.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "ccf5773ff2ab19476193867f8b140951"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/index.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "7e496376df880e51943a3f22fb744d52"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/language-select.tsx": {
+    "mtime": 1780523984.0,
+    "hash": "a5cd8b38fbed001ec70ae478079b13f5"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/modal.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "f7752e326bcb1d418b960a6d8bc63a84"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/_layout.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "7a21ebb60f15364c8a8480f958c6e5e7"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/(breeds)/[breedId].tsx": {
+    "mtime": 1780349786.0,
+    "hash": "98764eb4a042c6a51175f0cc9fc665fa"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/(breeds)/_layout.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "8d573908eda86b16f9cc0cbfa135cbad"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/(breeds)/breeders.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "b1cb663ceb9c7abf697e151b8a7ca0bb"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/(breeds)/home.tsx": {
+    "mtime": 1780523971.0,
+    "hash": "41cae4d2c11c84aba071cbbcbcaa86e4"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/(breeds)/shelters.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "59fe68ab57053672f2db9dcb6d7fced0"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/(scan)/_layout.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "9c8ea71e71039ffc1503013ee07e5ad8"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/(scan)/camera.tsx": {
+    "mtime": 1780523862.0,
+    "hash": "db61047493716241a69f0fd0bf0af5a0"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/(scan)/home.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "5155958d830d5e7514ffb761393307b3"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/(scan)/result.tsx": {
+    "mtime": 1780523894.0,
+    "hash": "0b51f979068ebb1a3216781e82f837ce"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/assistant/_layout.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "8bc8fb01e3a962cbaa48c932ba7fcd57"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/assistant/behavior.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "97403135151aadc9633625bd2ef52beb"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/assistant/index.tsx": {
+    "mtime": 1780523866.0,
+    "hash": "fb2b4a8b7c94e469572370173b34e527"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/assistant/insights.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "c12d5923b8dd5a6330d70e116e7c0cfa"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/assistant/photo-analyzer.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "37289a21a2bd9d3cce0e9cc9ad2ba285"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/cats/[catId].tsx": {
+    "mtime": 1780349786.0,
+    "hash": "1cd1a72d8ba06102b521b6d154bcc645"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/cats/_layout.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "bc54684a637ff4a5de12345dc0997c6a"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/cats/daily-log-form.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "fc03ef8ce653ba32a8b84f0854ebf117"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/cats/daily-logs.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "0373c60d9f16bafd8680b6f3bee810fe"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/cats/form.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "f80ceaeebbdfb199749d69c67a065e28"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/cats/health-dashboard.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "b7cf2d1b943e6146b08cff7439addca5"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/cats/index.tsx": {
+    "mtime": 1780523976.0,
+    "hash": "e875a7c6ed6211c28824176db2d1b509"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/cats/record-form.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "c4384148ee28171dab2d9f68602fca2e"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/cats/weight-chart.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "38642b1233fc4987e8cdc0c40445e65c"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/cats/weight-form.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "e094b556580a127111fb5749ac39cc0f"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/community/_layout.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "96c05136f2902d897736ad337fe169b9"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/community/index.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "36ad38ff33d97a33df18731495d33a49"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/community/new-event.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "8f8f41d3c79b737ca3cf4ed59e68182a"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/community/new-post.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "054f44de24ee5b07e6cdfa4ab72e7e10"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/community/chat/[conversationId].tsx": {
+    "mtime": 1780349786.0,
+    "hash": "848bff9fd766293649c5612abfe10ba7"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/community/event/[eventId].tsx": {
+    "mtime": 1780349786.0,
+    "hash": "b0626a99cd00ef72bccfa4dc504c7ff3"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/community/post/[postId].tsx": {
+    "mtime": 1780349786.0,
+    "hash": "3b368b4c93048652bbf2779075dafc9a"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/community/profile/[userId].tsx": {
+    "mtime": 1780349786.0,
+    "hash": "78ff568a3218cf0c41487afaf4282710"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/discussions/[discussionId].tsx": {
+    "mtime": 1780349786.0,
+    "hash": "745a8454d0188152da8effcfb971d9ce"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/discussions/_layout.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "74bb9cb6b110cc705188beb95982da37"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/discussions/index.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "b453dba7efa30d4018db07d87538ce00"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/discussions/new.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "65fa3aaea2f4141256d81791eedb9270"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/emergency/_layout.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "125c4af104be446d109cdd41610be97e"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/emergency/create.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "b84ad7ee614c885af0bb3802de682788"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/emergency/index.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "fbfc1267608d2d744495258e5632715c"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/gamification/_layout.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "31bfbde9ba3b39c1b263b8bf7e426cf2"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/gamification/achievements.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "3f7d2881f6fbb4bbaf401bd0cd8e01d6"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/gamification/challenges.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "d016d08ed3bed86bc38d0a304670705d"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/gamification/index.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "a08de1c5ed5fd48dbcf6d07cd0a831dd"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/gamification/leaderboard.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "e43f29ebbe6df8cf16ea7f83377b74b7"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/more/_layout.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "6ac8796751cce57613c9ad4298b8e0c6"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/more/about.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "10ea7e4d301f5d19d315131efc807476"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/more/faq.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "4ef1e4bb3225a511f874343ab4d55067"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/more/index.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "7167423e581457579fccb48e0f3ae85c"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/more/privacy.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "80ac68fafb385b8f9269093be2cc1648"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/more/terms.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "a90ab27eaab947a652a1eb49ff89bced"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/practical/_layout.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "d2985d291fd30948766ef6a800713688"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/practical/expense-form.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "42dc12e8f89339d281bfdd8f17ca06ac"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/practical/expenses.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "a1139ce81707dba03aa32ec1811db65f"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/practical/first-aid.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "55b601dcc1737a7b2b71e2e6025d2b91"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/practical/food-calculator.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "510f370da6ae91baa702c5e9fe90c116"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/practical/index.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "98a7e0ac7d5a7f7209f938a1dcc922c2"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/practical/reminder-form.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "e5c97fdc67f4dfd9b5ccdf938481083d"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/practical/reminders.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "4fda3f0caa1b21899a94c51bf0af9226"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/practical/shopping.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "c8c3c170eafe624d29f707b29257762e"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/practical/travel.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "ba3a76dad7a453de4899656dccc6fdbd"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/subscription/_layout.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "280c13ab3e8f2c91914435d206d3bf14"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/subscription/index.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "acc0fa15c7278ad8d473a0e1f2ccbe50"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/vets/_layout.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "5fe6a97aed5ae05a24896557b1543967"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/(tabs)/vets/index.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "a1651218a2201beeb10ff289a2b124ce"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/auth/login.tsx": {
+    "mtime": 1780523979.0,
+    "hash": "022fa8bb67e913ed67fbabd8e92933d1"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/app/auth/signup.tsx": {
+    "mtime": 1780523967.0,
+    "hash": "eb47707fcf6eb1bc3b3e14fc3302f0c2"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/backend/hono.ts": {
+    "mtime": 1781050890.0,
+    "hash": "c9eb2d27b53713730e8cba5576a26120"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/backend/trpc/app-router.ts": {
+    "mtime": 1781051135.0,
+    "hash": "a58ecf0bbe7794451054e105114522a0"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/backend/trpc/create-context.ts": {
+    "mtime": 1781050215.0,
+    "hash": "2d206c4b071d17a4eb48bf88e0355161"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/backend/trpc/routes/ai.ts": {
+    "mtime": 1781107867.0,
+    "hash": "427fedf5ff1f305c20dfe3164463fc9b"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/backend/trpc/routes/example.ts": {
+    "mtime": 1780349786.0,
+    "hash": "f66fe6774c1b162c83bbb02a943d06f1"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/backend/trpc/routes/profile.ts": {
+    "mtime": 1781050215.0,
+    "hash": "8644710c5dc4bcb0516af46767ed162a"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/backend/trpc/routes/subscription.ts": {
+    "mtime": 1781107322.0,
+    "hash": "e01ac31a5d01f0aea85b956879a560bf"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/components/Button.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "b61142771f8008f5819985af8c0b0c33"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/components/Card.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "f3fe04c3d92475e49e46c2716d02a2f4"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/components/ErrorBoundary.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "8b1426130b3e90148e29546b73fa4e23"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/components/NativeMap.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "da66fc61c59bdd43d472076fac8f2102"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/components/Paywall.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "e7eb2b14064fd8f2d37bb596366244b5"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/components/PremiumGate.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "762c34b8a9e75a027ef7ee1e80f858fb"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/components/Skeleton.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "75f70d973d2b56a5fe6fb453f964520e"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/components/Toast.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "d964e4d6f38d350d629807cd6a89e946"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/components/Tooltip.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "f9bd73ba5911c0b9d1e1c3e53c435639"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/config/subscriptions.ts": {
+    "mtime": 1780349786.0,
+    "hash": "c363a142607e98e4956d4e624c81c7ad"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/constants/breeders.ts": {
+    "mtime": 1780349786.0,
+    "hash": "0430f63cda5a76bdabfcba376f957f67"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/constants/breeds.ts": {
+    "mtime": 1780349786.0,
+    "hash": "07dad4ae92a31ecf62aa689f55b5e059"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/constants/colors.ts": {
+    "mtime": 1780349786.0,
+    "hash": "988df9f40a7b3faef15f436ae1a2a101"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/constants/quotes.ts": {
+    "mtime": 1780349786.0,
+    "hash": "3239b33422a28bbd179905e1bcad8d86"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/constants/shelters.ts": {
+    "mtime": 1780349786.0,
+    "hash": "eeddcce758fab619792b2d0b297d1735"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/context/ai.tsx": {
+    "mtime": 1780523870.0,
+    "hash": "ddaafba116c9d3f0b0bc997bf4cd2acb"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/context/auth.tsx": {
+    "mtime": 1781050341.0,
+    "hash": "020c2662fc25d2fd58119839a5b2ca37"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/context/cats.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "a71efc3cfbec7347567e2a051e567eb5"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/context/discussions.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "f5f77fb90c81e170cf214cf8669e942d"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/context/emergency.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "6ddf7bfbe340b426c967c60d23ff4014"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/context/expenses.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "d403ba1e3ee606a1dd55ee894159ca68"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/context/gamification.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "c26c7425e84a978408d38a2212fbfc06"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/context/language.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "91d36d55928615c86134fa1468d59ea9"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/context/notifications.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "bdb8b160b59c0095697879fb611a9b41"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/context/reminders.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "d55aa4572230c876fc4dc1ce5d01e717"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/context/scan-image.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "cf06db374c5b220ef6fe6183aff0c168"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/context/shopping.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "7a9753e76fcfa809cc4cf5ee74265d4a"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/context/social.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "d6765f86ac2e50f9fe2b0deafe63b4ae"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/context/user-location.tsx": {
+    "mtime": 1780349786.0,
+    "hash": "4d06a4436fd1e4c59d8bfe62035eb927"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/hooks/useBreedImage.ts": {
+    "mtime": 1780349786.0,
+    "hash": "288d2c87c21933e1b80a4eee10ba1e07"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/hooks/useSubscription.ts": {
+    "mtime": 1780349786.0,
+    "hash": "d5b029ef5ac6017ac078e6d998d836cc"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/i18n/config.ts": {
+    "mtime": 1780349786.0,
+    "hash": "b9ba34e588bae9f15bba81ad5a10e403"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/i18n/translations/ar.ts": {
+    "mtime": 1780349786.0,
+    "hash": "c4b049bef8b3eb87ac23cc5e5d3d8e80"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/i18n/translations/de.ts": {
+    "mtime": 1780349786.0,
+    "hash": "2bf63d08d96bba15780466d5bfef78d0"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/i18n/translations/en.ts": {
+    "mtime": 1780349786.0,
+    "hash": "39898af33266abae3be109cf71c6d799"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/i18n/translations/es.ts": {
+    "mtime": 1780349786.0,
+    "hash": "8dae8c657a5071c83c3edf70f6cb5811"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/i18n/translations/fr.ts": {
+    "mtime": 1780349786.0,
+    "hash": "874ee9b4d64de8190fead48bd2535b21"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/i18n/translations/index.ts": {
+    "mtime": 1780349786.0,
+    "hash": "87301373b713ef9c0b3d46df6cba29fc"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/i18n/translations/it.ts": {
+    "mtime": 1780349786.0,
+    "hash": "ee6cecfc27f76b5149629eb61e1ffbdd"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/i18n/translations/ja.ts": {
+    "mtime": 1780349786.0,
+    "hash": "e3375487471ba16b7970498aaf256b1b"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/i18n/translations/nl.ts": {
+    "mtime": 1780349786.0,
+    "hash": "c049ef988116099b77cb3b957210ba4e"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/i18n/translations/pt.ts": {
+    "mtime": 1780349786.0,
+    "hash": "fd61fc50955679419a9c7e77995bc4e5"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/i18n/translations/ru.ts": {
+    "mtime": 1780349786.0,
+    "hash": "9e7466a9d9f6ba8e5d45f75e409a4e2c"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/i18n/translations/zh.ts": {
+    "mtime": 1780349786.0,
+    "hash": "28170de7edd482583dfad730490f4df3"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/lib/openai.ts": {
+    "mtime": 1781106424.0,
+    "hash": "e7f5955dae6316e7d74db5cc5fdca818"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/lib/supabase.ts": {
+    "mtime": 1780349786.0,
+    "hash": "f01845961f0d8e8f707064e7ec980bef"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/lib/trpc.ts": {
+    "mtime": 1780349786.0,
+    "hash": "4b09de1883a2f3dbb9a03d9a8aae778f"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/scripts/security-check.js": {
+    "mtime": 1781050341.0,
+    "hash": "6587d9275a2d3e37d7a99d667bc1b442"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/scripts/setup-demo-account.js": {
+    "mtime": 1781050341.0,
+    "hash": "298bda58945b899e2fafccf1ca247499"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/services/catApi.ts": {
+    "mtime": 1780349787.0,
+    "hash": "a7ef288f7b8262a43e85c6e1a2a9ec28"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/utils/navigate.ts": {
+    "mtime": 1780349787.0,
+    "hash": "03525150d51b5364e3223ea30b35a384"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/utils/polyfills.ts": {
+    "mtime": 1780349787.0,
+    "hash": "0cd6379dc373c07f9fb027834599ee4e"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/ios-native/RaceGuide/RaceGuideApp.swift": {
+    "mtime": 1780349980.0,
+    "hash": "117d7233503714907a3c22ed81799ff1"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/ios-native/RaceGuide/App/AppEnvironment.swift": {
+    "mtime": 1780350049.0,
+    "hash": "78e6859a652ee826ebc5274de765a219"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/ios-native/RaceGuide/App/MainTabView.swift": {
+    "mtime": 1780350406.0,
+    "hash": "ffba0de0523be142edcff0e2b1a0ebb0"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/ios-native/RaceGuide/App/RootView.swift": {
+    "mtime": 1780350062.0,
+    "hash": "b7c3a1eac65aa9eb5823804c6d50ac39"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/ios-native/RaceGuide/Design/AppTheme.swift": {
+    "mtime": 1780349983.0,
+    "hash": "4f6126361f2a51d6db7622e390e30f69"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/ios-native/RaceGuide/Design/GlassChrome.swift": {
+    "mtime": 1780350341.0,
+    "hash": "e87da5d8d26410d7e2501f6284af6385"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/ios-native/RaceGuide/Features/Assistant/AssistantChatView.swift": {
+    "mtime": 1780350177.0,
+    "hash": "e3c4a188fc5b82f78c5c17e833fd68ab"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/ios-native/RaceGuide/Features/Auth/LoginView.swift": {
+    "mtime": 1780350087.0,
+    "hash": "59e374c1f60b91c603423fbf2474b175"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/ios-native/RaceGuide/Features/Auth/SignupView.swift": {
+    "mtime": 1780350093.0,
+    "hash": "ef89f256931580c0037a26e180c8f235"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/ios-native/RaceGuide/Features/Breeds/BreedDetailView.swift": {
+    "mtime": 1780350122.0,
+    "hash": "bd7878c6193e243e04d3e6f5df5afb81"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/ios-native/RaceGuide/Features/Breeds/BreedListView.swift": {
+    "mtime": 1780350115.0,
+    "hash": "c4ad73b5265cc6437bd83d43c9a709b3"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/ios-native/RaceGuide/Features/Cats/CatDetailView.swift": {
+    "mtime": 1780350137.0,
+    "hash": "347b613c9788e1939aff89e8891ba3ea"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/ios-native/RaceGuide/Features/Cats/CatFormView.swift": {
+    "mtime": 1780350142.0,
+    "hash": "054fb90549dd1cd5ad511c2435d179c2"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/ios-native/RaceGuide/Features/Cats/CatsListView.swift": {
+    "mtime": 1780350131.0,
+    "hash": "24cf236bd1f9f815bb3f8905fda1b2a8"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/ios-native/RaceGuide/Features/Community/CommunityHubView.swift": {
+    "mtime": 1780350154.0,
+    "hash": "6ff6ec0b1bcb64e54a0f8686375c7cd3"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/ios-native/RaceGuide/Features/More/MoreMenuView.swift": {
+    "mtime": 1780350183.0,
+    "hash": "5f323ee2076200bbf8780aa0bf02195d"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/ios-native/RaceGuide/Features/Onboarding/LanguageSelectView.swift": {
+    "mtime": 1780350077.0,
+    "hash": "d953c78b1716e01e882377624889405b"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/ios-native/RaceGuide/Features/Scan/ScanHomeView.swift": {
+    "mtime": 1780350110.0,
+    "hash": "86bc7817a9d9dee7e708d8cd5db0b61b"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/ios-native/RaceGuide/Models/Breed.swift": {
+    "mtime": 1780349994.0,
+    "hash": "e98f863884bb9a1d86b7ca4517d0a7a2"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/ios-native/RaceGuide/Models/CatProfile.swift": {
+    "mtime": 1780349997.0,
+    "hash": "96113ec25b371843afb47fae3ad7137e"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/ios-native/RaceGuide/Models/UserProfile.swift": {
+    "mtime": 1780350001.0,
+    "hash": "79275e14291461431a3c5566b1188274"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/ios-native/RaceGuide/Services/AIChatService.swift": {
+    "mtime": 1780350043.0,
+    "hash": "863fa044ec50f0d53341ff07b48bb80a"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/ios-native/RaceGuide/Services/AppConfiguration.swift": {
+    "mtime": 1780350009.0,
+    "hash": "fb45b84d5b09f0a8e0f27cb8535bb0c0"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/ios-native/RaceGuide/Services/AuthService.swift": {
+    "mtime": 1780350386.0,
+    "hash": "2263717e7b858c21a2661c9d363056dc"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/ios-native/RaceGuide/Services/BreedCatalog.swift": {
+    "mtime": 1780350019.0,
+    "hash": "0d0cbf2e90e79131fe867365104615be"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/ios-native/RaceGuide/Services/CatPersistence.swift": {
+    "mtime": 1780350023.0,
+    "hash": "a813e4e7d2531030769ba2b1515d6e36"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/ios-native/RaceGuide/Services/CommunityStore.swift": {
+    "mtime": 1780350048.0,
+    "hash": "0415d2704f84a0eeab4db41e669d01ec"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/ios-native/RaceGuide/Services/KeychainStore.swift": {
+    "mtime": 1780350015.0,
+    "hash": "5791bdbc7868a2597c2981a61eb06620"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/README.md": {
+    "mtime": 1780349786.0,
+    "hash": "a9237ed8fba84e6e973b407295525fd1"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/ios-native/project.yml": {
+    "mtime": 1780349966.0,
+    "hash": "a8e6bf095ac4b01331134878e8179f4f"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/ios-native/README.md": {
+    "mtime": 1780350247.0,
+    "hash": "eeeee053c325b817a1c4adbca9025b15"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/screen2.png": {
+    "mtime": 1780349787.0,
+    "hash": "14f47b0b761193afc7dee36c4bad1ec3"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/screen3.png": {
+    "mtime": 1780349787.0,
+    "hash": "96234b4a7ba176f009da21da0e822674"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/screen_boot.png": {
+    "mtime": 1780349787.0,
+    "hash": "3b81a821a0bb25cdf52e4417a010dcb1"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/screen_loaded.png": {
+    "mtime": 1780349787.0,
+    "hash": "13e79bd3e5ee7878cef8ed0777c21a96"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/simulator_screenshot.png": {
+    "mtime": 1780349787.0,
+    "hash": "a3fd6a6967c829a7f43707e909d5bffb"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/assets/images/adaptive-icon.png": {
+    "mtime": 1780349786.0,
+    "hash": "6bf8d82c7845506bef6acc055b3d1d5c"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/assets/images/favicon.png": {
+    "mtime": 1780349786.0,
+    "hash": "4d2a3e38001f915751168e7f315c7080"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/assets/images/icon.png": {
+    "mtime": 1780349786.0,
+    "hash": "1fa9d567924259fb5bafa7e477a1066f"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/assets/images/purrly-logo.png": {
+    "mtime": 1780349786.0,
+    "hash": "35333ff40eba58cf45893768c4fb0fc3"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/assets/images/splash-icon.png": {
+    "mtime": 1780349786.0,
+    "hash": "15d17c951448145be1de8111a970140d"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/assets/images/thumbnail.png": {
+    "mtime": 1780349786.0,
+    "hash": "007fcdf3161d6a2489fbd23a32359bd2"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/assets/images/breeds/asian.png": {
+    "mtime": 1780349786.0,
+    "hash": "de510b707328e690aaa5a010b613072d"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/assets/images/breeds/ocicat.png": {
+    "mtime": 1780349786.0,
+    "hash": "20d7c4164babc53477097312be77f073"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/assets/images/breeds/russian-blue.jpeg": {
+    "mtime": 1780349786.0,
+    "hash": "dea21de59b2ed2769cdb562764a51a86"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/assets/images/breeds/savannah.png": {
+    "mtime": 1780349786.0,
+    "hash": "22d99b7772678e2be332406228741582"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/assets/images/breeds/toyger.png": {
+    "mtime": 1780349786.0,
+    "hash": "4564501ce678ec3465f4417bf3e2e5fc"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/Purrly.app/AppIcon60x60@2x.png": {
+    "mtime": 1775590536.0,
+    "hash": "a2daca67bc73495c7a350706146f6beb"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/Purrly.app/AppIcon76x76@2x~ipad.png": {
+    "mtime": 1775590536.0,
+    "hash": "77cd7c7c1fb58d44bdb20f0ff851c9cd"
+  },
+  "/Volumes/EVO/rork-chat-race-guide/expo/Purrly.app/assets/assets/images/purrly-logo.png": {
+    "mtime": 1775590616.0,
+    "hash": "35333ff40eba58cf45893768c4fb0fc3"
+  }
+}

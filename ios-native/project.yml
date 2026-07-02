@@ -1,0 +1,124 @@
+name: Purrly
+options:
+  bundleIdPrefix: app.rork
+  deploymentTarget:
+    iOS: "26.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    IPHONEOS_DEPLOYMENT_TARGET: "26.0"
+    DEVELOPMENT_TEAM: "SPLML3CN76"
+    CODE_SIGN_STYLE: Automatic
+    CURRENT_PROJECT_VERSION: 33
+    MARKETING_VERSION: 1.0.1
+    GENERATE_INFOPLIST_FILE: NO
+packages:
+  Supabase:
+    url: https://github.com/supabase/supabase-swift
+    from: 2.5.1
+  RevenueCat:
+    url: https://github.com/RevenueCat/purchases-ios
+    from: 5.0.0
+targets:
+  Purrly:
+    type: application
+    platform: iOS
+    sources:
+      - path: Purrly
+        excludes:
+          - Resources/Secrets.xcconfig
+    resources:
+      - path: Purrly/Resources/breeds.json
+      - path: Purrly/Resources/Localizable.xcstrings
+      - path: Purrly/Assets.xcassets
+    dependencies:
+      - package: Supabase
+        product: Supabase
+      - package: RevenueCat
+        product: RevenueCat
+      # RevenueCatUI : à réactiver pour des paywalls pilotés depuis le tableau de bord
+      # (A/B testing sans rebuild). Non requis par le paywall custom actuel.
+      # - package: RevenueCat
+      #   product: RevenueCatUI
+      - target: PurrlyWidget
+        embed: true
+    settings:
+      base:
+        INFOPLIST_FILE: Purrly/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: app.rork.chat-race-guide
+        CODE_SIGN_ENTITLEMENTS: Purrly/Purrly.entitlements
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        SWIFT_EMIT_LOC_STRINGS: YES
+      configs:
+        Debug:
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
+    configFiles:
+      Debug: Purrly/Resources/Secrets.xcconfig
+      Release: Purrly/Resources/Secrets.xcconfig
+    info:
+      path: Purrly/Info.plist
+      properties:
+        UILaunchScreen: {}
+        UIRequiresFullScreen: true
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+        NSCameraUsageDescription: "Purrly utilise la caméra pour identifier la race de votre chat."
+        NSPhotoLibraryUsageDescription: "Purrly accède à vos photos pour analyser la race de votre chat."
+        NSLocationWhenInUseUsageDescription: "Purrly utilise votre position pour trouver des vétérinaires et éleveurs à proximité."
+        NSPhotoLibraryAddUsageDescription: "Purrly sauvegarde vos photos Photo Booth dans votre galerie."
+        SUPABASE_URL: $(SUPABASE_URL)
+        SUPABASE_ANON_KEY: $(SUPABASE_ANON_KEY)
+        RORK_API_BASE_URL: $(RORK_API_BASE_URL)
+        DEMO_EMAIL: $(DEMO_EMAIL)
+        REVENUECAT_IOS_API_KEY: $(REVENUECAT_IOS_API_KEY)
+        CFBundleURLTypes:
+          - CFBundleURLName: app.rork.chat-race-guide
+            CFBundleURLSchemes:
+              - purrly
+  PurrlyWidget:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: PurrlyWidget
+        excludes:
+          - Info.plist
+          - PurrlyWidget.entitlements
+      - path: Purrly/Shared/WidgetSnapshot.swift
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.rork.chat-race-guide.PurrlyWidget
+        CODE_SIGN_ENTITLEMENTS: PurrlyWidget/PurrlyWidget.entitlements
+        SWIFT_EMIT_LOC_STRINGS: YES
+    info:
+      path: PurrlyWidget/Info.plist
+      properties:
+        CFBundleDisplayName: Purrly
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+  PurrlyTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: PurrlyTests
+    dependencies:
+      - target: Purrly
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.rork.chat-race-guide.tests
+        GENERATE_INFOPLIST_FILE: YES
+
+  PurrlyUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: PurrlyUITests
+    dependencies:
+      - target: Purrly
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.rork.chat-race-guide.uitests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: Purrly

@@ -22,6 +22,7 @@ if (Platform.OS !== "web") {
 }
 
 function WebFallback() {
+  const router = useRouter();
   return (
     <View style={styles.webFallback}>
       <Text style={styles.webFallbackTitle}>Caméra non disponible</Text>
@@ -42,6 +43,7 @@ function WebFallback() {
 }
 
 function PermissionRequest({ onRequest }: { onRequest: () => void }) {
+  const router = useRouter();
   return (
     <View style={styles.permissionContainer}>
       <Text style={styles.permissionTitle}>Accès caméra requis</Text>

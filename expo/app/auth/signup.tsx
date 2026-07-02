@@ -16,6 +16,7 @@ import { router, useRouter } from "expo-router";
 import { navigateReplace } from "@/utils/navigate";
 import { UserPlus } from "lucide-react-native";
 import { useAuth } from "@/context/auth";
+import { Colors } from "@/constants/colors";
 
 const PRIVACY_URL = "https://siamubee2-max.github.io/purrly-legal/privacy/";
 const TERMS_URL = "https://siamubee2-max.github.io/purrly-legal/terms/";
@@ -73,7 +74,7 @@ export default function SignupScreen() {
       >
         <View style={styles.header}>
           <View style={styles.iconContainer}>
-            <UserPlus color="#111" size={32} />
+            <UserPlus color={Colors.primary} size={32} />
           </View>
           <Text style={styles.title}>Créer un compte</Text>
           <Text style={styles.subtitle}>
@@ -89,6 +90,7 @@ export default function SignupScreen() {
               value={name}
               onChangeText={setName}
               placeholder="Entrez votre nom"
+              placeholderTextColor={Colors.textLight}
               autoCapitalize="words"
               autoCorrect={false}
               editable={!isLoading}
@@ -102,6 +104,7 @@ export default function SignupScreen() {
               value={email}
               onChangeText={setEmail}
               placeholder="Entrez votre adresse email"
+              placeholderTextColor={Colors.textLight}
               autoCapitalize="none"
               autoCorrect={false}
               keyboardType="email-address"
@@ -116,6 +119,7 @@ export default function SignupScreen() {
               value={password}
               onChangeText={setPassword}
               placeholder="Au moins 6 caractères"
+              placeholderTextColor={Colors.textLight}
               secureTextEntry
               autoCapitalize="none"
               autoCorrect={false}
@@ -171,7 +175,7 @@ export default function SignupScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: Colors.background,
   },
   scrollContent: {
     flexGrow: 1,
@@ -188,23 +192,28 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   iconContainer: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: "#F6F7FB",
+    width: 80,
+    height: 80,
+    borderRadius: 24,
+    backgroundColor: Colors.primaryMuted,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 16,
+    marginBottom: 20,
+    shadowColor: Colors.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 3,
   },
   title: {
     fontSize: 28,
     fontWeight: "900",
-    color: "#111",
+    color: Colors.text,
     marginBottom: 8,
   },
   subtitle: {
     fontSize: 15,
-    color: "rgba(0,0,0,0.5)",
+    color: Colors.textSecondary,
     textAlign: "center",
   },
   form: {
@@ -216,60 +225,70 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 15,
     fontWeight: "700",
-    color: "#111",
+    color: Colors.text,
   },
   input: {
     borderWidth: 1.5,
-    borderColor: "rgba(0,0,0,0.1)",
-    borderRadius: 14,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
+    borderColor: Colors.border,
+    borderRadius: 16,
+    paddingHorizontal: 18,
+    paddingVertical: 16,
     fontSize: 16,
-    backgroundColor: "#fff",
-    color: "#111",
+    backgroundColor: Colors.backgroundCard,
+    color: Colors.text,
   },
   consentText: {
     fontSize: 12,
-    color: "rgba(0,0,0,0.45)",
+    color: Colors.textMuted,
     textAlign: "center",
     lineHeight: 18,
   },
   consentLink: {
-    color: "#111",
+    color: Colors.primary,
     fontWeight: "600",
     textDecorationLine: "underline",
   },
   button: {
-    backgroundColor: "#111",
-    borderRadius: 14,
+    backgroundColor: Colors.primary,
+    borderRadius: 16,
     paddingVertical: 16,
     alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    gap: 10,
+    marginTop: 8,
+    shadowColor: Colors.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 4,
   },
   buttonPressed: {
-    opacity: 0.85,
+    opacity: 0.9,
+    transform: [{ scale: 0.98 }],
   },
   buttonDisabled: {
     opacity: 0.6,
   },
   buttonText: {
-    color: "#fff",
+    color: "#0C0A09",
     fontSize: 16,
-    fontWeight: "900",
+    fontWeight: "800",
   },
   footer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     gap: 6,
+    marginTop: 12,
   },
   footerText: {
     fontSize: 15,
-    color: "rgba(0,0,0,0.5)",
+    color: Colors.textSecondary,
   },
   link: {
     fontSize: 15,
     fontWeight: "700",
-    color: "#111",
-    textDecorationLine: "underline",
+    color: Colors.primary,
   },
 });

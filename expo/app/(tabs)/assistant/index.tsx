@@ -197,7 +197,7 @@ export default function AssistantScreen() {
         try {
           // Read file as base64 and send to tRPC Whisper endpoint
           const base64 = await FileSystem.readAsStringAsync(uri, {
-            encoding: FileSystem.EncodingType.Base64,
+            encoding: 'base64',
           });
           const ext = uri.split(".").pop() ?? "m4a";
           const result = await transcribeMutation.mutateAsync({

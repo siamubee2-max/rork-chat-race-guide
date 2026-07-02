@@ -737,16 +737,16 @@ export default function ScanResultScreen() {
         >
           <View style={styles.rowLeft}>
             <View style={[styles.avatar, isActive ? styles.avatarActive : null]}>
-              <Cat color={isActive ? "#fff" : "#111"} size={18} />
+              <Cat color={isActive ? "#0C0A09" : Colors.primary} size={18} />
             </View>
             <View style={styles.rowCopy}>
-              <Text style={[styles.rowTitle, isActive && { color: "#fff" }]}>
+              <Text style={[styles.rowTitle, isActive && { color: Colors.primary }]}>
                 {item.name}
               </Text>
               <Text
                 style={[
                   styles.rowSubtitle,
-                  isActive && { color: "rgba(255,255,255,0.8)" },
+                  isActive && { color: Colors.text },
                 ]}
                 numberOfLines={2}
               >
@@ -758,13 +758,13 @@ export default function ScanResultScreen() {
             <Text
               style={[
                 styles.confidence,
-                isActive && { color: "rgba(255,255,255,0.6)" },
+                isActive && { color: Colors.primary },
               ]}
             >
               {item.confidenceLabel}
             </Text>
             <ChevronRight
-              color={isActive ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.35)"}
+              color={isActive ? Colors.primary : Colors.textMuted}
               size={18}
             />
           </View>
@@ -814,7 +814,7 @@ export default function ScanResultScreen() {
                 ]}
                 testID="scanShareBtn"
               >
-                <Share2 color="#111" size={18} />
+                <Share2 color={Colors.primary} size={18} />
               </Pressable>
             </View>
             <Text style={styles.subtitle}>
@@ -870,12 +870,12 @@ export default function ScanResultScreen() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: Colors.background,
   },
   imageContainer: {
     width: "100%",
     height: 200,
-    backgroundColor: "#f0f0f0",
+    backgroundColor: Colors.backgroundSecondary,
   },
   image: {
     width: "100%",
@@ -894,20 +894,22 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "rgba(0,0,0,0.06)",
+    backgroundColor: "rgba(255,255,255,0.08)",
     alignItems: "center",
     justifyContent: "center",
+    borderWidth: 1,
+    borderColor: Colors.border,
   },
   title: {
     fontSize: 22,
     fontWeight: "900",
     letterSpacing: -0.3,
-    color: "rgba(0,0,0,0.95)",
+    color: Colors.text,
   },
   subtitle: {
     marginTop: 8,
     fontSize: 14,
-    color: "rgba(0,0,0,0.65)",
+    color: Colors.textSecondary,
     lineHeight: 19,
   },
   list: {
@@ -921,8 +923,8 @@ const styles = StyleSheet.create({
   footer: {
     paddingTop: 16,
     borderTopWidth: 1,
-    borderTopColor: "rgba(0,0,0,0.05)",
-    backgroundColor: "#fff",
+    borderTopColor: Colors.border,
+    backgroundColor: Colors.background,
   },
 
   errorContainer: {
@@ -933,33 +935,33 @@ const styles = StyleSheet.create({
   },
   errorText: {
     fontSize: 16,
-    color: "rgba(0,0,0,0.7)",
+    color: Colors.textSecondary,
     textAlign: "center",
     marginBottom: 20,
   },
   errorBtn: {
-    backgroundColor: "#111",
+    backgroundColor: Colors.primary,
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 12,
   },
   errorBtnText: {
-    color: "#fff",
+    color: "#0C0A09",
     fontWeight: "800",
   },
   row: {
     padding: 12,
     borderRadius: 16,
-    backgroundColor: "#F7F7FA",
+    backgroundColor: Colors.backgroundCard,
     borderWidth: 1,
-    borderColor: "rgba(0,0,0,0.06)",
+    borderColor: Colors.border,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
   },
   rowActive: {
-    backgroundColor: "#111",
-    borderColor: "rgba(0,0,0,0.25)",
+    backgroundColor: Colors.primaryMuted,
+    borderColor: Colors.primary,
   },
   rowLeft: {
     flexDirection: "row",
@@ -974,21 +976,21 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(0,0,0,0.06)",
+    backgroundColor: "rgba(212, 160, 92, 0.12)",
   },
   avatarActive: {
-    backgroundColor: "rgba(255,255,255,0.16)",
+    backgroundColor: Colors.primary,
   },
   rowCopy: {
     flex: 1,
   },
   rowTitle: {
     fontWeight: "900",
-    color: "rgba(0,0,0,0.92)",
+    color: Colors.text,
   },
   rowSubtitle: {
     marginTop: 4,
-    color: "rgba(0,0,0,0.6)",
+    color: Colors.textSecondary,
     fontSize: 13,
     lineHeight: 18,
   },
@@ -999,21 +1001,26 @@ const styles = StyleSheet.create({
   confidence: {
     fontSize: 12,
     fontWeight: "800",
-    color: "rgba(0,0,0,0.55)",
+    color: Colors.textSecondary,
   },
   cta: {
     marginHorizontal: 16,
     marginTop: "auto",
-    backgroundColor: "#111",
+    backgroundColor: Colors.primary,
     borderRadius: 16,
     paddingVertical: 14,
     alignItems: "center",
+    shadowColor: Colors.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 4,
   },
   ctaDisabled: {
-    backgroundColor: "rgba(0,0,0,0.15)",
+    backgroundColor: "rgba(212, 160, 92, 0.25)",
   },
   ctaText: {
-    color: "#fff",
+    color: "#0C0A09",
     fontWeight: "900",
   },
   secondary: {
@@ -1023,10 +1030,12 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 16,
     alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.05)",
+    backgroundColor: "rgba(253, 249, 239, 0.05)",
+    borderWidth: 1,
+    borderColor: "rgba(253, 249, 239, 0.15)",
   },
   secondaryText: {
     fontWeight: "800",
-    color: "rgba(0,0,0,0.75)",
+    color: Colors.text,
   },
 });
