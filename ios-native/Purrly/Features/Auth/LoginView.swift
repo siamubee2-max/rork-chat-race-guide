@@ -15,9 +15,13 @@ struct LoginView: View {
                 header
                 form
                 if let error = inlineError ?? environment.auth.lastError {
-                    Text(error)
-                        .font(.footnote)
+                    Label(error, systemImage: "exclamationmark.triangle.fill")
+                        .font(.callout.weight(.semibold))
                         .foregroundStyle(AppTheme.error)
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 10)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .background(AppTheme.error.opacity(0.12), in: RoundedRectangle(cornerRadius: 12))
                         .accessibilityLabel("Erreur : \(error)")
                 }
                 actions
@@ -48,19 +52,40 @@ struct LoginView: View {
     }
 
     private var form: some View {
-        GlassChrome.card {
-            VStack(spacing: 14) {
+        // Chaque champ dans sa PROPRE carte bordée : App Review a refusé une
+        // version où les deux champs partageaient une carte « glass » et le
+        // SecureField s'y rendait invisible — le reviewer ne voyait qu'un champ
+        // e-mail, ne pouvait pas saisir de mot de passe, et « Sign In » restait
+        // sans effet. Bordure + fond opaques garantissent la visibilité partout.
+        VStack(spacing: 14) {
+            fieldContainer {
                 TextField(String(localized: "auth.email"), text: $email)
                     .textContentType(.emailAddress)
                     .keyboardType(.emailAddress)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .foregroundStyle(AppTheme.ivory)
+                    .accessibilityIdentifier("auth.email")
+            }
+            fieldContainer {
                 SecureField(String(localized: "auth.password"), text: $password)
                     .textContentType(.password)
                     .foregroundStyle(AppTheme.ivory)
+                    .accessibilityIdentifier("auth.password")
             }
         }
+    }
+
+    /// Conteneur de champ opaque et bordé, lisible sur tous les appareils
+    /// (indépendant du rendu Liquid Glass).
+    private func fieldContainer<Content: View>(@ViewBuilder _ content: () -> Content) -> some View {
+        content()
+            .font(.body)
+            .frame(minHeight: 30)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 14)
+            .background(AppTheme.backgroundCard, in: RoundedRectangle(cornerRadius: 16))
+            .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppTheme.border, lineWidth: 1))
     }
 
     private var actions: some View {

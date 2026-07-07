@@ -13,18 +13,28 @@ struct SignupView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 16) {
-                    GlassChrome.card {
-                        VStack(spacing: 12) {
+                    // Un champ = une carte opaque bordée (le SecureField dans une
+                    // carte « glass » partagée se rendait invisible — cf. LoginView).
+                    VStack(spacing: 12) {
+                        signupField {
                             TextField(String(localized: "auth.name"), text: $name)
                                 .foregroundStyle(AppTheme.ivory)
+                                .accessibilityIdentifier("signup.name")
+                        }
+                        signupField {
                             TextField(String(localized: "auth.email"), text: $email)
                                 .textContentType(.emailAddress)
                                 .keyboardType(.emailAddress)
                                 .textInputAutocapitalization(.never)
+                                .autocorrectionDisabled()
                                 .foregroundStyle(AppTheme.ivory)
+                                .accessibilityIdentifier("signup.email")
+                        }
+                        signupField {
                             SecureField(String(localized: "auth.password"), text: $password)
                                 .textContentType(.newPassword)
                                 .foregroundStyle(AppTheme.ivory)
+                                .accessibilityIdentifier("signup.password")
                         }
                     }
 
@@ -93,5 +103,15 @@ struct SignupView: View {
             dismiss()
         }
         // Si échec, environment.auth.lastError est affiché (ex. e-mail déjà utilisé).
+    }
+
+    private func signupField<Content: View>(@ViewBuilder _ content: () -> Content) -> some View {
+        content()
+            .font(.body)
+            .frame(minHeight: 30)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 14)
+            .background(AppTheme.backgroundCard, in: RoundedRectangle(cornerRadius: 16))
+            .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppTheme.border, lineWidth: 1))
     }
 }
