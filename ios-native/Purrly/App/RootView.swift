@@ -2,6 +2,7 @@ import SwiftUI
 
 struct RootView: View {
     @Environment(AppEnvironment.self) private var environment
+    @State private var language = LanguageManager.shared
     @State private var didBootstrap = false
 
     var body: some View {
@@ -16,6 +17,10 @@ struct RootView: View {
                 MainTabView()
             }
         }
+        // Re-render complet au changement de langue : toutes les vues
+        // ré-évaluent leurs String(localized:) via le bundle redirigé.
+        .id(language.current)
+        .environment(\.locale, Locale(identifier: language.current))
         .purrlyScreenBackground()
         .task {
             guard !didBootstrap else { return }

@@ -70,7 +70,10 @@ struct LanguageSelectView: View {
     }
 
     private func select(_ code: String) {
-        UserDefaults.standard.set([code], forKey: "AppleLanguages")
+        // Applique la langue À CHAUD (swizzle du bundle) — pas seulement au
+        // prochain lancement. Corrige le refus 2.1(a) « app affichée dans une
+        // autre langue que celle sélectionnée ».
+        LanguageManager.shared.select(code)
         environment.hasSelectedLanguage = true
     }
 }

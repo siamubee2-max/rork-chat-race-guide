@@ -1,6 +1,7 @@
 import Foundation
 import Observation
 import WidgetKit
+import ObjectiveC
 
 @Observable
 @MainActor
@@ -109,3 +110,104 @@ final class AppEnvironment {
         WidgetCenter.shared.reloadAllTimelines()
     }
 }
+
+// MARK: - Language runtime switch (fusionné ici car la cible utilise des
+// références de fichiers explicites ; regénérer via xcodegen casserait la
+// signature manuelle App Store scopée par-cible).
+
+/// Changement de langue **à l'exécution**, sans redémarrage.
+///
+/// App Review 2.1(a) : l'app restait dans la langue de l'appareil même après
+/// avoir choisi « English » dans l'écran de sélection. Cause : régler
+/// `AppleLanguages` ne prend effet qu'au prochain lancement, et
+/// `String(localized:)` est résolu au démarrage.
+///
+/// Solution classique : on remplace la classe de `Bundle.main` par une
+/// sous-classe qui redirige TOUTE recherche de chaîne localisée vers le
+/// `.lproj` de la langue choisie. Combiné à un ré-rendu de l'arbre de vues
+/// (voir `RootView.id(...)`), l'UI bascule instantanément.
+@Observable
+@MainActor
+final class LanguageManager {
+    static let shared = LanguageManager()
+
+    /// Langues réellement embarquées et proposées dans l'app.
+    static let supported = ["en", "fr", "es", "de"]
+
+    private let storeKey = "purrly.selectedLanguage"
+
+    /// Code de langue courant (ex. "en"). Change → l'UI se re-render.
+    private(set) var current: String
+
+    private init() {
+        if ProcessInfo.processInfo.arguments.contains("-purrly.reset-language") {
+            UserDefaults.standard.removeObject(forKey: storeKey)
+            UserDefaults.standard.removeObject(forKey: "language_selected")
+        }
+        let stored = UserDefaults.standard.string(forKey: storeKey)
+        current = LanguageManager.resolveInitial(stored: stored)
+        Bundle.activatePurrlyLanguageBundle()
+        applyToProcess(current)
+    }
+
+    /// L'utilisateur a-t-il déjà choisi explicitement une langue ?
+    var hasExplicitChoice: Bool {
+        UserDefaults.standard.string(forKey: storeKey) != nil
+    }
+
+    /// Applique une langue choisie par l'utilisateur.
+    func select(_ code: String) {
+        let lang = LanguageManager.supported.contains(code) ? code : "en"
+        UserDefaults.standard.set(lang, forKey: storeKey)
+        applyToProcess(lang)
+        current = lang   // déclenche le re-render (voir RootView.id)
+    }
+
+    private func applyToProcess(_ code: String) {
+        Bundle.purrlyOverrideLanguage = code
+        // Cohérence pour d'éventuels lecteurs de AppleLanguages (widgets, next launch).
+        UserDefaults.standard.set([code], forKey: "AppleLanguages")
+    }
+
+    /// Au 1er lancement : langue système si elle est supportée, sinon anglais.
+    private static func resolveInitial(stored: String?) -> String {
+        if let stored, supported.contains(stored) { return stored }
+        for pref in Locale.preferredLanguages {
+            let base = String(pref.prefix(2))
+            if supported.contains(base) { return base }
+        }
+        return "en"
+    }
+}
+
+// MARK: - Bundle override
+
+private nonisolated(unsafe) var purrlyOverrideLanguageKey: UInt8 = 0
+
+extension Bundle {
+    /// Langue forcée pour toutes les recherches localisées (nil = comportement standard).
+    @MainActor static var purrlyOverrideLanguage: String? {
+        get { objc_getAssociatedObject(Bundle.main, &purrlyOverrideLanguageKey) as? String }
+        set { objc_setAssociatedObject(Bundle.main, &purrlyOverrideLanguageKey, newValue, .OBJC_ASSOCIATION_RETAIN) }
+    }
+
+    /// Remplace la classe de `Bundle.main` une seule fois.
+    @MainActor static func activatePurrlyLanguageBundle() {
+        guard !(object_getClass(Bundle.main) is PurrlyLocalizedBundle.Type) else { return }
+        object_setClass(Bundle.main, PurrlyLocalizedBundle.self)
+    }
+}
+
+/// Sous-classe qui redirige la recherche de chaînes vers le `.lproj` choisi.
+private final class PurrlyLocalizedBundle: Bundle, @unchecked Sendable {
+    override func localizedString(forKey key: String, value: String?, table tableName: String?) -> String {
+        let override = MainActor.assumeIsolated { Bundle.purrlyOverrideLanguage }
+        if let code = override,
+           let path = Bundle.main.path(forResource: code, ofType: "lproj"),
+           let langBundle = Bundle(path: path) {
+            return langBundle.localizedString(forKey: key, value: value, table: tableName)
+        }
+        return super.localizedString(forKey: key, value: value, table: tableName)
+    }
+}
+

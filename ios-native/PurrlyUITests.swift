@@ -41,3 +41,34 @@ final class ReviewerSignInTests: XCTestCase {
         XCTAssertTrue(ok, "Après connexion démo, la barre d'onglets n'apparaît pas — bug reviewer reproduit")
     }
 }
+
+/// Reproduit + valide le refus 2.1(a) « app affichée dans une autre langue » :
+/// appareil simulé en français, on choisit English, l'écran suivant DOIT être
+/// en anglais (« Sign In », pas « Se connecter »).
+@MainActor
+final class LanguageSwitchTests: XCTestCase {
+
+    func testSelectingEnglishAppliesEnglishImmediately() {
+        let app = XCUIApplication()
+        // Simule un appareil réglé en français + repart d'un état neuf.
+        app.launchArguments += ["-AppleLanguages", "(fr)", "-purrly.reset-language"]
+        app.launch()
+
+        // Écran de langue → choisir English.
+        let english = app.buttons["English"].firstMatch
+        XCTAssertTrue(english.waitForExistence(timeout: 12), "Bouton English introuvable")
+        english.tap()
+
+        // L'écran de connexion doit être en ANGLAIS.
+        let signInEN = app.buttons["Sign In"].firstMatch
+        let signInFR = app.buttons["Se connecter"].firstMatch
+        let appeared = signInEN.waitForExistence(timeout: 10)
+
+        let shot = XCTAttachment(screenshot: app.screenshot())
+        shot.lifetime = .keepAlways
+        add(shot)
+
+        XCTAssertTrue(appeared, "Le bouton anglais 'Sign In' doit apparaître après avoir choisi English")
+        XCTAssertFalse(signInFR.exists, "Aucun texte français ne doit rester après avoir choisi English")
+    }
+}
