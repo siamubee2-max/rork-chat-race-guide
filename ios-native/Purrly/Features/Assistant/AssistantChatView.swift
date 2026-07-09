@@ -216,10 +216,10 @@ struct AssistantChatView: View {
     private func buildSystemPrompt() -> String {
         let cats = environment.cats.cats
         if cats.isEmpty {
-            return "Tu es Purrly, assistant expert en chats. Réponds en français, de façon concise."
+            return "You are Purrly, an expert cat assistant. Reply in \(LanguageManager.shared.aiReplyLanguage), concisely."
         }
         let names = cats.map(\.name).joined(separator: ", ")
-        return "Tu es Purrly, assistant expert en chats. L'utilisateur a : \(names). Réponds en français."
+        return "You are Purrly, an expert cat assistant. The user has: \(names). Reply in \(LanguageManager.shared.aiReplyLanguage)."
     }
 }
 

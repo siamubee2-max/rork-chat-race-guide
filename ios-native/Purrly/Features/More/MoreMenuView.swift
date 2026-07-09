@@ -10,48 +10,48 @@ struct MoreMenuView: View {
         List {
             Section("Assistant") {
                 NavigationLink(destination: AssistantChatView()) {
-                    MoreRow(symbol: "sparkles", title: "Assistant IA",
+                    MoreRow(symbol: "sparkles", title: String(localized: "Assistant IA"),
                             subtitle: environment.limits.isPremium
-                                ? "Illimité"
-                                : "\(environment.limits.aiMessagesRemaining) messages restants",
+                                ? String(localized: "Illimité")
+                                : String(localized: "\(environment.limits.aiMessagesRemaining) messages restants"),
                             tint: .purple)
                 }
                 NavigationLink(destination: BehaviorView()) {
-                    MoreRow(symbol: "brain.head.profile", title: "Comportement",
-                            subtitle: "Analyse comportementale IA", tint: .purple)
+                    MoreRow(symbol: "brain.head.profile", title: String(localized: "Comportement"),
+                            subtitle: String(localized: "Analyse comportementale IA"), tint: .purple)
                 }
                 NavigationLink(destination: InsightsView()) {
-                    MoreRow(symbol: "lightbulb.fill", title: "Insights IA",
-                            subtitle: "Conseils santé personnalisés", tint: .yellow)
+                    MoreRow(symbol: "lightbulb.fill", title: String(localized: "Insights IA"),
+                            subtitle: String(localized: "Conseils santé personnalisés"), tint: .yellow)
                 }
                 NavigationLink(destination: PhotoAnalyzerView()) {
-                    MoreRow(symbol: "camera.viewfinder", title: "Analyser une photo",
-                            subtitle: "Humeur & bien-être par IA", tint: .cyan)
+                    MoreRow(symbol: "camera.viewfinder", title: String(localized: "Analyser une photo"),
+                            subtitle: String(localized: "Humeur & bien-être par IA"), tint: .cyan)
                 }
             }
             .listRowBackground(AppTheme.backgroundCard)
 
             Section("Outils") {
                 NavigationLink(destination: CatPhotoBoothView()) {
-                    MoreRow(symbol: "camera.filters", title: "Photo Booth",
-                            subtitle: "Stickers & cadres pour tes chats", tint: .pink)
+                    MoreRow(symbol: "camera.filters", title: String(localized: "Photo Booth"),
+                            subtitle: String(localized: "Stickers & cadres pour tes chats"), tint: .pink)
                 }
                 NavigationLink(destination: CatAlbumView()) {
-                    MoreRow(symbol: "photo.on.rectangle.angled", title: "Mon album",
-                            subtitle: "Photos de tes chats", tint: .purple)
+                    MoreRow(symbol: "photo.on.rectangle.angled", title: String(localized: "Mon album"),
+                            subtitle: String(localized: "Photos de tes chats"), tint: .purple)
                 }
                 NavigationLink(destination: PracticalHomeView()) {
-                    MoreRow(symbol: "creditcard", title: "Pratique",
-                            subtitle: "Dépenses & outils", tint: AppTheme.primary)
+                    MoreRow(symbol: "creditcard", title: String(localized: "Pratique"),
+                            subtitle: String(localized: "Dépenses & outils"), tint: AppTheme.primary)
                 }
                 NavigationLink(destination: GamificationView()) {
-                    MoreRow(symbol: "trophy.fill", title: "Progression",
-                            subtitle: "Niveau \(environment.gamification.level) · \(environment.gamification.totalXP) XP",
+                    MoreRow(symbol: "trophy.fill", title: String(localized: "Progression"),
+                            subtitle: String(localized: "Niveau \(environment.gamification.level) · \(environment.gamification.totalXP) XP"),
                             tint: .yellow)
                 }
                 NavigationLink(destination: DiscussionsListView()) {
-                    MoreRow(symbol: "bubble.left.and.bubble.right.fill", title: "Forum",
-                            subtitle: "\(environment.discussions.threads.count) discussions",
+                    MoreRow(symbol: "bubble.left.and.bubble.right.fill", title: String(localized: "Forum"),
+                            subtitle: String(localized: "\(environment.discussions.threads.count) discussions"),
                             tint: .cyan)
                 }
             }
@@ -60,12 +60,12 @@ struct MoreMenuView: View {
             Section("Compte") {
                 if !environment.limits.isPremium {
                     Button { showPaywall = true } label: {
-                        MoreRow(symbol: "crown.fill", title: "Purrly Premium",
-                                subtitle: "14,99 $/mois", tint: AppTheme.primary)
+                        MoreRow(symbol: "crown.fill", title: String(localized: "Purrly Premium"),
+                                subtitle: String(localized: "14,99 $/mois"), tint: AppTheme.primary)
                     }
                 }
                 NavigationLink(destination: AboutView()) {
-                    MoreRow(symbol: "info.circle", title: "À propos",
+                    MoreRow(symbol: "info.circle", title: String(localized: "À propos"),
                             subtitle: "Version 1.0.0", tint: AppTheme.textMuted)
                 }
                 NavigationLink(destination: FAQView()) {
@@ -73,11 +73,11 @@ struct MoreMenuView: View {
                             subtitle: nil, tint: AppTheme.textMuted)
                 }
                 NavigationLink(destination: PrivacyView()) {
-                    MoreRow(symbol: "hand.raised.fill", title: "Confidentialité",
+                    MoreRow(symbol: "hand.raised.fill", title: String(localized: "Confidentialité"),
                             subtitle: nil, tint: AppTheme.textMuted)
                 }
                 NavigationLink(destination: TermsView()) {
-                    MoreRow(symbol: "doc.text", title: "Conditions",
+                    MoreRow(symbol: "doc.text", title: String(localized: "Conditions"),
                             subtitle: nil, tint: AppTheme.textMuted)
                 }
             }
@@ -91,14 +91,14 @@ struct MoreMenuView: View {
                     }
                 } label: {
                     MoreRow(symbol: "rectangle.portrait.and.arrow.right",
-                            title: "Se déconnecter", subtitle: nil, tint: .red)
+                            title: String(localized: "Se déconnecter"), subtitle: nil, tint: .red)
                 }
                 Button(role: .destructive) {
                     showDeleteConfirm = true
                 } label: {
                     MoreRow(symbol: "trash",
-                            title: isDeleting ? "Suppression…" : "Supprimer mon compte",
-                            subtitle: "Efface définitivement votre compte et vos données",
+                            title: isDeleting ? String(localized: "Suppression…") : String(localized: "Supprimer mon compte"),
+                            subtitle: String(localized: "Efface définitivement votre compte et vos données"),
                             tint: .red)
                 }
                 .disabled(isDeleting)

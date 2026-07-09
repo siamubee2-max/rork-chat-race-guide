@@ -16,32 +16,32 @@ struct TravelView: View {
     }
 
     @State private var sections: [TravelSection] = [
-        TravelSection(id: "docs", title: "Documents", icon: "doc.text.fill", color: .blue, items: [
-            CheckItem(id: "passport", label: "Passeport européen du chat", isChecked: false),
-            CheckItem(id: "vaccination", label: "Carnet de vaccination à jour", isChecked: false),
-            CheckItem(id: "chip", label: "Certificat de puce électronique", isChecked: false),
-            CheckItem(id: "health_cert", label: "Certificat sanitaire (si hors UE)", isChecked: false),
-            CheckItem(id: "insurance", label: "Attestation d'assurance", isChecked: false),
+        TravelSection(id: "docs", title: String(localized: "Documents"), icon: "doc.text.fill", color: .blue, items: [
+            CheckItem(id: "passport", label: String(localized: "Passeport européen du chat"), isChecked: false),
+            CheckItem(id: "vaccination", label: String(localized: "Carnet de vaccination à jour"), isChecked: false),
+            CheckItem(id: "chip", label: String(localized: "Certificat de puce électronique"), isChecked: false),
+            CheckItem(id: "health_cert", label: String(localized: "Certificat sanitaire (si hors UE)"), isChecked: false),
+            CheckItem(id: "insurance", label: String(localized: "Attestation d'assurance"), isChecked: false),
         ]),
-        TravelSection(id: "health", title: "Santé", icon: "cross.case.fill", color: .green, items: [
-            CheckItem(id: "vet_visit", label: "Visite vétérinaire avant départ", isChecked: false),
-            CheckItem(id: "vaccines", label: "Vaccins à jour (rage obligatoire)", isChecked: false),
-            CheckItem(id: "antiparasite", label: "Traitement antiparasitaire récent", isChecked: false),
-            CheckItem(id: "medications", label: "Médicaments habituels", isChecked: false),
-            CheckItem(id: "first_aid", label: "Trousse de premiers soins", isChecked: false),
+        TravelSection(id: "health", title: String(localized: "Santé"), icon: "cross.case.fill", color: .green, items: [
+            CheckItem(id: "vet_visit", label: String(localized: "Visite vétérinaire avant départ"), isChecked: false),
+            CheckItem(id: "vaccines", label: String(localized: "Vaccins à jour (rage obligatoire)"), isChecked: false),
+            CheckItem(id: "antiparasite", label: String(localized: "Traitement antiparasitaire récent"), isChecked: false),
+            CheckItem(id: "medications", label: String(localized: "Médicaments habituels"), isChecked: false),
+            CheckItem(id: "first_aid", label: String(localized: "Trousse de premiers soins"), isChecked: false),
         ]),
-        TravelSection(id: "transport", title: "Transport", icon: "car.fill", color: .orange, items: [
-            CheckItem(id: "carrier", label: "Caisse de transport sécurisée", isChecked: false),
-            CheckItem(id: "carrier_habit", label: "Chat habitué à la caisse (3–7 jours avant)", isChecked: false),
-            CheckItem(id: "no_food_3h", label: "Pas de repas 3h avant le départ", isChecked: false),
-            CheckItem(id: "harness", label: "Harnais + laisse de sécurité", isChecked: false),
+        TravelSection(id: "transport", title: String(localized: "Transport"), icon: "car.fill", color: .orange, items: [
+            CheckItem(id: "carrier", label: String(localized: "Caisse de transport sécurisée"), isChecked: false),
+            CheckItem(id: "carrier_habit", label: String(localized: "Chat habitué à la caisse (3–7 jours avant)"), isChecked: false),
+            CheckItem(id: "no_food_3h", label: String(localized: "Pas de repas 3h avant le départ"), isChecked: false),
+            CheckItem(id: "harness", label: String(localized: "Harnais + laisse de sécurité"), isChecked: false),
         ]),
-        TravelSection(id: "essentials", title: "Essentiels", icon: "bag.fill", color: .purple, items: [
-            CheckItem(id: "food", label: "Nourriture pour 3 jours minimum", isChecked: false),
-            CheckItem(id: "water_bowl", label: "Gamelle pliable", isChecked: false),
-            CheckItem(id: "litter", label: "Litière + bac portable", isChecked: false),
-            CheckItem(id: "toys", label: "Jouets familiers", isChecked: false),
-            CheckItem(id: "blanket", label: "Couverture avec odeur familière", isChecked: false),
+        TravelSection(id: "essentials", title: String(localized: "Essentiels"), icon: "bag.fill", color: .purple, items: [
+            CheckItem(id: "food", label: String(localized: "Nourriture pour 3 jours minimum"), isChecked: false),
+            CheckItem(id: "water_bowl", label: String(localized: "Gamelle pliable"), isChecked: false),
+            CheckItem(id: "litter", label: String(localized: "Litière + bac portable"), isChecked: false),
+            CheckItem(id: "toys", label: String(localized: "Jouets familiers"), isChecked: false),
+            CheckItem(id: "blanket", label: String(localized: "Couverture avec odeur familière"), isChecked: false),
         ]),
     ]
 

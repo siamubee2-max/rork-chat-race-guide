@@ -124,6 +124,28 @@
             "state": "new",
             "value": "%1$.1f %2$@"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%.1f %@"
+          }
+        }
+      }
+    },
+    "%@ : %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ : %2$@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@: %@"
+          }
         }
       }
     },
@@ -133,6 +155,12 @@
           "stringUnit": {
             "state": "new",
             "value": "%1$@ à %2$@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ to %@"
           }
         }
       }
@@ -434,6 +462,12 @@
             "state": "new",
             "value": "%1$lld/%2$lld"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld/%lld"
+          }
         }
       }
     },
@@ -593,7 +627,16 @@
         }
       }
     },
-    "• Prends une photo claire de ton chat\n• L'IA analyse l'expression, la posture et l'état général\n• Tu reçois un rapport sur son humeur et sa santé apparente": {},
+    "• Prends une photo claire de ton chat\n• L'IA analyse l'expression, la posture et l'état général\n• Tu reçois un rapport sur son humeur et sa santé apparente": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "• Take a clear photo of your cat\n• The AI analyzes its expression, posture and overall condition\n• You get a report on its mood and apparent health"
+          }
+        }
+      }
+    },
     "+%lld XP": {
       "localizations": {
         "de": {
@@ -652,11 +695,56 @@
         }
       }
     },
-    "⚠️ %@": {},
-    "✓ Je participe": {},
-    "✨ IA Booth": {},
-    "🎨 Stickers": {},
-    "📸 Choisis d'abord une photo de ton chat": {},
+    "⚠️ %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⚠️ %@"
+          }
+        }
+      }
+    },
+    "✓ Je participe": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "✓ I'm in"
+          }
+        }
+      }
+    },
+    "✨ IA Booth": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "✨ AI Booth"
+          }
+        }
+      }
+    },
+    "🎨 Stickers": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🎨 Stickers"
+          }
+        }
+      }
+    },
+    "📸 Choisis d'abord une photo de ton chat": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "📸 First choose a photo of your cat"
+          }
+        }
+      }
+    },
     "0,00": {
       "localizations": {
         "de": {
@@ -715,8 +803,26 @@
         }
       }
     },
-    "0.0": {},
-    "A acheter (%lld)": {},
+    "0.0": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "0.0"
+          }
+        }
+      }
+    },
+    "A acheter (%lld)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To buy (%lld)"
+          }
+        }
+      }
+    },
     "À propos": {
       "localizations": {
         "de": {
@@ -769,8 +875,36 @@
         }
       }
     },
-    "A venir (%lld)": {},
-    "Abonné·e": {},
+    "A venir (%lld)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Upcoming (%lld)"
+          }
+        }
+      }
+    },
+    "Abonné·e": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subscribed"
+          }
+        }
+      }
+    },
+    "Abonnement à renouvellement automatique. Le paiement est débité sur votre compte Apple à la confirmation. L'abonnement se renouvelle automatiquement sauf annulation au moins 24 h avant la fin de la période en cours. Gérez ou résiliez à tout moment dans les réglages de l'App Store.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto-renewing subscription. Payment is charged to your Apple account at confirmation. The subscription renews automatically unless canceled at least 24 hours before the end of the current period. Manage or cancel anytime in your App Store settings."
+          }
+        }
+      }
+    },
     "Abonnements": {
       "localizations": {
         "de": {
@@ -823,8 +957,26 @@
         }
       }
     },
-    "Acheté (%lld)": {},
-    "Acte médical": {},
+    "Acheté (%lld)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bought (%lld)"
+          }
+        }
+      }
+    },
+    "Acte médical": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Medical procedure"
+          }
+        }
+      }
+    },
     "action.cancel": {
       "localizations": {
         "de": {
@@ -883,7 +1035,16 @@
         }
       }
     },
-    "Adresse complète": {},
+    "Adresse complète": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Full address"
+          }
+        }
+      }
+    },
     "Aimer": {
       "localizations": {
         "de": {
@@ -936,7 +1097,6 @@
         }
       }
     },
-    "Ajoute ta clé API kie.ai dans Secrets.xcconfig → KIE_API_KEY": {},
     "Ajouter": {
       "localizations": {
         "de": {
@@ -989,26 +1149,216 @@
         }
       }
     },
-    "Ajouter un acte médical": {},
-    "Ajouter un article": {},
-    "Ajouter un commentaire...": {},
-    "Ajouter un log": {},
-    "Ajouter un poids": {},
-    "Ajouter une légende… 🐱": {},
-    "Ajoutez des articles pour ne rien oublier lors de vos courses": {},
-    "Ajoutez un chat pour obtenir des insights personnalisés.": {},
-    "Album vide": {},
-    "Analyse comportementale": {},
-    "Analyse de la photo en cours…": {},
-    "Analyse en cours…": {},
-    "Analyse IA": {},
-    "Analyse impossible": {},
-    "Analyse…": {},
-    "Analyser la photo": {},
-    "Analyser pour": {},
-    "Analyser une photo": {},
-    "Annuaire des éleveurs": {},
-    "Annuaire des refuges": {},
+    "Ajouter un acte médical": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add a medical procedure"
+          }
+        }
+      }
+    },
+    "Ajouter un article": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add an item"
+          }
+        }
+      }
+    },
+    "Ajouter un commentaire...": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add a comment..."
+          }
+        }
+      }
+    },
+    "Ajouter un log": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add a log"
+          }
+        }
+      }
+    },
+    "Ajouter un poids": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add a weight"
+          }
+        }
+      }
+    },
+    "Ajouter une légende… 🐱": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add a caption… 🐱"
+          }
+        }
+      }
+    },
+    "Ajouter une photo": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add a photo"
+          }
+        }
+      }
+    },
+    "Ajoutez des articles pour ne rien oublier lors de vos courses": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add items so you don't forget anything while shopping"
+          }
+        }
+      }
+    },
+    "Ajoutez un chat pour obtenir des insights personnalisés.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add a cat to get personalized insights."
+          }
+        }
+      }
+    },
+    "Album vide": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empty album"
+          }
+        }
+      }
+    },
+    "Analyse comportementale": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Behavioral analysis"
+          }
+        }
+      }
+    },
+    "Analyse de la photo en cours…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyzing photo…"
+          }
+        }
+      }
+    },
+    "Analyse en cours…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyzing…"
+          }
+        }
+      }
+    },
+    "Analyse IA": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AI analysis"
+          }
+        }
+      }
+    },
+    "Analyse impossible": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analysis failed"
+          }
+        }
+      }
+    },
+    "Analyse…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyzing…"
+          }
+        }
+      }
+    },
+    "Analyser la photo": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyze photo"
+          }
+        }
+      }
+    },
+    "Analyser pour": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyze for"
+          }
+        }
+      }
+    },
+    "Analyser une photo": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyze a photo"
+          }
+        }
+      }
+    },
+    "Annuaire des éleveurs": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Breeder directory"
+          }
+        }
+      }
+    },
+    "Annuaire des refuges": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shelter directory"
+          }
+        }
+      }
+    },
     "Annuler": {
       "localizations": {
         "de": {
@@ -1455,10 +1805,46 @@
         }
       }
     },
-    "Aucun": {},
-    "Aucun log": {},
-    "Aucun poids enregistré": {},
-    "Aucun rappel": {},
+    "Aucun": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "None"
+          }
+        }
+      }
+    },
+    "Aucun log": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No logs"
+          }
+        }
+      }
+    },
+    "Aucun poids enregistré": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No weight recorded"
+          }
+        }
+      }
+    },
+    "Aucun rappel": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No reminders"
+          }
+        }
+      }
+    },
     "Aucune dépense enregistrée.": {
       "localizations": {
         "de": {
@@ -1511,8 +1897,26 @@
         }
       }
     },
-    "Aucune pesée": {},
-    "Aucune publication pour l'instant": {},
+    "Aucune pesée": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No weigh-ins"
+          }
+        }
+      }
+    },
+    "Aucune publication pour l'instant": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No posts yet"
+          }
+        }
+      }
+    },
     "auth.email": {
       "localizations": {
         "de": {
@@ -1625,6 +2029,64 @@
           "stringUnit": {
             "state": "translated",
             "value": "登录"
+          }
+        }
+      }
+    },
+    "auth.login.fields_required": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bitte E-Mail und Passwort eingeben."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Please enter your email and password."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Introduce tu correo y contraseña."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Renseignez votre e-mail et votre mot de passe."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inserisci e-mail e password."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "メールアドレスとパスワードを入力してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이메일과 비밀번호를 입력해주세요."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insira seu e-mail e senha."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请输入您的电子邮件和密码。"
           }
         }
       }
@@ -2094,8 +2556,56 @@
         }
       }
     },
-    "Autres possibilités": {},
-    "Bientôt disponible": {},
+    "Autres possibilités": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Other possibilities"
+          }
+        }
+      }
+    },
+    "Avant de continuer, merci d'accepter nos règles. Elles protègent tous les membres.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Before continuing, please accept our rules. They protect all members."
+          }
+        }
+      }
+    },
+    "Bientôt disponible": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coming soon"
+          }
+        }
+      }
+    },
+    "Bloquer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Block"
+          }
+        }
+      }
+    },
+    "Bloquer %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Block %@"
+          }
+        }
+      }
+    },
     "breeds.care": {
       "localizations": {
         "de": {
@@ -2444,9 +2954,36 @@
         }
       }
     },
-    "Cadrez votre chat dans le viseur": {},
-    "Calculateur alimentaire": {},
-    "Carnet de santé": {},
+    "Cadrez votre chat dans le viseur": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frame your cat in the viewfinder"
+          }
+        }
+      }
+    },
+    "Calculateur alimentaire": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Food calculator"
+          }
+        }
+      }
+    },
+    "Carnet de santé": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Health record"
+          }
+        }
+      }
+    },
     "Catégorie": {
       "localizations": {
         "de": {
@@ -3137,8 +3674,46 @@
         }
       }
     },
-    "Ces informations sont un guide de premiers secours et ne remplacent pas une consultation vétérinaire. En cas de doute, consultez toujours un professionnel.": {},
-    "Ces valeurs sont indicatives. Consultez un vétérinaire pour un programme alimentaire adapté.": {},
+    "Ces informations sont un guide de premiers secours et ne remplacent pas une consultation vétérinaire. En cas de doute, consultez toujours un professionnel.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This information is a first-aid guide and does not replace a veterinary consultation. When in doubt, always consult a professional."
+          }
+        }
+      }
+    },
+    "Ces valeurs sont indicatives. Consultez un vétérinaire pour un programme alimentaire adapté.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "These values are indicative. Consult a veterinarian for a suitable feeding program."
+          }
+        }
+      }
+    },
+    "Cette action est définitive. Votre compte, vos chats et vos données seront supprimés et ne pourront pas être récupérés.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This action is permanent. Your account, your cats and your data will be deleted and cannot be recovered."
+          }
+        }
+      }
+    },
+    "Changer la photo": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Change photo"
+          }
+        }
+      }
+    },
     "Chargement de Purrly": {
       "localizations": {
         "de": {
@@ -3191,16 +3766,106 @@
         }
       }
     },
-    "Chat": {},
-    "Chat (optionnel)": {},
-    "Checklist voyage": {},
-    "Choisir une photo de ton chat": {},
-    "Choisir une photo de votre chat": {},
-    "Classement": {},
-    "Commencez la conversation avec %@": {},
-    "Comment ça marche ?": {},
-    "Commentaires": {},
-    "Commentaires (%lld)": {},
+    "Chat": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cat"
+          }
+        }
+      }
+    },
+    "Chat (optionnel)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cat (optional)"
+          }
+        }
+      }
+    },
+    "Checklist voyage": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Travel checklist"
+          }
+        }
+      }
+    },
+    "Choisir une photo de ton chat": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose a photo of your cat"
+          }
+        }
+      }
+    },
+    "Choisir une photo de votre chat": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose a photo of your cat"
+          }
+        }
+      }
+    },
+    "Classement": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leaderboard"
+          }
+        }
+      }
+    },
+    "Commencez la conversation avec %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start the conversation with %@"
+          }
+        }
+      }
+    },
+    "Comment ça marche ?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How does it work?"
+          }
+        }
+      }
+    },
+    "Commentaires": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comments"
+          }
+        }
+      }
+    },
+    "Commentaires (%lld)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comments (%lld)"
+          }
+        }
+      }
+    },
     "common.cancel": {
       "localizations": {
         "de": {
@@ -3781,7 +4446,16 @@
         }
       }
     },
-    "Comportement": {},
+    "Comportement": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Behavior"
+          }
+        }
+      }
+    },
     "Compte": {
       "localizations": {
         "de": {
@@ -3990,11 +4664,66 @@
         }
       }
     },
-    "Courses": {},
-    "Crée tes premières photos avec le Photo Booth !": {},
-    "Créer": {},
-    "Créer un événement": {},
-    "Créez des rappels pour les vaccins, médicaments ou rendez-vous de votre chat": {},
+    "Contrat de licence (EULA)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "License Agreement (EULA)"
+          }
+        }
+      }
+    },
+    "Courses": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shopping"
+          }
+        }
+      }
+    },
+    "Crée tes premières photos avec le Photo Booth !": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Create your first photos with the Photo Booth!"
+          }
+        }
+      }
+    },
+    "Créer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Create"
+          }
+        }
+      }
+    },
+    "Créer un événement": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Create an event"
+          }
+        }
+      }
+    },
+    "Créez des rappels pour les vaccins, médicaments ou rendez-vous de votre chat": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Create reminders for your cat's vaccines, medications or appointments"
+          }
+        }
+      }
+    },
     "Date": {
       "localizations": {
         "de": {
@@ -4047,7 +4776,16 @@
         }
       }
     },
-    "Date & Fréquence": {},
+    "Date & Fréquence": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Date & Frequency"
+          }
+        }
+      }
+    },
     "Décris ta situation…": {
       "localizations": {
         "de": {
@@ -4100,8 +4838,26 @@
         }
       }
     },
-    "Défis": {},
-    "Défis de la semaine": {},
+    "Défis": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Challenges"
+          }
+        }
+      }
+    },
+    "Défis de la semaine": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weekly challenges"
+          }
+        }
+      }
+    },
     "Dépenses": {
       "localizations": {
         "de": {
@@ -4154,8 +4910,26 @@
         }
       }
     },
-    "Description": {},
-    "Détails": {},
+    "Description": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Description"
+          }
+        }
+      }
+    },
+    "Détails": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Details"
+          }
+        }
+      }
+    },
     "Données collectées": {
       "localizations": {
         "de": {
@@ -4266,10 +5040,46 @@
         }
       }
     },
-    "Effacer les stickers": {},
-    "Éleveurs": {},
-    "Email": {},
-    "Email envoyé ! Vérifie ta boîte mail.": {},
+    "Effacer les stickers": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear stickers"
+          }
+        }
+      }
+    },
+    "Éleveurs": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Breeders"
+          }
+        }
+      }
+    },
+    "Email": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Email"
+          }
+        }
+      }
+    },
+    "Email envoyé ! Vérifie ta boîte mail.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Email sent! Check your inbox."
+          }
+        }
+      }
+    },
     "emergency.createAlert": {
       "localizations": {
         "de": {
@@ -5140,7 +5950,26 @@
         }
       }
     },
-    "En retard": {},
+    "En continuant, vous acceptez les Conditions d'utilisation (EULA) et confirmez n'avoir aucune tolérance pour les contenus offensants.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "By continuing, you accept the Terms of Use (EULA) and confirm that you have zero tolerance for objectionable content."
+          }
+        }
+      }
+    },
+    "En retard": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Overdue"
+          }
+        }
+      }
+    },
     "En utilisant Purrly, vous acceptez les présentes conditions. L'application est fournie à titre informatif et ne remplace pas un avis vétérinaire professionnel. En cas d'urgence médicale réelle, contactez immédiatement un vétérinaire.": {
       "localizations": {
         "de": {
@@ -5193,13 +6022,76 @@
         }
       }
     },
-    "Enregistrer": {},
-    "Enregistrer dans Photos": {},
-    "Enregistrer un poids": {},
-    "Enregistrez régulièrement le poids pour détecter des variations.": {},
-    "Envoyer": {},
-    "Envoyer le lien": {},
-    "Envoyer un message à %@": {},
+    "Enregistrer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save"
+          }
+        }
+      }
+    },
+    "Enregistrer dans Photos": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save to Photos"
+          }
+        }
+      }
+    },
+    "Enregistrer un poids": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Record a weight"
+          }
+        }
+      }
+    },
+    "Enregistrez régulièrement le poids pour détecter des variations.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Record weight regularly to detect variations."
+          }
+        }
+      }
+    },
+    "Envoyer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Send"
+          }
+        }
+      }
+    },
+    "Envoyer le lien": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Send link"
+          }
+        }
+      }
+    },
+    "Envoyer un message à %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Send a message to %@"
+          }
+        }
+      }
+    },
     "Erreur : %@": {
       "localizations": {
         "de": {
@@ -5252,7 +6144,16 @@
         }
       }
     },
-    "ex: 4.5": {},
+    "ex: 4.5": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "e.g. 4.5"
+          }
+        }
+      }
+    },
     "Ex: Mon chat ne mange plus…": {
       "localizations": {
         "de": {
@@ -5305,8 +6206,26 @@
         }
       }
     },
-    "Ex: Vaccin antirabique": {},
-    "Explorer toutes les races": {},
+    "Ex: Vaccin antirabique": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "e.g. Rabies vaccine"
+          }
+        }
+      }
+    },
+    "Explorer toutes les races": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Explore all breeds"
+          }
+        }
+      }
+    },
     "FAQ": {
       "localizations": {
         "de": {
@@ -5365,7 +6284,16 @@
         }
       }
     },
-    "Fermer": {},
+    "Fermer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Close"
+          }
+        }
+      }
+    },
     "Forum": {
       "localizations": {
         "de": {
@@ -5418,14 +6346,106 @@
         }
       }
     },
-    "Fréquence": {},
-    "Galerie ou caméra": {},
-    "Génération IA en cours… %lld%%": {},
-    "Générer des insights": {},
-    "Guide d'urgence pour réagir rapidement en cas de problème avec votre chat": {},
-    "Historique": {},
-    "Identification en cours…": {},
-    "Insights IA": {},
+    "Fréquence": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frequency"
+          }
+        }
+      }
+    },
+    "Galerie ou caméra": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gallery or camera"
+          }
+        }
+      }
+    },
+    "Génération IA en cours… %lld%%": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AI generating… %lld%%"
+          }
+        }
+      }
+    },
+    "Générer des insights": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Generate insights"
+          }
+        }
+      }
+    },
+    "Guide d'urgence pour réagir rapidement en cas de problème avec votre chat": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Emergency guide to react quickly if something goes wrong with your cat"
+          }
+        }
+      }
+    },
+    "Historique": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "History"
+          }
+        }
+      }
+    },
+    "Identification en cours…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Identifying…"
+          }
+        }
+      }
+    },
+    "Information": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Information"
+          }
+        }
+      }
+    },
+    "Informations générales — ne remplacent pas l'avis d'un vétérinaire. En cas d'urgence, consultez un vétérinaire.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "General information — does not replace a veterinarian's advice. In an emergency, consult a veterinarian."
+          }
+        }
+      }
+    },
+    "Insights IA": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AI Insights"
+          }
+        }
+      }
+    },
     "Itinéraire": {
       "localizations": {
         "de": {
@@ -5478,8 +6498,36 @@
         }
       }
     },
-    "kg": {},
-    "Kg": {},
+    "J'accepte les règles": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I accept the rules"
+          }
+        }
+      }
+    },
+    "kg": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kg"
+          }
+        }
+      }
+    },
+    "Kg": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kg"
+          }
+        }
+      }
+    },
     "L'abonnement Premium est facturé mensuellement. Il se renouvelle automatiquement sauf résiliation 24h avant la date de renouvellement depuis les Réglages > Abonnements de votre iPhone.": {
       "localizations": {
         "de": {
@@ -5642,18 +6690,126 @@
         }
       }
     },
-    "lbs": {},
-    "Le titre est obligatoire.": {},
-    "Lieu": {},
-    "Liste vide": {},
-    "Log du jour": {},
-    "Logs": {},
-    "Logs de %@": {},
-    "Logs quotidiens": {},
-    "Max participants": {},
-    "Message…": {},
-    "Mode": {},
-    "Mon album 🐱": {},
+    "lbs": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "lbs"
+          }
+        }
+      }
+    },
+    "Le titre est obligatoire.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The title is required."
+          }
+        }
+      }
+    },
+    "Lieu": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Location"
+          }
+        }
+      }
+    },
+    "Liste vide": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empty list"
+          }
+        }
+      }
+    },
+    "Log du jour": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Today's log"
+          }
+        }
+      }
+    },
+    "Logs": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Logs"
+          }
+        }
+      }
+    },
+    "Logs de %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@'s logs"
+          }
+        }
+      }
+    },
+    "Logs quotidiens": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daily logs"
+          }
+        }
+      }
+    },
+    "Max participants": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Max participants"
+          }
+        }
+      }
+    },
+    "Message…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Message…"
+          }
+        }
+      }
+    },
+    "Mode": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mode"
+          }
+        }
+      }
+    },
+    "Mon album 🐱": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "My album 🐱"
+          }
+        }
+      }
+    },
     "Montant": {
       "localizations": {
         "de": {
@@ -5942,8 +7098,36 @@
         }
       }
     },
-    "Mot de passe oublié": {},
-    "Mot de passe oublié ?": {},
+    "Mot de passe : 8 caractères minimum": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Password: 8 characters minimum"
+          }
+        }
+      }
+    },
+    "Mot de passe oublié": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forgot password"
+          }
+        }
+      }
+    },
+    "Mot de passe oublié ?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forgot password?"
+          }
+        }
+      }
+    },
     "Niveau %lld": {
       "localizations": {
         "de": {
@@ -5996,9 +7180,36 @@
         }
       }
     },
-    "Niveau d'activité": {},
-    "Nom de l'article": {},
-    "Nom du lieu": {},
+    "Niveau d'activité": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activity level"
+          }
+        }
+      }
+    },
+    "Nom de l'article": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Item name"
+          }
+        }
+      }
+    },
+    "Nom du lieu": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Place name"
+          }
+        }
+      }
+    },
     "Notes": {
       "localizations": {
         "de": {
@@ -6103,9 +7314,36 @@
         }
       }
     },
-    "Notre IA analyse les caractéristiques de votre chat": {},
-    "Nouveau dossier médical": {},
-    "Nouveau rappel": {},
+    "Notre IA analyse les caractéristiques de votre chat": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Our AI analyzes your cat's features"
+          }
+        }
+      }
+    },
+    "Nouveau dossier médical": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New medical record"
+          }
+        }
+      }
+    },
+    "Nouveau rappel": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New reminder"
+          }
+        }
+      }
+    },
     "Nouveau sujet": {
       "localizations": {
         "de": {
@@ -6158,8 +7396,26 @@
         }
       }
     },
-    "Nouvel événement": {},
-    "Nouvelle analyse": {},
+    "Nouvel événement": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New event"
+          }
+        }
+      }
+    },
+    "Nouvelle analyse": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New analysis"
+          }
+        }
+      }
+    },
     "Nouvelle dépense": {
       "localizations": {
         "de": {
@@ -6212,9 +7468,46 @@
         }
       }
     },
-    "Nouvelle publication": {},
-    "Observations…": {},
-    "Optionnel": {},
+    "Nouvelle publication": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New post"
+          }
+        }
+      }
+    },
+    "Observations…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notes…"
+          }
+        }
+      }
+    },
+    "OK": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        }
+      }
+    },
+    "Optionnel": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Optional"
+          }
+        }
+      }
+    },
     "Outils": {
       "localizations": {
         "de": {
@@ -6267,12 +7560,76 @@
         }
       }
     },
-    "Ouvrir le Photo Booth": {},
-    "Partager": {},
-    "Partager dans la communauté": {},
-    "Participants": {},
-    "Participer": {},
-    "Participer à l'événement": {},
+    "Ouvre Purrly et lance le scanner de race IA.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Purrly and launch the AI breed scanner."
+          }
+        }
+      }
+    },
+    "Ouvrir le Photo Booth": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open the Photo Booth"
+          }
+        }
+      }
+    },
+    "Partager": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Share"
+          }
+        }
+      }
+    },
+    "Partager dans la communauté": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Share with the community"
+          }
+        }
+      }
+    },
+    "Participants": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Participants"
+          }
+        }
+      }
+    },
+    "Participer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Join"
+          }
+        }
+      }
+    },
+    "Participer à l'événement": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Join the event"
+          }
+        }
+      }
+    },
     "paywall.aiMessage.body": {
       "localizations": {
         "de": {
@@ -6679,7 +8036,42 @@
         }
       }
     },
+    "paywall.restore": {
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Restaurer mes achats"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restore purchases"
+          }
+        }
+      }
+    },
+    "paywall.unavailable": {
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Abonnement bientôt disponible."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Currently unavailable"
+          }
+        }
+      }
+    },
     "paywall.upgrade": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -6737,9 +8129,36 @@
         }
       }
     },
-    "Photo Booth": {},
-    "Photo Booth 🐱": {},
-    "Photo sauvegardée !": {},
+    "Photo Booth": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo Booth"
+          }
+        }
+      }
+    },
+    "Photo Booth 🐱": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo Booth 🐱"
+          }
+        }
+      }
+    },
+    "Photo sauvegardée !": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo saved!"
+          }
+        }
+      }
+    },
     "Plus": {
       "localizations": {
         "de": {
@@ -6792,9 +8211,36 @@
         }
       }
     },
-    "Poids": {},
-    "Poids de %@": {},
-    "Poids du chat": {},
+    "Poids": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weight"
+          }
+        }
+      }
+    },
+    "Poids de %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@'s weight"
+          }
+        }
+      }
+    },
+    "Poids du chat": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cat's weight"
+          }
+        }
+      }
+    },
     "Politique de confidentialité": {
       "localizations": {
         "de": {
@@ -6951,11 +8397,56 @@
         }
       }
     },
-    "Premiers secours": {},
-    "Préparation voyage": {},
-    "Prix (optionnel, en €)": {},
-    "Prochaine échéance": {},
-    "Prochaine visite": {},
+    "Premiers secours": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "First aid"
+          }
+        }
+      }
+    },
+    "Préparation voyage": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Travel preparation"
+          }
+        }
+      }
+    },
+    "Prix (optionnel, en €)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Price (optional, in €)"
+          }
+        }
+      }
+    },
+    "Prochaine échéance": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Next due date"
+          }
+        }
+      }
+    },
+    "Prochaine visite": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Next visit"
+          }
+        }
+      }
+    },
     "Progression": {
       "localizations": {
         "de": {
@@ -7008,7 +8499,16 @@
         }
       }
     },
-    "Publications": {},
+    "Publications": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Posts"
+          }
+        }
+      }
+    },
     "Publier": {
       "localizations": {
         "de": {
@@ -7061,7 +8561,16 @@
         }
       }
     },
-    "Publier dans la communauté": {},
+    "Publier dans la communauté": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Post to the community"
+          }
+        }
+      }
+    },
     "Purrly": {
       "localizations": {
         "de": {
@@ -7230,14 +8739,96 @@
         }
       }
     },
-    "Qté": {},
-    "Qté: %@": {},
-    "Quoi de neuf avec votre chat ?": {},
-    "Rappels": {},
-    "Réessayer": {},
-    "Refuges": {},
-    "Réinitialiser": {},
-    "Réinitialiser le mot de passe": {},
+    "Qté": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qty"
+          }
+        }
+      }
+    },
+    "Qté: %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qty: %@"
+          }
+        }
+      }
+    },
+    "Quoi de neuf avec votre chat ?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What's new with your cat?"
+          }
+        }
+      }
+    },
+    "Rappels": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reminders"
+          }
+        }
+      }
+    },
+    "Réessayer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try again"
+          }
+        }
+      }
+    },
+    "Refuges": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shelters"
+          }
+        }
+      }
+    },
+    "Règles de la communauté Purrly": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Purrly community rules"
+          }
+        }
+      }
+    },
+    "Réinitialiser": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset"
+          }
+        }
+      }
+    },
+    "Réinitialiser le mot de passe": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset password"
+          }
+        }
+      }
+    },
     "Répondre…": {
       "localizations": {
         "de": {
@@ -7342,8 +8933,26 @@
         }
       }
     },
-    "Résultat du scan": {},
-    "Résultats journaliers": {},
+    "Résultat du scan": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan result"
+          }
+        }
+      }
+    },
+    "Résultats journaliers": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daily results"
+          }
+        }
+      }
+    },
     "Retirer le j'aime": {
       "localizations": {
         "de": {
@@ -7396,10 +9005,46 @@
         }
       }
     },
-    "Saisis ton adresse email et on t'enverra un lien.": {},
-    "Santé & Organisation": {},
-    "Santé & Suivi": {},
-    "Santé de %@": {},
+    "Saisis ton adresse email et on t'enverra un lien.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter your email address and we'll send you a link."
+          }
+        }
+      }
+    },
+    "Santé & Organisation": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Health & Organization"
+          }
+        }
+      }
+    },
+    "Santé & Suivi": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Health & Tracking"
+          }
+        }
+      }
+    },
+    "Santé de %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@'s health"
+          }
+        }
+      }
+    },
     "scan.browseBreeds": {
       "localizations": {
         "de": {
@@ -7981,11 +9626,116 @@
         }
       }
     },
-    "Se désabonner": {},
-    "Se désinscrire de l'événement": {},
-    "Soyez le premier à commenter": {},
-    "Stade de vie": {},
-    "Stérilisé(e)": {},
+    "Scanner mon chat": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan my cat"
+          }
+        }
+      }
+    },
+    "Scanner un chat": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan a cat"
+          }
+        }
+      }
+    },
+    "Se désabonner": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unfollow"
+          }
+        }
+      }
+    },
+    "Se désinscrire de l'événement": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leave the event"
+          }
+        }
+      }
+    },
+    "Signaler": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Report"
+          }
+        }
+      }
+    },
+    "Signaler %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Report %@"
+          }
+        }
+      }
+    },
+    "Signaler ce contenu": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Report this content"
+          }
+        }
+      }
+    },
+    "Signaler ou bloquer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Report or block"
+          }
+        }
+      }
+    },
+    "Soyez le premier à commenter": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Be the first to comment"
+          }
+        }
+      }
+    },
+    "Stade de vie": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Life stage"
+          }
+        }
+      }
+    },
+    "Stérilisé(e)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neutered / Spayed"
+          }
+        }
+      }
+    },
     "Succès": {
       "localizations": {
         "de": {
@@ -8090,11 +9840,56 @@
         }
       }
     },
-    "Suivez l'appétit, l'énergie et la litière de %@ quotidiennement.": {},
-    "Suivi du poids": {},
-    "Suivre": {},
-    "Suivre %@": {},
-    "Sujets fréquents": {},
+    "Suivez l'appétit, l'énergie et la litière de %@ quotidiennement.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Track %@'s appetite, energy and litter box daily."
+          }
+        }
+      }
+    },
+    "Suivi du poids": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weight tracking"
+          }
+        }
+      }
+    },
+    "Suivre": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Follow"
+          }
+        }
+      }
+    },
+    "Suivre %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Follow %@"
+          }
+        }
+      }
+    },
+    "Sujets fréquents": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Common topics"
+          }
+        }
+      }
+    },
     "Supprimer": {
       "localizations": {
         "de": {
@@ -8143,6 +9938,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "删除"
+          }
+        }
+      }
+    },
+    "Supprimer le compte ?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete account?"
           }
         }
       }
@@ -8553,8 +10358,26 @@
         }
       }
     },
-    "Tableau de bord santé": {},
-    "Terminés (%lld)": {},
+    "Tableau de bord santé": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Health dashboard"
+          }
+        }
+      }
+    },
+    "Terminés (%lld)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Completed (%lld)"
+          }
+        }
+      }
+    },
     "Titre": {
       "localizations": {
         "de": {
@@ -8607,7 +10430,16 @@
         }
       }
     },
-    "Titre (ex: Vaccin rage)": {},
+    "Titre (ex: Vaccin rage)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Title (e.g. Rabies vaccine)"
+          }
+        }
+      }
+    },
     "Total": {
       "localizations": {
         "de": {
@@ -8712,7 +10544,16 @@
         }
       }
     },
-    "Trousse de secours recommandée": {},
+    "Trousse de secours recommandée": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recommended first-aid kit"
+          }
+        }
+      }
+    },
     "Type": {
       "localizations": {
         "de": {
@@ -8765,8 +10606,26 @@
         }
       }
     },
-    "Type d'événement": {},
-    "Unité": {},
+    "Type d'événement": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Event type"
+          }
+        }
+      }
+    },
+    "Unité": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unit"
+          }
+        }
+      }
+    },
     "Version 1.0.0": {
       "localizations": {
         "de": {
@@ -8825,7 +10684,16 @@
         }
       }
     },
-    "Vétérinaire (optionnel)": {},
+    "Vétérinaire (optionnel)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Veterinarian (optional)"
+          }
+        }
+      }
+    },
     "vets.title": {
       "localizations": {
         "de": {
@@ -8884,8 +10752,26 @@
         }
       }
     },
-    "Vider le panier": {},
-    "Voir la fiche : %@": {},
+    "Vider le panier": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear cart"
+          }
+        }
+      }
+    },
+    "Voir la fiche : %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "View profile: %@"
+          }
+        }
+      }
+    },
     "Vos droits": {
       "localizations": {
         "de": {
@@ -8939,6 +10825,7 @@
       }
     },
     "Vous": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -9042,60 +10929,2242 @@
         }
       }
     },
-    "auth.login.fields_required": {
+    "01 48 94 31 00 — Centre Antipoison Animal (24h/24)": {
       "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bitte E-Mail und Passwort eingeben."
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Please enter your email and password."
+            "value": "01 48 94 31 00 — Animal Poison Control Center (24/7)"
           }
-        },
-        "es": {
+        }
+      }
+    },
+    "14,99 $/mois": {
+      "localizations": {
+        "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Introduce tu correo y contraseña."
+            "value": "$14.99/month"
           }
-        },
-        "fr": {
+        }
+      }
+    },
+    "15 — SAMU (orientation médicale d'urgence)": {
+      "localizations": {
+        "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Renseignez votre e-mail et votre mot de passe."
+            "value": "15 — SAMU (emergency medical dispatch, France)"
           }
-        },
-        "it": {
+        }
+      }
+    },
+    "18 — Pompiers": {
+      "localizations": {
+        "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Inserisci e-mail e password."
+            "value": "18 — Fire brigade (France)"
           }
-        },
-        "ja": {
+        }
+      }
+    },
+    "Abonnés": {
+      "localizations": {
+        "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "メールアドレスとパスワードを入力してください。"
+            "value": "Followers"
           }
-        },
-        "ko": {
+        }
+      }
+    },
+    "Adoption": {
+      "localizations": {
+        "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "이메일과 비밀번호를 입력해주세요."
+            "value": "Adoption"
           }
-        },
-        "pt-BR": {
+        }
+      }
+    },
+    "Adresse": {
+      "localizations": {
+        "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Insira seu e-mail e senha."
+            "value": "Address"
           }
-        },
-        "zh-Hans": {
+        }
+      }
+    },
+    "Adulte (1–7 ans)": {
+      "localizations": {
+        "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "请输入您的电子邮件和密码。"
+            "value": "Adult (1–7 years)"
+          }
+        }
+      }
+    },
+    "Affection": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Affection"
+          }
+        }
+      }
+    },
+    "Agressivité": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aggression"
+          }
+        }
+      }
+    },
+    "Ajoute 3 chats": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add 3 cats"
+          }
+        }
+      }
+    },
+    "Ajoute ton premier chat": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add your first cat"
+          }
+        }
+      }
+    },
+    "Ajoute un acte médical": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add a medical procedure"
+          }
+        }
+      }
+    },
+    "Alimentation": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Feeding"
+          }
+        }
+      }
+    },
+    "Analyse comportementale IA": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AI behavioral analysis"
+          }
+        }
+      }
+    },
+    "Antifreezes (éthylène glycol) — extrêmement dangereux": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Antifreeze (ethylene glycol) — extremely dangerous"
+          }
+        }
+      }
+    },
+    "Appeler immédiatement le vétérinaire": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Call the veterinarian immediately"
+          }
+        }
+      }
+    },
+    "Assistant IA": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AI Assistant"
+          }
+        }
+      }
+    },
+    "Atelier": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Workshop"
+          }
+        }
+      }
+    },
+    "Attestation d'assurance": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insurance certificate"
+          }
+        }
+      }
+    },
+    "Aucune": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "None"
+          }
+        }
+      }
+    },
+    "Autre": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Other"
+          }
+        }
+      }
+    },
+    "Bandes de gaze": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gauze bandages"
+          }
+        }
+      }
+    },
+    "Besoins standards": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Standard needs"
+          }
+        }
+      }
+    },
+    "Besoins élevés pour la croissance": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "High needs for growth"
+          }
+        }
+      }
+    },
+    "Besoins énergétiques accrus": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Increased energy needs"
+          }
+        }
+      }
+    },
+    "Cadres": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frames"
+          }
+        }
+      }
+    },
+    "Caisse de transport sécurisée": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Secure carrier"
+          }
+        }
+      }
+    },
+    "Calories": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calories"
+          }
+        }
+      }
+    },
+    "Caritatif": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Charity"
+          }
+        }
+      }
+    },
+    "Carnet de vaccination à jour": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Up-to-date vaccination record"
+          }
+        }
+      }
+    },
+    "Certificat de puce électronique": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Microchip certificate"
+          }
+        }
+      }
+    },
+    "Certificat sanitaire (si hors UE)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Health certificate (if outside EU)"
+          }
+        }
+      }
+    },
+    "Chapeau cowboy": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cowboy hat"
+          }
+        }
+      }
+    },
+    "Chapeau de fête": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Party hat"
+          }
+        }
+      }
+    },
+    "Chapeau de sorcière": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Witch hat"
+          }
+        }
+      }
+    },
+    "Chapeaux": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hats"
+          }
+        }
+      }
+    },
+    "Chat habitué à la caisse (3–7 jours avant)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cat used to the carrier (3–7 days before)"
+          }
+        }
+      }
+    },
+    "Chaton (< 1 an)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kitten (< 1 year)"
+          }
+        }
+      }
+    },
+    "Chats": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cats"
+          }
+        }
+      }
+    },
+    "Chercheur de races": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Breed seeker"
+          }
+        }
+      }
+    },
+    "Chocolat — contient de la théobromine": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chocolate — contains theobromine"
+          }
+        }
+      }
+    },
+    "Ciseaux à bout rond": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Round-tip scissors"
+          }
+        }
+      }
+    },
+    "Clinique vétérinaire la plus proche": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nearest veterinary clinic"
+          }
+        }
+      }
+    },
+    "Cliniques": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clinics"
+          }
+        }
+      }
+    },
+    "Collerette de protection": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protective cone collar"
+          }
+        }
+      }
+    },
+    "Combien d'heures doit dormir un chat adulte ?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How many hours should an adult cat sleep?"
+          }
+        }
+      }
+    },
+    "Comment fonctionne le scan ?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How does the scan work?"
+          }
+        }
+      }
+    },
+    "Comment savoir si mon chat est stressé ?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How can I tell if my cat is stressed?"
+          }
+        }
+      }
+    },
+    "Communauté": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Community"
+          }
+        }
+      }
+    },
+    "Communauté active": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Active community"
+          }
+        }
+      }
+    },
+    "Compresses stériles": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sterile compresses"
+          }
+        }
+      }
+    },
+    "Compte démo": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Demo account"
+          }
+        }
+      }
+    },
+    "Connexion impossible — réessayez.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign-in failed — please try again."
+          }
+        }
+      }
+    },
+    "Conseil": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tip"
+          }
+        }
+      }
+    },
+    "Conseils santé personnalisés": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personalized health tips"
+          }
+        }
+      }
+    },
+    "Conserver l'emballage du produit ingéré si applicable": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep the packaging of the ingested product if applicable"
+          }
+        }
+      }
+    },
+    "Constipation": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Constipation"
+          }
+        }
+      }
+    },
+    "Contrôle du poids": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weight control"
+          }
+        }
+      }
+    },
+    "Couronne de fleurs": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Flower crown"
+          }
+        }
+      }
+    },
+    "Couronne royale": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Royal crown"
+          }
+        }
+      }
+    },
+    "Couverture avec odeur familière": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blanket with familiar scent"
+          }
+        }
+      }
+    },
+    "Couverture de survie": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Emergency blanket"
+          }
+        }
+      }
+    },
+    "Croquettes (sèches)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kibble (dry)"
+          }
+        }
+      }
+    },
+    "Diarrhée": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diarrhea"
+          }
+        }
+      }
+    },
+    "Difficultés respiratoires ou halètement intense": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Breathing difficulty or intense panting"
+          }
+        }
+      }
+    },
+    "Documents": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Documents"
+          }
+        }
+      }
+    },
+    "Dossier santé": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Health record"
+          }
+        }
+      }
+    },
+    "Dépenses & outils": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Expenses & tools"
+          }
+        }
+      }
+    },
+    "Eau recommandée": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recommended water"
+          }
+        }
+      }
+    },
+    "Efface définitivement votre compte et vos données": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permanently erases your account and data"
+          }
+        }
+      }
+    },
+    "Enregistre le poids de ton chat": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Record your cat's weight"
+          }
+        }
+      }
+    },
+    "Entrez une adresse e-mail valide.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter a valid email address."
+          }
+        }
+      }
+    },
+    "Entrez votre nom.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter your name."
+          }
+        }
+      }
+    },
+    "Essentiels": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Essentials"
+          }
+        }
+      }
+    },
+    "Explorateur": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Explorer"
+          }
+        }
+      }
+    },
+    "Exposition": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show"
+          }
+        }
+      }
+    },
+    "Fidélité": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Loyalty"
+          }
+        }
+      }
+    },
+    "Fête": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Party"
+          }
+        }
+      }
+    },
+    "Gamelle pliable": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Foldable bowl"
+          }
+        }
+      }
+    },
+    "Garder le chat au chaud dans une couverture": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep the cat warm in a blanket"
+          }
+        }
+      }
+    },
+    "Gencives bleues, blanches ou très pâles": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blue, white or very pale gums"
+          }
+        }
+      }
+    },
+    "Gestante/Allaitante": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pregnant/Nursing"
+          }
+        }
+      }
+    },
+    "Grande rencontre des passionnés de Maine Coon.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A big gathering of Maine Coon enthusiasts."
+          }
+        }
+      }
+    },
+    "Gratuit": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free"
+          }
+        }
+      }
+    },
+    "Griffes et marquage": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scratching and marking"
+          }
+        }
+      }
+    },
+    "Griffoir en sisal + spray répulsif, ça marche !": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A sisal scratching post + repellent spray works!"
+          }
+        }
+      }
+    },
+    "Guide d'urgence": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Emergency guide"
+          }
+        }
+      }
+    },
+    "Harnais + laisse de sécurité": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Harness + safety leash"
+          }
+        }
+      }
+    },
+    "Humeur & bien-être par IA": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mood & well-being by AI"
+          }
+        }
+      }
+    },
+    "Hydratation": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hydration"
+          }
+        }
+      }
+    },
+    "Hygiène dentaire": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dental hygiene"
+          }
+        }
+      }
+    },
+    "Hyperactif": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hyperactive"
+          }
+        }
+      }
+    },
+    "Identifié hors-ligne sur votre appareil.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Identified offline on your device."
+          }
+        }
+      }
+    },
+    "Il griffe les canapés… je suis à bout.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "He scratches the sofas… I'm at my wit's end."
+          }
+        }
+      }
+    },
+    "Illimité": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlimited"
+          }
+        }
+      }
+    },
+    "Impossible de télécharger l'image générée.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unable to download the generated image."
+          }
+        }
+      }
+    },
+    "Jouets & accessoires": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toys & accessories"
+          }
+        }
+      }
+    },
+    "Jouets familiers": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familiar toys"
+          }
+        }
+      }
+    },
+    "Joueur": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Playful"
+          }
+        }
+      }
+    },
+    "La suppression du compte a échoué. Réessaie plus tard.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Account deletion failed. Please try again later."
+          }
+        }
+      }
+    },
+    "Lance ton premier scan": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Run your first scan"
+          }
+        }
+      }
+    },
+    "Le mode urgence fonctionne hors-ligne ?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Does emergency mode work offline?"
+          }
+        }
+      }
+    },
+    "Le mot de passe doit contenir au moins 8 caractères.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The password must be at least 8 characters."
+          }
+        }
+      }
+    },
+    "Les alertes d'urgence créées sont stockées localement. La carte vétérinaires nécessite une connexion.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Created emergency alerts are stored locally. The vet map requires a connection."
+          }
+        }
+      }
+    },
+    "Les comptes publiant du contenu offensant sont retirés de la communauté.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accounts posting offensive content are removed from the community."
+          }
+        }
+      }
+    },
+    "Les profils de chats sont stockés localement sur ton appareil. L'assistant IA envoie les messages au serveur pour traitement mais ne les conserve pas.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cat profiles are stored locally on your device. The AI assistant sends messages to the server for processing but does not keep them."
+          }
+        }
+      }
+    },
+    "Lilas — feuilles et fleurs dangereuses": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lily — dangerous leaves and flowers"
+          }
+        }
+      }
+    },
+    "Liste des numéros d'urgence": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "List of emergency numbers"
+          }
+        }
+      }
+    },
+    "Litière + bac portable": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Litter + portable tray"
+          }
+        }
+      }
+    },
+    "Lunettes": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Glasses"
+          }
+        }
+      }
+    },
+    "Lunettes de soleil": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sunglasses"
+          }
+        }
+      }
+    },
+    "Léthargique": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lethargic"
+          }
+        }
+      }
+    },
+    "Maison de chats": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "House of cats"
+          }
+        }
+      }
+    },
+    "Merci. Ce contenu a été masqué et signalé à notre équipe, qui agira sous 24 h.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thank you. This content has been hidden and reported to our team, which will act within 24 hours."
+          }
+        }
+      }
+    },
+    "Mes données sont-elles privées ?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Is my data private?"
+          }
+        }
+      }
+    },
+    "Mignon": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cute"
+          }
+        }
+      }
+    },
+    "Mon Maine Coon vient d'adopter sa litière — des conseils ?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "My Maine Coon just took to its litter box — any tips?"
+          }
+        }
+      }
+    },
+    "Mon album": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "My album"
+          }
+        }
+      }
+    },
+    "Mon chat est agressif parfois, pourquoi ?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "My cat is sometimes aggressive, why?"
+          }
+        }
+      }
+    },
+    "Mon chat griffe les meubles, comment le corriger ?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "My cat scratches the furniture, how can I fix it?"
+          }
+        }
+      }
+    },
+    "Mon chat mange trop vite, que faire ?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "My cat eats too fast, what should I do?"
+          }
+        }
+      }
+    },
+    "Muguet — toutes parties sont toxiques": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lily of the valley — all parts are toxic"
+          }
+        }
+      }
+    },
+    "Médicaments habituels": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usual medications"
+          }
+        }
+      }
+    },
+    "Métabolisme ralenti": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Slowed metabolism"
+          }
+        }
+      }
+    },
+    "Ne pas donner de médicaments humains": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Do not give human medications"
+          }
+        }
+      }
+    },
+    "Ne pas forcer à manger ni à boire": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Do not force feeding or drinking"
+          }
+        }
+      }
+    },
+    "Noter l'heure des premiers symptômes": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Note the time of the first symptoms"
+          }
+        }
+      }
+    },
+    "Nourriture pour 3 jours minimum": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Food for at least 3 days"
+          }
+        }
+      }
+    },
+    "Numéros d'urgence": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Emergency numbers"
+          }
+        }
+      }
+    },
+    "Nutrition": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nutrition"
+          }
+        }
+      }
+    },
+    "Nœud papillon": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bow tie"
+          }
+        }
+      }
+    },
+    "Oignons et ail — détruisent les globules rouges": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Onions and garlic — destroy red blood cells"
+          }
+        }
+      }
+    },
+    "Oui, à tout moment depuis les Réglages > Abonnements de ton iPhone.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yes, anytime from Settings > Subscriptions on your iPhone."
+          }
+        }
+      }
+    },
+    "Ouvre l'app 7 jours de suite": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open the app 7 days in a row"
+          }
+        }
+      }
+    },
+    "Paracétamol et ibuprofène — mortels pour les chats": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paracetamol and ibuprofen — deadly for cats"
+          }
+        }
+      }
+    },
+    "Pas de repas 3h avant le départ": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No meal 3h before departure"
+          }
+        }
+      }
+    },
+    "Passeport européen du chat": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "European pet passport"
+          }
+        }
+      }
+    },
+    "Pattes": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paws"
+          }
+        }
+      }
+    },
+    "Perte de conscience ou convulsions": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Loss of consciousness or seizures"
+          }
+        }
+      }
+    },
+    "Peu actif": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not very active"
+          }
+        }
+      }
+    },
+    "Pharmacie": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pharmacy"
+          }
+        }
+      }
+    },
+    "Pharmacies": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pharmacies"
+          }
+        }
+      }
+    },
+    "Photo du jour : notre Bengal adore les étagères hautes 🐾": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo of the day: our Bengal loves high shelves 🐾"
+          }
+        }
+      }
+    },
+    "Photos de tes chats": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photos of your cats"
+          }
+        }
+      }
+    },
+    "Pince à épiler": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tweezers"
+          }
+        }
+      }
+    },
+    "Pirate": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pirate"
+          }
+        }
+      }
+    },
+    "Poisons communs": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Common poisons"
+          }
+        }
+      }
+    },
+    "Pose 3 questions à l'assistant": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ask the assistant 3 questions"
+          }
+        }
+      }
+    },
+    "Possible": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Possible"
+          }
+        }
+      }
+    },
+    "Pourquoi mon chat ronronne-t-il ?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Why does my cat purr?"
+          }
+        }
+      }
+    },
+    "Premier compagnon": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "First companion"
+          }
+        }
+      }
+    },
+    "Premiers gestes": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "First actions"
+          }
+        }
+      }
+    },
+    "Première pesée": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "First weigh-in"
+          }
+        }
+      }
+    },
+    "Prends une photo nette de ton chat. L'IA analyse les traits morphologiques et compare avec plus de 400 races connues.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Take a sharp photo of your cat. The AI analyzes morphological features and compares with over 400 known breeds."
+          }
+        }
+      }
+    },
+    "Princesse": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Princess"
+          }
+        }
+      }
+    },
+    "Prix": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Price"
+          }
+        }
+      }
+    },
+    "Probable": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Likely"
+          }
+        }
+      }
+    },
+    "Préparer le départ": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prepare for departure"
+          }
+        }
+      }
+    },
+    "Publie dans le forum": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Post in the forum"
+          }
+        }
+      }
+    },
+    "Puis-je annuler mon abonnement ?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Can I cancel my subscription?"
+          }
+        }
+      }
+    },
+    "Purrly Premium": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Purrly Premium"
+          }
+        }
+      }
+    },
+    "Pâtée (humide)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wet food"
+          }
+        }
+      }
+    },
+    "Raisins et raisins secs — toxiques pour les reins": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grapes and raisins — toxic to the kidneys"
+          }
+        }
+      }
+    },
+    "Rations journalières": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daily rations"
+          }
+        }
+      }
+    },
+    "Rejoins la communauté": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Join the community"
+          }
+        }
+      }
+    },
+    "Rencontre": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meetup"
+          }
+        }
+      }
+    },
+    "Rencontre éleveurs Maine Coon": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maine Coon breeders meetup"
+          }
+        }
+      }
+    },
+    "Rester calme et rassurer le chat": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stay calm and reassure the cat"
+          }
+        }
+      }
+    },
+    "Réponse réseau invalide.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invalid network response."
+          }
+        }
+      }
+    },
+    "Réponse serveur inattendue.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unexpected server response."
+          }
+        }
+      }
+    },
+    "Réponse serveur invalide.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invalid server response."
+          }
+        }
+      }
+    },
+    "Sang": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blood"
+          }
+        }
+      }
+    },
+    "Sang dans les vomissements ou les selles": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blood in vomit or stool"
+          }
+        }
+      }
+    },
+    "Santé": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Health"
+          }
+        }
+      }
+    },
+    "Scan du jour": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan of the day"
+          }
+        }
+      }
+    },
+    "Scanne une race de chat": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan a cat breed"
+          }
+        }
+      }
+    },
+    "Se déconnecter": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign out"
+          }
+        }
+      }
+    },
+    "Senior (> 7 ans)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Senior (> 7 years)"
+          }
+        }
+      }
+    },
+    "Signes d'urgence": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Emergency signs"
+          }
+        }
+      }
+    },
+    "Solution antiseptique (Bétadine)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Antiseptic solution (Betadine)"
+          }
+        }
+      }
+    },
+    "Sommeil": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sleep"
+          }
+        }
+      }
+    },
+    "Sparadrap médical": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Medical tape"
+          }
+        }
+      }
+    },
+    "Stickers & cadres pour tes chats": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stickers & frames for your cats"
+          }
+        }
+      }
+    },
+    "Stimulation mentale": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mental stimulation"
+          }
+        }
+      }
+    },
+    "Stress": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stress"
+          }
+        }
+      }
+    },
+    "Super-héros": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Superhero"
+          }
+        }
+      }
+    },
+    "Suppression…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deleting…"
+          }
+        }
+      }
+    },
+    "Supprimer mon compte": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete my account"
+          }
+        }
+      }
+    },
+    "Sérum physiologique": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saline solution"
+          }
+        }
+      }
+    },
+    "Toilettage": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grooming"
+          }
+        }
+      }
+    },
+    "Tolérance zéro pour les contenus offensants, haineux ou illégaux, et pour les comportements abusifs.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zero tolerance for offensive, hateful or illegal content, and for abusive behavior."
+          }
+        }
+      }
+    },
+    "Traitement antiparasitaire récent": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recent antiparasitic treatment"
+          }
+        }
+      }
+    },
+    "Transport": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Transport"
+          }
+        }
+      }
+    },
+    "Traumatisme ou chute importante": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trauma or major fall"
+          }
+        }
+      }
+    },
+    "Trousse de premiers soins": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "First-aid kit"
+          }
+        }
+      }
+    },
+    "Trouver près de moi": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Find near me"
+          }
+        }
+      }
+    },
+    "Très actif": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Very active"
+          }
+        }
+      }
+    },
+    "Très probable": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Very likely"
+          }
+        }
+      }
+    },
+    "Une semaine": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "One week"
+          }
+        }
+      }
+    },
+    "Vaccins à jour (rage obligatoire)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Up-to-date vaccines (rabies required)"
+          }
+        }
+      }
+    },
+    "Visite vétérinaire avant départ": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vet visit before departure"
+          }
+        }
+      }
+    },
+    "Vomissements répétés (plus de 3 en 24h)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Repeated vomiting (more than 3 in 24h)"
+          }
+        }
+      }
+    },
+    "Vous pouvez bloquer tout utilisateur : son contenu disparaît instantanément de votre fil.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You can block any user: their content instantly disappears from your feed."
+          }
+        }
+      }
+    },
+    "Vous pouvez signaler tout contenu inapproprié. Il est masqué immédiatement et traité sous 24 h.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You can report any inappropriate content. It is hidden immediately and handled within 24 hours."
+          }
+        }
+      }
+    },
+    "Vétérinaire": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Veterinarian"
+          }
+        }
+      }
+    },
+    "Vétérinaire de garde — conservez le numéro local": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On-call veterinarian — keep the local number"
+          }
+        }
+      }
+    },
+    "Vétérinaires": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Veterinarians"
+          }
+        }
+      }
+    },
+    "Événement": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Event"
+          }
+        }
+      }
+    },
+    "↑ Augmenté": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "↑ Increased"
+          }
+        }
+      }
+    },
+    "↓ Diminué": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "↓ Decreased"
+          }
+        }
+      }
+    },
+    "⚡️ Énergie": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⚡️ Energy"
+          }
+        }
+      }
+    },
+    "🍽 Appétit": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🍽 Appetite"
+          }
+        }
+      }
+    },
+    "💧 Eau": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "💧 Water"
+          }
+        }
+      }
+    },
+    "🪣 Litière": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🪣 Litter box"
+          }
+        }
+      }
+    },
+    "%lld messages restants": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld messages remaining"
+          }
+        }
+      }
+    },
+    "Niveau %lld · %lld XP": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Level %lld · %lld XP"
+          }
+        }
+      }
+    },
+    "%lld discussions": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld discussions"
+          }
+        }
+      }
+    },
+    "%lld rappels à venir": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld upcoming reminders"
+          }
+        }
+      }
+    },
+    "%lld articles à acheter": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld items to buy"
+          }
+        }
+      }
+    },
+    "%@ a été bloqué·e. Son contenu n'apparaît plus dans votre fil.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ has been blocked. Their content no longer appears in your feed."
+          }
+        }
+      }
+    },
+    "Publication non synchronisée : %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Post not synced: %@"
+          }
+        }
+      }
+    },
+    "Like non synchronisé : %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Like not synced: %@"
+          }
+        }
+      }
+    },
+    "Événement non synchronisé : %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Event not synced: %@"
           }
         }
       }

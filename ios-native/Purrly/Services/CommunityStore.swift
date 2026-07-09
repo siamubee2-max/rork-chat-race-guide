@@ -83,7 +83,7 @@ final class CommunityStore {
                 ).execute()
                 lastSyncError = nil
             } catch {
-                lastSyncError = "Publication non synchronisée : \(error.localizedDescription)"
+                lastSyncError = String(localized: "Publication non synchronisée : \(error.localizedDescription)")
             }
         }
     }
@@ -108,7 +108,7 @@ final class CommunityStore {
                     .execute()
                 lastSyncError = nil
             } catch {
-                lastSyncError = "Like non synchronisé : \(error.localizedDescription)"
+                lastSyncError = String(localized: "Like non synchronisé : \(error.localizedDescription)")
             }
         }
     }
@@ -136,7 +136,7 @@ final class CommunityStore {
                 ).execute()
                 lastSyncError = nil
             } catch {
-                lastSyncError = "Événement non synchronisé : \(error.localizedDescription)"
+                lastSyncError = String(localized: "Événement non synchronisé : \(error.localizedDescription)")
             }
         }
     }
@@ -192,15 +192,15 @@ final class CommunityStore {
         let now = Date()
         posts = [
             CommunityPost(id: "s1", authorName: "Léa",
-                          content: "Mon Maine Coon vient d'adopter sa litière — des conseils ?",
+                          content: String(localized: "Mon Maine Coon vient d'adopter sa litière — des conseils ?"),
                           createdAt: now.addingTimeInterval(-3600), likes: 12, isLiked: false),
             CommunityPost(id: "s2", authorName: "Marc",
-                          content: "Photo du jour : notre Bengal adore les étagères hautes 🐾",
+                          content: String(localized: "Photo du jour : notre Bengal adore les étagères hautes 🐾"),
                           createdAt: now.addingTimeInterval(-86_400), likes: 34, isLiked: true),
         ]
         events = [
-            CommunityEvent(id: "e1", title: "Rencontre éleveurs Maine Coon",
-                           description: "Grande rencontre des passionnés de Maine Coon.",
+            CommunityEvent(id: "e1", title: String(localized: "Rencontre éleveurs Maine Coon"),
+                           description: String(localized: "Grande rencontre des passionnés de Maine Coon."),
                            date: isoDate(from: now.addingTimeInterval(86_400 * 5)), time: "14:00",
                            location: "Lyon", address: "Parc de la Tête d'Or, 69006 Lyon",
                            type: "meetup", maxAttendees: 50, price: "", attendees: [], createdAt: now),

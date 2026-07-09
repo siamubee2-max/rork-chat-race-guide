@@ -70,10 +70,10 @@ private struct LogRow: View {
         "none": .red, "diarrhea": .red, "constipation": .orange, "blood": .red
     ]
     private let labels: [String: String] = [
-        "normal": "Normal", "increased": "↑ Augmenté", "decreased": "↓ Diminué",
-        "none": "Aucun", "playful": "Joueur", "lethargic": "Léthargique",
-        "hyperactive": "Hyperactif", "diarrhea": "Diarrhée",
-        "constipation": "Constipation", "blood": "Sang"
+        "normal": "Normal", "increased": String(localized: "↑ Augmenté"), "decreased": String(localized: "↓ Diminué"),
+        "none": String(localized: "Aucun"), "playful": String(localized: "Joueur"), "lethargic": String(localized: "Léthargique"),
+        "hyperactive": String(localized: "Hyperactif"), "diarrhea": String(localized: "Diarrhée"),
+        "constipation": String(localized: "Constipation"), "blood": String(localized: "Sang")
     ]
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {

@@ -87,12 +87,12 @@ struct SignupView: View {
         formError = nil
         let trimmedName = name.trimmingCharacters(in: .whitespaces)
         let trimmedEmail = email.trimmingCharacters(in: .whitespaces)
-        guard !trimmedName.isEmpty else { formError = "Entrez votre nom."; return }
+        guard !trimmedName.isEmpty else { formError = String(localized: "Entrez votre nom."); return }
         guard trimmedEmail.contains("@"), trimmedEmail.contains(".") else {
-            formError = "Entrez une adresse e-mail valide."; return
+            formError = String(localized: "Entrez une adresse e-mail valide."); return
         }
         guard password.count >= 8 else {
-            formError = "Le mot de passe doit contenir au moins 8 caractères."; return
+            formError = String(localized: "Le mot de passe doit contenir au moins 8 caractères."); return
         }
 
         isBusy = true

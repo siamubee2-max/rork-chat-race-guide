@@ -11,12 +11,12 @@ struct BehaviorView: View {
     private var selectedCat: CatProfile? { cats.first { $0.id == selectedCatId } }
 
     let behaviorTopics = [
-        ("🐾", "Griffes et marquage", "Mon chat griffe les meubles, comment le corriger ?"),
-        ("😴", "Sommeil", "Combien d'heures doit dormir un chat adulte ?"),
-        ("🍽️", "Alimentation", "Mon chat mange trop vite, que faire ?"),
-        ("😾", "Agressivité", "Mon chat est agressif parfois, pourquoi ?"),
-        ("😻", "Affection", "Pourquoi mon chat ronronne-t-il ?"),
-        ("🙀", "Stress", "Comment savoir si mon chat est stressé ?"),
+        ("🐾", String(localized: "Griffes et marquage"), String(localized: "Mon chat griffe les meubles, comment le corriger ?")),
+        ("😴", String(localized: "Sommeil"), String(localized: "Combien d'heures doit dormir un chat adulte ?")),
+        ("🍽️", String(localized: "Alimentation"), String(localized: "Mon chat mange trop vite, que faire ?")),
+        ("😾", String(localized: "Agressivité"), String(localized: "Mon chat est agressif parfois, pourquoi ?")),
+        ("😻", String(localized: "Affection"), String(localized: "Pourquoi mon chat ronronne-t-il ?")),
+        ("🙀", String(localized: "Stress"), String(localized: "Comment savoir si mon chat est stressé ?")),
     ]
 
     var body: some View {
@@ -126,7 +126,7 @@ struct BehaviorView: View {
                             createdAt: Date()
                         )
                     ],
-                    systemPrompt: "Tu es un expert en comportement félin. \(catContext) Réponds de façon concise et pratique en français.",
+                    systemPrompt: "You are an expert in feline behavior. \(catContext) Reply concisely and practically in \(LanguageManager.shared.aiReplyLanguage).",
                     accessToken: KeychainStore.read(.accessToken)
                 )
                 analysis = reply

@@ -28,9 +28,9 @@ struct UserProfileView: View {
                         .font(.title2.weight(.bold))
                         .foregroundStyle(AppTheme.ivory)
                     HStack(spacing: 32) {
-                        statItem("\(userPosts.count)", "Publications")
-                        statItem("0", "Abonnés")
-                        statItem("0", "Abonnements")
+                        statItem("\(userPosts.count)", String(localized: "Publications"))
+                        statItem("0", String(localized: "Abonnés"))
+                        statItem("0", String(localized: "Abonnements"))
                     }
                 }
                 .padding(.top, 8)

@@ -60,9 +60,9 @@ final class BreedClassifierService {
     /// cohérent avec `BreedScanService.ScanResult.confidence`.
     static func confidenceLabel(_ confidence: Float) -> String {
         switch confidence {
-        case 0.8...:   "Très probable"
-        case 0.5..<0.8: "Probable"
-        default:        "Possible"
+        case 0.8...:   String(localized: "Très probable")
+        case 0.5..<0.8: String(localized: "Probable")
+        default:        String(localized: "Possible")
         }
     }
 

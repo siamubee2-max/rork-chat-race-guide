@@ -54,7 +54,7 @@ final class ModerationStore {
     func block(author: String) {
         blockedAuthors.insert(author)
         persistBlocked()
-        lastActionMessage = "\(author) a été bloqué·e. Son contenu n'apparaît plus dans votre fil."
+        lastActionMessage = String(localized: "\(author) a été bloqué·e. Son contenu n'apparaît plus dans votre fil.")
     }
 
     func unblock(author: String) {
@@ -69,7 +69,7 @@ final class ModerationStore {
     func report(id: String, author: String, reason: String) {
         reportedIDs.insert(id)
         persistReported()
-        lastActionMessage = "Merci. Ce contenu a été masqué et signalé à notre équipe, qui agira sous 24 h."
+        lastActionMessage = String(localized: "Merci. Ce contenu a été masqué et signalé à notre équipe, qui agira sous 24 h.")
     }
 
     /// Un contenu est masqué s'il a été signalé OU si son auteur est bloqué.

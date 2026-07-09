@@ -59,7 +59,7 @@ final class BreedScanService {
 
         let (data, response) = try await AppHTTP.session.data(for: request)
         guard let http = response as? HTTPURLResponse else {
-            throw ScanError.serverError("Réponse réseau invalide.")
+            throw ScanError.serverError(String(localized: "Réponse réseau invalide."))
         }
 
         if http.statusCode == 401 { throw ScanError.unauthorized }

@@ -13,11 +13,11 @@ struct ChallengesView: View {
     @Environment(AppEnvironment.self) private var environment
 
     private let challenges: [Challenge] = [
-        Challenge(id: "c1", title: "Première pesée", description: "Enregistre le poids de ton chat", xpReward: 30, icon: "scalemass", isCompleted: false),
-        Challenge(id: "c2", title: "Communauté active", description: "Publie dans le forum", xpReward: 20, icon: "bubble.left", isCompleted: false),
-        Challenge(id: "c3", title: "Scan du jour", description: "Scanne une race de chat", xpReward: 25, icon: "camera.viewfinder", isCompleted: false),
-        Challenge(id: "c4", title: "Assistant IA", description: "Pose 3 questions à l'assistant", xpReward: 15, icon: "sparkles", isCompleted: false),
-        Challenge(id: "c5", title: "Dossier santé", description: "Ajoute un acte médical", xpReward: 40, icon: "cross.case", isCompleted: false),
+        Challenge(id: "c1", title: String(localized: "Première pesée"), description: String(localized: "Enregistre le poids de ton chat"), xpReward: 30, icon: "scalemass", isCompleted: false),
+        Challenge(id: "c2", title: String(localized: "Communauté active"), description: String(localized: "Publie dans le forum"), xpReward: 20, icon: "bubble.left", isCompleted: false),
+        Challenge(id: "c3", title: String(localized: "Scan du jour"), description: String(localized: "Scanne une race de chat"), xpReward: 25, icon: "camera.viewfinder", isCompleted: false),
+        Challenge(id: "c4", title: String(localized: "Assistant IA"), description: String(localized: "Pose 3 questions à l'assistant"), xpReward: 15, icon: "sparkles", isCompleted: false),
+        Challenge(id: "c5", title: String(localized: "Dossier santé"), description: String(localized: "Ajoute un acte médical"), xpReward: 40, icon: "cross.case", isCompleted: false),
     ]
 
     var body: some View {

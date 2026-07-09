@@ -60,7 +60,7 @@ final class AuthService{
             // un simple hoquet déconnecterait un utilisateur parfaitement valide.
             // On n'efface le keychain que pour une vraie erreur d'auth.
             if error is URLError {
-                lastError = "Connexion impossible — réessayez."
+                lastError = String(localized: "Connexion impossible — réessayez.")
                 // currentUser reste nil pour cette session, mais les tokens sont
                 // préservés : un relancement réseau OK ré-authentifiera.
             } else {
@@ -154,7 +154,7 @@ final class AuthService{
         do {
             let (_, response) = try await AppHTTP.session.data(for: request)
             guard let http = response as? HTTPURLResponse, (200...299).contains(http.statusCode) else {
-                lastError = "La suppression du compte a échoué. Réessaie plus tard."
+                lastError = String(localized: "La suppression du compte a échoué. Réessaie plus tard.")
                 return false
             }
             await signOut()

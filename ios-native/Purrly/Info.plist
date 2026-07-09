@@ -28,7 +28,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>36</string>
+	<string>37</string>
 	<key>DEMO_EMAIL</key>
 	<string>$(DEMO_EMAIL)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>

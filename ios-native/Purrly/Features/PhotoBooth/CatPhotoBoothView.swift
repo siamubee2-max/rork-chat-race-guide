@@ -22,22 +22,22 @@ struct StickerCategory: Identifiable {
 }
 
 let stickerCategories: [StickerCategory] = [
-    StickerCategory(id: "hats", name: "Chapeaux", icon: "🎩", stickers: [
+    StickerCategory(id: "hats", name: String(localized: "Chapeaux"), icon: "🎩", stickers: [
         "🎩", "👒", "🪖", "👑", "🎓", "⛑️", "🎪", "🪅",
     ]),
-    StickerCategory(id: "glasses", name: "Lunettes", icon: "🕶️", stickers: [
+    StickerCategory(id: "glasses", name: String(localized: "Lunettes"), icon: "🕶️", stickers: [
         "🕶️", "👓", "🥽", "🔭", "🪄", "✨", "💫", "⭐",
     ]),
-    StickerCategory(id: "cute", name: "Mignon", icon: "🎀", stickers: [
+    StickerCategory(id: "cute", name: String(localized: "Mignon"), icon: "🎀", stickers: [
         "🎀", "🌈", "💖", "🌸", "🌺", "🍀", "🦋", "🌟",
     ]),
-    StickerCategory(id: "paws", name: "Pattes", icon: "🐾", stickers: [
+    StickerCategory(id: "paws", name: String(localized: "Pattes"), icon: "🐾", stickers: [
         "🐾", "🐱", "🐟", "🐭", "🎮", "🏆", "💎", "🎵",
     ]),
-    StickerCategory(id: "party", name: "Fête", icon: "🎉", stickers: [
+    StickerCategory(id: "party", name: String(localized: "Fête"), icon: "🎉", stickers: [
         "🎉", "🎊", "🎈", "🥳", "🍰", "🎂", "🪄", "🎆",
     ]),
-    StickerCategory(id: "frames", name: "Cadres", icon: "🖼️", stickers: [
+    StickerCategory(id: "frames", name: String(localized: "Cadres"), icon: "🖼️", stickers: [
         "💛", "❤️", "💜", "💙", "🩵", "🩶", "🤍", "🖤",
     ]),
 ]

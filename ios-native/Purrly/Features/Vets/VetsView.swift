@@ -18,9 +18,9 @@ struct VetsView: View {
 
         var label: String {
             switch self {
-            case .veterinaire: "Vétérinaires"
-            case .clinique:    "Cliniques"
-            case .pharmacie:   "Pharmacies"
+            case .veterinaire: String(localized: "Vétérinaires")
+            case .clinique:    String(localized: "Cliniques")
+            case .pharmacie:   String(localized: "Pharmacies")
             }
         }
 

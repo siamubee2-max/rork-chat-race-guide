@@ -38,17 +38,17 @@ struct EventDetailView: View {
                 // Details card
                 GlassChrome.card {
                     VStack(spacing: 12) {
-                        detailRow("calendar", "Date", "\(event.date) à \(event.time)")
-                        detailRow("mappin", "Lieu", event.location)
+                        detailRow("calendar", String(localized: "Date"), "\(event.date) à \(event.time)")
+                        detailRow("mappin", String(localized: "Lieu"), event.location)
                         if !event.address.isEmpty {
-                            detailRow("map", "Adresse", event.address)
+                            detailRow("map", String(localized: "Adresse"), event.address)
                         }
                         if !event.price.isEmpty {
-                            detailRow("eurosign.circle", "Prix", "\(event.price) €")
+                            detailRow("eurosign.circle", String(localized: "Prix"), "\(event.price) €")
                         } else {
-                            detailRow("eurosign.circle", "Prix", "Gratuit")
+                            detailRow("eurosign.circle", String(localized: "Prix"), String(localized: "Gratuit"))
                         }
-                        detailRow("person.2", "Participants",
+                        detailRow("person.2", String(localized: "Participants"),
                                   "\(event.attendees.count)/\(event.maxAttendees)")
                     }
                 }
@@ -106,12 +106,12 @@ struct EventDetailView: View {
 
     private func eventTypeLabel(_ type: String) -> String {
         switch type {
-        case "meetup":   return "Rencontre"
-        case "adoption": return "Adoption"
-        case "show":     return "Exposition"
-        case "workshop": return "Atelier"
-        case "charity":  return "Caritatif"
-        default:         return "Événement"
+        case "meetup":   return String(localized: "Rencontre")
+        case "adoption": return String(localized: "Adoption")
+        case "show":     return String(localized: "Exposition")
+        case "workshop": return String(localized: "Atelier")
+        case "charity":  return String(localized: "Caritatif")
+        default:         return String(localized: "Événement")
         }
     }
 }

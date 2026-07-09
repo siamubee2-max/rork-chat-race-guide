@@ -5,12 +5,12 @@ enum ExpenseCategory: String, Codable, CaseIterable {
 
     var label: String {
         switch self {
-        case .vet:      "Vétérinaire"
-        case .food:     "Alimentation"
-        case .grooming: "Toilettage"
-        case .toy:      "Jouets & accessoires"
-        case .pharmacy: "Pharmacie"
-        case .other:    "Autre"
+        case .vet:      String(localized: "Vétérinaire")
+        case .food:     String(localized: "Alimentation")
+        case .grooming: String(localized: "Toilettage")
+        case .toy:      String(localized: "Jouets & accessoires")
+        case .pharmacy: String(localized: "Pharmacie")
+        case .other:    String(localized: "Autre")
         }
     }
 

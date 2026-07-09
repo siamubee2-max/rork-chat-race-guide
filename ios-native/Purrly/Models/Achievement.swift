@@ -5,11 +5,11 @@ enum AchievementCategory: String, Codable, CaseIterable {
 
     var label: String {
         switch self {
-        case .cats:       "Chats"
-        case .health:     "Santé"
+        case .cats:       String(localized: "Chats")
+        case .health:     String(localized: "Santé")
         case .social:     "Social"
-        case .explorer:   "Explorateur"
-        case .dedication: "Fidélité"
+        case .explorer:   String(localized: "Explorateur")
+        case .dedication: String(localized: "Fidélité")
         }
     }
 }

@@ -118,11 +118,11 @@ struct PhotoAnalyzerView: View {
                     ChatMessage(
                         id: UUID().uuidString,
                         role: .user,
-                        content: "Analyse cette photo de chat (base64 partiel: \(base64)...). Décris son humeur, sa posture, et donne 2–3 observations sur son bien-être apparent.",
+                        content: "Analyze this cat photo (partial base64: \(base64)...). Describe its mood, posture, and give 2–3 observations about its apparent well-being. Reply in \(LanguageManager.shared.aiReplyLanguage).",
                         createdAt: Date()
                     )
                 ],
-                systemPrompt: "Tu es un vétérinaire expert en comportement félin. Analyse les photos de chats. Sois concis et bienveillant.",
+                systemPrompt: "You are an expert veterinarian in feline behavior. Analyze cat photos. Be concise and kind.",
                 accessToken: KeychainStore.read(.accessToken)
             )
             analysis = reply

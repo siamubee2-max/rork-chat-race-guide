@@ -5,9 +5,9 @@ struct FoodCalculatorView: View {
         case low = "low", normal = "normal", high = "high"
         var label: String {
             switch self {
-            case .low: "Peu actif"
+            case .low: String(localized: "Peu actif")
             case .normal: "Normal"
-            case .high: "Très actif"
+            case .high: String(localized: "Très actif")
             }
         }
         var multiplier: Double {
@@ -30,10 +30,10 @@ struct FoodCalculatorView: View {
         case kitten, adult, senior, pregnant
         var label: String {
             switch self {
-            case .kitten: "Chaton (< 1 an)"
-            case .adult: "Adulte (1–7 ans)"
-            case .senior: "Senior (> 7 ans)"
-            case .pregnant: "Gestante/Allaitante"
+            case .kitten: String(localized: "Chaton (< 1 an)")
+            case .adult: String(localized: "Adulte (1–7 ans)")
+            case .senior: String(localized: "Senior (> 7 ans)")
+            case .pregnant: String(localized: "Gestante/Allaitante")
             }
         }
         var multiplier: Double {
@@ -46,10 +46,10 @@ struct FoodCalculatorView: View {
         }
         var description: String {
             switch self {
-            case .kitten: "Besoins élevés pour la croissance"
-            case .adult: "Besoins standards"
-            case .senior: "Métabolisme ralenti"
-            case .pregnant: "Besoins énergétiques accrus"
+            case .kitten: String(localized: "Besoins élevés pour la croissance")
+            case .adult: String(localized: "Besoins standards")
+            case .senior: String(localized: "Métabolisme ralenti")
+            case .pregnant: String(localized: "Besoins énergétiques accrus")
             }
         }
     }
@@ -175,9 +175,9 @@ struct FoodCalculatorView: View {
                                 .font(.headline)
                                 .foregroundStyle(AppTheme.ivory)
                             resultRow("Calories", "\(r.calories) kcal")
-                            resultRow("Croquettes (sèches)", "\(r.dryFood) g")
-                            resultRow("Pâtée (humide)", "\(r.wetFood) g")
-                            resultRow("Eau recommandée", "\(r.water) ml")
+                            resultRow(String(localized: "Croquettes (sèches)"), "\(r.dryFood) g")
+                            resultRow(String(localized: "Pâtée (humide)"), "\(r.wetFood) g")
+                            resultRow(String(localized: "Eau recommandée"), "\(r.water) ml")
                         }
                     }
 

@@ -118,10 +118,10 @@ final class DiscussionsStore {
                              authorName: "Léa", createdAt: Date().addingTimeInterval(-7200),
                              messages: [
                                 DiscussionMessage(id: "m1", authorName: "Léa",
-                                                  content: "Il griffe les canapés… je suis à bout.",
+                                                  content: String(localized: "Il griffe les canapés… je suis à bout."),
                                                   createdAt: Date().addingTimeInterval(-7200)),
                                 DiscussionMessage(id: "m2", authorName: "Marc",
-                                                  content: "Griffoir en sisal + spray répulsif, ça marche !",
+                                                  content: String(localized: "Griffoir en sisal + spray répulsif, ça marche !"),
                                                   createdAt: Date().addingTimeInterval(-3600)),
                              ]),
         ]

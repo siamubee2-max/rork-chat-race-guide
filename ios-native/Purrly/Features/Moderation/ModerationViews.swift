@@ -13,10 +13,10 @@ struct CommunityRulesGate: View {
     private var moderation: ModerationStore { environment.moderation }
 
     private let rules: [(symbol: String, text: String)] = [
-        ("hand.raised.fill", "Tolérance zéro pour les contenus offensants, haineux ou illégaux, et pour les comportements abusifs."),
-        ("flag.fill", "Vous pouvez signaler tout contenu inapproprié. Il est masqué immédiatement et traité sous 24 h."),
-        ("person.fill.xmark", "Vous pouvez bloquer tout utilisateur : son contenu disparaît instantanément de votre fil."),
-        ("checkmark.seal.fill", "Les comptes publiant du contenu offensant sont retirés de la communauté.")
+        ("hand.raised.fill", String(localized: "Tolérance zéro pour les contenus offensants, haineux ou illégaux, et pour les comportements abusifs.")),
+        ("flag.fill", String(localized: "Vous pouvez signaler tout contenu inapproprié. Il est masqué immédiatement et traité sous 24 h.")),
+        ("person.fill.xmark", String(localized: "Vous pouvez bloquer tout utilisateur : son contenu disparaît instantanément de votre fil.")),
+        ("checkmark.seal.fill", String(localized: "Les comptes publiant du contenu offensant sont retirés de la communauté."))
     ]
 
     var body: some View {

@@ -110,11 +110,11 @@ struct InsightsView: View {
                     ChatMessage(
                         id: UUID().uuidString,
                         role: .user,
-                        content: "Génère 4 insights santé/bien-être pour ces chats: \(catsDesc). Format JSON: [{\"icon\":\"...\",\"type\":\"...\",\"title\":\"...\",\"body\":\"...\"}] avec type parmi: Conseil, Alerte, Nutrition, Santé",
+                        content: "Generate 4 health/well-being insights for these cats: \(catsDesc). Return JSON: [{\"icon\":\"...\",\"type\":\"...\",\"title\":\"...\",\"body\":\"...\"}] where type is one of: Conseil, Alerte, Nutrition, Santé. Write title and body in \(LanguageManager.shared.aiReplyLanguage).",
                         createdAt: Date()
                     )
                 ],
-                systemPrompt: "Tu es un vétérinaire expert. Réponds UNIQUEMENT en JSON valide, pas de markdown.",
+                systemPrompt: "You are an expert veterinarian. Respond ONLY with valid JSON, no markdown.",
                 accessToken: KeychainStore.read(.accessToken)
             )
             let parsed = parseInsights(reply)
@@ -149,22 +149,22 @@ struct InsightsView: View {
     private func defaultInsights() -> [InsightItem] {
         [
             InsightItem(
-                icon: "💧", type: "Conseil", title: "Hydratation",
+                icon: "💧", type: String(localized: "Conseil"), title: String(localized: "Hydratation"),
                 body: "Les chats boivent peu naturellement. Une fontaine à eau peut augmenter leur consommation de 30%.",
                 color: .cyan
             ),
             InsightItem(
-                icon: "🦷", type: "Santé", title: "Hygiène dentaire",
+                icon: "🦷", type: String(localized: "Santé"), title: String(localized: "Hygiène dentaire"),
                 body: "80% des chats ont des problèmes dentaires à 3 ans. Brossage ou friandises dentaires recommandés.",
                 color: AppTheme.primary
             ),
             InsightItem(
-                icon: "🎮", type: "Conseil", title: "Stimulation mentale",
+                icon: "🎮", type: String(localized: "Conseil"), title: String(localized: "Stimulation mentale"),
                 body: "15–20 min de jeu quotidien réduit le stress et prévient l'obésité.",
                 color: .purple
             ),
             InsightItem(
-                icon: "⚖️", type: "Nutrition", title: "Contrôle du poids",
+                icon: "⚖️", type: String(localized: "Nutrition"), title: String(localized: "Contrôle du poids"),
                 body: "Pesez votre chat tous les mois. Une variation de 10% mérite une consultation vétérinaire.",
                 color: .orange
             ),

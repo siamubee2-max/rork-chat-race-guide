@@ -24,7 +24,7 @@ struct AIChatService {
         var errorDescription: String? {
             switch self {
             case .unauthorized: "Connectez-vous pour utiliser l'assistant."
-            case .invalidResponse: "Réponse serveur invalide."
+            case .invalidResponse: String(localized: "Réponse serveur invalide.")
             case .server(let message): message
             }
         }

@@ -19,16 +19,16 @@ enum AccessoryPreset: String, CaseIterable, Identifiable {
 
     var label: String {
         switch self {
-        case .cowboyHat:    return "Chapeau cowboy"
-        case .crown:        return "Couronne royale"
-        case .witchHat:     return "Chapeau de sorcière"
-        case .sunglasses:   return "Lunettes de soleil"
-        case .partyHat:     return "Chapeau de fête"
-        case .bowtie:       return "Nœud papillon"
-        case .flowerWreath: return "Couronne de fleurs"
-        case .superhero:    return "Super-héros"
-        case .pirate:       return "Pirate"
-        case .princess:     return "Princesse"
+        case .cowboyHat:    return String(localized: "Chapeau cowboy")
+        case .crown:        return String(localized: "Couronne royale")
+        case .witchHat:     return String(localized: "Chapeau de sorcière")
+        case .sunglasses:   return String(localized: "Lunettes de soleil")
+        case .partyHat:     return String(localized: "Chapeau de fête")
+        case .bowtie:       return String(localized: "Nœud papillon")
+        case .flowerWreath: return String(localized: "Couronne de fleurs")
+        case .superhero:    return String(localized: "Super-héros")
+        case .pirate:       return String(localized: "Pirate")
+        case .princess:     return String(localized: "Princesse")
         }
     }
 

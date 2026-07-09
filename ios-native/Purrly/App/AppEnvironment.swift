@@ -143,11 +143,40 @@ final class LanguageManager {
         if ProcessInfo.processInfo.arguments.contains("-purrly.reset-language") {
             UserDefaults.standard.removeObject(forKey: storeKey)
             UserDefaults.standard.removeObject(forKey: "language_selected")
+            UserDefaults.standard.removeObject(forKey: "AppleLanguages")
         }
-        let stored = UserDefaults.standard.string(forKey: storeKey)
-        current = LanguageManager.resolveInitial(stored: stored)
+
+        // Migration unique (refus 2.1(a) « app dans une autre langue que celle
+        // sélectionnée », iPad). Les builds ≤ 36 écrivaient `AppleLanguages`
+        // dans les defaults de l'app à chaque lancement. Or c'est LA MÊME clé
+        // qu'iOS utilise pour la « langue préférée » par-app choisie dans
+        // Réglages — le mécanisme qu'App Review emploie. Notre écriture parasite
+        // (souvent périmée, ex. « fr ») écrasait donc le choix anglais du
+        // reviewer. On la purge une seule fois, tant qu'aucun choix explicite
+        // in-app n'existe, pour rendre la main à iOS.
+        let purgeKey = "purrly.appleLanguagesPurged.v37"
+        if !UserDefaults.standard.bool(forKey: purgeKey) {
+            if UserDefaults.standard.string(forKey: storeKey) == nil {
+                UserDefaults.standard.removeObject(forKey: "AppleLanguages")
+            }
+            UserDefaults.standard.set(true, forKey: purgeKey)
+        }
+
         Bundle.activatePurrlyLanguageBundle()
-        applyToProcess(current)
+
+        let explicit = UserDefaults.standard.string(forKey: storeKey)
+        if let explicit, LanguageManager.supported.contains(explicit) {
+            // Choix explicite fait dans l'app → on le force partout, à chaud.
+            Bundle.purrlyOverrideLanguage = explicit
+            current = explicit
+        } else {
+            // Aucun choix in-app → localisation 100 % NATIVE iOS : on respecte
+            // la langue par-app (Réglages) ou celle de l'appareil. `nil` = le
+            // bundle standard résout la localisation. L'anglais est la langue
+            // de base du catalogue → repli garanti en anglais.
+            Bundle.purrlyOverrideLanguage = nil
+            current = LanguageManager.nativeLanguage()
+        }
     }
 
     /// L'utilisateur a-t-il déjà choisi explicitement une langue ?
@@ -155,23 +184,31 @@ final class LanguageManager {
         UserDefaults.standard.string(forKey: storeKey) != nil
     }
 
-    /// Applique une langue choisie par l'utilisateur.
+    /// Nom (en anglais) de la langue courante, à injecter dans les prompts IA
+    /// pour que l'assistant réponde dans la langue de l'app (refus 2.1(a) :
+    /// l'app ne doit pas s'afficher/répondre en français quand l'anglais est
+    /// sélectionné).
+    var aiReplyLanguage: String {
+        switch current {
+        case "en": return "English"
+        case "es": return "Spanish"
+        case "de": return "German"
+        default:   return "French"
+        }
+    }
+
+    /// Applique une langue choisie par l'utilisateur, à chaud.
+    /// On n'écrit JAMAIS `AppleLanguages` : cela corromprait le réglage de
+    /// langue par-app d'iOS (cf. migration ci-dessus).
     func select(_ code: String) {
         let lang = LanguageManager.supported.contains(code) ? code : "en"
         UserDefaults.standard.set(lang, forKey: storeKey)
-        applyToProcess(lang)
+        Bundle.purrlyOverrideLanguage = lang
         current = lang   // déclenche le re-render (voir RootView.id)
     }
 
-    private func applyToProcess(_ code: String) {
-        Bundle.purrlyOverrideLanguage = code
-        // Cohérence pour d'éventuels lecteurs de AppleLanguages (widgets, next launch).
-        UserDefaults.standard.set([code], forKey: "AppleLanguages")
-    }
-
-    /// Au 1er lancement : langue système si elle est supportée, sinon anglais.
-    private static func resolveInitial(stored: String?) -> String {
-        if let stored, supported.contains(stored) { return stored }
+    /// Langue résolue par iOS (par-app / appareil) si supportée, sinon anglais.
+    private static func nativeLanguage() -> String {
         for pref in Locale.preferredLanguages {
             let base = String(pref.prefix(2))
             if supported.contains(base) { return base }

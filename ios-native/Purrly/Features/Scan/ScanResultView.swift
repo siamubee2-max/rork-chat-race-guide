@@ -212,7 +212,7 @@ struct ScanResultView: View {
                 result = BreedScanService.ScanResult(
                     topBreed: top.label,
                     confidence: BreedClassifierService.confidenceLabel(top.confidence),
-                    why: "Identifié hors-ligne sur votre appareil.",
+                    why: String(localized: "Identifié hors-ligne sur votre appareil."),
                     alternatives: guesses.dropFirst().map(\.label)
                 )
                 environment.gamification.checkAndUnlockScan()

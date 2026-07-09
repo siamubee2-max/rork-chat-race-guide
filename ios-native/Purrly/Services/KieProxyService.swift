@@ -19,8 +19,8 @@ struct KieProxyService {
             case .tierRequired(let msg): return msg
             case .quotaExceeded(let msg): return msg
             case .serverError(let msg):  return "Erreur serveur : \(msg)"
-            case .invalidResponse:       return "Réponse serveur inattendue."
-            case .downloadFailed:        return "Impossible de télécharger l'image générée."
+            case .invalidResponse:       return String(localized: "Réponse serveur inattendue.")
+            case .downloadFailed:        return String(localized: "Impossible de télécharger l'image générée.")
             }
         }
     }

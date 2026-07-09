@@ -11,18 +11,18 @@ struct DailyLogFormView: View {
     @State private var litter = "normal"
     @State private var notes = ""
 
-    let appetiteOptions = [("normal","Normal"),("increased","↑ Augmenté"),("decreased","↓ Diminué"),("none","Aucun")]
-    let waterOptions = [("normal","Normal"),("increased","↑ Augmenté"),("decreased","↓ Diminué"),("none","Aucune")]
-    let energyOptions = [("normal","Normal"),("playful","Joueur"),("lethargic","Léthargique"),("hyperactive","Hyperactif")]
-    let litterOptions = [("normal","Normal"),("diarrhea","Diarrhée"),("constipation","Constipation"),("blood","Sang"),("none","Aucun")]
+    let appetiteOptions = [("normal","Normal"),("increased",String(localized: "↑ Augmenté")),("decreased",String(localized: "↓ Diminué")),("none",String(localized: "Aucun"))]
+    let waterOptions = [("normal","Normal"),("increased",String(localized: "↑ Augmenté")),("decreased",String(localized: "↓ Diminué")),("none",String(localized: "Aucune"))]
+    let energyOptions = [("normal","Normal"),("playful",String(localized: "Joueur")),("lethargic",String(localized: "Léthargique")),("hyperactive",String(localized: "Hyperactif"))]
+    let litterOptions = [("normal","Normal"),("diarrhea",String(localized: "Diarrhée")),("constipation",String(localized: "Constipation")),("blood",String(localized: "Sang")),("none",String(localized: "Aucun"))]
 
     var body: some View {
         NavigationStack {
             Form {
-                segmentSection("🍽 Appétit", binding: $appetite, options: appetiteOptions)
-                segmentSection("💧 Eau", binding: $water, options: waterOptions)
-                segmentSection("⚡️ Énergie", binding: $energy, options: energyOptions)
-                segmentSection("🪣 Litière", binding: $litter, options: litterOptions)
+                segmentSection(String(localized: "🍽 Appétit"), binding: $appetite, options: appetiteOptions)
+                segmentSection(String(localized: "💧 Eau"), binding: $water, options: waterOptions)
+                segmentSection(String(localized: "⚡️ Énergie"), binding: $energy, options: energyOptions)
+                segmentSection(String(localized: "🪣 Litière"), binding: $litter, options: litterOptions)
                 Section("Notes") {
                     TextField("Observations…", text: $notes, axis: .vertical)
                         .lineLimit(2...4)
