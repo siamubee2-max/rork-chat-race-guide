@@ -16,6 +16,14 @@ struct VetsView: View {
         case clinique    = "clinique vétérinaire"
         case pharmacie   = "pharmacie vétérinaire"
 
+        var query: String {
+            switch self {
+            case .veterinaire: String(localized: "vétérinaire")
+            case .clinique:    String(localized: "clinique vétérinaire")
+            case .pharmacie:   String(localized: "pharmacie vétérinaire")
+            }
+        }
+
         var label: String {
             switch self {
             case .veterinaire: String(localized: "Vétérinaires")
@@ -85,7 +93,7 @@ struct VetsView: View {
 
     private func search() async {
         let request = MKLocalSearch.Request()
-        request.naturalLanguageQuery = category.rawValue
+        request.naturalLanguageQuery = category.query
         request.resultTypes = .pointOfInterest
         do {
             let response = try await MKLocalSearch(request: request).start()

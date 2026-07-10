@@ -115,9 +115,9 @@ final class DiscussionsStore {
         guard threads.isEmpty else { return }
         threads = [
             DiscussionThread(id: "sample-1", title: "Mon Maine Coon griffe tout — conseils ?",
-                             authorName: "Léa", createdAt: Date().addingTimeInterval(-7200),
+                             authorName: "Lea", createdAt: Date().addingTimeInterval(-7200),
                              messages: [
-                                DiscussionMessage(id: "m1", authorName: "Léa",
+                                DiscussionMessage(id: "m1", authorName: "Lea",
                                                   content: String(localized: "Il griffe les canapés… je suis à bout."),
                                                   createdAt: Date().addingTimeInterval(-7200)),
                                 DiscussionMessage(id: "m2", authorName: "Marc",

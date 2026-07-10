@@ -191,7 +191,7 @@ final class CommunityStore {
         guard posts.isEmpty else { return }
         let now = Date()
         posts = [
-            CommunityPost(id: "s1", authorName: "Léa",
+            CommunityPost(id: "s1", authorName: "Lea",
                           content: String(localized: "Mon Maine Coon vient d'adopter sa litière — des conseils ?"),
                           createdAt: now.addingTimeInterval(-3600), likes: 12, isLiked: false),
             CommunityPost(id: "s2", authorName: "Marc",

@@ -150,22 +150,22 @@ struct InsightsView: View {
         [
             InsightItem(
                 icon: "💧", type: String(localized: "Conseil"), title: String(localized: "Hydratation"),
-                body: "Les chats boivent peu naturellement. Une fontaine à eau peut augmenter leur consommation de 30%.",
+                body: String(localized: "Les chats boivent peu naturellement. Une fontaine à eau peut augmenter leur consommation de 30%."),
                 color: .cyan
             ),
             InsightItem(
                 icon: "🦷", type: String(localized: "Santé"), title: String(localized: "Hygiène dentaire"),
-                body: "80% des chats ont des problèmes dentaires à 3 ans. Brossage ou friandises dentaires recommandés.",
+                body: String(localized: "80% des chats ont des problèmes dentaires à 3 ans. Brossage ou friandises dentaires recommandés."),
                 color: AppTheme.primary
             ),
             InsightItem(
                 icon: "🎮", type: String(localized: "Conseil"), title: String(localized: "Stimulation mentale"),
-                body: "15–20 min de jeu quotidien réduit le stress et prévient l'obésité.",
+                body: String(localized: "15–20 min de jeu quotidien réduit le stress et prévient l'obésité."),
                 color: .purple
             ),
             InsightItem(
                 icon: "⚖️", type: String(localized: "Nutrition"), title: String(localized: "Contrôle du poids"),
-                body: "Pesez votre chat tous les mois. Une variation de 10% mérite une consultation vétérinaire.",
+                body: String(localized: "Pesez votre chat tous les mois. Une variation de 10% mérite une consultation vétérinaire."),
                 color: .orange
             ),
         ]

@@ -11,7 +11,7 @@ struct LeaderboardView: View {
             ("Marc L.", 720, false),
             ("Emma B.", 680, false),
             ("Lucas M.", 540, false),
-            ("Léa P.", 480, false),
+            ("Lea P.", 480, false),
             ("Vous", myXP, true),
         ]
         let sorted = list.sorted { $0.xp > $1.xp }

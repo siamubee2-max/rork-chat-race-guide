@@ -76,10 +76,10 @@ struct UserProfileView: View {
                         Button(role: .destructive) {
                             if let first = userPosts.first {
                                 environment.moderation.report(id: first.id, author: userName,
-                                                              reason: "Profil signalé")
+                                                              reason: String(localized: "Profil signalé"))
                             } else {
                                 environment.moderation.report(id: "profile-\(userName)", author: userName,
-                                                              reason: "Profil signalé")
+                                                              reason: String(localized: "Profil signalé"))
                             }
                         } label: {
                             Label("Signaler", systemImage: "flag")

@@ -95,7 +95,7 @@ struct ModerationMenuItems: View {
     var body: some View {
         if author != currentUserName {
             Button(role: .destructive) {
-                environment.moderation.report(id: itemId, author: author, reason: "Contenu inapproprié")
+                environment.moderation.report(id: itemId, author: author, reason: String(localized: "Contenu inapproprié"))
             } label: {
                 Label("Signaler ce contenu", systemImage: "flag")
             }
