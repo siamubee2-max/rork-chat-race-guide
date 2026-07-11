@@ -52,6 +52,7 @@
 		6746E8968B4BA754DA818633 /* FoodCalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492053F9F5417544E0531F8 /* FoodCalculatorView.swift */; };
 		67D1104AEA902D994FD2B8E2 /* DiscussionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7F1F2CE55E99F0BEFE074 /* DiscussionDetailView.swift */; };
 		6A0CCCA319F46DD7A64C8CB7 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A8D1FCB9CA5D2BF7D72DD426 /* Localizable.xcstrings */; };
+		0FC2631A86F5F9EDC6CF1AF3 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B65806396672A88E8E9624E5 /* InfoPlist.xcstrings */; };
 		6A498196888EAD4FF4827474 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = CEB9750F155C8C5E314B9B5A /* Supabase */; };
 		6AC37F78AA5EC761FAF6FE55 /* SubscriptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC54478A0597ABCB0141157E /* SubscriptionService.swift */; };
 		6F44502BB8B5A28421272C76 /* SheltersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EF47EEF54F5C1A7A36992B /* SheltersView.swift */; };
@@ -236,6 +237,7 @@
 		9B73583D30F9004785615351 /* UsageLimits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageLimits.swift; sourceTree = "<group>"; };
 		9BB4DC9285A51E87965A6BBD /* ExpenseStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseStoreTests.swift; sourceTree = "<group>"; };
 		A8D1FCB9CA5D2BF7D72DD426 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		B65806396672A88E8E9624E5 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		AABFDB4192E8A45C41C05BF3 /* GamificationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamificationStore.swift; sourceTree = "<group>"; };
 		AAF52453CC28BB6CD3D7A7C3 /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
 		ABA45DE54215A212D044F9ED /* VetDisclaimerBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VetDisclaimerBanner.swift; sourceTree = "<group>"; };
@@ -553,6 +555,7 @@
 				9575DE6DBC125C73E569D438 /* breeds.json */,
 				E0CA5B25039C557C6830B438 /* CatBreedClassifier.mlmodel */,
 				A8D1FCB9CA5D2BF7D72DD426 /* Localizable.xcstrings */,
+				B65806396672A88E8E9624E5 /* InfoPlist.xcstrings */,
 				6E8BEB67BAA5E393B74F7CA3 /* Secrets.xcconfig */,
 				D1109440970DA651D3FFFB71 /* Secrets.xcconfig.example */,
 			);
@@ -805,6 +808,7 @@
 			files = (
 				FD3C404C13068DA14A2573C9 /* Assets.xcassets in Resources */,
 				6A0CCCA319F46DD7A64C8CB7 /* Localizable.xcstrings in Resources */,
+				0FC2631A86F5F9EDC6CF1AF3 /* InfoPlist.xcstrings in Resources */,
 				DBC3847121605A2272887E4D /* Secrets.xcconfig.example in Resources */,
 				0D5511BAC6EA2C212CE1484A /* breeds.json in Resources */,
 			);
