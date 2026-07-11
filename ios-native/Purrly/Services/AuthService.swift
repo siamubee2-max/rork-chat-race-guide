@@ -88,13 +88,35 @@ final class AuthService{
         }
 
         do {
-            let session = try await client.auth.signIn(email: normalized, password: password)
+            // Timeout dur : en environnement App Review le réseau peut pendre
+            // indéfiniment — sans borne, le bouton semble « ne rien faire » (2.1a).
+            let session = try await withTimeout(seconds: 15) {
+                try await client.auth.signIn(email: normalized, password: password)
+            }
             try KeychainStore.save(session.accessToken, for: .accessToken)
             await loadProfile(userId: session.user.id, email: normalized)
             return currentUser != nil
+        } catch is TimeoutError {
+            lastError = String(localized: "auth.error.timeout")
+            return false
         } catch {
             lastError = error.localizedDescription
             return false
+        }
+    }
+
+    struct TimeoutError: Error {}
+
+    private func withTimeout<T: Sendable>(seconds: Double, _ work: @escaping @Sendable () async throws -> T) async throws -> T {
+        try await withThrowingTaskGroup(of: T.self) { group in
+            group.addTask { try await work() }
+            group.addTask {
+                try await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
+                throw TimeoutError()
+            }
+            guard let result = try await group.next() else { throw TimeoutError() }
+            group.cancelAll()
+            return result
         }
     }
 

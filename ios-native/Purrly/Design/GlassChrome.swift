@@ -34,21 +34,17 @@ struct GlassPrimaryButtonStyle: ButtonStyle {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     func makeBody(configuration: Configuration) -> some View {
-        Group {
-            if #available(iOS 26.0, *) {
-                configuration.label
-                    .font(.headline.weight(.bold))
-                    .foregroundStyle(AppTheme.background)
-                    .frame(maxWidth: .infinity, minHeight: AppTheme.minTouch)
-                    .glassEffect(.regular.tint(AppTheme.primary).interactive(), in: .rect(cornerRadius: 18))
-            } else {
-                configuration.label
-                    .font(.headline.weight(.bold))
-                    .foregroundStyle(AppTheme.background)
-                    .frame(maxWidth: .infinity, minHeight: AppTheme.minTouch)
-                    .background(AppTheme.primary, in: RoundedRectangle(cornerRadius: 18))
-            }
-        }
+        // Fond opaque UNIQUEMENT — pas de glassEffect(.interactive()) ici.
+        // App Review (iPad Air M3, iPadOS 26.5.x) a refusé 3 builds pour des
+        // éléments de cet habillage glass qui ne répondaient pas ou ne se
+        // rendaient pas sur leur appareil (2.1a) ; le bouton d'action principal
+        // doit fonctionner partout, sans dépendre du rendu Liquid Glass.
+        configuration.label
+            .font(.headline.weight(.bold))
+            .foregroundStyle(AppTheme.background)
+            .frame(maxWidth: .infinity, minHeight: AppTheme.minTouch)
+            .background(AppTheme.primary, in: RoundedRectangle(cornerRadius: 18))
+            .contentShape(RoundedRectangle(cornerRadius: 18))
         .scaleEffect(reduceMotion ? 1 : (configuration.isPressed ? 0.98 : 1))
         .opacity(configuration.isPressed ? 0.92 : 1)
         .animation(reduceMotion ? nil : .easeOut(duration: 0.15), value: configuration.isPressed)
