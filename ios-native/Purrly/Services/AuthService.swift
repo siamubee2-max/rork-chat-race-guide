@@ -100,23 +100,44 @@ final class AuthService{
 
     func signUp(email: String, password: String, name: String) async -> Bool {
         lastError = nil
+        let normalized = email.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
         guard let client else {
             // Mode démo hors-ligne — même comportement que signIn
-            let normalized = email.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
             try? KeychainStore.save(normalized, for: .accessToken)
             currentUser = UserProfile(
                 id: "local-\(normalized)",
                 email: normalized,
-                name: name.isEmpty ? normalized.components(separatedBy: "@").first ?? "Utilisateur" : name,
+                name: trimmedName.isEmpty ? normalized.components(separatedBy: "@").first ?? "Utilisateur" : trimmedName,
                 subscriptionTier: .free,
                 subscriptionExpiry: nil
             )
             return true
         }
-        let normalized = email.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         do {
-            _ = try await client.auth.signUp(email: normalized, password: password)
-            return await signIn(email: normalized, password: password)
+            // Le nom part en métadonnée : le trigger `handle_new_user` lit
+            // `raw_user_meta_data->>'name'` pour renseigner profiles.name
+            // (sans ça, chaque profil était créé avec un nom vide).
+            let response = try await client.auth.signUp(
+                email: normalized,
+                password: password,
+                data: ["name": AnyJSON.string(trimmedName)]
+            )
+            if let session = response.session {
+                // Confirmation d'e-mail désactivée : l'utilisateur est déjà
+                // authentifié. On réutilise la session du signUp plutôt que
+                // d'enchaîner un signIn redondant — lequel échouait et affichait
+                // une erreur quand la confirmation d'e-mail était requise.
+                try KeychainStore.save(session.accessToken, for: .accessToken)
+                await loadProfile(userId: session.user.id, email: normalized)
+                return currentUser != nil
+            }
+            // Confirmation d'e-mail activée : le compte EST bien créé, mais
+            // l'adresse doit être validée avant toute connexion. Ce n'est pas une
+            // erreur — on l'explique au lieu de laisser remonter un
+            // « Email not confirmed » déroutant.
+            lastError = "Compte créé. Confirme ton adresse via l'e-mail reçu, puis connecte-toi."
+            return false
         } catch {
             lastError = error.localizedDescription
             return false
