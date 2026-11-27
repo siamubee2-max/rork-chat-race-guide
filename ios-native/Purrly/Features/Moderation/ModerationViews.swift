@@ -83,59 +83,77 @@ struct CommunityRulesGate: View {
 // MARK: - Menu réutilisable Signaler / Bloquer — Guideline 1.2
 
 /// À placer dans un `.contextMenu { … }` ou un `Menu { … }`. N'affiche rien pour
-/// le contenu de l'utilisateur courant (comparaison sur le nom d'auteur réel).
+/// le contenu de l'utilisateur courant. « Contenu à moi » = **même identifiant**
+/// d'auteur, jamais même nom : un homonyme/usurpateur doit rester signalable.
 struct ModerationMenuItems: View {
-    let author: String
+    let author: ContentAuthor
+    let kind: ContentKind
     let itemId: String
-    /// Nom de l'utilisateur courant (issu de l'auth réelle). Le menu est masqué
-    /// quand `author == currentUserName` pour empêcher l'auto-signalement.
-    let currentUserName: String
     @Environment(AppEnvironment.self) private var environment
 
     var body: some View {
-        if author != currentUserName {
+        if !environment.moderation.isOwnContent(authorId: author.id,
+                                                currentUserId: environment.auth.currentUser?.id) {
             Button(role: .destructive) {
-                environment.moderation.report(id: itemId, author: author, reason: "Contenu inapproprié")
+                Task {
+                    await environment.moderation.report(kind: kind, id: itemId, author: author,
+                                                        reason: "Contenu inapproprié")
+                }
             } label: {
                 Label("Signaler ce contenu", systemImage: "flag")
             }
             Button(role: .destructive) {
                 environment.moderation.block(author: author)
             } label: {
-                Label("Bloquer \(author)", systemImage: "person.fill.xmark")
+                Label("Bloquer \(author.name)", systemImage: "person.fill.xmark")
+            }
+        }
+    }
+}
+
+/// Attache le menu Signaler/Bloquer uniquement pour le contenu d'un autre
+/// utilisateur (rien pour soi-même, évite un menu vide).
+private struct ModerationContextMenuModifier: ViewModifier {
+    let author: ContentAuthor
+    let kind: ContentKind
+    let itemId: String
+    @Environment(AppEnvironment.self) private var environment
+
+    func body(content: Content) -> some View {
+        if environment.moderation.isOwnContent(authorId: author.id,
+                                               currentUserId: environment.auth.currentUser?.id) {
+            content
+        } else {
+            content.contextMenu {
+                ModerationMenuItems(author: author, kind: kind, itemId: itemId)
             }
         }
     }
 }
 
 extension View {
-    /// Attache un menu contextuel Signaler/Bloquer — uniquement pour le contenu
-    /// d'un autre utilisateur (rien pour soi-même, évite un menu vide).
-    @ViewBuilder
-    func moderationContextMenu(author: String, itemId: String, currentUserName: String) -> some View {
-        if author != currentUserName {
-            self.contextMenu {
-                ModerationMenuItems(author: author, itemId: itemId, currentUserName: currentUserName)
-            }
-        } else {
-            self
-        }
+    func moderationContextMenu(author: ContentAuthor, kind: ContentKind, itemId: String) -> some View {
+        modifier(ModerationContextMenuModifier(author: author, kind: kind, itemId: itemId))
     }
 }
 
-/// Bouton « … » prêt à l'emploi pour une barre d'outils.
+/// Bouton « … » prêt à l'emploi pour une barre d'outils (absent pour son propre contenu).
 struct ModerationToolbarMenu: View {
-    let author: String
+    let author: ContentAuthor
+    let kind: ContentKind
     let itemId: String
-    let currentUserName: String
+    @Environment(AppEnvironment.self) private var environment
 
     var body: some View {
-        Menu {
-            ModerationMenuItems(author: author, itemId: itemId, currentUserName: currentUserName)
-        } label: {
-            Image(systemName: "ellipsis.circle")
-                .foregroundStyle(AppTheme.primary)
+        if !environment.moderation.isOwnContent(authorId: author.id,
+                                                currentUserId: environment.auth.currentUser?.id) {
+            Menu {
+                ModerationMenuItems(author: author, kind: kind, itemId: itemId)
+            } label: {
+                Image(systemName: "ellipsis.circle")
+                    .foregroundStyle(AppTheme.primary)
+            }
+            .accessibilityLabel("Signaler ou bloquer")
         }
-        .accessibilityLabel("Signaler ou bloquer")
     }
 }

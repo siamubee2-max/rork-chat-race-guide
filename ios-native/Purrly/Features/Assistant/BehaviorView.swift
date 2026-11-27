@@ -117,6 +117,7 @@ struct BehaviorView: View {
         let catContext = selectedCat.map { "Chat: \($0.name)" } ?? ""
         Task {
             do {
+                let token = await environment.auth.validAccessToken()
                 let reply = try await environment.aiChat.send(
                     messages: [
                         ChatMessage(
@@ -127,7 +128,7 @@ struct BehaviorView: View {
                         )
                     ],
                     systemPrompt: "Tu es un expert en comportement félin. \(catContext) Réponds de façon concise et pratique en français.",
-                    accessToken: KeychainStore.read(.accessToken)
+                    accessToken: token
                 )
                 analysis = reply
             } catch {

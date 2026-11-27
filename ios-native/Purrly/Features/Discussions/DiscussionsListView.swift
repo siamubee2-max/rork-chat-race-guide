@@ -6,17 +6,20 @@ struct DiscussionsListView: View {
 
     private var store: DiscussionsStore { environment.discussions }
 
-    private var currentUserName: String {
-        environment.auth.currentUser?.name ?? ""
-    }
-
     private var visibleThreads: [DiscussionThread] {
         store.threads.filter {
-            !environment.moderation.isHidden(id: $0.id, author: $0.authorName)
+            !environment.moderation.isHidden(id: $0.id, author: $0.author)
         }
     }
 
     var body: some View {
+        if visibleThreads.isEmpty {
+            Text("Aucune discussion pour l'instant. Lancez la première !")
+                .font(.subheadline)
+                .foregroundStyle(AppTheme.textMuted)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.vertical, 24)
+        }
         List(visibleThreads) { thread in
             NavigationLink(destination: DiscussionDetailView(thread: thread)) {
                 VStack(alignment: .leading, spacing: 4) {
@@ -39,8 +42,7 @@ struct DiscussionsListView: View {
             }
             .listRowBackground(AppTheme.backgroundCard)
             .listRowSeparatorTint(AppTheme.border)
-            .moderationContextMenu(author: thread.authorName, itemId: thread.id,
-                                   currentUserName: currentUserName)
+            .moderationContextMenu(author: thread.author, kind: .thread, itemId: thread.id)
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)

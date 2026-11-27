@@ -199,9 +199,10 @@ struct ScanResultView: View {
         isLoading = true
         errorText = nil
         do {
+            let token = await environment.auth.validAccessToken()
             result = try await service.identify(
                 imageData: imageData,
-                accessToken: KeychainStore.read(.accessToken)
+                accessToken: token
             )
             environment.gamification.checkAndUnlockScan()
         } catch {

@@ -7,27 +7,37 @@ final class DiscussionsStore {
     private(set) var threads: [DiscussionThread] = []
     private(set) var isLoading = false
 
-    private var client: SupabaseClient? {
+    /// Backend Supabase, injectable pour les tests (`nil` = sans backend).
+    private let client: SupabaseClient?
+
+    init(client: SupabaseClient? = DiscussionsStore.makeClient()) {
+        self.client = client
+        Task { await load() }
+    }
+
+    private static func makeClient() -> SupabaseClient? {
         guard let url = AppConfiguration.supabaseURL,
               let key = AppConfiguration.supabaseAnonKey else { return nil }
         return SupabaseClient(supabaseURL: url, supabaseKey: key)
     }
 
-    init() { Task { await load() } }
-
     // MARK: - Load
 
+    /// Charge les fils réels. Sans backend ou en cas d'échec, la liste reste
+    /// **vide** : aucun fil d'exemple n'est fabriqué (red-team H4).
     func load() async {
-        guard let db = client else { loadSamples(); return }
+        guard let db = client else { return }
         isLoading = true
         defer { isLoading = false }
         do {
             struct ThreadRow: Decodable {
                 let id: String; let author_name: String; let title: String; let created_at: String
+                let author_id: String?
             }
             struct MsgRow: Decodable {
                 let id: String; let thread_id: String; let author_name: String
                 let content: String; let created_at: String
+                let author_id: String?
             }
 
             let threadRows: [ThreadRow] = try await db.from("discussion_threads")
@@ -39,25 +49,26 @@ final class DiscussionsStore {
             threads = threadRows.map { t in
                 let msgs = msgRows.filter { $0.thread_id == t.id }.map { m in
                     DiscussionMessage(id: m.id, authorName: m.author_name,
-                                      content: m.content, createdAt: iso(m.created_at))
+                                      content: m.content, createdAt: iso(m.created_at),
+                                      authorId: m.author_id)
                 }
                 return DiscussionThread(id: t.id, title: t.title, authorName: t.author_name,
-                                        createdAt: iso(t.created_at), messages: msgs)
+                                        createdAt: iso(t.created_at), messages: msgs,
+                                        authorId: t.author_id)
             }
-            if threads.isEmpty { loadSamples() }
         } catch {
-            if threads.isEmpty { loadSamples() }
+            // Échec réseau : garder la liste telle quelle (vide si rien de chargé).
         }
     }
 
     // MARK: - Write
 
-    func addThread(title: String, firstMessage: String, authorName: String) {
+    func addThread(title: String, firstMessage: String, authorName: String, authorId: String? = nil) {
         let threadId = UUID().uuidString
         let msg = DiscussionMessage(id: UUID().uuidString, authorName: authorName,
-                                    content: firstMessage, createdAt: Date())
+                                    content: firstMessage, createdAt: Date(), authorId: authorId)
         let thread = DiscussionThread(id: threadId, title: title, authorName: authorName,
-                                      createdAt: Date(), messages: [msg])
+                                      createdAt: Date(), messages: [msg], authorId: authorId)
         threads.insert(thread, at: 0)
 
         Task {
@@ -83,10 +94,10 @@ final class DiscussionsStore {
         }
     }
 
-    func addMessage(_ text: String, author: String, toThread threadId: String) {
+    func addMessage(_ text: String, author: String, authorId: String? = nil, toThread threadId: String) {
         guard let i = threads.firstIndex(where: { $0.id == threadId }) else { return }
         let msg = DiscussionMessage(id: UUID().uuidString, authorName: author,
-                                    content: text, createdAt: Date())
+                                    content: text, createdAt: Date(), authorId: authorId)
         threads[i].messages.append(msg)
 
         Task {
@@ -111,19 +122,4 @@ final class DiscussionsStore {
         ISO8601DateFormatter().date(from: str) ?? Date()
     }
 
-    private func loadSamples() {
-        guard threads.isEmpty else { return }
-        threads = [
-            DiscussionThread(id: "sample-1", title: "Mon Maine Coon griffe tout — conseils ?",
-                             authorName: "Léa", createdAt: Date().addingTimeInterval(-7200),
-                             messages: [
-                                DiscussionMessage(id: "m1", authorName: "Léa",
-                                                  content: "Il griffe les canapés… je suis à bout.",
-                                                  createdAt: Date().addingTimeInterval(-7200)),
-                                DiscussionMessage(id: "m2", authorName: "Marc",
-                                                  content: "Griffoir en sisal + spray répulsif, ça marche !",
-                                                  createdAt: Date().addingTimeInterval(-3600)),
-                             ]),
-        ]
-    }
 }

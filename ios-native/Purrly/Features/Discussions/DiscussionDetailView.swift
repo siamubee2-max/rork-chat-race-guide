@@ -8,14 +8,11 @@ struct DiscussionDetailView: View {
     private var store: DiscussionsStore { environment.discussions }
     private var live: DiscussionThread? { store.threads.first { $0.id == thread.id } }
 
-    private var currentUserName: String {
-        environment.auth.currentUser?.name ?? ""
-    }
-
-    /// Messages affichés : ceux dont l'auteur n'est pas bloqué.
+    /// Messages affichés : ni d'un auteur bloqué, ni signalés (un message signalé doit
+    /// disparaître immédiatement — Guideline 1.2).
     private var visibleMessages: [DiscussionMessage] {
         (live?.messages ?? thread.messages).filter {
-            !environment.moderation.isBlocked($0.authorName)
+            !environment.moderation.isHidden(id: $0.id, author: $0.author)
         }
     }
 
@@ -27,8 +24,7 @@ struct DiscussionDetailView: View {
                         ForEach(visibleMessages) { msg in
                             MessageBubble(message: msg)
                                 .id(msg.id)
-                                .moderationContextMenu(author: msg.authorName, itemId: msg.id,
-                                                       currentUserName: currentUserName)
+                                .moderationContextMenu(author: msg.author, kind: .message, itemId: msg.id)
                         }
                     }
                     .padding(16)
@@ -64,12 +60,8 @@ struct DiscussionDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .purrlyScreenBackground()
         .toolbar {
-            if thread.authorName != currentUserName {
-                ToolbarItem(placement: .primaryAction) {
-                    ModerationToolbarMenu(author: thread.authorName,
-                                          itemId: thread.id,
-                                          currentUserName: currentUserName)
-                }
+            ToolbarItem(placement: .primaryAction) {
+                ModerationToolbarMenu(author: thread.author, kind: .thread, itemId: thread.id)
             }
         }
     }
@@ -79,6 +71,7 @@ struct DiscussionDetailView: View {
         guard !text.isEmpty else { return }
         store.addMessage(text,
                          author: environment.auth.currentUser?.name ?? "Moi",
+                         authorId: environment.auth.currentUser?.id,
                          toThread: thread.id)
         inputText = ""
     }

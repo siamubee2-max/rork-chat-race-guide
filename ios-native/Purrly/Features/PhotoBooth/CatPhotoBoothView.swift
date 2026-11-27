@@ -335,7 +335,7 @@ struct CatPhotoBoothView: View {
 
     private func generateWithKie(preset: AccessoryPreset) async {
         guard let photo = selectedPhoto else { return }
-        guard let token = KeychainStore.read(.accessToken), !token.isEmpty else {
+        guard let token = await environment.auth.validAccessToken(), !token.isEmpty else {
             kieError = "Connectez-vous pour utiliser IA Booth."
             return
         }

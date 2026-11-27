@@ -7,13 +7,9 @@ struct PostDetailView: View {
     @State private var commentText: String = ""
     @FocusState private var commentFocused: Bool
 
-    private var currentUserName: String {
-        environment.auth.currentUser?.name ?? ""
-    }
-
     private var comments: [CommunityComment] {
         environment.community.commentsFor(postId: post.id).filter {
-            !environment.moderation.isHidden(id: $0.id, author: $0.authorName)
+            !environment.moderation.isHidden(id: $0.id, author: $0.author)
         }
     }
 
@@ -47,13 +43,14 @@ struct PostDetailView: View {
         .purrlyScreenBackground()
         .navigationTitle(String(localized: "community.post.title"))
         .navigationBarTitleDisplayMode(.inline)
+        .task {
+            // Charge les vrais commentaires du serveur (red-team H3 :
+            // avant, seuls des commentaires locaux — jamais visibles par les autres).
+            await environment.community.loadComments(postId: post.id)
+        }
         .toolbar {
-            if post.authorName != currentUserName {
-                ToolbarItem(placement: .primaryAction) {
-                    ModerationToolbarMenu(author: post.authorName,
-                                          itemId: post.id,
-                                          currentUserName: currentUserName)
-                }
+            ToolbarItem(placement: .primaryAction) {
+                ModerationToolbarMenu(author: post.author, kind: .post, itemId: post.id)
             }
         }
     }
@@ -108,9 +105,7 @@ struct PostDetailView: View {
             } else {
                 ForEach(comments) { comment in
                     commentRow(comment)
-                        .moderationContextMenu(author: comment.authorName,
-                                               itemId: comment.id,
-                                               currentUserName: currentUserName)
+                        .moderationContextMenu(author: comment.author, kind: .comment, itemId: comment.id)
                 }
             }
         }
@@ -174,7 +169,8 @@ struct PostDetailView: View {
         let trimmed = commentText.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
         let authorName = environment.auth.currentUser?.name ?? "Vous"
-        environment.community.addComment(postId: post.id, text: trimmed, authorName: authorName)
+        environment.community.addComment(postId: post.id, text: trimmed, authorName: authorName,
+                                         authorId: environment.auth.currentUser?.id)
         commentText = ""
         commentFocused = false
     }

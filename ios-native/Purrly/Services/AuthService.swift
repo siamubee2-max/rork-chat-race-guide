@@ -20,6 +20,34 @@ final class AuthService{
 
     var isAuthenticated: Bool { currentUser != nil }
 
+    /// Choisit le jeton à envoyer aux Edge Functions : celui du SDK (rafraîchi
+    /// automatiquement) s'il est disponible, sinon la copie Keychain.
+    static func resolveToken(sdkToken: String?, keychainToken: String?) -> String? {
+        for candidate in [sdkToken, keychainToken] {
+            if let token = candidate, !token.isEmpty { return token }
+        }
+        return nil
+    }
+
+    /// Jeton d'accès **valide** pour les appels réseau (Edge Functions, `verify_jwt`).
+    ///
+    /// Le JWT Supabase expire (~1 h). Ne jamais lire `KeychainStore.read(.accessToken)`
+    /// directement : cette copie est écrite au `signIn` et n'était jamais rafraîchie,
+    /// donc scan / chat / Photo Booth / suppression de compte renvoyaient 401 après
+    /// expiration. `client.auth.session` rafraîchit la session si nécessaire ; on
+    /// réaligne alors la copie Keychain. Repli sur le Keychain si le SDK n'a pas de
+    /// session (hors-ligne, mode démo, tests UI).
+    func validAccessToken() async -> String? {
+        var sdkToken: String?
+        if let client, let session = try? await client.auth.session {
+            sdkToken = session.accessToken
+            if KeychainStore.read(.accessToken) != session.accessToken {
+                try? KeychainStore.save(session.accessToken, for: .accessToken)
+            }
+        }
+        return Self.resolveToken(sdkToken: sdkToken, keychainToken: KeychainStore.read(.accessToken))
+    }
+
     /// Hook réservé aux tests UI (lancé via l'argument `-uiTesting`).
     /// Place l'app dans un état connecté déterministe, sans réseau.
     func enterUITestMode() {
@@ -54,6 +82,8 @@ final class AuthService{
 
         do {
             let session = try await client.auth.session
+            // Réaligne la copie Keychain sur la session (éventuellement rafraîchie).
+            try? KeychainStore.save(session.accessToken, for: .accessToken)
             await loadProfile(userId: session.user.id, email: session.user.email ?? "")
         } catch {
             // Ne PAS détruire la session sur une erreur réseau transitoire :
@@ -142,7 +172,7 @@ final class AuthService{
     /// Supprime définitivement le compte (Edge Function delete-account) puis
     /// déconnecte localement. Exigence App Store 5.1.1(v).
     func deleteAccount() async -> Bool {
-        guard let token = KeychainStore.read(.accessToken), !token.isEmpty else {
+        guard let token = await validAccessToken(), !token.isEmpty else {
             // Mode démo hors-ligne : pas de compte serveur, on déconnecte juste.
             await signOut()
             return true

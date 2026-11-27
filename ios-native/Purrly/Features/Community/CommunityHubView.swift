@@ -46,7 +46,7 @@ struct CommunityHubView: View {
         }
         .purrlyScreenBackground()
         .navigationTitle(String(localized: "tab.community"))
-        .onAppear { environment.community.loadSampleIfNeeded() }
+        .onAppear { environment.community.loadIfNeeded() }
         .navigationDestination(for: CommunityPost.self) { post in
             PostDetailView(post: post)
         }
@@ -90,9 +90,15 @@ struct CommunityHubView: View {
 
     @ViewBuilder
     private var feed: some View {
-        let me = environment.auth.currentUser?.name ?? ""
         let visiblePosts = environment.community.posts.filter {
-            !environment.moderation.isHidden(id: $0.id, author: $0.authorName)
+            !environment.moderation.isHidden(id: $0.id, author: $0.author)
+        }
+        if visiblePosts.isEmpty {
+            Text("Aucun post pour l'instant. Soyez le premier à partager !")
+                .font(.subheadline)
+                .foregroundStyle(AppTheme.textMuted)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.vertical, 24)
         }
         ForEach(visiblePosts) { post in
             NavigationLink(value: post) {
@@ -100,7 +106,8 @@ struct CommunityHubView: View {
                     VStack(alignment: .leading, spacing: 10) {
                         HStack {
                             Button {
-                                selectedAuthor = AuthorRef(id: "user-\(post.authorName)", name: post.authorName)
+                                selectedAuthor = AuthorRef(id: post.authorId ?? "user-\(post.authorName)",
+                                                           name: post.authorName)
                             } label: {
                                 Text(post.authorName)
                                     .font(.headline)
@@ -126,7 +133,7 @@ struct CommunityHubView: View {
                 }
             }
             .buttonStyle(.plain)
-            .moderationContextMenu(author: post.authorName, itemId: post.id, currentUserName: me)
+            .moderationContextMenu(author: post.author, kind: .post, itemId: post.id)
         }
     }
 

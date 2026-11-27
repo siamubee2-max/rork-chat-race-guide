@@ -1,6 +1,140 @@
 import Foundation
 import Supabase
 
+/// Frontière réseau des « j'aime » (injectable pour les tests).
+/// L'état est **par utilisateur** (idempotent) : on envoie aimé/retiré,
+/// jamais un compteur absolu (red-team H5).
+protocol LikeSyncing: Sendable {
+    /// Marque ou retire le « j'aime » de l'utilisateur courant pour un post.
+    func setLiked(postId: String, liked: Bool) async throws
+    /// Identifiants des posts déjà aimés par l'utilisateur courant.
+    func likedPostIds() async throws -> Set<String>
+}
+
+/// Implémentation Supabase : table `community_post_likes` (post_id, user_id).
+struct SupabaseLikeSync: LikeSyncing {
+    func setLiked(postId: String, liked: Bool) async throws {
+        guard let url = AppConfiguration.supabaseURL,
+              let key = AppConfiguration.supabaseAnonKey else { return }
+        let client = SupabaseClient(supabaseURL: url, supabaseKey: key)
+        struct LikeRow: Encodable { let post_id: String; let user_id: String? }
+        if liked {
+            try await client.from("community_post_likes").insert(
+                LikeRow(post_id: postId, user_id: nil)   // user_id = auth.uid() par défaut
+            ).execute()
+        } else {
+            try await client.from("community_post_likes")
+                .delete()
+                .eq("post_id", value: postId)
+                .execute()
+        }
+    }
+
+    func likedPostIds() async throws -> Set<String> {
+        guard let url = AppConfiguration.supabaseURL,
+              let key = AppConfiguration.supabaseAnonKey else { return [] }
+        let client = SupabaseClient(supabaseURL: url, supabaseKey: key)
+        struct LikeRow: Decodable { let post_id: String }
+        let rows: [LikeRow] = try await client.from("community_post_likes")
+            .select("post_id").execute().value
+        return Set(rows.map(\.post_id))
+    }
+}
+
+/// Frontière réseau des commentaires (injectable pour les tests).
+/// Les commentaires sont écrits ET lus côté serveur — jamais locaux seulement
+/// (red-team H3 : `addComment` ne faisait qu'ajouter dans un dictionnaire local).
+protocol CommentSyncing: Sendable {
+    func send(_ comment: CommunityComment) async throws
+    func comments(postId: String) async throws -> [CommunityComment]
+}
+
+/// Frontière réseau des messages privés (injectable pour les tests).
+/// Un DM est envoyé au destinataire — il ne reste pas dans la vue (red-team H3).
+protocol DirectMessageSyncing: Sendable {
+    func send(_ message: DirectMessage, to recipientId: String) async throws
+    func messages(with userId: String) async throws -> [DirectMessage]
+}
+
+/// Implémentation Supabase : table `community_comments`.
+struct SupabaseCommentSync: CommentSyncing {
+    func send(_ comment: CommunityComment) async throws {
+        guard let url = AppConfiguration.supabaseURL,
+              let key = AppConfiguration.supabaseAnonKey else { return }
+        let client = SupabaseClient(supabaseURL: url, supabaseKey: key)
+        struct Row: Encodable {
+            let id: String; let post_id: String
+            let author_name: String; let content: String
+        }
+        try await client.from("community_comments").insert(
+            Row(id: comment.id, post_id: comment.postId,
+                author_name: comment.authorName, content: comment.text)
+        ).execute()
+    }
+
+    func comments(postId: String) async throws -> [CommunityComment] {
+        guard let url = AppConfiguration.supabaseURL,
+              let key = AppConfiguration.supabaseAnonKey else { return [] }
+        let client = SupabaseClient(supabaseURL: url, supabaseKey: key)
+        struct Row: Decodable {
+            let id: String; let post_id: String; let author_name: String
+            let content: String; let created_at: String; let user_id: String?
+        }
+        let rows: [Row] = try await client.from("community_comments")
+            .select()
+            .eq("post_id", value: postId)
+            .order("created_at", ascending: true)
+            .execute().value
+        return rows.map {
+            CommunityComment(id: $0.id, postId: $0.post_id, authorName: $0.author_name,
+                             text: $0.content, createdAt: isoDate($0.created_at),
+                             authorId: $0.user_id)
+        }
+    }
+}
+
+/// Implémentation Supabase : table `community_messages` (RLS : expéditeur ou destinataire).
+struct SupabaseMessageSync: DirectMessageSyncing {
+    func send(_ message: DirectMessage, to recipientId: String) async throws {
+        guard let url = AppConfiguration.supabaseURL,
+              let key = AppConfiguration.supabaseAnonKey else { return }
+        let client = SupabaseClient(supabaseURL: url, supabaseKey: key)
+        struct Row: Encodable {
+            let id: String; let recipient_id: String
+            let sender_name: String; let content: String
+        }
+        try await client.from("community_messages").insert(
+            Row(id: message.id, recipient_id: recipientId,
+                sender_name: message.authorName, content: message.content)
+        ).execute()
+    }
+
+    func messages(with userId: String) async throws -> [DirectMessage] {
+        guard let url = AppConfiguration.supabaseURL,
+              let key = AppConfiguration.supabaseAnonKey else { return [] }
+        let client = SupabaseClient(supabaseURL: url, supabaseKey: key)
+        struct Row: Decodable {
+            let id: String; let sender_id: String; let sender_name: String
+            let content: String; let created_at: String
+        }
+        // Conversation avec userId : envoyés OU reçus.
+        let rows: [Row] = try await client.from("community_messages")
+            .select()
+            .or("sender_id.eq.\(userId),recipient_id.eq.\(userId)")
+            .order("created_at", ascending: true)
+            .execute().value
+        return rows.map {
+            DirectMessage(id: $0.id, authorId: $0.sender_id,
+                          authorName: $0.sender_name, content: $0.content,
+                          createdAt: isoDate($0.created_at))
+        }
+    }
+}
+
+private func isoDate(_ str: String) -> Date {
+    ISO8601DateFormatter().date(from: str) ?? Date()
+}
+
 @Observable
 @MainActor
 final class CommunityStore {
@@ -12,7 +146,26 @@ final class CommunityStore {
     /// Permet à l'UI de signaler "non synchronisé" au lieu d'un échec silencieux.
     private(set) var lastSyncError: String?
 
-    private var client: SupabaseClient? {
+    /// Backend Supabase, injectable pour les tests (`nil` = sans backend).
+    private let client: SupabaseClient?
+    /// Frontière réseau des « j'aime » (injectable pour les tests).
+    private let likeSync: any LikeSyncing
+    /// Frontière réseau des commentaires (injectable pour les tests).
+    private let commentSync: any CommentSyncing
+    /// Frontière réseau des messages privés (injectable pour les tests).
+    private let messageSync: any DirectMessageSyncing
+
+    init(client: SupabaseClient? = CommunityStore.makeClient(),
+         likeSync: any LikeSyncing = SupabaseLikeSync(),
+         commentSync: any CommentSyncing = SupabaseCommentSync(),
+         messageSync: any DirectMessageSyncing = SupabaseMessageSync()) {
+        self.client = client
+        self.likeSync = likeSync
+        self.commentSync = commentSync
+        self.messageSync = messageSync
+    }
+
+    private static func makeClient() -> SupabaseClient? {
         guard let url = AppConfiguration.supabaseURL,
               let key = AppConfiguration.supabaseAnonKey else { return nil }
         return SupabaseClient(supabaseURL: url, supabaseKey: key)
@@ -20,12 +173,21 @@ final class CommunityStore {
 
     // MARK: - Load
 
-    func loadSampleIfNeeded() {
+    func loadIfNeeded() {
         Task { await load() }
     }
 
+    /// Charge le fil réel. Sans backend ou en cas d'échec, le fil reste **vide** :
+    /// aucun contenu d'exemple n'est fabriqué (red-team H4 — « Léa/Marc » étaient
+    /// présentés comme du vrai contenu communautaire).
     func load() async {
-        guard let db = client else { loadSamples(); return }
+        if let db = client {
+            await loadPostsAndEvents(from: db)
+        }
+        await restoreLikedState()
+    }
+
+    private func loadPostsAndEvents(from db: SupabaseClient) async {
         isLoading = true
         defer { isLoading = false }
         do {
@@ -33,12 +195,14 @@ final class CommunityStore {
             struct PostRow: Decodable {
                 let id: String; let author_name: String; let content: String
                 let likes: Int; let created_at: String
+                let author_id: String?
             }
             let postRows: [PostRow] = try await db.from("community_posts")
                 .select().order("created_at", ascending: false).limit(50).execute().value
             posts = postRows.map { r in
                 CommunityPost(id: r.id, authorName: r.author_name, content: r.content,
-                              createdAt: iso(r.created_at), likes: r.likes, isLiked: false)
+                              createdAt: iso(r.created_at), likes: r.likes, isLiked: false,
+                              authorId: r.author_id)
             }
             // Events
             struct EventRow: Decodable {
@@ -58,15 +222,17 @@ final class CommunityStore {
                                createdAt: iso(r.created_at))
             }
         } catch {
-            if posts.isEmpty { loadSamples() }
+            // Échec réseau : garder le fil tel quel (vide si rien n'a été chargé).
+            lastSyncError = "Contenus non synchronisés : \(error.localizedDescription)"
         }
     }
 
     // MARK: - Posts
 
-    func addPost(content: String, authorName: String) {
+    func addPost(content: String, authorName: String, authorId: String? = nil) {
         let post = CommunityPost(id: UUID().uuidString, authorName: authorName,
-                                  content: content, createdAt: Date(), likes: 0, isLiked: false)
+                                  content: content, createdAt: Date(), likes: 0, isLiked: false,
+                                  authorId: authorId)
         posts.insert(post, at: 0)
         Task {
             guard let db = client else { return }
@@ -95,21 +261,27 @@ final class CommunityStore {
         post.likes += post.isLiked ? 1 : -1
         posts[index] = post
 
-        // Persiste le compteur (best-effort). Sans ça, le like se réinitialise
-        // au prochain load() depuis le serveur.
-        let newLikes = post.likes
+        // État par utilisateur (idempotent), jamais un compteur absolu :
+        // l'ancien `update(likes: n)` perdait les écritures concurrentes et
+        // se gonflait au relancement (red-team H5).
+        let liked = post.isLiked
         Task {
-            guard let db = client else { return }
             do {
-                struct LikeUpdate: Encodable { let likes: Int }
-                try await db.from("community_posts")
-                    .update(LikeUpdate(likes: newLikes))
-                    .eq("id", value: postId)
-                    .execute()
+                try await likeSync.setLiked(postId: postId, liked: liked)
                 lastSyncError = nil
             } catch {
                 lastSyncError = "Like non synchronisé : \(error.localizedDescription)"
             }
+        }
+    }
+
+    /// Restaure l'état « déjà aimé » de l'utilisateur sur les posts chargés
+    /// (red-team H5 : `isLiked = false` en dur laissait re-liker à chaque
+    /// relancement et gonfler le compteur).
+    private func restoreLikedState() async {
+        guard let liked = try? await likeSync.likedPostIds() else { return }
+        for index in posts.indices where liked.contains(posts[index].id) {
+            posts[index].isLiked = true
         }
     }
 
@@ -141,21 +313,51 @@ final class CommunityStore {
         }
     }
 
-    // MARK: - Conversations (local only for now)
+    // MARK: - Comments (serveur — red-team H3 : avant, locaux uniquement)
 
-    // MARK: - Comments (local)
     private var comments: [String: [CommunityComment]] = [:]
 
     func commentsFor(postId: String) -> [CommunityComment] { comments[postId] ?? [] }
 
-    func addComment(postId: String, text: String, authorName: String) {
+    /// Charge les commentaires réels d'un post depuis le serveur.
+    func loadComments(postId: String) async {
+        do {
+            comments[postId] = try await commentSync.comments(postId: postId)
+        } catch {
+            lastSyncError = "Commentaires non chargés : \(error.localizedDescription)"
+        }
+    }
+
+    func addComment(postId: String, text: String, authorName: String, authorId: String? = nil) {
         let comment = CommunityComment(id: UUID().uuidString, postId: postId,
-                                        authorName: authorName, text: text, createdAt: Date())
+                                        authorName: authorName, text: text, createdAt: Date(),
+                                        authorId: authorId)
         var existing = comments[postId] ?? []
         existing.append(comment)
         comments[postId] = existing
+
+        // Envoi réel au serveur : le commentaire doit être visible par les autres.
+        Task {
+            do {
+                try await commentSync.send(comment)
+                lastSyncError = nil
+            } catch {
+                lastSyncError = "Commentaire non synchronisé : \(error.localizedDescription)"
+            }
+        }
     }
 
+    // MARK: - Messages privés (serveur — red-team H3 : avant, la vue les perdait)
+
+    func messages(with userId: String) -> [DirectMessage] {
+        conversations.first(where: {
+            $0.participants.contains(userId)
+        })?.messages ?? []
+    }
+
+    /// Envoie un message privé au destinataire et le conserve dans le store
+    /// (avant : stocké dans `@State` de la vue — disparait à la fermeture,
+    /// jamais délivré).
     func sendMessage(to participantId: String, participantName: String,
                      text: String, fromId: String, fromName: String) {
         let message = DirectMessage(id: UUID().uuidString, authorId: fromId,
@@ -174,6 +376,16 @@ final class CommunityStore {
                                      messages: [message], lastActivity: Date())
             conversations.insert(conv, at: 0)
         }
+
+        // Livraison réelle au destinataire.
+        Task {
+            do {
+                try await messageSync.send(message, to: participantId)
+                lastSyncError = nil
+            } catch {
+                lastSyncError = "Message non envoyé : \(error.localizedDescription)"
+            }
+        }
     }
 
     // MARK: - Helpers
@@ -187,23 +399,4 @@ final class CommunityStore {
         return fmt.string(from: date)
     }
 
-    private func loadSamples() {
-        guard posts.isEmpty else { return }
-        let now = Date()
-        posts = [
-            CommunityPost(id: "s1", authorName: "Léa",
-                          content: "Mon Maine Coon vient d'adopter sa litière — des conseils ?",
-                          createdAt: now.addingTimeInterval(-3600), likes: 12, isLiked: false),
-            CommunityPost(id: "s2", authorName: "Marc",
-                          content: "Photo du jour : notre Bengal adore les étagères hautes 🐾",
-                          createdAt: now.addingTimeInterval(-86_400), likes: 34, isLiked: true),
-        ]
-        events = [
-            CommunityEvent(id: "e1", title: "Rencontre éleveurs Maine Coon",
-                           description: "Grande rencontre des passionnés de Maine Coon.",
-                           date: isoDate(from: now.addingTimeInterval(86_400 * 5)), time: "14:00",
-                           location: "Lyon", address: "Parc de la Tête d'Or, 69006 Lyon",
-                           type: "meetup", maxAttendees: 50, price: "", attendees: [], createdAt: now),
-        ]
-    }
 }
