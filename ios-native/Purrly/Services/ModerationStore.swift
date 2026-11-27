@@ -43,7 +43,9 @@ struct ContentReport: Codable, Equatable {
 }
 
 /// Frontière réseau du signalement (injectable pour les tests).
-protocol ReportSubmitting {
+/// `Sendable` : appelé depuis `ModerationStore` (@MainActor) — l'instance
+/// traverse la frontière d'acteur (Swift 6 strict concurrency).
+protocol ReportSubmitting: Sendable {
     func submit(_ report: ContentReport) async throws
 }
 

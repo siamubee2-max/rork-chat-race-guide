@@ -9,7 +9,7 @@ final class ModerationStoreTests: XCTestCase {
 
     // MARK: - Doubles de test (frontière réseau uniquement)
 
-    final class SpySubmitter: ReportSubmitting {
+    final class SpySubmitter: ReportSubmitting, @unchecked Sendable {
         var submitted: [ContentReport] = []
         var shouldFail = false
         struct Boom: Error {}

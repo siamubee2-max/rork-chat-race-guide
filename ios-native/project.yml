@@ -74,6 +74,9 @@ targets:
         RORK_API_BASE_URL: $(RORK_API_BASE_URL)
         DEMO_EMAIL: $(DEMO_EMAIL)
         REVENUECAT_IOS_API_KEY: $(REVENUECAT_IOS_API_KEY)
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        ITSAppUsesNonExemptEncryption: false
         CFBundleURLTypes:
           - CFBundleURLName: app.rork.chat-race-guide
             CFBundleURLSchemes:
@@ -96,6 +99,9 @@ targets:
       path: PurrlyWidget/Info.plist
       properties:
         CFBundleDisplayName: Purrly
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        ITSAppUsesNonExemptEncryption: false
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension
   PurrlyTests:
