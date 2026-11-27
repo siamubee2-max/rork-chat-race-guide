@@ -43,6 +43,11 @@ struct PostDetailView: View {
         .purrlyScreenBackground()
         .navigationTitle(String(localized: "community.post.title"))
         .navigationBarTitleDisplayMode(.inline)
+        .task {
+            // Charge les vrais commentaires du serveur (red-team H3 :
+            // avant, seuls des commentaires locaux — jamais visibles par les autres).
+            await environment.community.loadComments(postId: post.id)
+        }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 ModerationToolbarMenu(author: post.author, kind: .post, itemId: post.id)

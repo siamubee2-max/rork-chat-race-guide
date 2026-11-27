@@ -8,8 +8,11 @@ struct ConversationView: View {
     @State private var inputText = ""
     @FocusState private var inputFocused: Bool
 
-    /// Messages local to this view (not persisted to store on every keystroke).
-    @State private var localMessages: [DirectMessage] = []
+    /// Messages lus depuis le store (livrés au serveur ; survit à la fermeture
+    /// de la vue — red-team H3 : avant, ils vivaient dans @State et disparaissaient).
+    private var localMessages: [DirectMessage] {
+        environment.community.messages(with: otherUserId)
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -40,6 +43,16 @@ struct ConversationView: View {
                         }
                     }
                 }
+            }
+
+            if let error = environment.community.lastSyncError {
+                // Honnêteté : l'échec d'envoi est affiché, pas prétendu réussi (H3).
+                Text(error)
+                    .font(.caption)
+                    .foregroundStyle(AppTheme.heart)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 6)
             }
 
             Divider()
@@ -84,15 +97,6 @@ struct ConversationView: View {
 
         let currentId = environment.auth.currentUser?.id ?? "me"
         let currentName = environment.auth.currentUser?.name ?? "Moi"
-
-        let msg = DirectMessage(
-            id: UUID().uuidString,
-            authorId: currentId,
-            authorName: currentName,
-            content: text,
-            createdAt: Date()
-        )
-        localMessages.append(msg)
 
         environment.community.sendMessage(
             to: otherUserId,

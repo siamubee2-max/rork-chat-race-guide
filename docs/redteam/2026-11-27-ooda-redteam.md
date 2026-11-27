@@ -51,8 +51,9 @@ Labels: **CONFIRMED** = read in code, mechanism is unambiguous. **PLAUSIBLE** = 
 ### H2 — Moderation bypass via name collision; blocking by display name — CONFIRMED
 `ModerationMenuItems` hides Report/Block when `author != currentUserName`; display names are free text with no uniqueness (`profiles.name`, 1–100 chars). Set your name equal to a victim's → they cannot report/block you, and blocking "Marc" blocks every Marc. `author_name` is client-supplied on insert (`CommunityStore.addPost`), so impersonation is trivial.
 
-### H3 — DMs and comments are local-only but presented as real — CONFIRMED
-`CommunityStore.sendMessage` (`:159-177`) and `addComment` (`:151-157`) never touch the network; `ConversationView` keeps messages in `@State`. A sent DM is never delivered and vanishes on dismiss.
+### H3 — DMs and comments are local-only but presented as real — FIXED (2026-11-27)
+~~`CommunityStore.sendMessage` (`:159-177`) and `addComment` (`:151-157`) never touch the network; `ConversationView` keeps messages in `@State`. A sent DM is never delivered and vanishes on dismiss.~~
+> **Fix (TDD, red→green observed):** real delivery through new seams `CommentSyncing` and `DirectMessageSyncing`, backed by `supabase/migrations/20261127_community_comments_messages.sql` (`community_comments` public-to-authenticated, `community_messages` sender/recipient-only RLS). `ConversationView` reads messages from the store instead of `@State` (they survive dismissal); `PostDetailView` loads real comments on appear; failed sends surface `lastSyncError` instead of silent pretend-success. New tests `CommunityMessagingTests` (6) red before the fix, green after. **Migration NOT APPLIED yet.**
 
 ### H4 — Fabricated "community" content shown as real — FIXED (2026-11-27)
 ~~`CommunityStore.load` catch → `loadSamples()` (`:61`); `DiscussionsStore.load` calls `loadSamples()` even on success with zero rows (`:46`). Users can reply/like fake "Léa/Marc" posts; writes then fail silently (`catch { /* keep local */ }`).~~

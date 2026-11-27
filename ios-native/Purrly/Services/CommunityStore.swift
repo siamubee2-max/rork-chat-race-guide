@@ -41,6 +41,100 @@ struct SupabaseLikeSync: LikeSyncing {
     }
 }
 
+/// Frontière réseau des commentaires (injectable pour les tests).
+/// Les commentaires sont écrits ET lus côté serveur — jamais locaux seulement
+/// (red-team H3 : `addComment` ne faisait qu'ajouter dans un dictionnaire local).
+protocol CommentSyncing: Sendable {
+    func send(_ comment: CommunityComment) async throws
+    func comments(postId: String) async throws -> [CommunityComment]
+}
+
+/// Frontière réseau des messages privés (injectable pour les tests).
+/// Un DM est envoyé au destinataire — il ne reste pas dans la vue (red-team H3).
+protocol DirectMessageSyncing: Sendable {
+    func send(_ message: DirectMessage, to recipientId: String) async throws
+    func messages(with userId: String) async throws -> [DirectMessage]
+}
+
+/// Implémentation Supabase : table `community_comments`.
+struct SupabaseCommentSync: CommentSyncing {
+    func send(_ comment: CommunityComment) async throws {
+        guard let url = AppConfiguration.supabaseURL,
+              let key = AppConfiguration.supabaseAnonKey else { return }
+        let client = SupabaseClient(supabaseURL: url, supabaseKey: key)
+        struct Row: Encodable {
+            let id: String; let post_id: String
+            let author_name: String; let content: String
+        }
+        try await client.from("community_comments").insert(
+            Row(id: comment.id, post_id: comment.postId,
+                author_name: comment.authorName, content: comment.text)
+        ).execute()
+    }
+
+    func comments(postId: String) async throws -> [CommunityComment] {
+        guard let url = AppConfiguration.supabaseURL,
+              let key = AppConfiguration.supabaseAnonKey else { return [] }
+        let client = SupabaseClient(supabaseURL: url, supabaseKey: key)
+        struct Row: Decodable {
+            let id: String; let post_id: String; let author_name: String
+            let content: String; let created_at: String; let user_id: String?
+        }
+        let rows: [Row] = try await client.from("community_comments")
+            .select()
+            .eq("post_id", value: postId)
+            .order("created_at", ascending: true)
+            .execute().value
+        return rows.map {
+            CommunityComment(id: $0.id, postId: $0.post_id, authorName: $0.author_name,
+                             text: $0.content, createdAt: isoDate($0.created_at),
+                             authorId: $0.user_id)
+        }
+    }
+}
+
+/// Implémentation Supabase : table `community_messages` (RLS : expéditeur ou destinataire).
+struct SupabaseMessageSync: DirectMessageSyncing {
+    func send(_ message: DirectMessage, to recipientId: String) async throws {
+        guard let url = AppConfiguration.supabaseURL,
+              let key = AppConfiguration.supabaseAnonKey else { return }
+        let client = SupabaseClient(supabaseURL: url, supabaseKey: key)
+        struct Row: Encodable {
+            let id: String; let recipient_id: String
+            let sender_name: String; let content: String
+        }
+        try await client.from("community_messages").insert(
+            Row(id: message.id, recipient_id: recipientId,
+                sender_name: message.authorName, content: message.content)
+        ).execute()
+    }
+
+    func messages(with userId: String) async throws -> [DirectMessage] {
+        guard let url = AppConfiguration.supabaseURL,
+              let key = AppConfiguration.supabaseAnonKey else { return [] }
+        let client = SupabaseClient(supabaseURL: url, supabaseKey: key)
+        struct Row: Decodable {
+            let id: String; let sender_id: String; let sender_name: String
+            let content: String; let created_at: String
+        }
+        // Conversation avec userId : envoyés OU reçus.
+        let rows: [Row] = try await client.from("community_messages")
+            .select()
+            .or("sender_id.eq.\(userId),recipient_id.eq.\(userId)")
+            .order("created_at", ascending: true)
+            .execute().value
+        return rows.map {
+            DirectMessage(id: $0.id, authorId: $0.sender_id,
+                          authorName: $0.sender_name, content: $0.content,
+                          createdAt: isoDate($0.created_at))
+        }
+    }
+}
+
+private func isoDate(_ str: String) -> Date {
+    ISO8601DateFormatter().date(from: str) ?? Date()
+}
+
 @Observable
 @MainActor
 final class CommunityStore {
@@ -56,11 +150,19 @@ final class CommunityStore {
     private let client: SupabaseClient?
     /// Frontière réseau des « j'aime » (injectable pour les tests).
     private let likeSync: any LikeSyncing
+    /// Frontière réseau des commentaires (injectable pour les tests).
+    private let commentSync: any CommentSyncing
+    /// Frontière réseau des messages privés (injectable pour les tests).
+    private let messageSync: any DirectMessageSyncing
 
     init(client: SupabaseClient? = CommunityStore.makeClient(),
-         likeSync: any LikeSyncing = SupabaseLikeSync()) {
+         likeSync: any LikeSyncing = SupabaseLikeSync(),
+         commentSync: any CommentSyncing = SupabaseCommentSync(),
+         messageSync: any DirectMessageSyncing = SupabaseMessageSync()) {
         self.client = client
         self.likeSync = likeSync
+        self.commentSync = commentSync
+        self.messageSync = messageSync
     }
 
     private static func makeClient() -> SupabaseClient? {
@@ -211,12 +313,20 @@ final class CommunityStore {
         }
     }
 
-    // MARK: - Conversations (local only for now)
+    // MARK: - Comments (serveur — red-team H3 : avant, locaux uniquement)
 
-    // MARK: - Comments (local)
     private var comments: [String: [CommunityComment]] = [:]
 
     func commentsFor(postId: String) -> [CommunityComment] { comments[postId] ?? [] }
+
+    /// Charge les commentaires réels d'un post depuis le serveur.
+    func loadComments(postId: String) async {
+        do {
+            comments[postId] = try await commentSync.comments(postId: postId)
+        } catch {
+            lastSyncError = "Commentaires non chargés : \(error.localizedDescription)"
+        }
+    }
 
     func addComment(postId: String, text: String, authorName: String, authorId: String? = nil) {
         let comment = CommunityComment(id: UUID().uuidString, postId: postId,
@@ -225,8 +335,29 @@ final class CommunityStore {
         var existing = comments[postId] ?? []
         existing.append(comment)
         comments[postId] = existing
+
+        // Envoi réel au serveur : le commentaire doit être visible par les autres.
+        Task {
+            do {
+                try await commentSync.send(comment)
+                lastSyncError = nil
+            } catch {
+                lastSyncError = "Commentaire non synchronisé : \(error.localizedDescription)"
+            }
+        }
     }
 
+    // MARK: - Messages privés (serveur — red-team H3 : avant, la vue les perdait)
+
+    func messages(with userId: String) -> [DirectMessage] {
+        conversations.first(where: {
+            $0.participants.contains(userId)
+        })?.messages ?? []
+    }
+
+    /// Envoie un message privé au destinataire et le conserve dans le store
+    /// (avant : stocké dans `@State` de la vue — disparait à la fermeture,
+    /// jamais délivré).
     func sendMessage(to participantId: String, participantName: String,
                      text: String, fromId: String, fromName: String) {
         let message = DirectMessage(id: UUID().uuidString, authorId: fromId,
@@ -244,6 +375,16 @@ final class CommunityStore {
                                      participantNames: [fromId: fromName, participantId: participantName],
                                      messages: [message], lastActivity: Date())
             conversations.insert(conv, at: 0)
+        }
+
+        // Livraison réelle au destinataire.
+        Task {
+            do {
+                try await messageSync.send(message, to: participantId)
+                lastSyncError = nil
+            } catch {
+                lastSyncError = "Message non envoyé : \(error.localizedDescription)"
+            }
         }
     }
 
