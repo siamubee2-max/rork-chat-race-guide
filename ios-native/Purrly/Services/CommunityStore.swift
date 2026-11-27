@@ -33,12 +33,14 @@ final class CommunityStore {
             struct PostRow: Decodable {
                 let id: String; let author_name: String; let content: String
                 let likes: Int; let created_at: String
+                let author_id: String?
             }
             let postRows: [PostRow] = try await db.from("community_posts")
                 .select().order("created_at", ascending: false).limit(50).execute().value
             posts = postRows.map { r in
                 CommunityPost(id: r.id, authorName: r.author_name, content: r.content,
-                              createdAt: iso(r.created_at), likes: r.likes, isLiked: false)
+                              createdAt: iso(r.created_at), likes: r.likes, isLiked: false,
+                              authorId: r.author_id)
             }
             // Events
             struct EventRow: Decodable {
@@ -64,9 +66,10 @@ final class CommunityStore {
 
     // MARK: - Posts
 
-    func addPost(content: String, authorName: String) {
+    func addPost(content: String, authorName: String, authorId: String? = nil) {
         let post = CommunityPost(id: UUID().uuidString, authorName: authorName,
-                                  content: content, createdAt: Date(), likes: 0, isLiked: false)
+                                  content: content, createdAt: Date(), likes: 0, isLiked: false,
+                                  authorId: authorId)
         posts.insert(post, at: 0)
         Task {
             guard let db = client else { return }
@@ -148,9 +151,10 @@ final class CommunityStore {
 
     func commentsFor(postId: String) -> [CommunityComment] { comments[postId] ?? [] }
 
-    func addComment(postId: String, text: String, authorName: String) {
+    func addComment(postId: String, text: String, authorName: String, authorId: String? = nil) {
         let comment = CommunityComment(id: UUID().uuidString, postId: postId,
-                                        authorName: authorName, text: text, createdAt: Date())
+                                        authorName: authorName, text: text, createdAt: Date(),
+                                        authorId: authorId)
         var existing = comments[postId] ?? []
         existing.append(comment)
         comments[postId] = existing

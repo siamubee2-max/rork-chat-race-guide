@@ -36,7 +36,8 @@ struct NewDiscussionView: View {
                         environment.discussions.addThread(
                             title: trimmedTitle,
                             firstMessage: trimmedMessage,
-                            authorName: environment.auth.currentUser?.name ?? "Anonyme")
+                            authorName: environment.auth.currentUser?.name ?? "Anonyme",
+                            authorId: environment.auth.currentUser?.id)
                         dismiss()
                     }
                     .tint(AppTheme.primary)

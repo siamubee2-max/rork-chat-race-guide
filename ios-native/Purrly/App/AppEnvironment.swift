@@ -62,6 +62,9 @@ final class AppEnvironment {
             await subscriptions.identify(userID: userID)
         }
 
+        // Renvoie les signalements restés en file d'attente (échec réseau antérieur).
+        await moderation.flushPendingReports()
+
         syncEntitlements()
         updateWidgetSnapshot()
     }
@@ -82,6 +85,8 @@ final class AppEnvironment {
             await subscriptions.identify(userID: userID)
         }
         syncEntitlements()
+        // Une session vient d'exister : les signalements en attente peuvent partir.
+        await moderation.flushPendingReports()
     }
 
     /// À appeler après déconnexion : repasse RevenueCat en anonyme puis réaligne.

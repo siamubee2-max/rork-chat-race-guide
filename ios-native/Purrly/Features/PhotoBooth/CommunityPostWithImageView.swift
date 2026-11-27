@@ -59,7 +59,8 @@ struct CommunityPostWithImageView: View {
         let imageNote = "[📸 Photo Booth]"
         let content = [imageNote, caption].filter { !$0.isEmpty }.joined(separator: "\n")
         let authorName = environment.auth.currentUser?.name ?? "Anonyme"
-        environment.community.addPost(content: content, authorName: authorName)
+        environment.community.addPost(content: content, authorName: authorName,
+                                      authorId: environment.auth.currentUser?.id)
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             dismiss()

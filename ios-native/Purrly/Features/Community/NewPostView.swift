@@ -92,7 +92,8 @@ struct NewPostView: View {
         let trimmed = content.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
         let authorName = environment.auth.currentUser?.name ?? "Vous"
-        environment.community.addPost(content: trimmed, authorName: authorName)
+        environment.community.addPost(content: trimmed, authorName: authorName,
+                                      authorId: environment.auth.currentUser?.id)
         dismiss()
     }
 }

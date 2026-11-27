@@ -43,6 +43,8 @@ Labels: **CONFIRMED** = read in code, mechanism is unambiguous. **PLAUSIBLE** = 
 
 ## High
 
+> **FIX PROPOSED for H1 + H2 (2026-11-27) — written test-first but NOT COMPILED, NOT RUN, migration NOT APPLIED.** `ModerationStoreTests` (new, 14 tests) was authored before the code, yet no red/green was observed: this environment has no Xcode. Needs `xcodegen generate` (the `.xcodeproj` is tracked and lists files explicitly, so new *test* files are not in the target until regenerated — same for `AuthTokenResolverTests` from C1), a build, and the migration `supabase/migrations/20261127_content_reports.sql`. Also fixed along the way: a **reported forum message stayed visible** (`DiscussionDetailView` filtered on `isBlocked` only, not `isHidden`).
+
 ### H1 — Reports go nowhere, UI claims they do — CONFIRMED
 `ModerationStore.report()` (`:69-73`) only inserts an id into `UserDefaults` and shows "signalé à notre équipe, qui agira sous 24 h". No network call, no mailto; `supportEmail` is defined but referenced nowhere else. Misleading to users and fails the intent of Guideline 1.2 (act on reports within 24 h).
 

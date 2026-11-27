@@ -25,6 +25,10 @@ struct CommunityPost: Identifiable, Hashable {
     let createdAt: Date
     var likes: Int
     var isLiked: Bool
+    /// Identifiant serveur de l'auteur (nil pour le contenu d'exemple/ancien).
+    var authorId: String? = nil
+
+    var author: ContentAuthor { ContentAuthor(id: authorId, name: authorName) }
 }
 
 struct CommunityEvent: Codable, Identifiable, Hashable {
@@ -48,6 +52,9 @@ struct CommunityComment: Identifiable, Hashable {
     let authorName: String
     let text: String
     let createdAt: Date
+    var authorId: String? = nil
+
+    var author: ContentAuthor { ContentAuthor(id: authorId, name: authorName) }
 }
 
 struct DirectMessage: Codable, Identifiable, Hashable {

@@ -8,14 +8,22 @@ struct UserProfileView: View {
     @State private var isFollowing = false
     @State private var showConversation = false
 
-    private var currentUserName: String {
-        environment.auth.currentUser?.name ?? ""
+    /// Identifiant serveur réel ; `CommunityHubView` passe `user-<nom>` pour le contenu
+    /// sans identifiant (exemples/anciens posts) — dans ce cas on se rabat sur le nom.
+    private var realUserId: String? { userId.hasPrefix("user-") ? nil : userId }
+
+    private var author: ContentAuthor { ContentAuthor(id: realUserId, name: userName) }
+
+    /// Par identifiant uniquement : un homonyme ne doit pas se faire passer pour moi.
+    private var isOwnProfile: Bool {
+        environment.moderation.isOwnContent(authorId: realUserId,
+                                            currentUserId: environment.auth.currentUser?.id)
     }
 
-    private var isOwnProfile: Bool { userName == currentUserName }
-
     private var userPosts: [CommunityPost] {
-        environment.community.posts.filter { $0.authorName == userName }
+        environment.community.posts.filter {
+            realUserId != nil ? $0.author.id == author.id : $0.authorName == userName
+        }
     }
 
     var body: some View {
@@ -65,7 +73,7 @@ struct UserProfileView: View {
                 if !isOwnProfile {
                     HStack(spacing: 12) {
                         Button(role: .destructive) {
-                            environment.moderation.block(author: userName)
+                            environment.moderation.block(author: author)
                         } label: {
                             Label("Bloquer", systemImage: "person.fill.xmark")
                                 .frame(maxWidth: .infinity, minHeight: AppTheme.minTouch)
@@ -74,12 +82,12 @@ struct UserProfileView: View {
                         .accessibilityLabel("Bloquer \(userName)")
 
                         Button(role: .destructive) {
-                            if let first = userPosts.first {
-                                environment.moderation.report(id: first.id, author: userName,
-                                                              reason: "Profil signalé")
-                            } else {
-                                environment.moderation.report(id: "profile-\(userName)", author: userName,
-                                                              reason: "Profil signalé")
+                            Task {
+                                await environment.moderation.report(
+                                    kind: .profile,
+                                    id: "profile-\(realUserId ?? userName)",
+                                    author: author,
+                                    reason: "Profil signalé")
                             }
                         } label: {
                             Label("Signaler", systemImage: "flag")

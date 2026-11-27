@@ -114,3 +114,26 @@ begin
 end;
 $$;
 revoke all on function public.check_and_increment_ai_usage(uuid, text, int) from public, anon, authenticated;
+
+-- ---------------------------------------------------------------------------
+-- content_reports  (signalements UGC — Guideline 1.2 ; voir
+-- migrations/20261127_content_reports.sql pour le détail du modèle de sécurité)
+-- ---------------------------------------------------------------------------
+create table if not exists public.content_reports (
+  id           bigint generated always as identity primary key,
+  reporter_id  uuid        not null default auth.uid() references auth.users(id) on delete cascade,
+  content_type text        not null check (content_type in ('post', 'comment', 'thread', 'message', 'profile')),
+  content_id   text        not null check (char_length(content_id) between 1 and 100),
+  author_id    text        check (char_length(author_id) <= 100),
+  author_name  text        not null default '' check (char_length(author_name) <= 200),
+  reason       text        not null check (char_length(reason) between 1 and 500),
+  status       text        not null default 'open' check (status in ('open', 'reviewed', 'actioned', 'dismissed')),
+  created_at   timestamptz not null default now(),
+  unique (reporter_id, content_type, content_id)
+);
+create index if not exists content_reports_status_created_idx on public.content_reports (status, created_at);
+alter table public.content_reports enable row level security;
+revoke all on public.content_reports from anon, authenticated;
+grant insert (content_type, content_id, author_id, author_name, reason) on public.content_reports to authenticated;
+create policy "content_reports_insert_own" on public.content_reports
+  for insert to authenticated with check (reporter_id = (select auth.uid()));
