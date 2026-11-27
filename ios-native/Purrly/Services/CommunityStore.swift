@@ -1,6 +1,46 @@
 import Foundation
 import Supabase
 
+/// Frontière réseau des « j'aime » (injectable pour les tests).
+/// L'état est **par utilisateur** (idempotent) : on envoie aimé/retiré,
+/// jamais un compteur absolu (red-team H5).
+protocol LikeSyncing: Sendable {
+    /// Marque ou retire le « j'aime » de l'utilisateur courant pour un post.
+    func setLiked(postId: String, liked: Bool) async throws
+    /// Identifiants des posts déjà aimés par l'utilisateur courant.
+    func likedPostIds() async throws -> Set<String>
+}
+
+/// Implémentation Supabase : table `community_post_likes` (post_id, user_id).
+struct SupabaseLikeSync: LikeSyncing {
+    func setLiked(postId: String, liked: Bool) async throws {
+        guard let url = AppConfiguration.supabaseURL,
+              let key = AppConfiguration.supabaseAnonKey else { return }
+        let client = SupabaseClient(supabaseURL: url, supabaseKey: key)
+        struct LikeRow: Encodable { let post_id: String; let user_id: String? }
+        if liked {
+            try await client.from("community_post_likes").insert(
+                LikeRow(post_id: postId, user_id: nil)   // user_id = auth.uid() par défaut
+            ).execute()
+        } else {
+            try await client.from("community_post_likes")
+                .delete()
+                .eq("post_id", value: postId)
+                .execute()
+        }
+    }
+
+    func likedPostIds() async throws -> Set<String> {
+        guard let url = AppConfiguration.supabaseURL,
+              let key = AppConfiguration.supabaseAnonKey else { return [] }
+        let client = SupabaseClient(supabaseURL: url, supabaseKey: key)
+        struct LikeRow: Decodable { let post_id: String }
+        let rows: [LikeRow] = try await client.from("community_post_likes")
+            .select("post_id").execute().value
+        return Set(rows.map(\.post_id))
+    }
+}
+
 @Observable
 @MainActor
 final class CommunityStore {
@@ -14,9 +54,13 @@ final class CommunityStore {
 
     /// Backend Supabase, injectable pour les tests (`nil` = sans backend).
     private let client: SupabaseClient?
+    /// Frontière réseau des « j'aime » (injectable pour les tests).
+    private let likeSync: any LikeSyncing
 
-    init(client: SupabaseClient? = CommunityStore.makeClient()) {
+    init(client: SupabaseClient? = CommunityStore.makeClient(),
+         likeSync: any LikeSyncing = SupabaseLikeSync()) {
         self.client = client
+        self.likeSync = likeSync
     }
 
     private static func makeClient() -> SupabaseClient? {
@@ -35,7 +79,13 @@ final class CommunityStore {
     /// aucun contenu d'exemple n'est fabriqué (red-team H4 — « Léa/Marc » étaient
     /// présentés comme du vrai contenu communautaire).
     func load() async {
-        guard let db = client else { return }
+        if let db = client {
+            await loadPostsAndEvents(from: db)
+        }
+        await restoreLikedState()
+    }
+
+    private func loadPostsAndEvents(from db: SupabaseClient) async {
         isLoading = true
         defer { isLoading = false }
         do {
@@ -109,21 +159,27 @@ final class CommunityStore {
         post.likes += post.isLiked ? 1 : -1
         posts[index] = post
 
-        // Persiste le compteur (best-effort). Sans ça, le like se réinitialise
-        // au prochain load() depuis le serveur.
-        let newLikes = post.likes
+        // État par utilisateur (idempotent), jamais un compteur absolu :
+        // l'ancien `update(likes: n)` perdait les écritures concurrentes et
+        // se gonflait au relancement (red-team H5).
+        let liked = post.isLiked
         Task {
-            guard let db = client else { return }
             do {
-                struct LikeUpdate: Encodable { let likes: Int }
-                try await db.from("community_posts")
-                    .update(LikeUpdate(likes: newLikes))
-                    .eq("id", value: postId)
-                    .execute()
+                try await likeSync.setLiked(postId: postId, liked: liked)
                 lastSyncError = nil
             } catch {
                 lastSyncError = "Like non synchronisé : \(error.localizedDescription)"
             }
+        }
+    }
+
+    /// Restaure l'état « déjà aimé » de l'utilisateur sur les posts chargés
+    /// (red-team H5 : `isLiked = false` en dur laissait re-liker à chaque
+    /// relancement et gonfler le compteur).
+    private func restoreLikedState() async {
+        guard let liked = try? await likeSync.likedPostIds() else { return }
+        for index in posts.indices where liked.contains(posts[index].id) {
+            posts[index].isLiked = true
         }
     }
 

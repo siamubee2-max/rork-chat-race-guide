@@ -66,6 +66,7 @@
 		878AC9A9DC5A7BCAA08D8B15 /* ExpenseFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF2044B811A18532ACE77D7 /* ExpenseFormView.swift */; };
 		8ABDA6E681051F3DB453FDE6 /* VetDisclaimerBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA45DE54215A212D044F9ED /* VetDisclaimerBanner.swift */; };
 		8B4CF3A9C57F7163F0330028 /* CommunityStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4CE5BD437518275FAA3C022 /* CommunityStore.swift */; };
+		8CD71C78B918A0F5BE914E1E /* CommunityLikeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4E52869CF47640F5AAB076 /* CommunityLikeTests.swift */; };
 		8E04CB0DC53961234806BFDD /* CommunityPostWithImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C5B2BC5A57DEFA91CFEE97 /* CommunityPostWithImageView.swift */; };
 		8E42BF02EC1310D118753643 /* ExpenseStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BB4DC9285A51E87965A6BBD /* ExpenseStoreTests.swift */; };
 		8EB8CEF06C0D7E43ED27C6E6 /* DiscussionsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2246A54C9DB7E1947FCE23DB /* DiscussionsListView.swift */; };
@@ -211,6 +212,7 @@
 		5C43390001E598E7F1554DB7 /* ModerationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModerationStore.swift; sourceTree = "<group>"; };
 		5CF2044B811A18532ACE77D7 /* ExpenseFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseFormView.swift; sourceTree = "<group>"; };
 		5D77EEB8B87C1F16AC4D285D /* PurrlyUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PurrlyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E4E52869CF47640F5AAB076 /* CommunityLikeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityLikeTests.swift; sourceTree = "<group>"; };
 		5F418566A00CCD08661EB910 /* DailyLogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyLogsView.swift; sourceTree = "<group>"; };
 		5FE89A99E0C3CECFF327A780 /* UsageLimitsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageLimitsTests.swift; sourceTree = "<group>"; };
 		6368EC7B67F311035673CC66 /* CreateAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAlertView.swift; sourceTree = "<group>"; };
@@ -581,6 +583,7 @@
 			isa = PBXGroup;
 			children = (
 				7663AA9E75AE813E26528B76 /* AuthTokenResolverTests.swift */,
+				5E4E52869CF47640F5AAB076 /* CommunityLikeTests.swift */,
 				6AB29BA5D28F3E802B601968 /* CommunityStoreTests.swift */,
 				BE891751BCC528FE410D0B15 /* DiscussionsStoreTests.swift */,
 				0EC103EA1ED0D174FC3A8505 /* EmergencyStoreTests.swift */,
@@ -967,6 +970,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C06FC32F3204BD4D5BCC101D /* AuthTokenResolverTests.swift in Sources */,
+				8CD71C78B918A0F5BE914E1E /* CommunityLikeTests.swift in Sources */,
 				A0A8952C681C2E19EDC8A008 /* CommunityStoreTests.swift in Sources */,
 				2DD593439ECC1711057A56B2 /* DiscussionsStoreTests.swift in Sources */,
 				9DFBDB774489545E07DD33BE /* EmergencyStoreTests.swift in Sources */,
