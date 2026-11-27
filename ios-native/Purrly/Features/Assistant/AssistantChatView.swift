@@ -180,7 +180,7 @@ struct AssistantChatView: View {
 
         Task {
             do {
-                let token = KeychainStore.read(.accessToken)
+                let token = await environment.auth.validAccessToken()
                 let system = buildSystemPrompt()
                 let reply = try await environment.aiChat.send(
                     messages: messages,

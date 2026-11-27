@@ -113,6 +113,7 @@ struct PhotoAnalyzerView: View {
         analysis = nil
         let base64 = String(data.base64EncodedString().prefix(2000))
         do {
+            let token = await environment.auth.validAccessToken()
             let reply = try await environment.aiChat.send(
                 messages: [
                     ChatMessage(
@@ -123,7 +124,7 @@ struct PhotoAnalyzerView: View {
                     )
                 ],
                 systemPrompt: "Tu es un vétérinaire expert en comportement félin. Analyse les photos de chats. Sois concis et bienveillant.",
-                accessToken: KeychainStore.read(.accessToken)
+                accessToken: token
             )
             analysis = reply
         } catch {

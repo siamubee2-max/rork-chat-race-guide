@@ -105,6 +105,7 @@ struct InsightsView: View {
         }.joined(separator: "; ")
 
         do {
+            let token = await environment.auth.validAccessToken()
             let reply = try await environment.aiChat.send(
                 messages: [
                     ChatMessage(
@@ -115,7 +116,7 @@ struct InsightsView: View {
                     )
                 ],
                 systemPrompt: "Tu es un vétérinaire expert. Réponds UNIQUEMENT en JSON valide, pas de markdown.",
-                accessToken: KeychainStore.read(.accessToken)
+                accessToken: token
             )
             let parsed = parseInsights(reply)
             insights = parsed
