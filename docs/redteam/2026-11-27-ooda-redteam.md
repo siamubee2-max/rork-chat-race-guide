@@ -54,8 +54,9 @@ Labels: **CONFIRMED** = read in code, mechanism is unambiguous. **PLAUSIBLE** = 
 ### H3 — DMs and comments are local-only but presented as real — CONFIRMED
 `CommunityStore.sendMessage` (`:159-177`) and `addComment` (`:151-157`) never touch the network; `ConversationView` keeps messages in `@State`. A sent DM is never delivered and vanishes on dismiss.
 
-### H4 — Fabricated "community" content shown as real — CONFIRMED
-`CommunityStore.load` catch → `loadSamples()` (`:61`); `DiscussionsStore.load` calls `loadSamples()` even on success with zero rows (`:46`). Users can reply/like fake "Léa/Marc" posts; writes then fail silently (`catch { /* keep local */ }`).
+### H4 — Fabricated "community" content shown as real — FIXED (2026-11-27)
+~~`CommunityStore.load` catch → `loadSamples()` (`:61`); `DiscussionsStore.load` calls `loadSamples()` even on success with zero rows (`:46`). Users can reply/like fake "Léa/Marc" posts; writes then fail silently (`catch { /* keep local */ }`).~~
+> **Fix (TDD, red→green observed on Xcode 26.5):** `loadSamples()` removed from both stores; a missing backend or a fetch failure now leaves the feed honestly empty, with explicit empty-state copy in `CommunityHubView` and `DiscussionsListView`. New seams `CommunityStore(client:)` / `DiscussionsStore(client:)` (also ends the per-access `SupabaseClient` construction, M8). New tests `CommunityStoreTests` (2) + `DiscussionsStoreTests` (1) red before the fix, green after. Writes still fail silently (H3/H5) — the sample posts that made those writes look real are gone.
 
 ### H5 — Likes can be inflated indefinitely + lost updates — CONFIRMED
 `toggleLike` (`:91-114`) writes an **absolute** `likes` value from the local copy; `isLiked` is never persisted (`load()` sets `false`), so each relaunch lets the same user add +1 again. Concurrent likes overwrite each other. Whether RLS lets non-authors UPDATE `community_posts` is unknown (table not in repo).

@@ -7,18 +7,26 @@ final class DiscussionsStore {
     private(set) var threads: [DiscussionThread] = []
     private(set) var isLoading = false
 
-    private var client: SupabaseClient? {
+    /// Backend Supabase, injectable pour les tests (`nil` = sans backend).
+    private let client: SupabaseClient?
+
+    init(client: SupabaseClient? = DiscussionsStore.makeClient()) {
+        self.client = client
+        Task { await load() }
+    }
+
+    private static func makeClient() -> SupabaseClient? {
         guard let url = AppConfiguration.supabaseURL,
               let key = AppConfiguration.supabaseAnonKey else { return nil }
         return SupabaseClient(supabaseURL: url, supabaseKey: key)
     }
 
-    init() { Task { await load() } }
-
     // MARK: - Load
 
+    /// Charge les fils réels. Sans backend ou en cas d'échec, la liste reste
+    /// **vide** : aucun fil d'exemple n'est fabriqué (red-team H4).
     func load() async {
-        guard let db = client else { loadSamples(); return }
+        guard let db = client else { return }
         isLoading = true
         defer { isLoading = false }
         do {
@@ -48,9 +56,8 @@ final class DiscussionsStore {
                                         createdAt: iso(t.created_at), messages: msgs,
                                         authorId: t.author_id)
             }
-            if threads.isEmpty { loadSamples() }
         } catch {
-            if threads.isEmpty { loadSamples() }
+            // Échec réseau : garder la liste telle quelle (vide si rien de chargé).
         }
     }
 
@@ -115,19 +122,4 @@ final class DiscussionsStore {
         ISO8601DateFormatter().date(from: str) ?? Date()
     }
 
-    private func loadSamples() {
-        guard threads.isEmpty else { return }
-        threads = [
-            DiscussionThread(id: "sample-1", title: "Mon Maine Coon griffe tout — conseils ?",
-                             authorName: "Léa", createdAt: Date().addingTimeInterval(-7200),
-                             messages: [
-                                DiscussionMessage(id: "m1", authorName: "Léa",
-                                                  content: "Il griffe les canapés… je suis à bout.",
-                                                  createdAt: Date().addingTimeInterval(-7200)),
-                                DiscussionMessage(id: "m2", authorName: "Marc",
-                                                  content: "Griffoir en sisal + spray répulsif, ça marche !",
-                                                  createdAt: Date().addingTimeInterval(-3600)),
-                             ]),
-        ]
-    }
 }

@@ -12,7 +12,14 @@ final class CommunityStore {
     /// Permet à l'UI de signaler "non synchronisé" au lieu d'un échec silencieux.
     private(set) var lastSyncError: String?
 
-    private var client: SupabaseClient? {
+    /// Backend Supabase, injectable pour les tests (`nil` = sans backend).
+    private let client: SupabaseClient?
+
+    init(client: SupabaseClient? = CommunityStore.makeClient()) {
+        self.client = client
+    }
+
+    private static func makeClient() -> SupabaseClient? {
         guard let url = AppConfiguration.supabaseURL,
               let key = AppConfiguration.supabaseAnonKey else { return nil }
         return SupabaseClient(supabaseURL: url, supabaseKey: key)
@@ -20,12 +27,15 @@ final class CommunityStore {
 
     // MARK: - Load
 
-    func loadSampleIfNeeded() {
+    func loadIfNeeded() {
         Task { await load() }
     }
 
+    /// Charge le fil réel. Sans backend ou en cas d'échec, le fil reste **vide** :
+    /// aucun contenu d'exemple n'est fabriqué (red-team H4 — « Léa/Marc » étaient
+    /// présentés comme du vrai contenu communautaire).
     func load() async {
-        guard let db = client else { loadSamples(); return }
+        guard let db = client else { return }
         isLoading = true
         defer { isLoading = false }
         do {
@@ -60,7 +70,8 @@ final class CommunityStore {
                                createdAt: iso(r.created_at))
             }
         } catch {
-            if posts.isEmpty { loadSamples() }
+            // Échec réseau : garder le fil tel quel (vide si rien n'a été chargé).
+            lastSyncError = "Contenus non synchronisés : \(error.localizedDescription)"
         }
     }
 
@@ -191,23 +202,4 @@ final class CommunityStore {
         return fmt.string(from: date)
     }
 
-    private func loadSamples() {
-        guard posts.isEmpty else { return }
-        let now = Date()
-        posts = [
-            CommunityPost(id: "s1", authorName: "Léa",
-                          content: "Mon Maine Coon vient d'adopter sa litière — des conseils ?",
-                          createdAt: now.addingTimeInterval(-3600), likes: 12, isLiked: false),
-            CommunityPost(id: "s2", authorName: "Marc",
-                          content: "Photo du jour : notre Bengal adore les étagères hautes 🐾",
-                          createdAt: now.addingTimeInterval(-86_400), likes: 34, isLiked: true),
-        ]
-        events = [
-            CommunityEvent(id: "e1", title: "Rencontre éleveurs Maine Coon",
-                           description: "Grande rencontre des passionnés de Maine Coon.",
-                           date: isoDate(from: now.addingTimeInterval(86_400 * 5)), time: "14:00",
-                           location: "Lyon", address: "Parc de la Tête d'Or, 69006 Lyon",
-                           type: "meetup", maxAttendees: 50, price: "", attendees: [], createdAt: now),
-        ]
-    }
 }

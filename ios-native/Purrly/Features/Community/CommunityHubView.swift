@@ -46,7 +46,7 @@ struct CommunityHubView: View {
         }
         .purrlyScreenBackground()
         .navigationTitle(String(localized: "tab.community"))
-        .onAppear { environment.community.loadSampleIfNeeded() }
+        .onAppear { environment.community.loadIfNeeded() }
         .navigationDestination(for: CommunityPost.self) { post in
             PostDetailView(post: post)
         }
@@ -92,6 +92,13 @@ struct CommunityHubView: View {
     private var feed: some View {
         let visiblePosts = environment.community.posts.filter {
             !environment.moderation.isHidden(id: $0.id, author: $0.author)
+        }
+        if visiblePosts.isEmpty {
+            Text("Aucun post pour l'instant. Soyez le premier à partager !")
+                .font(.subheadline)
+                .foregroundStyle(AppTheme.textMuted)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.vertical, 24)
         }
         ForEach(visiblePosts) { post in
             NavigationLink(value: post) {

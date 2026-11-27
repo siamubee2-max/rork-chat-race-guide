@@ -28,7 +28,7 @@ final class AppEnvironment {
     func bootstrap() async {
         breeds.loadIfNeeded()
         cats.load()
-        community.loadSampleIfNeeded()
+        community.loadIfNeeded()
 
         // Toute mise à jour d'entitlement RevenueCat (achat, expiration,
         // renouvellement, autre appareil) réaligne le flag UI `limits.isPremium`.

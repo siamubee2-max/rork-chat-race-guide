@@ -13,6 +13,13 @@ struct DiscussionsListView: View {
     }
 
     var body: some View {
+        if visibleThreads.isEmpty {
+            Text("Aucune discussion pour l'instant. Lancez la première !")
+                .font(.subheadline)
+                .foregroundStyle(AppTheme.textMuted)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.vertical, 24)
+        }
         List(visibleThreads) { thread in
             NavigationLink(destination: DiscussionDetailView(thread: thread)) {
                 VStack(alignment: .leading, spacing: 4) {
