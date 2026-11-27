@@ -60,7 +60,7 @@ Labels: **CONFIRMED** = read in code, mechanism is unambiguous. **PLAUSIBLE** = 
 - **M9 Expo `onAuthStateChange` awaits Supabase calls inside the callback** (`auth.tsx:66-76`) — known supabase-js deadlock pitfall; PLAUSIBLE.
 
 ## Low
-- **CI is red**: `security.yml` runs `npm run lint`; `expo lint` exits 1 (12 errors: `react/no-unescaped-entities`, + 70 warnings). No CI at all for the Swift app.
+- **CI is red on `main` and on this PR — at the `npm audit --omit=dev --audit-level=high` step** (47 vulns: 21 high, 2 critical; e.g. `hono <=4.13.15`, `tar`, `shell-quote`, `undici`, `ws`). Verified from the PR job log: this is the last step, so lint/typecheck/security:check passed in CI. The base commit's workflow run is also red (its log has expired, so its failing step is unverified; advisories are time-dependent). *Correction:* an earlier draft of this report blamed lint; a local `expo lint` run did report 12 errors / 70 warnings, but that is not what fails CI (unexplained local-vs-CI difference). No CI at all for the Swift app.
 - `expo/purrly-simulator.tar.gz` (32 MB build artifact) is tracked.
 - Legacy `expo/backend/hono.ts`: dead RevenueCat handler writing to a non-existent `users` table; rate limiter keyed on spoofable `X-Forwarded-For`; `/trpc/*` middleware vs `endpoint: "/api/trpc"` mismatch; `create-context.ts` builds a **service-role** client, so with no token every `publicProcedure` runs with RLS bypassed (latent footgun; only `hello` is public today).
 
