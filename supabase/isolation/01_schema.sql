@@ -33,7 +33,12 @@ create policy "profiles_update_own" on public.profiles
 -- Column-level privileges: users may edit `name` only.
 -- subscription_tier / subscription_expiry are writable ONLY by the service role
 -- (RevenueCat webhook), which bypasses RLS. This is the audit's core fix.
+-- NOTE (red-team 2026-11-27): revoking only UPDATE left the default table-level INSERT
+-- grant in place, so users could INSERT billing columns on their own row. Revoke INSERT
+-- too, and strip anon entirely (it is blocked only by RLS otherwise).
+revoke all    on public.profiles from anon;
 revoke update on public.profiles from authenticated;
+revoke insert on public.profiles from authenticated;
 grant  select on public.profiles to authenticated;
 grant  insert (id, email, name) on public.profiles to authenticated;
 grant  update (name) on public.profiles to authenticated;
