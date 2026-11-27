@@ -1,4 +1,6 @@
--- C2 hardening (red-team 2026-11-27) — NOT APPLIED. Review, then apply on the Purrly project.
+-- C2 hardening (red-team 2026-11-27) — APPLIED by the project owner on 2026-11-27 and
+-- verified from the resulting column privileges (anon: none; authenticated: INSERT
+-- id,email,name / UPDATE name). Kept here as the record of what was run.
 --
 -- Finding (verified from the live catalogue, see docs/redteam/2026-11-27-ooda-redteam.md):
 --   * `authenticated` can only UPDATE `profiles.name`  (good — this was the 007 fix)
